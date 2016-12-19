@@ -17,6 +17,8 @@ namespace meevax
       : fd_input {open(device.c_str(), O_RDONLY)},
         fd_output {}
     {}
+    virtual void connect(const std::string& device) {}
+    virtual void connect(const Neuron& neuron) {}
   private:
     virtual void read() {}
     virtual void write() {}
@@ -34,6 +36,15 @@ namespace meevax
       while (1) read();
     }
 
+    void connect(const std::string& device) override
+    {
+      fd_output = open(device.c_str(), O_WRONLY);
+    }
+
+    void connect(const Neuron& neuron) override
+    {
+    }
+
   private:
     void read() override
     {
@@ -48,6 +59,7 @@ namespace meevax
 int main(int argc, char** argv)
 {
   meevax::BasicNeuron neuron {"/dev/stdin"};
+  neuron.connect("/dev/stdout");
 
   return 0;
 }
