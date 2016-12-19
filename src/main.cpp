@@ -17,6 +17,11 @@ namespace meevax
       : fd_input {::open(device.c_str(), O_RDONLY)},
         fd_output {}
     {}
+    virtual ~Neuron()
+    {
+      close(fd_input);
+      close(fd_output);
+    }
     virtual void connect(const std::string& device) {}
     virtual void connect(const Neuron& neuron) {}
   private:
