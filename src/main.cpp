@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -17,61 +16,55 @@ namespace meevax
   class Neuron {
   public:
     int fd_input, fd_output;
-    Neuron(const std::string& device)
-      : fd_input {::open(device.c_str(), O_RDONLY)},
-        fd_output {}
+
+    Neuron(const std::string& dev_input, const std::string& dev_output)
+      : fd_input {connect_from_(dev_input.c_str())},
+        fd_output {connect_to_(dev_output.c_str())}
     {}
+
     virtual ~Neuron()
     {
       if (fd_input != -1) if (close(fd_input) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
       if (fd_output != -1) if (close(fd_output) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
     }
-    virtual void connect(const std::string& device) {}
-    virtual void connect(const Neuron& neuron) {}
+
   private:
+    int connect_from_(const std::string& device) { return open(device.c_str(), O_RDONLY); }
+    int connect_to_(const std::string& device) { return open(device.c_str(), O_WRONLY); }
+
     virtual void read() {}
     virtual void write() {}
   };
 
-  class BasicNeuron : public Neuron {
+  class ParrotNeuron : public Neuron {
     static constexpr size_t buf_size {8};
     static constexpr unsigned int seconds {1};
-    char buf[buf_size];
+    char buffer[buf_size];
   public:
-    BasicNeuron(const std::string& device)
-      : Neuron {device},
-        buf {"init"}
+    ParrotNeuron(const std::string& dev_input, const std::string& dev_output)
+      : Neuron {dev_input, dev_output},
+        buffer {"init"}
     {
       while (1) read();
-    }
-
-    void connect(const std::string& device) override
-    {
-      fd_output = open(device.c_str(), O_WRONLY);
-    }
-
-    void connect(const Neuron& neuron) override
-    {
     }
 
   private:
     void read() override
     {
-      if (::read(fd_input, static_cast<void*>(buf), buf_size) > 0) write();
+      if (::read(fd_input, static_cast<void*>(buffer), buf_size) > 0) write();
       sleep(seconds);
     }
 
     void write() override
     {
-      ::write(fd_output, static_cast<void*>(buf), buf_size);
+      ::write(fd_output, static_cast<void*>(buffer), buf_size);
     }
   };
 }
 
 int main(int argc, char** argv)
 {
-  meevax::BasicNeuron neuron {"/dev/stdin"};
-  neuron.connect("/dev/stdout");
+  meevax::ParrotNeuron neuron {"/dev/stdin", "/dev/stdout"};
 
   return 0;
 }
