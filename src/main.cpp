@@ -22,11 +22,11 @@ namespace meevax
     virtual void write() {}
   };
 
-  class InputDevice : public Neuron {
+  class BasicNeuron : public Neuron {
     static constexpr size_t buf_size {8};
     char buf[buf_size];
   public:
-    InputDevice(const std::string& device)
+    BasicNeuron(const std::string& device)
       : Neuron {device},
         buf {"hoge"}
     {
@@ -45,7 +45,7 @@ namespace meevax
 
 int main(int argc, char** argv)
 {
-  meevax::InputDevice neuron {"/dev/stdin"};
+  meevax::BasicNeuron neuron {"/dev/stdin"};
 
   return 0;
 }
