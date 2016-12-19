@@ -1,5 +1,4 @@
 #include <iostream>
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -30,8 +29,8 @@ namespace meevax
     }
 
   private:
-    void connect_from_(int fd, const std::string& device) { fd = open(device.c_str(), O_RDONLY); }
-    void connect_to_(int fd, const std::string& device) { fd = open(device.c_str(), O_WRONLY); }
+    void connect_from_(const std::string& device) { fd_input = open(device.c_str(), O_RDONLY); }
+    void connect_to_(const std::string& device) { fd_output = open(device.c_str(), O_WRONLY); }
 
     virtual void read() {}
     virtual void write() {}
