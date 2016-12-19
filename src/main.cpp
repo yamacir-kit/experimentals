@@ -14,7 +14,7 @@ namespace meevax
   public:
     int fd_input, fd_output;
     Neuron(const std::string& device)
-      : fd_input {open(device.c_str(), O_RDONLY)},
+      : fd_input {::open(device.c_str(), O_RDONLY)},
         fd_output {}
     {}
     virtual void connect(const std::string& device) {}
@@ -31,7 +31,7 @@ namespace meevax
   public:
     BasicNeuron(const std::string& device)
       : Neuron {device},
-        buf {"hoge"}
+        buf {"init"}
     {
       while (1) read();
     }
@@ -52,7 +52,10 @@ namespace meevax
       sleep(seconds);
     }
 
-    void write() override { std::cout << buf << std::endl; }
+    void write() override
+    {
+      ::write(fd_output, static_cast<void*>(buf), buf_size);
+    }
   };
 }
 
