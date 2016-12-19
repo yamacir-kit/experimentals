@@ -24,6 +24,7 @@ namespace meevax
 
   class BasicNeuron : public Neuron {
     static constexpr size_t buf_size {8};
+    static constexpr unsigned int seconds {1};
     char buf[buf_size];
   public:
     BasicNeuron(const std::string& device)
@@ -37,6 +38,7 @@ namespace meevax
     void read() override
     {
       if (::read(fd_input, static_cast<void*>(buf), buf_size) > 0) write();
+      sleep(seconds);
     }
 
     void write() override { std::cout << buf << std::endl; }
