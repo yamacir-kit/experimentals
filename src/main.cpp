@@ -28,9 +28,6 @@ namespace meevax
       if (fd_output != -1) if (close(fd_output) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
     }
 
-    // void connect_from_(const std::string& device) { fd_input = open(device.c_str(), O_RDONLY); }
-    // void connect_to_(const std::string& device) { fd_output = open(device.c_str(), O_WRONLY); }
-
   private:
     int connect_from_(const std::string& device) { return open(device.c_str(), O_RDONLY); }
     int connect_to_(const std::string& device) { return open(device.c_str(), O_WRONLY); }
@@ -39,12 +36,12 @@ namespace meevax
     virtual void write() {}
   };
 
-  class BasicNeuron : public Neuron {
+  class ParrotNeuron : public Neuron {
     static constexpr size_t buf_size {8};
     static constexpr unsigned int seconds {1};
     char buffer[buf_size];
   public:
-    BasicNeuron(const std::string& dev_input, const std::string& dev_output)
+    ParrotNeuron(const std::string& dev_input, const std::string& dev_output)
       : Neuron {dev_input, dev_output},
         buffer {"init"}
     {
@@ -67,7 +64,7 @@ namespace meevax
 
 int main(int argc, char** argv)
 {
-  meevax::BasicNeuron neuron {"/dev/stdin", "/dev/stdout"};
+  meevax::ParrotNeuron neuron {"/dev/stdin", "/dev/stdout"};
 
   return 0;
 }
