@@ -29,9 +29,10 @@ namespace meevax
       if (fd_output != -1) if (close(fd_output) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
     }
 
-    void connect(int fd, const std::string& device, int flags) { fd = open(device.c_str(), flags); }
-
   private:
+    void connect_from_(int fd, const std::string& device) { fd = open(device.c_str(), O_RDONLY); }
+    void connect_to_(int fd, const std::string& device) { fd = open(device.c_str(), O_WRONLY); }
+
     virtual void read() {}
     virtual void write() {}
   };
