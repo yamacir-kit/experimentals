@@ -1,7 +1,11 @@
 #include <iostream>
-#include <memory>
 #include <map>
+#include <memory>
+#include <string>
 #include <vector>
+
+#include <cerrno>
+#include <cstring>
 
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -17,6 +21,11 @@ namespace meevax
       : fd_input {::open(device.c_str(), O_RDONLY)},
         fd_output {}
     {}
+    virtual ~Neuron()
+    {
+      if (fd_input != -1) if (close(fd_input) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
+      if (fd_output != -1) if (close(fd_output) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
+    }
     void connect(int fd, const std::string& device, int flags) { fd = open(device.c_str(), flags); }
   private:
     virtual void read() {}
