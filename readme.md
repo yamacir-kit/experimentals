@@ -1,1 +1,1 @@
-## Private General Artificial Inteligence Project
+## Private Artificial General Inteligence Development Project
