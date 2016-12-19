@@ -23,8 +23,8 @@ namespace meevax
   };
 
   class InputDevice : public Neuron {
-    static constexpr size_t length {5};
-    char buf[length];
+    static constexpr size_t buf_size {8};
+    char buf[buf_size];
   public:
     InputDevice(const std::string& device)
       : Neuron {device},
@@ -36,7 +36,7 @@ namespace meevax
   private:
     void read() override
     {
-      if (::read(fd_input, static_cast<void*>(buf), length) > 0) write();
+      if (::read(fd_input, static_cast<void*>(buf), buf_size) > 0) write();
     }
 
     void write() override { std::cout << buf << std::endl; }
