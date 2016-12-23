@@ -25,8 +25,8 @@ namespace util
 
     unique_fd(const unique_fd&) = delete;
 
-    unique_fd(unique_fd&& ufd) noexcept
-      : fd_ {ufd.fd_}
+    unique_fd(unique_fd&& u) noexcept
+      : fd_ {u.fd_}
     {}
 
     ~unique_fd() { if (fd_ != -1) ::close(fd_); }
@@ -41,13 +41,13 @@ namespace util
       return fd;
     }
 
-    void swap(unique_fd& ufd) noexcept { std::swap(fd_, ufd.fd_); }
+    void swap(unique_fd& u) noexcept { std::swap(fd_, u.fd_); }
     void reset(int fd = -1) noexcept { unique_fd(fd).swap(*this); }
 
-    friend int close(unique_fd& ufd) noexcept
+    friend int close(unique_fd& u) noexcept
     {
-      int closed = ::close(ufd.fd_);
-      ufd.fd_ = -1;
+      int closed = ::close(u.fd_);
+      u.fd_ = -1;
       return closed;
     }
   };
