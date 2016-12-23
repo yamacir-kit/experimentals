@@ -11,6 +11,48 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+namespace util
+{
+  class unique_fd {
+    int fd_ = -1;
+
+  public:
+    constexpr unique_fd() noexcept = default;
+
+    explicit unique_fd(int fd) noexcept
+      : fd_ {fd}
+    {}
+
+    unique_fd(const unique_fd&) = delete;
+
+    unique_fd(unique_fd&& ufd) noexcept
+      : fd_ {ufd.fd_}
+    {}
+
+    ~unique_fd() { if (fd_ != -1) ::close(fd_); }
+
+    operator int() const noexcept { return fd_; }
+    unique_fd& operator=(const unique_fd&) = delete;
+
+    int release() noexcept
+    {
+      int fd = fd_;
+      fd_ = -1;
+      return fd;
+    }
+
+    void swap(unique_fd& ufd) noexcept { std::swap(fd_, ufd.fd_); }
+    void reset(int fd = -1) noexcept { unique_fd(fd).swap(*this); }
+
+    friend int close(unique_fd& ufd) noexcept
+    {
+      int closed = ::close(ufd.fd_);
+      ufd.fd_ = -1;
+      return closed;
+    }
+  };
+}
+
 namespace meevax
 {
   class Neuron {
