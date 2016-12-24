@@ -113,6 +113,14 @@ namespace meevax
     InputDevice(const std::string& dev) : fd_ {::open(dev.c_str(), O_RDONLY)} {}
     virtual void read() noexcept = 0;
   };
+
+  class OutputDevice {
+    utilib::unique_fd fd_;
+  public:
+    constexpr OutputDevice() noexcept = default;
+    OutputDevice(const std::string& dev) : fd_ {::open(dev.c_str(), O_WRONLY)} {}
+    virtual void write() noexcept = 0;
+  };
 }
 
 int main(int argc, char** argv)
