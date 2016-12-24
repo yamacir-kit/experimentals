@@ -11,7 +11,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace util
+namespace utilib
 {
   class unique_fd {
     int fd_ = -1;
@@ -23,13 +23,11 @@ namespace util
       : fd_ {fd}
     {}
 
-    unique_fd(const unique_fd&) = delete;
-
     unique_fd(unique_fd&& u) noexcept
       : fd_ {u.release()}
     {}
 
-    ~unique_fd() { if (fd_ != -1) ::close(fd_); }
+    ~unique_fd() { if (fd_ != -1) close(fd_); }
 
     unique_fd& operator=(unique_fd&& u) noexcept = default;
 
@@ -40,9 +38,9 @@ namespace util
 
     int release() noexcept
     {
-      int fd = fd_;
+      int tmp = fd_;
       fd_ = -1;
-      return fd;
+      return tmp;
     }
 
     void swap(unique_fd& u) noexcept { std::swap(fd_, u.fd_); }
@@ -56,6 +54,9 @@ namespace util
       u.fd_ = -1;
       return closed;
     }
+
+    unique_fd(const unique_fd&) = delete;
+    unique_fd& operator=(const unique_fd&) = delete;
   };
 }
 
