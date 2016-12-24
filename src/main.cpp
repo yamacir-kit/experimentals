@@ -34,7 +34,9 @@ namespace util
     unique_fd& operator=(unique_fd&& u) noexcept = default;
 
     operator int() const noexcept { return fd_; }
-    unique_fd& operator=(const unique_fd&) = delete;
+    operator bool() const noexcept { return fd_ != -1; }
+
+    int get() const noexcept { return fd_; }
 
     int release() noexcept
     {
@@ -44,6 +46,8 @@ namespace util
     }
 
     void swap(unique_fd& u) noexcept { std::swap(fd_, u.fd_); }
+    friend void swap(unique_fd& u, unique_fd& u2) noexcept { u.swap(u2); }
+
     void reset(int fd = -1) noexcept { unique_fd(fd).swap(*this); }
 
     friend int close(unique_fd& u) noexcept
