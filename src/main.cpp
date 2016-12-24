@@ -31,6 +31,8 @@ namespace util
 
     ~unique_fd() { if (fd_ != -1) ::close(fd_); }
 
+    unique_fd& operator=(unique_fd&& u) noexcept = default;
+
     operator int() const noexcept { return fd_; }
     unique_fd& operator=(const unique_fd&) = delete;
 
