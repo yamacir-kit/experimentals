@@ -1,6 +1,6 @@
 #include <iostream>
-#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <cerrno>
@@ -11,22 +11,67 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+namespace utilib
+{
+  class unique_fd {
+    int fd_ = -1;
+
+  public:
+    constexpr unique_fd() noexcept = default;
+
+    explicit unique_fd(int fd) noexcept
+      : fd_ {fd}
+    {}
+
+    unique_fd(unique_fd&& u) noexcept
+      : fd_ {u.release()}
+    {}
+
+    ~unique_fd() { if (fd_ != -1) close(fd_); }
+
+    unique_fd& operator=(unique_fd&& u) noexcept = default;
+
+    operator int() const noexcept { return fd_; }
+    operator bool() const noexcept { return fd_ != -1; }
+
+    int get() const noexcept { return fd_; }
+
+    int release() noexcept
+    {
+      int tmp = fd_;
+      fd_ = -1;
+      return tmp;
+    }
+
+    void swap(unique_fd& u) noexcept { std::swap(fd_, u.fd_); }
+    friend void swap(unique_fd& u, unique_fd& u2) noexcept { u.swap(u2); }
+
+    void reset(int fd = -1) noexcept { unique_fd(fd).swap(*this); }
+
+    friend int close(unique_fd& u) noexcept
+    {
+      int closed = ::close(u.fd_);
+      u.fd_ = -1;
+      return closed;
+    }
+
+    unique_fd(const unique_fd&) = delete;
+    unique_fd& operator=(const unique_fd&) = delete;
+  };
+}
+
 namespace meevax
 {
   class Neuron {
   public:
-    int fd_input, fd_output;
+    utilib::unique_fd ifd, ofd;
 
     Neuron(const std::string& dev_input, const std::string& dev_output)
-      : fd_input {connect_from_(dev_input.c_str())},
-        fd_output {connect_to_(dev_output.c_str())}
+      : ifd {connect_from_(dev_input.c_str())},
+        ofd {connect_to_(dev_output.c_str())}
     {}
 
-    virtual ~Neuron()
-    {
-      if (fd_input != -1) if (close(fd_input) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
-      if (fd_output != -1) if (close(fd_output) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
-    }
+    virtual ~Neuron() {}
 
   private:
     int connect_from_(const std::string& device) { return open(device.c_str(), O_RDONLY); }
@@ -51,13 +96,13 @@ namespace meevax
   private:
     void read() override
     {
-      if (::read(fd_input, static_cast<void*>(buffer), buf_size) > 0) write();
+      if (::read(ifd, static_cast<void*>(buffer), buf_size) > 0) write();
       sleep(seconds);
     }
 
     void write() override
     {
-      ::write(fd_output, static_cast<void*>(buffer), buf_size);
+      ::write(ofd, static_cast<void*>(buffer), buf_size);
     }
   };
 }
