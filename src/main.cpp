@@ -108,18 +108,11 @@ namespace meevax
 
   class InputDevice {
     utilib::unique_fd fd_;
-
   public:
     constexpr InputDevice() noexcept = default;
-
-    InputDevice(const std::string& dev)
-      : fd_ {::open(dev.c_str(), O_RDONLY)}
-    {}
-
+    InputDevice(const std::string& dev) : fd_ {::open(dev.c_str(), O_RDONLY)} {}
     virtual void read() noexcept = 0;
   };
-
-  class 
 }
 
 int main(int argc, char** argv)
