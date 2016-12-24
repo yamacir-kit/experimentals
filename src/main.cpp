@@ -58,7 +58,7 @@ namespace utilib
     unique_fd(const unique_fd&) = delete;
     unique_fd& operator=(const unique_fd&) = delete;
   };
-}
+} /* namespace utilib */
 
 namespace meevax
 {
@@ -121,7 +121,7 @@ namespace meevax
     OutputDevice(const std::string& dev) : fd_ {::open(dev.c_str(), O_WRONLY)} {}
     virtual void write() noexcept = 0;
   };
-}
+} /* namespace meevax */
 
 int main(int argc, char** argv)
 {
