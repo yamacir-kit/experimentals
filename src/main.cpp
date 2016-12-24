@@ -26,7 +26,7 @@ namespace util
     unique_fd(const unique_fd&) = delete;
 
     unique_fd(unique_fd&& u) noexcept
-      : fd_ {u.fd_}
+      : fd_ {u.release()}
     {}
 
     ~unique_fd() { if (fd_ != -1) ::close(fd_); }
