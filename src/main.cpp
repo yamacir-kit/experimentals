@@ -64,18 +64,14 @@ namespace meevax
 {
   class Neuron {
   public:
-    int fd_input, fd_output;
+    utilib::unique_fd ifd, ofd;
 
     Neuron(const std::string& dev_input, const std::string& dev_output)
-      : fd_input {connect_from_(dev_input.c_str())},
-        fd_output {connect_to_(dev_output.c_str())}
+      : ifd {connect_from_(dev_input.c_str())},
+        ofd {connect_to_(dev_output.c_str())}
     {}
 
-    virtual ~Neuron()
-    {
-      if (fd_input != -1) if (close(fd_input) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
-      if (fd_output != -1) if (close(fd_output) != 0) std::cerr << "[error] " << strerror(errno) << std::endl;
-    }
+    virtual ~Neuron() {}
 
   private:
     int connect_from_(const std::string& device) { return open(device.c_str(), O_RDONLY); }
@@ -100,13 +96,13 @@ namespace meevax
   private:
     void read() override
     {
-      if (::read(fd_input, static_cast<void*>(buffer), buf_size) > 0) write();
+      if (::read(ifd, static_cast<void*>(buffer), buf_size) > 0) write();
       sleep(seconds);
     }
 
     void write() override
     {
-      ::write(fd_output, static_cast<void*>(buffer), buf_size);
+      ::write(ofd, static_cast<void*>(buffer), buf_size);
     }
   };
 }
