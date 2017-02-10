@@ -11,54 +11,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-namespace utilib
-{
-  class unique_fd {
-    int fd_ = -1;
+#include <utilib/unique_fd.hpp>
 
-  public:
-    constexpr unique_fd() noexcept = default;
-
-    explicit unique_fd(int fd) noexcept
-      : fd_ {fd}
-    {}
-
-    unique_fd(unique_fd&& u) noexcept
-      : fd_ {u.release()}
-    {}
-
-    ~unique_fd() { if (fd_ != -1) close(fd_); }
-
-    unique_fd& operator=(unique_fd&& u) noexcept = default;
-
-    operator int() const noexcept { return fd_; }
-    operator bool() const noexcept { return fd_ != -1; }
-
-    int get() const noexcept { return fd_; }
-
-    int release() noexcept
-    {
-      int tmp = fd_;
-      fd_ = -1;
-      return tmp;
-    }
-
-    void swap(unique_fd& u) noexcept { std::swap(fd_, u.fd_); }
-    friend void swap(unique_fd& u, unique_fd& u2) noexcept { u.swap(u2); }
-
-    void reset(int fd = -1) noexcept { unique_fd(fd).swap(*this); }
-
-    friend int close(unique_fd& u) noexcept
-    {
-      int closed = ::close(u.fd_);
-      u.fd_ = -1;
-      return closed;
-    }
-
-    unique_fd(const unique_fd&) = delete;
-    unique_fd& operator=(const unique_fd&) = delete;
-  };
-} /* namespace utilib */
 
 namespace meevax
 {
