@@ -23,9 +23,5 @@ int main(int argc, char** argv)
 
   meevax::arguments_parser parser {std::move(argv_)};
 
-  constexpr meevax::string hoge {"hogehoge"};
-
-  static_assert(hoge.size() == 8, "ERROR!");
-
   return 0;
 }

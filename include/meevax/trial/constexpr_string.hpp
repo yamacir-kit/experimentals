@@ -2,6 +2,7 @@
 #define INCLUDED_MEEVAX_TRIAL_CONSTEXPR_STRING_HPP_
 
 
+#include <iostream>
 #include <string>
 
 
@@ -40,12 +41,22 @@ public:
     return size(data_);
   }
 
+  template <typename T>
+  friend auto& operator<<(std::ostream&, const meevax::basic_string<T>&);
+
 private:
   constexpr std::size_t size(const C* data) const noexcept
   {
     return *data ? size(++data) + 1 : 0;
   }
 };
+
+
+template <typename T>
+auto& operator<<(std::ostream& lhs, const meevax::basic_string<T>& rhs)
+{
+  return lhs << rhs.data();
+}
 
 
 } // namespace meevax
