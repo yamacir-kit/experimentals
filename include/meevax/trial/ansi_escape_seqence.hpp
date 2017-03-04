@@ -46,8 +46,18 @@ public:
   };
 
   class background_color
-    : public meevax::ansi_escape_seqence::foreground_color
-  {};
+    : public meevax::constexpr_string<char>
+  {
+  public:
+    static constexpr meevax::constexpr_string<char> black   {"40"};
+    static constexpr meevax::constexpr_string<char> red     {"41"};
+    static constexpr meevax::constexpr_string<char> green   {"42"};
+    static constexpr meevax::constexpr_string<char> yellow  {"43"};
+    static constexpr meevax::constexpr_string<char> blue    {"44"};
+    static constexpr meevax::constexpr_string<char> magenta {"45"};
+    static constexpr meevax::constexpr_string<char> cyan    {"46"};
+    static constexpr meevax::constexpr_string<char> white   {"47"};
+  };
 };
 
 
