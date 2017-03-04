@@ -17,7 +17,7 @@ class ansi_escape_seqence
   : public meevax::constexpr_string<char>
 {
 public:
-  static constexpr char escape {0x1b};
+  static constexpr meevax::constexpr_string<char> delimiter {";"};
 
   class text_attribute
     : public meevax::constexpr_string<char>
@@ -58,6 +58,24 @@ public:
     static constexpr meevax::constexpr_string<char> cyan    {"46"};
     static constexpr meevax::constexpr_string<char> white   {"47"};
   };
+
+  class graphics_mode
+    : public text_attribute,
+      public foreground_color,
+      public background_color
+  {};
+
+  template <typename T>
+  constexpr ansi_escape_seqence(T&& code)
+    : meevax::constexpr_string<char>("\e[" + code)
+  {}
+
+  template <typename T, typename... P>
+  constexpr ansi_escape_seqence(T&& code, P&&... args)
+    : meevax::constexpr_string<char>(*this ? (*this).data() + delimiter.data() + code.data() : code.data())
+  {
+    ansi_escape_seqence(args...);
+  }
 };
 
 
