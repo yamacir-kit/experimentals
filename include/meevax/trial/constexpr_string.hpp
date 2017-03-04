@@ -10,7 +10,7 @@ namespace meevax {
 
 
 template <typename C, typename Tr = std::char_traits<C>>
-class basic_string
+class constexpr_string
 {
   C const* data_;
 
@@ -22,7 +22,7 @@ public:
   using reference = value_type&;
   using const_reference = const value_type&;
 
-  constexpr explicit basic_string(const C* data) noexcept
+  constexpr explicit constexpr_string(const C* data) noexcept
     : data_ {data}
   {}
 
@@ -42,7 +42,7 @@ public:
   }
 
   template <typename T>
-  friend auto& operator<<(std::ostream&, const meevax::basic_string<T>&);
+  friend auto& operator<<(std::ostream&, const meevax::constexpr_string<T>&);
 
 private:
   constexpr std::size_t size(const C* data) const noexcept
@@ -53,7 +53,7 @@ private:
 
 
 template <typename T>
-auto& operator<<(std::ostream& lhs, const meevax::basic_string<T>& rhs)
+auto& operator<<(std::ostream& lhs, const meevax::constexpr_string<T>& rhs)
 {
   return lhs << rhs.data();
 }
