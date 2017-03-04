@@ -2,15 +2,26 @@
 #define INCLUDED_MEEVAX_TRIAL_CONSTEXPR_STRING_HPP_
 
 
+#include <string>
+
+
 namespace meevax {
 
 
-class string
+template <typename C, typename Tr = std::char_traits<C>>
+class basic_string
 {
-  char const* data_;
+  C const* data_;
 
 public:
-  constexpr explicit string(const char* data) noexcept
+  using traits_type = Tr;
+  using value_type = typename Tr::char_type;
+  using size_type = std::size_t;
+
+  using reference = value_type&;
+  using const_reference = const value_type&;
+
+  constexpr explicit basic_string(const C* data) noexcept
     : data_ {data}
   {}
 
@@ -19,12 +30,12 @@ public:
     return size() != 0;
   }
 
-  constexpr operator const char*() const noexcept
+  constexpr operator const C*() const noexcept
   {
     return data_;
   }
 
-  constexpr const char* data() const noexcept
+  constexpr const C* data() const noexcept
   {
     return data_;
   }
@@ -35,7 +46,7 @@ public:
   }
 
 private:
-  constexpr std::size_t size(const char* data) const noexcept
+  constexpr std::size_t size(const C* data) const noexcept
   {
     return *data ? size(++data) + 1 : 0;
   }
