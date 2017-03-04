@@ -3,6 +3,7 @@
 #include <vector>
 
 #include <meevax/trial/arguments_parser.hpp>
+#include <meevax/trial/constexpr_string.hpp>
 
 
 int main(int argc, char** argv)
