@@ -30,11 +30,6 @@ public:
     return size() != 0;
   }
 
-  constexpr operator const C*() const noexcept
-  {
-    return data_;
-  }
-
   constexpr const C* data() const noexcept
   {
     return data_;
