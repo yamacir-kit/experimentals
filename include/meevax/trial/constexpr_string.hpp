@@ -14,7 +14,17 @@ public:
     : data_ {data}
   {}
 
-  constexpr operator char const*() const noexcept
+  constexpr operator bool() const noexcept
+  {
+    return size() != 0;
+  }
+
+  constexpr operator const char*() const noexcept
+  {
+    return data_;
+  }
+
+  constexpr const char* data() const noexcept
   {
     return data_;
   }
