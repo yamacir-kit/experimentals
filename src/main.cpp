@@ -2,10 +2,15 @@
 #include <string>
 #include <vector>
 
+#include <QtWidgets/QApplication>
+#include <QtWidgets/QMainWindow>
 
 int main(int argc, char** argv)
 {
-  std::cout << "hello, world!" << std::endl;
+  QApplication app {argc, argv};
 
-  return 0;
+  QMainWindow window;
+  window.show();
+
+  return app.exec();
 }
