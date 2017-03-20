@@ -3,6 +3,8 @@ project(meevax VERSION 0.0.0)
 
 add_definitions("-std=c++14 -Wall")
 
+find_package(Qt5Widgets REQUIRED)
+
 # set(${PROJECT_NAME}_MAJOR_VERSION 0)
 # set(${PROJECT_NAME}_MINOR_VERSION 0)
 # set(${PROJECT_NAME}_PATCH_VERSION 0)
@@ -32,6 +34,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+  Qt5::Widgets
 )
 
 # set(CMAKE_INSTALL_PREFIX /usr/local)
