@@ -9,6 +9,19 @@
 #include <sys/wait.h>
 
 
+namespace unix {
+
+
+std::string pwd()
+{
+  std::unique_ptr<char> buffer {new char[MAXPATHLEN]};
+  return getcwd(buffer.get(), MAXPATHLEN) ? std::string(buffer.get()) : std::string();
+}
+
+
+} // namespace unix
+
+
 namespace meevax {
 
 
@@ -21,7 +34,7 @@ public:
   meevax(int argc, char** argv)
     : argv_ {argv, argv + argc}
   {
-    std::cout << "meevax: " << pwd() << "$ ";
+    std::cout << "meevax: " << unix::pwd() << "$ ";
   }
 
   int exec()
@@ -41,7 +54,7 @@ public:
       else if (input_[0] == "pwd")
       {
         std::cout << "[debug] pwd called" << std::endl;
-        std::cout << pwd() << std::endl;
+        std::cout << unix::pwd() << std::endl;
       }
 
       else if (input_[0] == "help")
@@ -52,19 +65,13 @@ public:
 
       else launch();
 
-      std::cout << "meevax: " << pwd() << "$ ";
+      std::cout << "meevax: " << unix::pwd() << "$ ";
     }
 
     return 0;
   }
 
 protected:
-  std::string pwd() const noexcept
-  {
-    std::unique_ptr<char> buffer {new char[MAXPATHLEN]};
-    return getcwd(buffer.get(), MAXPATHLEN) ? std::string(buffer.get()) : std::string();
-  }
-
   void launch() const
   {
     switch (pid_t pid {::fork()})
