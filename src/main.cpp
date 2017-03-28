@@ -9,9 +9,6 @@
 #include <sys/wait.h>
 
 
-namespace unix {
-
-
 std::string pwd()
 {
   std::unique_ptr<char> buffer {new char[MAXPATHLEN]};
@@ -66,9 +63,6 @@ std::vector<std::string> split_arguments(const std::vector<std::string>& argv) /
 }
 
 
-} // namespace unix
-
-
 namespace meevax {
 
 
@@ -79,7 +73,7 @@ class shell
 
 public:
   explicit shell(int argc, char** argv)
-    : argv_ {unix::split_arguments({argv, argv + argc})}
+    : argv_ {split_arguments({argv, argv + argc})}
   {
     for (auto iter {argv_.begin() + 1}; iter != argv_.end(); ++iter)
     {
@@ -127,7 +121,7 @@ public:
       }
     }
 
-    std::cout << "meevax: " << unix::pwd() << "$ ";
+    std::cout << "meevax: " << pwd() << "$ ";
   }
 
   int exec()
@@ -147,7 +141,7 @@ public:
       else if (input_[0] == "pwd")
       {
         std::cout << "[debug] pwd called" << std::endl;
-        std::cout << unix::pwd() << std::endl;
+        std::cout << pwd() << std::endl;
       }
 
       else if (input_[0] == "help")
@@ -158,7 +152,7 @@ public:
 
       else launch();
 
-      std::cout << "meevax: " << unix::pwd() << "$ ";
+      std::cout << "meevax: " << pwd() << "$ ";
     }
 
     return 0;
