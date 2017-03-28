@@ -19,6 +19,45 @@ std::string pwd()
 }
 
 
+std::vector<std::string> split_arguments(const std::vector<std::string>& argv) // UGLY CODE
+{
+  std::vector<std::string> argv_ {argv};
+  std::vector<std::string> args {};
+
+  for (auto&& v : argv)
+  {
+    if (v[0] == '-' && v[1] != '-')
+    {
+      v.erase(0, 1);
+
+      while (std::isalpha(v[0]))
+      {
+        args.emplace_back(&v[0], &v[1]);
+        v.erase(0, 1);
+      }
+    }
+
+    if (v[0] == '-' && v[1] == '-')
+    {
+      v.erase(0, 2);
+
+      if (v.find_first_of('=') != std::string::npos)
+      {
+        args.emplace_back(&v[0], &v[v.find('=')]);
+        v.erase(0, v.find('=') + 1);
+      }
+
+      args.emplace_back(v.begin(), v.end());
+      v.clear();
+    }
+
+    if (!v.empty()) args.emplace_back(v.begin(), v.end());
+  }
+
+  return args;
+}
+
+
 } // namespace unix
 
 
