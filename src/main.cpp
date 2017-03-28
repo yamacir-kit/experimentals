@@ -8,6 +8,8 @@
 #include <sys/param.h>
 #include <sys/wait.h>
 
+#include <meevax/cmake_config.hpp>
+
 
 std::string pwd()
 {
@@ -85,7 +87,7 @@ public:
         {
           std::cout << "meevax - the most modern guardian of CUI culture.\n"
                     << "\n"
-                    << "version 0.0.0 alpha\n"
+                    << "version " << PROJECT_VERSION << " alpha\n"
                     << "\n"
                     << "  Looks like a shell, but supports only cd and pwd commands.\n"
                     << "  In other words, this is useless.\n"
@@ -103,7 +105,7 @@ public:
       {
         if (*iter == version ? matched = true : false)
         {
-          std::cout << "version 0.0.0 alpha\n"
+          std::cout << "version " << PROJECT_VERSION << " alpha\n"
                     << "\n"
                     << "  Looks like a shell, but supports only cd and pwd commands.\n"
                     << "  In other words, this is useless.\n";
