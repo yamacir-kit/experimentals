@@ -3,7 +3,7 @@ project(meevax VERSION 0.0.0 LANGUAGES CXX)
 
 add_definitions("-std=c++14 -Wall")
 
-find_package(Qt5Widgets REQUIRED)
+# find_package(Qt5Widgets REQUIRED)
 
 file(GLOB ${PROJECT_NAME}_SOURCES
   ${PROJECT_SOURCE_DIR}/src/*.cpp
@@ -31,7 +31,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-  Qt5::Widgets
+  # Qt5::Widgets
 )
 
 # set(CMAKE_INSTALL_PREFIX /usr/local)
