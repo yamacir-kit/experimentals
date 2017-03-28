@@ -25,13 +25,13 @@ std::string pwd()
 namespace meevax {
 
 
-class meevax
+class shell
 {
   const std::vector<std::string> argv_;
         std::vector<std::string> input_;
 
 public:
-  meevax(int argc, char** argv)
+  explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc}
   {
     std::cout << "meevax: " << unix::pwd() << "$ ";
@@ -106,7 +106,7 @@ protected:
 
 int main(int argc, char** argv)
 {
-  meevax::meevax shell {argc, argv};
+  meevax::shell shell {argc, argv};
 
   return shell.exec();
 }
