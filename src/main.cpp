@@ -89,12 +89,17 @@ public:
       {
         if (*iter == help ? matched = true : false)
         {
-          std::cout << "meevax 0.0.0 - the most modern guardian of CUI culture.\n"
+          std::cout << "meevax - the most modern guardian of CUI culture.\n"
+                    << "\n"
+                    << "version 0.0.0 alpha\n"
+                    << "\n"
+                    << "  Looks like a shell, but supports only cd and pwd commands.\n"
+                    << "  In other words, this is useless.\n"
                     << "\n"
                     << "USAGE: meevax [options]\n"
                     << "\n"
-                    << "-h --help     display this help\n"
-                    << "-v --version  display version information\n";
+                    << "  -h, --help     display this help\n"
+                    << "  -v, --version  display version information\n";
 
           exit(EXIT_SUCCESS);
         }
@@ -104,10 +109,10 @@ public:
       {
         if (*iter == version ? matched = true : false)
         {
-          std::cout << "meevax 0.0.0\n"
+          std::cout << "version 0.0.0 alpha\n"
                     << "\n"
-                    << "Looks like a shell, but supports only cd and pwd commands.\n"
-                    << "In other words, this is useless.\n";
+                    << "  Looks like a shell, but supports only cd and pwd commands.\n"
+                    << "  In other words, this is useless.\n";
 
           exit(EXIT_SUCCESS);
         }
