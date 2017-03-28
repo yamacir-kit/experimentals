@@ -17,12 +17,12 @@ file(GLOB ${PROJECT_NAME}_SOURCES
   ${PROJECT_SOURCE_DIR}/src/*.cpp
 )
 
-set(${PROJECT_NAME}_HEADERS
+set(${PROJECT_NAME}_HEADER_DIR
   ${PROJECT_SOURCE_DIR}/include
 )
 
 include_directories(
-  ${${PROJECT_NAME}_HEADERS}
+  ${${PROJECT_NAME}_HEADER_DIR}
 )
 
 link_directories(
