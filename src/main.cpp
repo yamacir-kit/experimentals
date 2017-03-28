@@ -16,7 +16,7 @@ std::string pwd()
 }
 
 
-std::vector<std::string> split_arguments(const std::vector<std::string>& argv) // UGLY CODE
+auto split_arguments(const std::vector<std::string>& argv) // UGLY CODE
 {
   std::vector<std::string> argv_ {argv};
   std::vector<std::string> args {};
