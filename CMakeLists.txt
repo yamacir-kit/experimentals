@@ -13,6 +13,11 @@ set(${PROJECT_NAME}_HEADER_DIR
   ${PROJECT_SOURCE_DIR}/include
 )
 
+configure_file(
+  ${PROJECT_SOURCE_DIR}/cmake/cmake_config.hpp.cmake
+  ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/cmake_config.hpp
+)
+
 include_directories(
   ${${PROJECT_NAME}_HEADER_DIR}
 )
