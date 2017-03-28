@@ -79,8 +79,49 @@ class shell
 
 public:
   explicit shell(int argc, char** argv)
-    : argv_ {argv, argv + argc}
+    : argv_ {unix::split_arguments({argv, argv + argc})}
   {
+    for (auto iter {argv_.begin() + 1}; iter != argv_.end(); ++iter)
+    {
+      bool matched {false};
+
+      for (const auto& help : std::vector<std::string>{"-h", "--help"})
+      {
+        if (*iter == help ? matched = true : false)
+        {
+          std::cout << "meevax 0.0.0 - the most modern guardian of CUI culture.\n"
+                    << "\n"
+                    << "USAGE: meevax [options]\n"
+                    << "\n"
+                    << "-h --help     display this help\n"
+                    << "-v --version  display version information\n";
+
+          exit(EXIT_SUCCESS);
+        }
+      }
+
+      for (const auto version : std::vector<std::string>{"-v", "--version"})
+      {
+        if (*iter == version ? matched = true : false)
+        {
+          std::cout << "meevax 0.0.0\n"
+                    << "\n"
+                    << "Looks like a shell, but supports only cd and pwd commands.\n"
+                    << "In other words, this is useless.\n";
+
+          exit(EXIT_SUCCESS);
+        }
+      }
+
+      if (!matched)
+      {
+        std::cout << "[error] invalid option '" << *iter << "'\n"
+                  << "[hints] try 'meevax --help' for more information.\n";
+
+        exit(EXIT_FAILURE);
+      }
+    }
+
     std::cout << "meevax: " << unix::pwd() << "$ ";
   }
 
