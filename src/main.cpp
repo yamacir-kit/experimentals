@@ -11,6 +11,17 @@
 #include <meevax/cmake_config.hpp>
 
 
+std::string version(const std::vector<std::string>&) // TODO constexpr concatenate
+{
+  return {
+    "version " + std::string {PROJECT_VERSION} + " alpha\n" +
+    "\n" +
+    "  Looks like a shell, but supports only cd and pwd commands.\n" +
+    "  In other words, this is useless.\n"
+  };
+}
+
+
 std::string pwd()
 {
   std::unique_ptr<char> buffer {new char[MAXPATHLEN]};
@@ -101,14 +112,11 @@ public:
         }
       }
 
-      for (const auto version : std::vector<std::string>{"-v", "--version"})
+      for (const auto ver : std::vector<std::string>{"-v", "--version"})
       {
-        if (*iter == version ? matched = true : false)
+        if (*iter == ver ? matched = true : false)
         {
-          std::cout << "version " << PROJECT_VERSION << " alpha\n"
-                    << "\n"
-                    << "  Looks like a shell, but supports only cd and pwd commands.\n"
-                    << "  In other words, this is useless.\n";
+          std::cout << version(argv_);
 
           exit(EXIT_SUCCESS);
         }
