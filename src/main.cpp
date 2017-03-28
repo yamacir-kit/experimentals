@@ -24,7 +24,7 @@ std::vector<std::string> split_arguments(const std::vector<std::string>& argv) /
   std::vector<std::string> argv_ {argv};
   std::vector<std::string> args {};
 
-  for (auto&& v : argv)
+  for (auto&& v : argv_)
   {
     if (v[0] == '-' && v[1] != '-')
     {
