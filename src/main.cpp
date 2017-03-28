@@ -32,7 +32,8 @@ std::vector<std::string> split_arguments(const std::vector<std::string>& argv) /
 
       while (std::isalpha(v[0]))
       {
-        args.emplace_back(&v[0], &v[1]);
+        // args.emplace_back(&v[0], &v[1]);
+        args.push_back({'-', v[0]});
         v.erase(0, 1);
       }
     }
@@ -43,12 +44,19 @@ std::vector<std::string> split_arguments(const std::vector<std::string>& argv) /
 
       if (v.find_first_of('=') != std::string::npos)
       {
-        args.emplace_back(&v[0], &v[v.find('=')]);
+        // args.emplace_back(&v[0], &v[v.find('=')]);
+        args.push_back("--" + std::string{&v[0], &v[v.find('=')]});
         v.erase(0, v.find('=') + 1);
+
+        args.emplace_back(v.begin(), v.end());
       }
 
-      args.emplace_back(v.begin(), v.end());
-      v.clear();
+      else
+      {
+        // args.emplace_back(v.begin(), v.end());
+        args.push_back("--" + std::string{v.begin(), v.end()});
+        v.clear();
+      }
     }
 
     if (!v.empty()) args.emplace_back(v.begin(), v.end());
