@@ -13,19 +13,17 @@
 namespace unix {
 
 
-template <typename C, typename Tr = std::char_traits<C>>
+template <typename C>
 class shell
 {
-  const std::vector<std::basic_string<C>> argv_;
+public: // types
+  using char_type = typename std::char_traits<C>::char_type;
+  using size_type = typename std::basic_string<char_type>::size_type;
+
+private: // internal data
+  const std::vector<std::basic_string<char_type>> argv_;
 
 public:
-  using char_type = typename Tr::char_type;
-  using size_type = std::size_t;
-
-  using word_type = std::basic_string<char_type>;
-  using line_type = std::vector<word_type>;
-  using text_type = std::vector<line_type>;
-
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc}
   {};
