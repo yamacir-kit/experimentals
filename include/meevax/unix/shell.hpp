@@ -22,11 +22,16 @@ public: // types
 
 private: // internal data
   const std::vector<std::basic_string<char_type>> argv_;
+  const             std::basic_string<char_type>  name_; // program called this class
 
 public:
   explicit shell(int argc, char** argv)
-    : argv_ {argv, argv + argc}
-  {};
+    : argv_ {argv, argv + argc},
+      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)}
+  {
+    static_assert(std::basic_string<char_type>::npos == 1,
+                  "the premise has collapsed. report this to the developer.");
+  };
 
 protected:
   static auto version(const line_type&) const
