@@ -8,7 +8,8 @@
 #include <sys/param.h>
 #include <sys/wait.h>
 
-#include <meevax/cmake_config.hpp>
+#include "meevax/cmake_config.hpp"
+#include "meevax/unix/shell.hpp"
 
 
 std::string version(const std::vector<std::string>&) // TODO constexpr concatenate
