@@ -15,7 +15,7 @@
 #endif
 
 
-namespace meevax {
+namespace trial {
 
 
 class arguments_parser
