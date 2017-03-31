@@ -22,7 +22,7 @@ template <typename C>
 class arguments_parser
 {
 public:
-  using char_type = std::char_traits<C>::char_type;
+  using char_type = typename std::char_traits<C>::char_type;
 
 private:
   std::vector<std::basic_string<char_type>> argv_;
@@ -88,7 +88,7 @@ private:
 };
 
 
-} // namespace meevax
+} // namespace trial
 
 
 #endif
