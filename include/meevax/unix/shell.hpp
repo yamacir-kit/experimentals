@@ -40,8 +40,28 @@ public:
                   "the premise has collapsed. report this to the developer.");
   };
 
-protected:
-  static auto version(const line_type&) const
+  auto write(const std::basic_string<char_type>& word) const
+    -> decltype(cout_)
+  {
+    return cout_ << word << std::endl;
+  }
+
+  auto write(const std::vector<std::basic_string<char_type>>& line) const
+    -> decltype(cout_)
+  {
+    for (const auto& s : line) cout_ << s << (&s != &line.back() ? ' ' : '\n');
+    return cout_;
+  }
+
+  auto write(const std::vector<std::vector<std::basic_string<char_type>>>& text) const
+    -> decltype(cout_)
+  {
+    for (const auto& v : text) write(v);
+    return cout_;
+  }
+
+
+  static auto version(const std::vector<std::basic_string<char_type>>&)
     -> std::vector<std::basic_string<char_type>>
   {
     return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
