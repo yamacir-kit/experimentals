@@ -36,31 +36,25 @@ public:
       for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
   };
 
-  // auto& write(const std::basic_string<char_type>& word) const
-  //   -> decltype(std::cout)
-  // {
-  //   return &(std::cout << word << std::endl);
-  // }
-  //
-  // auto& write(const std::vector<std::basic_string<char_type>>& line) const
-  //   -> decltype(std::cout)
-  // {
-  //   for (const auto& s : line) std::cout << s << (&s != &line.back() ? ' ' : '\n');
-  //   return &std::cout;
-  // }
-  //
-  // auto& write(const std::vector<std::vector<std::basic_string<char_type>>>& text) const
-  //   -> decltype(std::cout)
-  // {
-  //   for (const auto& v : text) write(v);
-  //   return &std::cout;
-  // }
-
-
   static auto version(const std::vector<std::basic_string<char_type>>&)
     -> std::vector<std::basic_string<char_type>>
   {
     return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
+  }
+
+  auto help(const std::vector<std::basic_string<char_type>>&) // UGLY CODE !!!
+    -> std::vector<std::vector<std::basic_string<char_type>>>
+  {
+    return {
+      {name_, {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}},
+      {{}},
+      version(argv_),
+      {{}},
+      {{"USAGE:"}, name_, {"[options]"}},
+      {{}},
+      {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
+      {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
+    };
   }
 };
 
