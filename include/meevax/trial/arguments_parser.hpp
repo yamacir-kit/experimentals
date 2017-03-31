@@ -29,7 +29,7 @@ private:
 
 public:
   explicit arguments_parser(const int argc, const char** argv)
-    : argv_ {argv + 1, argv + argc}
+    : argv_ {argv, argv + argc}
   {}
 
   explicit arguments_parser(std::vector<std::basic_string<char_type>>&& argv)
