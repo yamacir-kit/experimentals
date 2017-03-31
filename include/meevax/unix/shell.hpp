@@ -29,8 +29,11 @@ public:
   {};
 
 protected:
-  static auto version(const line_type&) -> line_type
-  {}
+  static auto version(const line_type&) const
+    -> std::vector<std::basic_string<char_type>>
+  {
+    return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
+  }
 };
 
 
