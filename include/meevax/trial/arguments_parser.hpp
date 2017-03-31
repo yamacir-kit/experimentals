@@ -18,17 +18,22 @@
 namespace trial {
 
 
+template <typename C>
 class arguments_parser
 {
-  std::vector<std::string> argv_;
+public:
+  using char_type = std::char_traits<C>::char_type;
+
+private:
+  std::vector<std::basic_string<char_type>> argv_;
 
 public:
   explicit arguments_parser(const int argc, const char** argv)
     : argv_ {argv + 1, argv + argc}
   {}
 
-  explicit arguments_parser(std::vector<std::string>&& argv)
-    : argv_ {std::forward<std::vector<std::string>>(argv)}
+  explicit arguments_parser(std::vector<std::basic_string<char_type>>&& argv)
+    : argv_ {std::forward<std::vector<std::basic_string<char_type>>>(argv)}
   {
 #ifdef DEBUG_MEEVAX_ARGUMENTS_PARSER_HPP_
     std::cout << std::endl
@@ -49,9 +54,9 @@ public:
   }
 
 private:
-  std::vector<std::string> split()
+  std::vector<std::basic_string<char_type>> split()
   {
-    std::vector<std::string> result;
+    std::vector<std::basic_string<char_type>> result;
 
     for (auto&& v : argv_) {
       if (v[0] == '-' && v[1] != '-') {
@@ -66,7 +71,7 @@ private:
       if (v[0] == '-' && v[1] == '-') {
         v.erase(0, 2);
 
-        if (v.find_first_of('=') != std::string::npos) {
+        if (v.find_first_of('=') != std::basic_string<char_type>::npos) {
           result.emplace_back(&v[0], &v[v.find('=')]);
           v.erase(0, v.find('=') + 1);
         }
