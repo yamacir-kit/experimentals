@@ -22,7 +22,7 @@ public: // types
 
 private: // internal data
   const std::vector<std::basic_string<char_type>> argv_;
-  const             std::basic_string<char_type>  name_; // program called this class
+  const             std::basic_string<char_type>  name_; // TODO function basename
 
 public:
   explicit shell(int argc, char** argv)
@@ -46,7 +46,7 @@ public:
     -> std::vector<std::vector<std::basic_string<char_type>>>
   {
     return {
-      {name_, {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}},
+      {name_, {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}}, // TODO function basename
       {{}},
       version(argv_),
       {{}},
