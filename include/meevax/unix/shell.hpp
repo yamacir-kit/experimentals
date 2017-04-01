@@ -6,6 +6,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <regex>
 
 #include "meevax/cmake_config.hpp"
 
@@ -32,10 +33,29 @@ public:
     static_assert(std::basic_string<char_type>::npos == -1,
                   "the premise has collapsed. report this to the developer.");
 
-    for (const auto& v : help(argv_))
-      for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
+    for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
+    {
+      for (const auto& s : std::vector<std::basic_string<char_type>>{"-h", "--help"})
+      {
+        if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
+        {
+          for (const auto& v : help(argv_))
+            for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
+        }
+      }
+
+      for (const auto& s : std::vector<std::basic_string<char_type>>{"-v", "--version"})
+      {
+        if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
+        {
+          for (const auto& s : version(argv_)) std::cout << s << ' ';
+          std::cout << std::endl;
+        }
+      }
+    }
   };
 
+protected:
   static auto version(const std::vector<std::basic_string<char_type>>&)
     -> std::vector<std::basic_string<char_type>>
   {
