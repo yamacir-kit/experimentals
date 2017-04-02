@@ -3,13 +3,11 @@
 
 
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
+#include <system_error>
 #include <vector>
-#include <regex>
-
-#include <unistd.h>
-#include <sys/wait.h>
 
 #include "meevax/cmake_config.hpp"
 #include "meevax/unix/execvp.hpp"
@@ -72,11 +70,7 @@ public:
            std::getline(input, buffer, ' ');
            input_.push_back(buffer));
 
-      if (input_[0] == "exit")
-      {
-        std::cout << "[debug] exit called" << std::endl;
-        return 0;
-      }
+      if (input_[0] == "exit") { return 0; }
 
       else if (input_[0] == "help")
       {
@@ -84,8 +78,15 @@ public:
         return 0;
       }
 
-      // unix::fork_exec(input_);
-      unix::fork()(unix::execvp<char_type>(input_));
+      try { unix::fork()(unix::execvp<char_type>(input_)); }
+
+      catch (std::system_error&) { throw; }
+
+      catch (...)
+      {
+        std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n";
+        std::exit(errno);
+      }
 
       std::cout << name_ << "$ ";
     }

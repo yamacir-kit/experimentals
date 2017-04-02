@@ -1,14 +1,8 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include <memory>
-#include <sstream>
+#include <system_error>
 
-#include <unistd.h>
-#include <sys/param.h>
-#include <sys/wait.h>
+#include <cstdlib>
 
-#include "meevax/cmake_config.hpp"
 #include "meevax/unix/shell.hpp"
 
 
@@ -16,5 +10,20 @@ int main(int argc, char** argv)
 {
   unix::shell<char> sh {argc, argv};
 
-  return sh.run();
+  try
+  {
+    sh.run(); // TODO signal handling
+  }
+
+  catch (std::system_error& error)
+  {
+    std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+    return error.code().value();
+  }
+
+  catch (...)
+  {
+    std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n";
+    std::exit(errno);
+  }
 }
