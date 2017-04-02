@@ -204,9 +204,7 @@ protected:
 
 int main(int argc, char** argv)
 {
-  // meevax::shell shell {argc, argv};
+  unix::shell<char> sh {argc, argv};
 
-  unix::shell<char> new_shell {argc, argv};
-
-  // return shell.exec();
+  return sh.run();
 }
