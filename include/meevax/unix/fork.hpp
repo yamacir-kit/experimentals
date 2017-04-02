@@ -35,11 +35,7 @@ public:
 
       catch (std::system_error&) { throw; }
 
-      catch (...)
-      {
-        std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n";
-        std::exit(errno);
-      }
+      catch (...) { throw; }
 
     case -1:
       throw std::system_error {errno, std::system_category()};

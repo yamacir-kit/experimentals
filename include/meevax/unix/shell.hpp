@@ -28,10 +28,13 @@ private: // internal data
   const std::vector<std::basic_string<char_type>> argv_;
   const             std::basic_string<char_type>  name_; // TODO function basename
 
+        std::vector<std::basic_string<char_type>> input_;
+
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
-      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)}
+      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)},
+      input_ {}
   {
     static_assert(std::basic_string<char_type>::npos == -1,
                   "the premise has collapsed. report this to the developer.");
@@ -62,7 +65,7 @@ public:
   {
     std::cout << name_ << "$ ";
 
-    std::vector<std::string> input_ {};
+    // std::vector<std::string> input_ {};
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
@@ -82,17 +85,15 @@ public:
 
       catch (std::system_error&) { throw; }
 
-      catch (...)
-      {
-        std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n";
-        std::exit(errno);
-      }
+      catch (...) { throw; }
 
       std::cout << name_ << "$ ";
     }
 
     return 0;
   }
+
+  const auto input() const noexcept { return input_; }
 
 protected:
   static auto version(const std::vector<std::basic_string<char_type>>&)
