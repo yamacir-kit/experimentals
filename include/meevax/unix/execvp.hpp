@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <string>
+#include <system_error>
 #include <vector>
 
 #include <unistd.h>
@@ -25,7 +26,13 @@ public:
     argv_.push_back(nullptr);
   }
 
-  auto operator()() { return ::execvp(argv_[0], argv_.data()); }
+  void operator()()
+  {
+    if (::execvp(argv_[0], argv_.data()) == -1)
+    {
+      throw std::system_error {errno, std::system_category()};
+    }
+  }
 };
 
 

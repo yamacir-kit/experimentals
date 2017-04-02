@@ -18,20 +18,6 @@
 namespace unix {
 
 
-void execvpxx(const std::vector<std::string>& argv)
-{
-  std::vector<char*> args {};
-
-  for (const auto& a : argv) args.emplace_back(const_cast<char*>(a.c_str()));
-  args.push_back(nullptr);
-
-  if (::execvp(args[0], args.data()) == -1)
-  {
-    throw std::system_error {errno, std::system_category()};
-  }
-}
-
-
 int fork_exec(const std::vector<std::string>& args)
 {
   switch (pid_t pid {::fork()})
@@ -39,7 +25,6 @@ int fork_exec(const std::vector<std::string>& args)
   case  0: // child process
     try
     {
-      // execvpxx(args);
       unix::execvp<char>{args}();
     }
     catch (std::system_error error) // TODO error message
