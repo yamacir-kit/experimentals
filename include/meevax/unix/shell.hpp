@@ -12,6 +12,7 @@
 #include <sys/wait.h>
 
 #include "meevax/cmake_config.hpp"
+#include "meevax/unix/execvp.hpp"
 
 
 namespace unix {
@@ -38,7 +39,8 @@ int fork_exec(const std::vector<std::string>& args)
   case  0: // child process
     try
     {
-      execvpxx(args);
+      // execvpxx(args);
+      unix::execvp<char>{args}();
     }
     catch (std::system_error error) // TODO error message
     {
