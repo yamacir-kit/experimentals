@@ -12,13 +12,6 @@
 #include "meevax/unix/shell.hpp"
 
 
-std::string pwd()
-{
-  std::unique_ptr<char> buffer {new char[MAXPATHLEN]};
-  return getcwd(buffer.get(), MAXPATHLEN) ? std::string(buffer.get()) : std::string();
-}
-
-
 int main(int argc, char** argv)
 {
   unix::shell<char> sh {argc, argv};
