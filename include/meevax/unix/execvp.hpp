@@ -26,7 +26,7 @@ public:
     argv_.push_back(nullptr);
   }
 
-  void operator()()
+  void operator()() noexcept(false)
   {
     if (::execvp(argv_[0], argv_.data()) == -1)
     {
