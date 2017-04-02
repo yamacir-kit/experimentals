@@ -14,6 +14,57 @@
 namespace unix {
 
 
+void execvpxx(const std::vector<std::string>& argv)
+{
+  std::vector<char*> args {};
+
+  for (const auto& a : argv) args.emplace_back(const_cast<char*>(a.c_str()));
+  args.push_back(nullptr);
+
+  if (::execvp(args[0], args.data()) == -1)
+  {
+    throw std::system_error {errno, std::system_category()};
+  }
+}
+
+
+int fork_exec(const std::vector<std::string>& args)
+{
+  switch (pid_t pid {::fork()})
+  {
+  case  0: // child process
+    try
+    {
+      execvpxx(args);
+    }
+    catch (std::system_error error) // TODO error message
+    {
+      std::cout << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+      exit(EXIT_FAILURE);
+    }
+
+    break;
+
+  case -1:
+    std::cout << "[error] code: " << pid << " - " << ::strerror(errno);
+    exit(EXIT_FAILURE);
+
+    break;
+
+  default:
+    int status {};
+
+    do {
+      ::waitpid(pid, &status, WUNTRACED);
+    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
+
+    break;
+  }
+
+  return 1;
+}
+
+
 template <typename C>
 class shell
 {
