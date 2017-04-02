@@ -1,28 +1,25 @@
 cmake_minimum_required(VERSION 3.0)
-project(meevax VERSION 0.0.0)
+project(meevax VERSION 0.0.0 LANGUAGES CXX)
 
 add_definitions("-std=c++14 -Wall")
 
-find_package(Qt5Widgets REQUIRED)
-
-# set(${PROJECT_NAME}_MAJOR_VERSION 0)
-# set(${PROJECT_NAME}_MINOR_VERSION 0)
-# set(${PROJECT_NAME}_PATCH_VERSION 0)
-#
-# set(${PROJECT_NAME}_VERSION
-#   ${${PROJECT_NAME}_MAJOR_VERSION}.${${PROJECT_NAME}_MINOR_VERSION}.${${PROJECT_NAME}_PATCH_VERSION}
-# )
+# find_package(Qt5Widgets REQUIRED)
 
 file(GLOB ${PROJECT_NAME}_SOURCES
   ${PROJECT_SOURCE_DIR}/src/*.cpp
 )
 
-set(${PROJECT_NAME}_HEADERS
+set(${PROJECT_NAME}_HEADER_DIR
   ${PROJECT_SOURCE_DIR}/include
 )
 
+configure_file(
+  ${PROJECT_SOURCE_DIR}/cmake/cmake_config.hpp.cmake
+  ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/cmake_config.hpp
+)
+
 include_directories(
-  ${${PROJECT_NAME}_HEADERS}
+  ${${PROJECT_NAME}_HEADER_DIR}
 )
 
 link_directories(
@@ -34,14 +31,14 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-  Qt5::Widgets
+  # Qt5::Widgets
 )
 
 # set(CMAKE_INSTALL_PREFIX /usr/local)
 #
 # set_target_properties(${PROJECT_NAME} PROPERTIES
-#   VERSION   ${${PROJECT_NAME}_VERSION}
-#   SOVERSION ${${PROJECT_NAME}_MAJOR_VERSION}
+#   VERSION   ${PROJECT_VERSION}
+#   SOVERSION ${PROJECT_VERSION_MAJOR}
 # )
 #
 # install(TARGETS ${PROJECT_NAME}
