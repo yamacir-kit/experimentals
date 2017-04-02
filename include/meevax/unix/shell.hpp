@@ -8,6 +8,9 @@
 #include <vector>
 #include <regex>
 
+#include <unistd.h>
+#include <sys/wait.h>
+
 #include "meevax/cmake_config.hpp"
 
 
@@ -105,6 +108,38 @@ public:
       }
     }
   };
+
+  int run() // UGLY CODE !!!
+  {
+    std::cout << name_ << "$ ";
+
+    std::vector<std::string> input_ {};
+
+    for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
+    {
+      for (std::stringstream input {buffer};
+           std::getline(input, buffer, ' ');
+           input_.push_back(buffer));
+
+      if (input_[0] == "exit")
+      {
+        std::cout << "[debug] exit called" << std::endl;
+        return 0;
+      }
+
+      else if (input_[0] == "help")
+      {
+        std::cout << "[debug] help called" << std::endl;
+        return 0;
+      }
+
+      else unix::fork_exec(input_);
+
+      std::cout << name_ << "$ ";
+    }
+
+    return 0;
+  }
 
 protected:
   static auto version(const std::vector<std::basic_string<char_type>>&)
