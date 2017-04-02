@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(meevax VERSION 0.1.0 LANGUAGES CXX)
+project(meevax VERSION 0.1.1 LANGUAGES CXX)
 
 add_definitions("-std=c++14 -Wall")
 
@@ -19,6 +19,11 @@ set(${PROJECT_NAME}_HEADER_DIR
 configure_file(
   ${PROJECT_SOURCE_DIR}/cmake/cmake_config.hpp.cmake
   ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/cmake_config.hpp
+)
+
+configure_file(
+  ${PROJECT_SOURCE_DIR}/cmake/readme.md.cmake
+  ${PROJECT_SOURCE_DIR}/readme.md
 )
 
 include_directories(

@@ -1,6 +1,6 @@
 ### meevax
 
-version 0.1.0 in development
+version 0.1.1 in development
 
 
 ### dependency
