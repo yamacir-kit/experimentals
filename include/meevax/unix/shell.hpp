@@ -13,46 +13,10 @@
 
 #include "meevax/cmake_config.hpp"
 #include "meevax/unix/execvp.hpp"
+#include "meevax/unix/fork.hpp"
 
 
 namespace unix {
-
-
-int fork_exec(const std::vector<std::string>& args)
-{
-  switch (pid_t pid {::fork()})
-  {
-  case  0: // child process
-    try
-    {
-      unix::execvp<char>{args}();
-    }
-    catch (std::system_error error) // TODO error message
-    {
-      std::cout << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
-      exit(EXIT_FAILURE);
-    }
-
-    break;
-
-  case -1:
-    std::cout << "[error] code: " << pid << " - " << ::strerror(errno);
-    exit(EXIT_FAILURE);
-
-    break;
-
-  default:
-    int status {};
-
-    do {
-      ::waitpid(pid, &status, WUNTRACED);
-    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-
-    break;
-  }
-
-  return 1;
-}
 
 
 template <typename C>
@@ -120,7 +84,8 @@ public:
         return 0;
       }
 
-      else unix::fork_exec(input_);
+      // unix::fork_exec(input_);
+      unix::fork()(unix::execvp<char_type>(input_));
 
       std::cout << name_ << "$ ";
     }
