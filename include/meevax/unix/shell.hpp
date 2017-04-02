@@ -1,71 +1,20 @@
-#ifndef INCLUDED_MEEVAX_SHELL_HPP_
-#define INCLUDED_MEEVAX_SHELL_HPP_
+#ifndef INCLUDED_MEEVAX_UNIX_SHELL_HPP_
+#define INCLUDED_MEEVAX_UNIX_SHELL_HPP_
 
 
 #include <iostream>
+#include <regex>
 #include <sstream>
 #include <string>
+#include <system_error>
 #include <vector>
-#include <regex>
-
-#include <unistd.h>
-#include <sys/wait.h>
 
 #include "meevax/cmake_config.hpp"
+#include "meevax/unix/execvp.hpp"
+#include "meevax/unix/fork.hpp"
 
 
 namespace unix {
-
-
-void execvpxx(const std::vector<std::string>& argv)
-{
-  std::vector<char*> args {};
-
-  for (const auto& a : argv) args.emplace_back(const_cast<char*>(a.c_str()));
-  args.push_back(nullptr);
-
-  if (::execvp(args[0], args.data()) == -1)
-  {
-    throw std::system_error {errno, std::system_category()};
-  }
-}
-
-
-int fork_exec(const std::vector<std::string>& args)
-{
-  switch (pid_t pid {::fork()})
-  {
-  case  0: // child process
-    try
-    {
-      execvpxx(args);
-    }
-    catch (std::system_error error) // TODO error message
-    {
-      std::cout << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
-      exit(EXIT_FAILURE);
-    }
-
-    break;
-
-  case -1:
-    std::cout << "[error] code: " << pid << " - " << ::strerror(errno);
-    exit(EXIT_FAILURE);
-
-    break;
-
-  default:
-    int status {};
-
-    do {
-      ::waitpid(pid, &status, WUNTRACED);
-    } while (!WIFEXITED(status) && !WIFSIGNALED(status));
-
-    break;
-  }
-
-  return 1;
-}
 
 
 template <typename C>
@@ -79,10 +28,13 @@ private: // internal data
   const std::vector<std::basic_string<char_type>> argv_;
   const             std::basic_string<char_type>  name_; // TODO function basename
 
+        std::vector<std::basic_string<char_type>> input_;
+
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
-      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)}
+      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)},
+      input_ {}
   {
     static_assert(std::basic_string<char_type>::npos == -1,
                   "the premise has collapsed. report this to the developer.");
@@ -113,7 +65,7 @@ public:
   {
     std::cout << name_ << "$ ";
 
-    std::vector<std::string> input_ {};
+    // std::vector<std::string> input_ {};
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
@@ -121,11 +73,7 @@ public:
            std::getline(input, buffer, ' ');
            input_.push_back(buffer));
 
-      if (input_[0] == "exit")
-      {
-        std::cout << "[debug] exit called" << std::endl;
-        return 0;
-      }
+      if (input_[0] == "exit") { return 0; }
 
       else if (input_[0] == "help")
       {
@@ -133,13 +81,19 @@ public:
         return 0;
       }
 
-      else unix::fork_exec(input_);
+      try { unix::fork()(unix::execvp<char_type>(input_)); }
+
+      catch (std::system_error&) { throw; }
+
+      catch (...) { throw; }
 
       std::cout << name_ << "$ ";
     }
 
     return 0;
   }
+
+  const auto input() const noexcept { return input_; }
 
 protected:
   static auto version(const std::vector<std::basic_string<char_type>>&)
