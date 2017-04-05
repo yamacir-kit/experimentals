@@ -21,7 +21,7 @@ template <typename C>
 class shell
 {
 public: // types
-  using char_type = typename std::char_traits<C>::char_type;
+  using char_type = typename std::basic_string<C>::value_type;
   using size_type = typename std::basic_string<char_type>::size_type;
 
 private: // internal data
