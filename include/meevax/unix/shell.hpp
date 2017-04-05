@@ -61,11 +61,9 @@ public:
     }
   };
 
-  int run() // UGLY CODE !!!
+  int run() // XXX UGLY CODE !!!
   {
     std::cout << name_ << "$ ";
-
-    // std::vector<std::string> input_ {};
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
