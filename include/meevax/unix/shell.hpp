@@ -16,6 +16,49 @@
 #include "meevax/unix/fork.hpp"
 
 
+template <typename C>
+class static_concatenate
+{
+public:
+  using char_type = typename std::basic_string<C>::value_type;
+  using size_type = typename std::basic_string<char_type>::size_type;
+
+  template <typename T, typename U>
+  constexpr auto operator()(T&& lhs, U&& rhs = "") noexcept
+  { return cat_(std::forward<T>(lhs), std::forward<U>(rhs), mkixseq<size<T>::value-1>(), mkixseq<size<U>::value>()); }
+
+  template <typename T, typename U, typename... Ts>
+  constexpr auto operator()(T&& lhs, U&& rhs, Ts&&... args) noexcept
+  { return operator()(std::forward<T>(lhs), operator()(std::forward<U>(rhs), std::forward<Ts>(args)...)); }
+
+private:
+  template <size_type... Ts>
+  using ixseq = std::integer_sequence<size_type, Ts...>;
+
+  template <size_type N>
+  using mkixseq = std::make_integer_sequence<size_type, N>;
+
+protected:
+  template <typename T, size_type N>
+  static constexpr auto size_(const T(&)[N]) noexcept
+    -> std::integral_constant<size_type,N>
+  { return {}; }
+
+  template <typename T, size_type N>
+  static constexpr auto size_(const std::array<T,N>&) noexcept
+    -> std::integral_constant<size_type,N>
+  { return {}; }
+
+  template <typename T>
+  using size = decltype(size_(std::declval<T>()));
+
+  template <typename T, typename U, size_type... Ix1, size_type... Ix2>
+  static constexpr auto cat_(const T& lhs, const U& rhs, ixseq<Ix1...>, ixseq<Ix2...>) noexcept
+    -> std::array<char_type, size<T>::value + size<U>::value - 1>
+  { return {{lhs[Ix1]..., rhs[Ix2]...}}; }
+};
+
+
 namespace unix {
 
 
@@ -41,17 +84,17 @@ public:
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
-          for (const auto& v : help(argv_))
-            for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
+          help();
+          std::exit(0); // XXX DANGER CODE
         }
       }
 
       for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
       {
-        if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
+        if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
         {
-          for (const auto& s : version(argv_)) std::cout << s << ' ';
-          std::cout << std::endl;
+          std::cout << version() << std::endl;
+          std::exit(0); // XXX DANGER CODE
         }
       }
     }
@@ -63,19 +106,13 @@ public:
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
-      for (std::stringstream input {buffer};
-           std::getline(input, buffer, ' ');
-           input_.push_back(buffer));
+      for (std::stringstream input {buffer}; std::getline(input, buffer, ' '); input_.push_back(buffer));
 
       if (input_[0] == "exit") { return 0; }
 
-      else if (input_[0] == "help")
-      {
-        std::cout << "[debug] help called" << std::endl;
-        return 0;
-      }
+      else if (input_[0] == "help") { help(); }
 
-      try { unix::fork()(unix::execvp<char_type>(input_)); }
+      else try { unix::fork()(unix::execvp<char_type>(input_)); }
 
       catch (std::system_error&) { throw; }
 
@@ -89,26 +126,21 @@ public:
 
   const auto input() const noexcept { return input_; }
 
-protected:
-  static auto version(const std::vector<std::basic_string<char_type>>&)
-    -> std::vector<std::basic_string<char_type>>
+private:
+  static auto version()
   {
-    return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
+    static constexpr auto s {static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
+    return s.data();
   }
 
-  auto help(const std::vector<std::basic_string<char_type>>&) // UGLY CODE !!!
-    -> std::vector<std::vector<std::basic_string<char_type>>>
+  void help() const
   {
-    return {
-      {unix::basename(argv_[0]), {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}}, // TODO function basename
-      {{}},
-      version(argv_),
-      {{}},
-      {{"USAGE:"}, unix::basename(argv_[0]), {"[options]"}},
-      {{}},
-      {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
-      {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
-    };
+    std::cout << unix::basename(argv_[0]) << " shell - " << version() << std::endl
+              << std::endl
+              << "USAGE: " << unix::basename(argv_[0]) << " [options]\n"
+              << std::endl
+              << "\t-h, --help\tdisplay this help\n"
+              << "\t-v, --version\tdisplay version information\n\n";
   }
 };
 
