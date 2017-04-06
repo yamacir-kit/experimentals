@@ -9,14 +9,9 @@ namespace unix {
 
 
 template <typename C>
-auto basename(const std::basic_string<C>& path)
+auto basename(const std::basic_string<C>& path, C delimiter = '/')
 {
-  // static_assert(decltype(path)::npos != -1,)
-  //
-  // static constexpr auto delimiter {'/'};
-  //
-  //
-  // return path.substr()
+  return path.substr(path.find_last_of(delimiter) - std::basic_string<C>::npos);
 }
 
 

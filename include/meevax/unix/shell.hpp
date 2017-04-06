@@ -22,28 +22,22 @@ namespace unix {
 template <typename C>
 class shell
 {
-public: // types
+public:
   using char_type = typename std::basic_string<C>::value_type;
   using size_type = typename std::basic_string<char_type>::size_type;
 
-private: // internal data
+private:
   const std::vector<std::basic_string<char_type>> argv_;
-  const             std::basic_string<char_type>  name_; // TODO function basename
-
         std::vector<std::basic_string<char_type>> input_;
 
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
-      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)},
       input_ {}
   {
-    static_assert(std::basic_string<char_type>::npos == -1,
-                  "the premise has collapsed. report this to the developer.");
-
     for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
     {
-      for (const auto& s : std::vector<std::basic_string<char_type>>{"-h", "--help"})
+      for (const auto& s : std::vector<std::basic_string<char_type>> {"-h", "--help"})
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
@@ -52,7 +46,7 @@ public:
         }
       }
 
-      for (const auto& s : std::vector<std::basic_string<char_type>>{"-v", "--version"})
+      for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
@@ -65,7 +59,7 @@ public:
 
   int run() // XXX UGLY CODE !!!
   {
-    std::cout << name_ << "$ ";
+    std::cout << unix::basename(argv_[0]) << "$ ";
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
@@ -87,7 +81,7 @@ public:
 
       catch (...) { throw; }
 
-      std::cout << name_ << "$ ";
+      std::cout << unix::basename(argv_[0]) << "$ ";
     }
 
     return 0;
@@ -106,11 +100,11 @@ protected:
     -> std::vector<std::vector<std::basic_string<char_type>>>
   {
     return {
-      {name_, {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}}, // TODO function basename
+      {unix::basename(argv_[0]), {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}}, // TODO function basename
       {{}},
       version(argv_),
       {{}},
-      {{"USAGE:"}, name_, {"[options]"}},
+      {{"USAGE:"}, unix::basename(argv_[0]), {"[options]"}},
       {{}},
       {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
       {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
