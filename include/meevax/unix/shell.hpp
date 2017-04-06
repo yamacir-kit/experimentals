@@ -50,7 +50,7 @@ public:
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
-          for (const auto& s : version(argv_)) std::cout << s << ' ';
+          for (const auto& s : version()) std::cout << s << ' ';
           std::cout << std::endl;
         }
       }
@@ -90,7 +90,7 @@ public:
   const auto input() const noexcept { return input_; }
 
 protected:
-  static auto version(const std::vector<std::basic_string<char_type>>&)
+  static auto version()
     -> std::vector<std::basic_string<char_type>>
   {
     return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
