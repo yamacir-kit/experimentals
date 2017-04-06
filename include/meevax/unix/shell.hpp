@@ -73,8 +73,6 @@ private:
   const std::vector<std::basic_string<char_type>> argv_;
         std::vector<std::basic_string<char_type>> input_;
 
-  static constexpr auto version_ {static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
-
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
@@ -86,23 +84,15 @@ public:
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
-          // for (const auto& v : help(argv_))
-          // {
-          //   for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
-          // }
-
-          std::cout << "[debug] help\n";
+          help();
         }
       }
 
       for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
       {
-        if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
+        if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
         {
-          // for (const auto& s : version()) std::cout << s << ' ';
-          // std::cout << std::endl;
-
-          std::cout << "[debug] version\n";
+          std::cout << version() << std::endl;
         }
       }
     }
@@ -118,12 +108,9 @@ public:
 
       if (input_[0] == "exit") { return 0; }
 
-      else if (input_[0] == "help")
-      {
-        std::cout << "[debug] help\n";
-      }
+      else if (input_[0] == "help") { help(); }
 
-      try { unix::fork()(unix::execvp<char_type>(input_)); }
+      else try { unix::fork()(unix::execvp<char_type>(input_)); }
 
       catch (std::system_error&) { throw; }
 
@@ -156,6 +143,24 @@ protected:
   //     {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
   //   };
   // }
+
+private:
+  static auto version()
+  {
+    static constexpr auto s {static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
+    return s.data();
+  }
+
+
+  void help()
+  {
+    std::cout << unix::basename(argv_[0]) << " shell - " << version() << std::endl
+              << std::endl
+              << "USAGE: " << unix::basename(argv_[0]) << " [options]\n"
+              << std::endl
+              << "\t-h, --help\tdisplay this help\n"
+              << "\t-v, --version\tdisplay version information\n\n";
+  }
 };
 
 
