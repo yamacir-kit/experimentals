@@ -55,7 +55,7 @@ protected:
   template <typename T, typename U, size_type... Ix1, size_type... Ix2>
   static constexpr auto cat_(const T& lhs, const U& rhs, ixseq<Ix1...>, ixseq<Ix2...>) noexcept
     -> std::array<char_type, size<T>::value + size<U>::value - 1>
-  { return {lhs[Ix1]..., rhs[Ix2]...}; }
+  { return {{lhs[Ix1]..., rhs[Ix2]...}}; }
 };
 
 
