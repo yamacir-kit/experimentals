@@ -73,6 +73,8 @@ private:
   const std::vector<std::basic_string<char_type>> argv_;
         std::vector<std::basic_string<char_type>> input_;
 
+  static constexpr auto version_ {static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
+
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
@@ -84,8 +86,12 @@ public:
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
-          for (const auto& v : help(argv_))
-            for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
+          // for (const auto& v : help(argv_))
+          // {
+          //   for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
+          // }
+
+          std::cout << "[debug] help\n";
         }
       }
 
@@ -93,8 +99,10 @@ public:
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
-          for (const auto& s : version()) std::cout << s << ' ';
-          std::cout << std::endl;
+          // for (const auto& s : version()) std::cout << s << ' ';
+          // std::cout << std::endl;
+
+          std::cout << "[debug] version\n";
         }
       }
     }
@@ -106,16 +114,13 @@ public:
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
-      for (std::stringstream input {buffer};
-           std::getline(input, buffer, ' ');
-           input_.push_back(buffer));
+      for (std::stringstream input {buffer}; std::getline(input, buffer, ' '); input_.push_back(buffer));
 
       if (input_[0] == "exit") { return 0; }
 
       else if (input_[0] == "help")
       {
-        std::cout << "[debug] help called" << std::endl;
-        return 0;
+        std::cout << "[debug] help\n";
       }
 
       try { unix::fork()(unix::execvp<char_type>(input_)); }
@@ -133,26 +138,24 @@ public:
   const auto input() const noexcept { return input_; }
 
 protected:
-  static auto version()
-    -> std::vector<std::basic_string<char_type>>
-  {
-    return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
-  }
+  // static auto version()
+  //   -> std::vector<std::basic_string<char_type>>
+  // {
+  //   return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
+  // }
 
-  auto help(const std::vector<std::basic_string<char_type>>&) // UGLY CODE !!!
-    -> std::vector<std::vector<std::basic_string<char_type>>>
-  {
-    return {
-      {unix::basename(argv_[0]), {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}}, // TODO function basename
-      {{}},
-      version(argv_),
-      {{}},
-      {{"USAGE:"}, unix::basename(argv_[0]), {"[options]"}},
-      {{}},
-      {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
-      {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
-    };
-  }
+  // auto help(const std::vector<std::basic_string<char_type>>& argv) // UGLY CODE !!!
+  //   -> std::vector<std::vector<std::basic_string<char_type>>>
+  // {
+  //   return {
+  //     {unix::basename(argv[0]), {"shell"}, {"-"}, version()},
+  //     {{}},
+  //     {{"USAGE:"}, unix::basename(argv[0]), {"[options]"}},
+  //     {{}},
+  //     {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
+  //     {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
+  //   };
+  // }
 };
 
 
