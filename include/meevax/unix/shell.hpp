@@ -85,6 +85,7 @@ public:
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
           help();
+          std::exit(0); // XXX DANGER CODE
         }
       }
 
@@ -93,6 +94,7 @@ public:
         if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
         {
           std::cout << version() << std::endl;
+          std::exit(0); // XXX DANGER CODE
         }
       }
     }
@@ -124,26 +126,6 @@ public:
 
   const auto input() const noexcept { return input_; }
 
-protected:
-  // static auto version()
-  //   -> std::vector<std::basic_string<char_type>>
-  // {
-  //   return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
-  // }
-
-  // auto help(const std::vector<std::basic_string<char_type>>& argv) // UGLY CODE !!!
-  //   -> std::vector<std::vector<std::basic_string<char_type>>>
-  // {
-  //   return {
-  //     {unix::basename(argv[0]), {"shell"}, {"-"}, version()},
-  //     {{}},
-  //     {{"USAGE:"}, unix::basename(argv[0]), {"[options]"}},
-  //     {{}},
-  //     {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
-  //     {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
-  //   };
-  // }
-
 private:
   static auto version()
   {
@@ -151,8 +133,7 @@ private:
     return s.data();
   }
 
-
-  void help()
+  void help() const
   {
     std::cout << unix::basename(argv_[0]) << " shell - " << version() << std::endl
               << std::endl
