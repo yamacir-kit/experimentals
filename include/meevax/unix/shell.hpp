@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "meevax/cmake_config.hpp"
+
+#include "meevax/unix/basename.hpp"
 #include "meevax/unix/execvp.hpp"
 #include "meevax/unix/fork.hpp"
 
