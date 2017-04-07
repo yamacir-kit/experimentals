@@ -106,7 +106,9 @@ public:
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
-      for (std::stringstream input {buffer}; std::getline(input, buffer, ' '); input_.push_back(buffer));
+      for (std::basic_stringstream<char_type> input {buffer};
+           std::getline(input, buffer, ' ');
+           input_.push_back(buffer));
 
       if (input_[0] == "exit") { return 0; }
 
