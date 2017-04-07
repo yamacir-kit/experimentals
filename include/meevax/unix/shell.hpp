@@ -10,8 +10,53 @@
 #include <vector>
 
 #include "meevax/cmake_config.hpp"
+
+#include "meevax/unix/basename.hpp"
 #include "meevax/unix/execvp.hpp"
 #include "meevax/unix/fork.hpp"
+
+
+template <typename C>
+class static_concatenate
+{
+public:
+  using char_type = typename std::basic_string<C>::value_type;
+  using size_type = typename std::basic_string<char_type>::size_type;
+
+  template <typename T, typename U>
+  constexpr auto operator()(T&& lhs, U&& rhs = "") noexcept
+  { return cat_(std::forward<T>(lhs), std::forward<U>(rhs), mkixseq<size<T>::value-1>(), mkixseq<size<U>::value>()); }
+
+  template <typename T, typename U, typename... Ts>
+  constexpr auto operator()(T&& lhs, U&& rhs, Ts&&... args) noexcept
+  { return operator()(std::forward<T>(lhs), operator()(std::forward<U>(rhs), std::forward<Ts>(args)...)); }
+
+private:
+  template <size_type... Ts>
+  using ixseq = std::integer_sequence<size_type, Ts...>;
+
+  template <size_type N>
+  using mkixseq = std::make_integer_sequence<size_type, N>;
+
+protected:
+  template <typename T, size_type N>
+  static constexpr auto size_(const T(&)[N]) noexcept
+    -> std::integral_constant<size_type,N>
+  { return {}; }
+
+  template <typename T, size_type N>
+  static constexpr auto size_(const std::array<T,N>&) noexcept
+    -> std::integral_constant<size_type,N>
+  { return {}; }
+
+  template <typename T>
+  using size = decltype(size_(std::declval<T>()));
+
+  template <typename T, typename U, size_type... Ix1, size_type... Ix2>
+  static constexpr auto cat_(const T& lhs, const U& rhs, ixseq<Ix1...>, ixseq<Ix2...>) noexcept
+    -> std::array<char_type, size<T>::value + size<U>::value - 1>
+  { return {{lhs[Ix1]..., rhs[Ix2]...}}; }
+};
 
 
 namespace unix {
@@ -20,74 +65,62 @@ namespace unix {
 template <typename C>
 class shell
 {
-public: // types
-  using char_type = typename std::char_traits<C>::char_type;
+public:
+  using char_type = typename std::basic_string<C>::value_type;
   using size_type = typename std::basic_string<char_type>::size_type;
 
-private: // internal data
+private:
   const std::vector<std::basic_string<char_type>> argv_;
-  const             std::basic_string<char_type>  name_; // TODO function basename
-
         std::vector<std::basic_string<char_type>> input_;
 
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
-      name_ {argv_[0].substr(argv_[0].find_last_of('/') + 1)},
       input_ {}
   {
-    static_assert(std::basic_string<char_type>::npos == -1,
-                  "the premise has collapsed. report this to the developer.");
-
     for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
     {
-      for (const auto& s : std::vector<std::basic_string<char_type>>{"-h", "--help"})
+      for (const auto& s : std::vector<std::basic_string<char_type>> {"-h", "--help"})
       {
         if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
         {
-          for (const auto& v : help(argv_))
-            for (const auto& s : v) std::cout << s << (&s != &v.back() ? ' ' : '\n');
+          help();
+          std::exit(0); // XXX DANGER CODE
         }
       }
 
-      for (const auto& s : std::vector<std::basic_string<char_type>>{"-v", "--version"})
+      for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
       {
-        if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
+        if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
         {
-          for (const auto& s : version(argv_)) std::cout << s << ' ';
-          std::cout << std::endl;
+          std::cout << version() << std::endl;
+          std::exit(0); // XXX DANGER CODE
         }
       }
     }
   };
 
-  int run() // UGLY CODE !!!
+  int run() // XXX UGLY CODE !!!
   {
-    std::cout << name_ << "$ ";
-
-    // std::vector<std::string> input_ {};
+    std::cout << unix::basename(argv_[0]) << "$ ";
 
     for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
     {
-      for (std::stringstream input {buffer};
+      for (std::basic_stringstream<char_type> input {buffer};
            std::getline(input, buffer, ' ');
            input_.push_back(buffer));
 
       if (input_[0] == "exit") { return 0; }
 
-      else if (input_[0] == "help")
-      {
-        std::cout << "[debug] help called" << std::endl;
-        return 0;
-      }
+      else if (input_[0] == "help") { help(); }
 
-      try { unix::fork()(unix::execvp<char_type>(input_)); }
+      else try { unix::fork()(unix::execvp<char_type>(input_)); }
 
       catch (std::system_error&) { throw; }
 
       catch (...) { throw; }
 
-      std::cout << name_ << "$ ";
+      std::cout << unix::basename(argv_[0]) << "$ ";
     }
 
     return 0;
@@ -95,26 +128,21 @@ public:
 
   const auto input() const noexcept { return input_; }
 
-protected:
-  static auto version(const std::vector<std::basic_string<char_type>>&)
-    -> std::vector<std::basic_string<char_type>>
+private:
+  static auto version()
   {
-    return {{"version"}, {PROJECT_VERSION}, {"alpha"}};
+    static constexpr auto s {static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
+    return s.data();
   }
 
-  auto help(const std::vector<std::basic_string<char_type>>&) // UGLY CODE !!!
-    -> std::vector<std::vector<std::basic_string<char_type>>>
+  void help() const
   {
-    return {
-      {name_, {"shell"}, {"-"}, {"the most modern guardian of CUI culture."}}, // TODO function basename
-      {{}},
-      version(argv_),
-      {{}},
-      {{"USAGE:"}, name_, {"[options]"}},
-      {{}},
-      {{"\t"}, {"-h"}, {"--help"},    {"\t"}, {"display this help"}},
-      {{"\t"}, {"-v"}, {"--version"}, {"\t"}, {"display version information"}}
-    };
+    std::cout << unix::basename(argv_[0]) << " shell - " << version() << std::endl
+              << std::endl
+              << "USAGE: " << unix::basename(argv_[0]) << " [options]\n"
+              << std::endl
+              << "\t-h, --help\tdisplay this help\n"
+              << "\t-v, --version\tdisplay version information\n\n";
   }
 };
 
