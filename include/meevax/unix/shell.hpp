@@ -156,10 +156,8 @@ private:
 
   void help() const
   {
-    std::cout << unix::basename(argv_[0]) << " shell - " << version() << std::endl
-              << std::endl
-              << "USAGE: " << unix::basename(argv_[0]) << " [options]\n"
-              << std::endl
+    std::cout << unix::basename(argv_[0]) << " shell - " << version() << "\n\n"
+              << "USAGE: " << unix::basename(argv_[0]) << " [options]\n\n"
               << "\t-h, --help\tdisplay this help\n"
               << "\t-v, --version\tdisplay version information\n\n";
   }
