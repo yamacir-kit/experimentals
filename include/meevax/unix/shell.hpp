@@ -109,6 +109,11 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &ios);
   };
 
+  ~shell()
+  {
+    ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
+  }
+
   int run() // XXX UGLY CODE !!!
   {
     std::cout << unix::basename(argv_[0]) << "$ ";
