@@ -15,6 +15,11 @@
 #include "meevax/unix/execvp.hpp"
 #include "meevax/unix/fork.hpp"
 
+extern "C" {
+#include <termios.h>
+#include <unistd.h>
+}
+
 
 template <typename C>
 class static_concatenate
