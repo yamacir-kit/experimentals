@@ -73,6 +73,8 @@ private:
   const std::vector<std::basic_string<char_type>> argv_;
         std::vector<std::basic_string<char_type>> input_;
 
+  struct termios default_;
+
 public:
   explicit shell(int argc, char** argv)
     : argv_ {argv, argv + argc},
@@ -98,6 +100,13 @@ public:
         }
       }
     }
+
+    ::tcgetattr(STDIN_FILENO, &default_);
+
+    struct termios ios {default_};
+    ios.c_lflag &= ~ICANON; // set terminal to noncanonical mode
+
+    ::tcsetattr(STDIN_FILENO, TCSANOW, &ios);
   };
 
   int run() // XXX UGLY CODE !!!
