@@ -172,6 +172,7 @@ public:
             line_buffer.push_back(word_buffer);
             word_buffer.clear();
           }
+          return line_buffer;
           break;
 
         case 127:
@@ -190,8 +191,6 @@ public:
       for (const auto& word : line_buffer) { std::cout << word << " "; };
       std::cout << word_buffer << std::endl;
     }
-
-    return true;
   }
 
   const auto input() const noexcept { return input_; }
