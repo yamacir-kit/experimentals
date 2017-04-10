@@ -103,7 +103,12 @@ public:
             line_buffer.push_back(word_buffer);
             word_buffer.clear();
           }
-          return line_buffer;
+          // return line_buffer;
+
+          unix::fork()(unix::execvp<char_type>(line_buffer));
+          line_buffer.clear();
+          word_buffer.clear();
+
           break;
 
         case 127:
@@ -126,7 +131,7 @@ public:
       }
 
       std::cout << "[debug] (" << line_buffer.size() + 1 << ": " << word_buffer.size() << ") ";
-      for (const auto& word : line_buffer) { std::cout << word << " "; };
+      for (const auto& word : line_buffer) { std::cout << word << "_"; };
       std::cout << word_buffer << std::endl;
     }
   }
