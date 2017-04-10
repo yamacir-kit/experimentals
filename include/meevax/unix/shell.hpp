@@ -103,7 +103,12 @@ public:
             line_buffer.push_back(word_buffer);
             word_buffer.clear();
           }
-          return line_buffer;
+          // return line_buffer;
+
+          unix::fork()(unix::execvp<char_type>(line_buffer));
+          line_buffer.clear();
+          word_buffer.clear();
+
           break;
 
         case 127:
