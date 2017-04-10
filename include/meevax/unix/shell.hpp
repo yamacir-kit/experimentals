@@ -194,13 +194,13 @@ public:
           break;
       }
 
-      std::cout << "[debug] (" << line_buffer.size() << ": " << word_buffer.size() << ") ";
+      std::cout << "[debug] (" << line_buffer.size() << ": " << word_buffer.size() + 1 << ") ";
       for (const auto& word : line_buffer) { std::cout << word << " "; };
       std::cout << word_buffer << std::endl;
     }
   }
 
-  const auto input() const noexcept { return input_; }
+  // const auto input() const noexcept { return input_; }
 
 private:
   static auto version()
