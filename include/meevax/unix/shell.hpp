@@ -126,7 +126,8 @@ public:
   {
     std::cout << unix::basename(argv_[0]) << "$ ";
 
-    for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
+    // for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
+    for (std::string buffer; false; input_.clear())
     {
       for (std::basic_stringstream<char_type> input {buffer};
            std::getline(input, buffer, ' ');
@@ -143,6 +144,42 @@ public:
       catch (...) { throw; }
 
       std::cout << unix::basename(argv_[0]) << "$ ";
+    }
+
+    std::basic_string<char_type> word_buffer {};
+    std::vector<decltype(word_buffer)> line_buffer {};
+
+    while (true)
+    {
+      typename decltype(word_buffer)::value_type char_buffer {};
+      ::read(STDIN_FILENO, &char_buffer, sizeof(decltype(char_buffer)));
+      // word_buffer.push_back(char_buffer);
+
+      switch (char_buffer)
+      {
+        case ' ':
+          // word_buffer.push_back(char_buffer);
+          line_buffer.push_back(word_buffer);
+          word_buffer.clear();
+          break;
+
+        case '\n':
+          line_buffer.push_back(word_buffer);
+          word_buffer.clear();
+          break;
+
+        case 127:
+          if (word_buffer.size() > 0) { word_buffer.pop_back(); }
+          break;
+
+        default:
+          word_buffer.push_back(char_buffer);
+          break;
+      }
+
+      std::cout << "[debug] (" << line_buffer.size() << ": " << word_buffer.size() << ") ";
+      for (const auto& word : line_buffer) { std::cout << word << " "; };
+      std::cout << word_buffer << std::endl;
     }
 
     return 0;
