@@ -177,6 +177,13 @@ public:
 
         case 127:
           if (word_buffer.size() > 0) { word_buffer.pop_back(); }
+
+          else if (line_buffer.size() > 0)
+          {
+            word_buffer = line_buffer.back();
+            line_buffer.pop_back();
+          }
+
           break;
 
         default:
