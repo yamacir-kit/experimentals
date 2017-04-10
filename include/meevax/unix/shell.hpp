@@ -34,14 +34,17 @@ public:
 
 private:
   const std::vector<std::basic_string<char_type>> argv_;
-        std::vector<std::basic_string<char_type>> input_;
+
+  std::vector<std::vector<std::basic_string<char_type>>> text_buffer_;
+              std::vector<std::basic_string<char_type>>  line_buffer_;
+                          std::basic_string<char_type>   word_buffer_;
+                                            char_type    char_buffer_;
 
   struct termios default_;
 
 public:
   explicit shell(int argc, char** argv)
-    : argv_ {argv, argv + argc},
-      input_ {}
+    : argv_ {argv, argv + argc}
   {
     for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
     {
@@ -82,57 +85,57 @@ public:
 
   auto led()
   {
-    std::basic_string<char_type> word_buffer {};
-    std::vector<decltype(word_buffer)> line_buffer {};
+    // std::basic_string<char_type> word_buffer {};
+    // std::vector<decltype(word_buffer)> line_buffer {};
 
     while (true)
     {
-      typename decltype(word_buffer)::value_type char_buffer {};
-      ::read(STDIN_FILENO, &char_buffer, sizeof(decltype(char_buffer)));
+      // typename decltype(word_buffer)::value_type char_buffer {};
+      ::read(STDIN_FILENO, &char_buffer_, sizeof(decltype(char_buffer_)));
 
-      switch (char_buffer)
+      switch (char_buffer_)
       {
         case ' ':
-          line_buffer.push_back(word_buffer);
-          word_buffer.clear();
+          line_buffer_.push_back(word_buffer_);
+          word_buffer_.clear();
           break;
 
         case '\n':
-          if (word_buffer.size() > 0)
+          if (word_buffer_.size() > 0)
           {
-            line_buffer.push_back(word_buffer);
-            word_buffer.clear();
+            line_buffer_.push_back(word_buffer_);
+            word_buffer_.clear();
           }
-          // return line_buffer;
+          // return line_buffer_;
 
-          unix::fork()(unix::execvp<char_type>(line_buffer));
-          line_buffer.clear();
-          word_buffer.clear();
+          unix::fork()(unix::execvp<char_type>(line_buffer_));
+          line_buffer_.clear();
+          word_buffer_.clear();
 
           break;
 
         case 127:
-          if (word_buffer.size() > 0) { word_buffer.pop_back(); }
+          if (word_buffer_.size() > 0) { word_buffer_.pop_back(); }
 
-          else if (line_buffer.size() > 0)
+          else if (line_buffer_.size() > 0)
           {
-            word_buffer = line_buffer.back();
-            line_buffer.pop_back();
+            word_buffer_ = line_buffer_.back();
+            line_buffer_.pop_back();
           }
 
           break;
 
         default:
-          if (std::isgraph(char_buffer))
+          if (std::isgraph(char_buffer_))
           {
-            word_buffer.push_back(char_buffer);
+            word_buffer_.push_back(char_buffer_);
           }
           break;
       }
 
-      std::cout << "[debug] (" << line_buffer.size() + 1 << ": " << word_buffer.size() << ") ";
-      for (const auto& word : line_buffer) { std::cout << word << "_"; };
-      std::cout << word_buffer << std::endl;
+      std::cout << "[debug] (" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") ";
+      for (const auto& word : line_buffer_) { std::cout << word << "_"; };
+      std::cout << word_buffer_ << std::endl;
     }
   }
 
