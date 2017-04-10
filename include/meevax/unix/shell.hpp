@@ -122,32 +122,32 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  [[deprecated]] int run() // XXX UGLY CODE !!!
-  {
-    std::cout << unix::basename(argv_[0]) << "$ ";
-
-    // for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
-    for (std::string buffer; false; input_.clear())
-    {
-      for (std::basic_stringstream<char_type> input {buffer};
-           std::getline(input, buffer, ' ');
-           input_.push_back(buffer));
-
-      if (input_[0] == "exit") { return 0; }
-
-      else if (input_[0] == "help") { help(); }
-
-      else try { unix::fork()(unix::execvp<char_type>(input_)); }
-
-      catch (std::system_error&) { throw; }
-
-      catch (...) { throw; }
-
-      std::cout << unix::basename(argv_[0]) << "$ ";
-    }
-
-    return 0;
-  }
+  // [[deprecated]] int run() // XXX UGLY CODE !!!
+  // {
+  //   std::cout << unix::basename(argv_[0]) << "$ ";
+  //
+  //   // for (std::string buffer; !std::getline(std::cin, buffer).eof(); input_.clear())
+  //   for (std::string buffer; false; input_.clear())
+  //   {
+  //     for (std::basic_stringstream<char_type> input {buffer};
+  //          std::getline(input, buffer, ' ');
+  //          input_.push_back(buffer));
+  //
+  //     if (input_[0] == "exit") { return 0; }
+  //
+  //     else if (input_[0] == "help") { help(); }
+  //
+  //     else try { unix::fork()(unix::execvp<char_type>(input_)); }
+  //
+  //     catch (std::system_error&) { throw; }
+  //
+  //     catch (...) { throw; }
+  //
+  //     std::cout << unix::basename(argv_[0]) << "$ ";
+  //   }
+  //
+  //   return 0;
+  // }
 
   auto led()
   {
@@ -200,7 +200,7 @@ public:
     }
   }
 
-  // const auto input() const noexcept { return input_; }
+  const auto input() const noexcept { return input_; }
 
 private:
   static auto version()
