@@ -44,28 +44,37 @@ private:
 
 public:
   explicit shell(int argc, char** argv)
-    : argv_ {argv, argv + argc}
+    : argv_ {argv, argv + argc},
+      text_buffer_ {},
+      line_buffer_ {argv, argv + argc},
+      word_buffer_ {},
+      char_buffer_ {}
   {
-    for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
-    {
-      for (const auto& s : std::vector<std::basic_string<char_type>> {"-h", "--help"})
-      {
-        if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
-        {
-          help();
-          std::exit(0); // XXX DANGER CODE
-        }
-      }
+    // for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
+    // {
+    //   for (const auto& s : std::vector<std::basic_string<char_type>> {"-h", "--help"})
+    //   {
+    //     if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
+    //     {
+    //       help();
+    //       std::exit(0); // XXX DANGER CODE
+    //     }
+    //   }
+    //
+    //   for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
+    //   {
+    //     if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
+    //     {
+    //       std::cout << version() << std::endl;
+    //       std::exit(0); // XXX DANGER CODE
+    //     }
+    //   }
+    // }
 
-      for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
-      {
-        if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
-        {
-          std::cout << version() << std::endl;
-          std::exit(0); // XXX DANGER CODE
-        }
-      }
-    }
+    arguments_parse(line_buffer_);
+
+    text_buffer_.push_back(line_buffer_);
+    line_buffer_.clear();
 
     ::tcgetattr(STDIN_FILENO, &default_);
 
@@ -135,16 +144,40 @@ public:
   }
 
 private:
+  static auto arguments_parse(const decltype(line_buffer_)& argv)
+  {
+    for (auto iter {argv.begin()}; iter != argv.end(); ++iter)
+    {
+      for (const auto& s : decltype(argv) {"-h", "--help"})
+      {
+        if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
+        {
+          help(argv);
+          std::exit(0); // XXX DANGER CODE
+        }
+      }
+
+      for (const auto& s : decltype(argv) {"-v", "--version"})
+      {
+        if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
+        {
+          std::cout << version() << std::endl;
+          std::exit(0); // XXX DANGER CODE
+        }
+      }
+    }
+  }
+
   static auto version()
   {
     static constexpr auto s {trial::static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
     return s.data();
   }
 
-  void help() const
+  static void help(const decltype(line_buffer_)& argv)
   {
-    std::cout << unix::basename(argv_[0]) << " shell - " << version() << "\n\n"
-              << "USAGE: " << unix::basename(argv_[0]) << " [options]\n\n"
+    std::cout << unix::basename(argv[0]) << " shell - " << version() << "\n\n"
+              << "USAGE: " << unix::basename(argv[0]) << " [options]\n\n"
               << "\t-h, --help\tdisplay this help\n"
               << "\t-v, --version\tdisplay version information\n\n";
   }
