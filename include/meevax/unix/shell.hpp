@@ -167,8 +167,11 @@ public:
           break;
 
         case '\n':
-          line_buffer.push_back(word_buffer);
-          word_buffer.clear();
+          if (word_buffer.size() > 0)
+          {
+            line_buffer.push_back(word_buffer);
+            word_buffer.clear();
+          }
           break;
 
         case 127:
