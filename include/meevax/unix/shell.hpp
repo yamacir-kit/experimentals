@@ -130,13 +130,15 @@ public:
           break;
       }
 
+      throw std::runtime_error {"debug"};
+
       std::cout << "[debug] (" << line_buffer.size() + 1 << ": " << word_buffer.size() << ") ";
       for (const auto& word : line_buffer) { std::cout << word << "_"; };
       std::cout << word_buffer << std::endl;
     }
   }
 
-  const auto input() const noexcept { return input_; }
+  // const auto input() const noexcept { return input_; }
 
 private:
   static auto version()
