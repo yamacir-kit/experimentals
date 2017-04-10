@@ -122,7 +122,7 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  int run() // XXX UGLY CODE !!!
+  [[deprecated]] int run() // XXX UGLY CODE !!!
   {
     std::cout << unix::basename(argv_[0]) << "$ ";
 
@@ -146,6 +146,11 @@ public:
       std::cout << unix::basename(argv_[0]) << "$ ";
     }
 
+    return 0;
+  }
+
+  auto led()
+  {
     std::basic_string<char_type> word_buffer {};
     std::vector<decltype(word_buffer)> line_buffer {};
 
@@ -153,27 +158,39 @@ public:
     {
       typename decltype(word_buffer)::value_type char_buffer {};
       ::read(STDIN_FILENO, &char_buffer, sizeof(decltype(char_buffer)));
-      // word_buffer.push_back(char_buffer);
 
       switch (char_buffer)
       {
         case ' ':
-          // word_buffer.push_back(char_buffer);
           line_buffer.push_back(word_buffer);
           word_buffer.clear();
           break;
 
         case '\n':
-          line_buffer.push_back(word_buffer);
-          word_buffer.clear();
+          if (word_buffer.size() > 0)
+          {
+            line_buffer.push_back(word_buffer);
+            word_buffer.clear();
+          }
+          return line_buffer;
           break;
 
         case 127:
           if (word_buffer.size() > 0) { word_buffer.pop_back(); }
+
+          else if (line_buffer.size() > 0)
+          {
+            word_buffer = line_buffer.back();
+            line_buffer.pop_back();
+          }
+
           break;
 
         default:
-          word_buffer.push_back(char_buffer);
+          if (std::isgraph(char_buffer))
+          {
+            word_buffer.push_back(char_buffer);
+          }
           break;
       }
 
@@ -181,8 +198,6 @@ public:
       for (const auto& word : line_buffer) { std::cout << word << " "; };
       std::cout << word_buffer << std::endl;
     }
-
-    return 0;
   }
 
   const auto input() const noexcept { return input_; }
