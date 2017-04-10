@@ -13,7 +13,7 @@ int main(int argc, char** argv)
 
   try
   {
-    sh.run(); // TODO signal handling
+    sh.led(); // TODO signal handling
   }
 
   catch (std::system_error& error)

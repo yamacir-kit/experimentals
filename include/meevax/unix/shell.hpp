@@ -122,7 +122,7 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  int run() // XXX UGLY CODE !!!
+  [[deprecated]] int run() // XXX UGLY CODE !!!
   {
     std::cout << unix::basename(argv_[0]) << "$ ";
 
@@ -146,6 +146,11 @@ public:
       std::cout << unix::basename(argv_[0]) << "$ ";
     }
 
+    return 0;
+  }
+
+  auto led()
+  {
     std::basic_string<char_type> word_buffer {};
     std::vector<decltype(word_buffer)> line_buffer {};
 
@@ -183,7 +188,7 @@ public:
       std::cout << word_buffer << std::endl;
     }
 
-    return 0;
+    return true;
   }
 
   const auto input() const noexcept { return input_; }
