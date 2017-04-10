@@ -109,7 +109,10 @@ public:
     ::tcgetattr(STDIN_FILENO, &default_);
 
     struct termios ios {default_};
-    ios.c_lflag &= ~ICANON; // set terminal to noncanonical mode
+    ios.c_lflag &= ~(ICANON | ECHO);
+
+    ios.c_cc[VMIN]  = 1;
+    ios.c_cc[VTIME] = 0;
 
     ::tcsetattr(STDIN_FILENO, TCSANOW, &ios);
   };
