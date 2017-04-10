@@ -85,12 +85,8 @@ public:
 
   auto led()
   {
-    // std::basic_string<char_type> word_buffer {};
-    // std::vector<decltype(word_buffer)> line_buffer {};
-
     while (true)
     {
-      // typename decltype(word_buffer)::value_type char_buffer {};
       ::read(STDIN_FILENO, &char_buffer_, sizeof(decltype(char_buffer_)));
 
       switch (char_buffer_)
@@ -106,7 +102,6 @@ public:
             line_buffer_.push_back(word_buffer_);
             word_buffer_.clear();
           }
-          // return line_buffer_;
 
           unix::fork()(unix::execvp<char_type>(line_buffer_));
           line_buffer_.clear();
