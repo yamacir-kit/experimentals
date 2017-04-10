@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(meevax VERSION 0.1.2 LANGUAGES CXX)
+project(meevax VERSION 0.1.3 LANGUAGES CXX)
 
 add_definitions("-std=c++14 -Wall")
 
