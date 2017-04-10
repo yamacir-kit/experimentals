@@ -153,12 +153,10 @@ public:
     {
       typename decltype(word_buffer)::value_type char_buffer {};
       ::read(STDIN_FILENO, &char_buffer, sizeof(decltype(char_buffer)));
-      // word_buffer.push_back(char_buffer);
 
       switch (char_buffer)
       {
         case ' ':
-          // word_buffer.push_back(char_buffer);
           line_buffer.push_back(word_buffer);
           word_buffer.clear();
           break;
@@ -173,7 +171,10 @@ public:
           break;
 
         default:
-          word_buffer.push_back(char_buffer);
+          if (std::isgraph(char_buffer))
+          {
+            word_buffer.push_back(char_buffer);
+          }
           break;
       }
 
