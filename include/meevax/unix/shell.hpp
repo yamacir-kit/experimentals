@@ -33,8 +33,6 @@ public:
   using size_type = typename std::basic_string<char_type>::size_type;
 
 private:
-  const std::vector<std::basic_string<char_type>> argv_;
-
   std::vector<std::vector<std::basic_string<char_type>>> text_buffer_;
               std::vector<std::basic_string<char_type>>  line_buffer_;
                           std::basic_string<char_type>   word_buffer_;
@@ -44,33 +42,11 @@ private:
 
 public:
   explicit shell(int argc, char** argv)
-    : argv_ {argv, argv + argc},
-      text_buffer_ {},
+    : text_buffer_ {},
       line_buffer_ {argv, argv + argc},
       word_buffer_ {},
       char_buffer_ {}
   {
-    // for (auto iter {argv_.begin()}; iter != argv_.end(); ++iter)
-    // {
-    //   for (const auto& s : std::vector<std::basic_string<char_type>> {"-h", "--help"})
-    //   {
-    //     if (std::regex_match(*iter, std::basic_regex<char_type>{s}))
-    //     {
-    //       help();
-    //       std::exit(0); // XXX DANGER CODE
-    //     }
-    //   }
-    //
-    //   for (const auto& s : std::vector<std::basic_string<char_type>> {"-v", "--version"})
-    //   {
-    //     if (std::regex_match(*iter, std::basic_regex<char_type> {s}))
-    //     {
-    //       std::cout << version() << std::endl;
-    //       std::exit(0); // XXX DANGER CODE
-    //     }
-    //   }
-    // }
-
     arguments_parse(line_buffer_);
 
     text_buffer_.push_back(line_buffer_);
