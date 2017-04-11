@@ -24,6 +24,14 @@ public:
   }
 
 public:
+  enum class optional_actions
+    : int
+  {
+    tcsanow   = TCSANOW,
+    tcsadrain = TCSADRAIN,
+    tcsaflush = TCSAFLUSH,
+  };
+
   enum class posix_input_flags // p1368
     : decltype(::termios::c_iflag)
   {
