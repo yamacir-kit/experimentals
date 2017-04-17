@@ -133,7 +133,7 @@ public:
   {
   }
 
-  auto read(decltype(word_buffer_)&& sequence = "")
+  auto read(decltype(word_buffer_)&& sequence = "") // XXX HARD CODING !!!
   {
     switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
@@ -191,8 +191,12 @@ public:
       case 'Y': std::cout << "[debug] Y\n"; break;
       case 'Z': std::cout << "[debug] Z\n"; break;
 
+      case '\e':
+        std::cout << "[debug] escape seqence\n";
+        break;
+
       default:
-        std::cout << "[debug] " << char_buffer_ << std::endl;
+        std::cout << "[debug] undefined key\n" << std::endl;
         break;
     }
   }
