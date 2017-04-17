@@ -15,7 +15,6 @@
 #include "meevax/unix/fork.hpp"
 
 #include "meevax/trial/static_concatenate.hpp"
-#include "meevax/trial/ansi_escape_sequence.hpp"
 
 extern "C" {
 #include <termios.h>
@@ -132,6 +131,39 @@ public:
 
   auto write() const
   {
+  }
+
+  auto read(decltype(word_buffer_)&& sequence = "")
+  {
+    switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
+    {
+      case 'a': std::cout << "[debug] a\n"; break;
+      case 'b': std::cout << "[debug] b\n"; break;
+      case 'c': std::cout << "[debug] c\n"; break;
+      case 'd': std::cout << "[debug] d\n"; break;
+      case 'e': std::cout << "[debug] e\n"; break;
+      case 'f': std::cout << "[debug] f\n"; break;
+      case 'g': std::cout << "[debug] g\n"; break;
+      case 'h': std::cout << "[debug] h\n"; break;
+      case 'i': std::cout << "[debug] i\n"; break;
+      case 'j': std::cout << "[debug] j\n"; break;
+      case 'k': std::cout << "[debug] k\n"; break;
+      case 'l': std::cout << "[debug] l\n"; break;
+      case 'm': std::cout << "[debug] m\n"; break;
+      case 'n': std::cout << "[debug] n\n"; break;
+      case 'o': std::cout << "[debug] o\n"; break;
+      case 'p': std::cout << "[debug] p\n"; break;
+      case 'q': std::cout << "[debug] q\n"; break;
+      case 'r': std::cout << "[debug] r\n"; break;
+      case 's': std::cout << "[debug] s\n"; break;
+      case 't': std::cout << "[debug] t\n"; break;
+      case 'u': std::cout << "[debug] u\n"; break;
+      case 'v': std::cout << "[debug] v\n"; break;
+      case 'w': std::cout << "[debug] w\n"; break;
+      case 'x': std::cout << "[debug] x\n"; break;
+      case 'y': std::cout << "[debug] y\n"; break;
+      case 'z': std::cout << "[debug] z\n"; break;
+    }
   }
 
 private:
