@@ -191,12 +191,16 @@ public:
       case 'Y': std::cout << "[debug] Y\n"; break;
       case 'Z': std::cout << "[debug] Z\n"; break;
 
-      case '\e':
-        std::cout << "[debug] escape seqence\n";
+      case 0x1B: // escape
+        std::cout << "[debug] escape\n";
+        break;
+
+      case 0x5B:
+        std::cout << "[debug] left bracket\n";
         break;
 
       default:
-        std::cout << "[debug] undefined key\n" << std::endl;
+        std::cout << "[debug] undefined key\n";
         break;
     }
   }
