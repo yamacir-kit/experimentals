@@ -8,7 +8,7 @@
 #include <system_error>
 #include <vector>
 
-#include "meevax/cmake_config.hpp"
+#include "meevax/metainfo.hpp"
 
 #include "meevax/unix/basename.hpp"
 #include "meevax/unix/execvp.hpp"
