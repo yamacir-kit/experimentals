@@ -71,11 +71,21 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  auto led()
+  [[deprecated]] auto led()
   {
     while (true)
     {
-      write();
+      static constexpr auto color_green  {scat("\e[0;32m")};
+      static constexpr auto color_yellow {scat("\e[0;33m")};
+      static constexpr auto color_white  {scat("\e[0;37m")};
+
+      static constexpr auto prompt {scat(color_green, "meevax@master-slave: ", color_yellow)};
+
+      std::cout << prompt.data();
+      std::cout << "(" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") " << color_white.data();
+
+      for (const auto& word : line_buffer_) { std::cout << word << "_"; };
+      std::cout << word_buffer_ << std::endl;
 
       ::read(STDIN_FILENO, &char_buffer_, sizeof(decltype(char_buffer_)));
 
@@ -122,17 +132,6 @@ public:
 
   auto write() const
   {
-    static constexpr auto color_green  {scat("\e[0;32m")};
-    static constexpr auto color_yellow {scat("\e[0;33m")};
-    static constexpr auto color_white  {scat("\e[0;37m")};
-
-    static constexpr auto prompt {scat(color_green, "meevax@master-slave: ", color_yellow)};
-
-    std::cout << prompt.data();
-    std::cout << "(" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") " << color_white.data();
-
-    for (const auto& word : line_buffer_) { std::cout << word << "_"; };
-    std::cout << word_buffer_ << std::endl;
   }
 
 private:
