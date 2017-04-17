@@ -7,7 +7,8 @@
 
 #include <cstdint>
 
-#include <meevax/trial/constexpr_string.hpp>
+#include "meevax/trial/constexpr_string.hpp"
+#include "meevax/trial/static_concatenate.hpp"
 
 
 namespace meevax {
