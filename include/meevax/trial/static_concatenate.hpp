@@ -18,12 +18,12 @@ public:
   using char_type = typename std::basic_string<C>::value_type;
   using size_type = typename std::basic_string<char_type>::size_type;
 
-  template <typename T, typename U>
-  constexpr auto operator()(T&& lhs, U&& rhs = "") noexcept
+  template <typename T, typename U = const C(&)[1]>
+  constexpr auto operator()(T&& lhs, U&& rhs = "") const noexcept
   { return cat_(std::forward<T>(lhs), std::forward<U>(rhs), mkixseq<size<T>::value-1>(), mkixseq<size<U>::value>()); }
 
   template <typename T, typename U, typename... Ts>
-  constexpr auto operator()(T&& lhs, U&& rhs, Ts&&... args) noexcept
+  constexpr auto operator()(T&& lhs, U&& rhs, Ts&&... args) const noexcept
   { return operator()(std::forward<T>(lhs), operator()(std::forward<U>(rhs), std::forward<Ts>(args)...)); }
 
 private:
