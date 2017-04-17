@@ -11,7 +11,7 @@
 #include "meevax/trial/static_concatenate.hpp"
 
 
-namespace meevax {
+namespace posix {
 
 
 class ansi_escape_seqence
@@ -80,7 +80,7 @@ public:
 };
 
 
-} // namespace meevax
+} // namespace posix
 
 
 #endif
