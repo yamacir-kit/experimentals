@@ -15,6 +15,7 @@
 #include "meevax/unix/fork.hpp"
 
 #include "meevax/trial/static_concatenate.hpp"
+#include "meevax/trial/ansi_escape_sequence.hpp"
 
 extern "C" {
 #include <termios.h>
