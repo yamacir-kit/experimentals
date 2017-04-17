@@ -14,69 +14,65 @@
 namespace posix {
 
 
+template <typename C>
 class ansi_escape_seqence
-  : public meevax::constexpr_string<char>
 {
+  using char_type = typename std::basic_string<C>::value_type;
+
+  static constexpr trial::static_concatenate<char_type> scat {};
+
 public:
-  static constexpr meevax::constexpr_string<char> delimiter {";"};
+  static constexpr auto delimiter {scat(";")};
 
   class text_attribute
-    : public meevax::constexpr_string<char>
   {
   public:
-    static constexpr meevax::constexpr_string<char> reset      {"0"};
-    static constexpr meevax::constexpr_string<char> bold       {"1"};
-    static constexpr meevax::constexpr_string<char> underscore {"4"};
-    static constexpr meevax::constexpr_string<char> blink      {"5"};
-    static constexpr meevax::constexpr_string<char> reverse    {"7"};
-    static constexpr meevax::constexpr_string<char> consealed  {"8"};
+    static constexpr auto reset      {scat("0")};
+    static constexpr auto bold       {scat("1")};
+    static constexpr auto underscore {scat("4")};
+    static constexpr auto blink      {scat("5")};
+    static constexpr auto reverse    {scat("7")};
+    static constexpr auto consealed  {scat("8")};
   };
 
   class foreground_color
-    : public meevax::constexpr_string<char>
   {
   public:
-    static constexpr meevax::constexpr_string<char> black   {"30"};
-    static constexpr meevax::constexpr_string<char> red     {"31"};
-    static constexpr meevax::constexpr_string<char> green   {"32"};
-    static constexpr meevax::constexpr_string<char> yellow  {"33"};
-    static constexpr meevax::constexpr_string<char> blue    {"34"};
-    static constexpr meevax::constexpr_string<char> magenta {"35"};
-    static constexpr meevax::constexpr_string<char> cyan    {"36"};
-    static constexpr meevax::constexpr_string<char> white   {"37"};
+    static constexpr auto black   {scat("30")};
+    static constexpr auto red     {scat("31")};
+    static constexpr auto green   {scat("32")};
+    static constexpr auto yellow  {scat("33")};
+    static constexpr auto blue    {scat("34")};
+    static constexpr auto magenta {scat("35")};
+    static constexpr auto cyan    {scat("36")};
+    static constexpr auto white   {scat("37")};
   };
 
   class background_color
     : public meevax::constexpr_string<char>
   {
   public:
-    static constexpr meevax::constexpr_string<char> black   {"40"};
-    static constexpr meevax::constexpr_string<char> red     {"41"};
-    static constexpr meevax::constexpr_string<char> green   {"42"};
-    static constexpr meevax::constexpr_string<char> yellow  {"43"};
-    static constexpr meevax::constexpr_string<char> blue    {"44"};
-    static constexpr meevax::constexpr_string<char> magenta {"45"};
-    static constexpr meevax::constexpr_string<char> cyan    {"46"};
-    static constexpr meevax::constexpr_string<char> white   {"47"};
+    static constexpr auto black   {scat("40")};
+    static constexpr auto red     {scat("41")};
+    static constexpr auto green   {scat("42")};
+    static constexpr auto yellow  {scat("43")};
+    static constexpr auto blue    {scat("44")};
+    static constexpr auto magenta {scat("45")};
+    static constexpr auto cyan    {scat("46")};
+    static constexpr auto white   {scat("47")};
   };
 
-  class graphics_mode
-    : public text_attribute,
-      public foreground_color,
-      public background_color
-  {};
-
-  template <typename T>
-  constexpr ansi_escape_seqence(T&& code)
-    : meevax::constexpr_string<char>("\e[" + code)
-  {}
-
-  template <typename T, typename... P>
-  constexpr ansi_escape_seqence(T&& code, P&&... args)
-    : meevax::constexpr_string<char>(*this ? (*this).data() + delimiter.data() + code.data() : code.data())
-  {
-    ansi_escape_seqence(args...);
-  }
+  // template <typename T>
+  // constexpr ansi_escape_seqence(T&& code)
+  //   : meevax::constexpr_string<char>("\e[" + code)
+  // {}
+  //
+  // template <typename T, typename... P>
+  // constexpr ansi_escape_seqence(T&& code, P&&... args)
+  //   : meevax::constexpr_string<char>(*this ? (*this).data() + delimiter.data() + code.data() : code.data())
+  // {
+  //   ansi_escape_seqence(args...);
+  // }
 };
 
 
