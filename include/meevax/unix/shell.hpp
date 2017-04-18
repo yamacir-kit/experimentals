@@ -7,6 +7,7 @@
 #include <string>
 #include <system_error>
 #include <vector>
+#include <utility>
 
 #include "meevax/metainfo.hpp"
 
@@ -133,75 +134,11 @@ public:
   {
   }
 
-  auto read(decltype(word_buffer_)&& sequence = "") // XXX HARD CODING !!!
+  auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
   {
     switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
-      case 'a': std::cout << "[debug] a\n"; break;
-      case 'b': std::cout << "[debug] b\n"; break;
-      case 'c': std::cout << "[debug] c\n"; break;
-      case 'd': std::cout << "[debug] d\n"; break;
-      case 'e': std::cout << "[debug] e\n"; break;
-      case 'f': std::cout << "[debug] f\n"; break;
-      case 'g': std::cout << "[debug] g\n"; break;
-      case 'h': std::cout << "[debug] h\n"; break;
-      case 'i': std::cout << "[debug] i\n"; break;
-      case 'j': std::cout << "[debug] j\n"; break;
-      case 'k': std::cout << "[debug] k\n"; break;
-      case 'l': std::cout << "[debug] l\n"; break;
-      case 'm': std::cout << "[debug] m\n"; break;
-      case 'n': std::cout << "[debug] n\n"; break;
-      case 'o': std::cout << "[debug] o\n"; break;
-      case 'p': std::cout << "[debug] p\n"; break;
-      case 'q': std::cout << "[debug] q\n"; break;
-      case 'r': std::cout << "[debug] r\n"; break;
-      case 's': std::cout << "[debug] s\n"; break;
-      case 't': std::cout << "[debug] t\n"; break;
-      case 'u': std::cout << "[debug] u\n"; break;
-      case 'v': std::cout << "[debug] v\n"; break;
-      case 'w': std::cout << "[debug] w\n"; break;
-      case 'x': std::cout << "[debug] x\n"; break;
-      case 'y': std::cout << "[debug] y\n"; break;
-      case 'z': std::cout << "[debug] z\n"; break;
-
-      case 'A': std::cout << "[debug] A\n"; break;
-      case 'B': std::cout << "[debug] B\n"; break;
-      case 'C': std::cout << "[debug] C\n"; break;
-      case 'D': std::cout << "[debug] D\n"; break;
-      case 'E': std::cout << "[debug] E\n"; break;
-      case 'F': std::cout << "[debug] F\n"; break;
-      case 'G': std::cout << "[debug] G\n"; break;
-      case 'H': std::cout << "[debug] H\n"; break;
-      case 'I': std::cout << "[debug] I\n"; break;
-      case 'J': std::cout << "[debug] J\n"; break;
-      case 'K': std::cout << "[debug] K\n"; break;
-      case 'L': std::cout << "[debug] L\n"; break;
-      case 'M': std::cout << "[debug] M\n"; break;
-      case 'N': std::cout << "[debug] N\n"; break;
-      case 'O': std::cout << "[debug] O\n"; break;
-      case 'P': std::cout << "[debug] P\n"; break;
-      case 'Q': std::cout << "[debug] Q\n"; break;
-      case 'R': std::cout << "[debug] R\n"; break;
-      case 'S': std::cout << "[debug] S\n"; break;
-      case 'T': std::cout << "[debug] T\n"; break;
-      case 'U': std::cout << "[debug] U\n"; break;
-      case 'V': std::cout << "[debug] V\n"; break;
-      case 'W': std::cout << "[debug] W\n"; break;
-      case 'X': std::cout << "[debug] X\n"; break;
-      case 'Y': std::cout << "[debug] Y\n"; break;
-      case 'Z': std::cout << "[debug] Z\n"; break;
-
-      case 0x1B: // escape
-        std::cout << "[debug] escape\n";
-        break;
-
-      case 0x5B:
-        std::cout << "[debug] left bracket\n";
-        break;
-
-      default:
-        std::cout << "[debug] undefined key\n";
-        break;
+#include "meevax/editor/key_bind.cpp"
     }
   }
 
