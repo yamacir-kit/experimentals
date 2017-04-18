@@ -1524,11 +1524,11 @@ case 126:
 
 case 127:
 #ifdef MEEVAX_DEBUG_KEYBIND
-  std::cout << "[debug] FILE: \e[0;33m" << __FILE__ << "\e[0;37m" << std::endl;
-  std::cout << "        LINE: \e[0;36m" << __LINE__ << "\e[0;37m" << std::endl;
-  std::cout << "        ANSI: Backspace"                          << std::endl;
-  std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
-  std::cout << ""                                                 << std::endl;
+  std::cout << "[debug] FILE: \e[0;33m" << __FILE__    << "\e[0;37m\n";
+  std::cout << "        LINE: \e[0;36m" << __LINE__    << "\e[0;37m\n";
+  std::cout << "        ANSI: \e[1;37m" << "Backspace" << "\e[0;37m\n";
+  std::cout << "        CODE: \e[0;36m" << static_cast<int>(char_buffer_);
+  std::cout << "\n\e[0;37m\n";
 
   if (!word_buffer_.empty())
   {
@@ -1548,7 +1548,6 @@ case 127:
 
     word_buffer_ = line_buffer_.back();
     line_buffer_.pop_back();
-
   }
 
   else
