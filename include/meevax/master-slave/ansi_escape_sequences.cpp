@@ -384,14 +384,19 @@ case  31:
 
 case  32:
 #ifdef MEEVAX_DEBUG_KEYBIND
-  std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
-  std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Space" << std::endl;
-  std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
-  std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
+  std::cout << "[debug] FILE: \e[0;33m" << __FILE__ << "\e[0;37m\n";
+  std::cout << "        LINE: \e[0;36m" << __LINE__ << "\e[0;37m\n";
+  std::cout << "        ANSI: \e[1;37m" << "Space"  << "\e[0;37m\n";
+  std::cout << "        CODE: \e[0;36m" << static_cast<int>(char_buffer_);
+  std::cout << "\n\e[0;37m\n";
+
+  std::cout << "        TRUE: always\n";
+  std::cout << "        THEN: line_buffer_.push_back(word_buffer_);\n";
+  std::cout << "              word_buffer_.clear();\n";
+  std::cout << "\n";
 #endif
+  line_buffer_.push_back(word_buffer_);
+  word_buffer_.clear();
   break;
 
 case  33:
@@ -1532,19 +1537,19 @@ case 127:
 
   if (!word_buffer_.empty())
   {
-    std::cout << "        TRUE: !word_buffer_.empty()"   << std::endl;
-    std::cout << "        THEN: word_buffer_.pop_back()" << std::endl;
-    std::cout << ""                                      << std::endl;
+    std::cout << "        TRUE: !word_buffer_.empty()\n";
+    std::cout << "        THEN: word_buffer_.pop_back()\n";
+    std::cout << "\n";
 
     word_buffer_.pop_back();
   }
 
   else if (!line_buffer_.empty())
   {
-    std::cout << "        TRUE: !line_buffer_.empty()"              << std::endl;
-    std::cout << "        THEN: word_buffer_ = line_buffer_.back()" << std::endl;
-    std::cout << "              line_buffer_.pop_back()"            << std::endl;
-    std::cout << ""                                                 << std::endl;
+    std::cout << "        TRUE: !line_buffer_.empty()\n";
+    std::cout << "        THEN: word_buffer_ = line_buffer_.back()\n";
+    std::cout << "              line_buffer_.pop_back()\n";
+    std::cout << "\n";
 
     word_buffer_ = line_buffer_.back();
     line_buffer_.pop_back();
@@ -1552,9 +1557,9 @@ case 127:
 
   else
   {
-    std::cout << "        TRUE: word_buffer_.empty() && line_buffer_.empty()" << std::endl;
-    std::cout << "        THEN: the input sequence has no effect"             << std::endl;
-    std::cout << ""                                                           << std::endl;
+    std::cout << "        TRUE: word_buffer_.empty() && line_buffer_.empty()\n";
+    std::cout << "        THEN: the input sequence has no effect\n";
+    std::cout << "\n";
   }
 #else
   if (word_buffer_.size() > 0)
