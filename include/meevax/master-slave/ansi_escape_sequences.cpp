@@ -612,9 +612,8 @@ case  48:
   std::cout << "        ANSI: 0" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  49:
@@ -624,9 +623,8 @@ case  49:
   std::cout << "        ANSI: 1" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  50:
@@ -636,9 +634,8 @@ case  50:
   std::cout << "        ANSI: 2" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  51:
@@ -648,9 +645,8 @@ case  51:
   std::cout << "        ANSI: 3" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  52:
@@ -660,9 +656,8 @@ case  52:
   std::cout << "        ANSI: 4" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  53:
@@ -672,9 +667,8 @@ case  53:
   std::cout << "        ANSI: 5" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  54:
@@ -684,9 +678,8 @@ case  54:
   std::cout << "        ANSI: 6" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  55:
@@ -696,9 +689,8 @@ case  55:
   std::cout << "        ANSI: 7" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  56:
@@ -708,9 +700,8 @@ case  56:
   std::cout << "        ANSI: 8" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  57:
@@ -720,9 +711,8 @@ case  57:
   std::cout << "        ANSI: 9" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  word_buffer_.push_back(char_buffer_);
   break;
 
 case  58:
