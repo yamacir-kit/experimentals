@@ -43,13 +43,31 @@ private:
 
   static constexpr trial::static_concatenate<char_type> scat {};
 
+  const std::vector<std::basic_string<char_type>> mode_message_ {
+    {"text"},
+    {"line"},
+    {"word"}
+  };
+
+  enum class semantic_parse_unit
+    : typename decltype(mode_message_)::size_type
+  {
+    text,
+    line,
+    word,
+  } parse_unit_;
+
+  std::pair<std::size_t, std::size_t> cursor_;
+
 public:
   explicit shell(int argc, char** argv)
     : text_buffer_ {},
       // line_buffer_ {argv, argv + argc},
       line_buffer_ {},
       word_buffer_ {},
-      char_buffer_ {}
+      char_buffer_ {},
+      parse_unit_  {semantic_parse_unit::line},
+      cursor_ {0, 0}
   {
     // arguments_parse(line_buffer_);
     //
@@ -133,6 +151,9 @@ public:
 
   auto write() const
   {
+    std::cout << "[semantic_parse_unit: "
+              << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)] << "]\n";
+
     for (const auto& line : text_buffer_)
     {
       for (const auto& word : line)
