@@ -46,14 +46,15 @@ private:
 public:
   explicit shell(int argc, char** argv)
     : text_buffer_ {},
-      line_buffer_ {argv, argv + argc},
+      // line_buffer_ {argv, argv + argc},
+      line_buffer_ {},
       word_buffer_ {},
       char_buffer_ {}
   {
-    arguments_parse(line_buffer_);
-
-    text_buffer_.push_back(line_buffer_);
-    line_buffer_.clear();
+    // arguments_parse(line_buffer_);
+    //
+    // text_buffer_.push_back(line_buffer_);
+    // line_buffer_.clear();
 
     ::tcgetattr(STDIN_FILENO, &default_);
 
@@ -132,6 +133,22 @@ public:
 
   auto write() const
   {
+    for (const auto& line : text_buffer_)
+    {
+      for (const auto& word : line)
+      {
+        std::cout << word << " ";
+      }
+    }
+
+    for (const auto& word : line_buffer_)
+    {
+      std::cout << word << " ";
+    }
+
+    std::cout << word_buffer_ << std::endl;
+
+    std::putchar('\n');
   }
 
   auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
