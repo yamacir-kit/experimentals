@@ -137,7 +137,7 @@ public:
     {
       for (const auto& word : line)
       {
-        std::cout << word << " ";
+        std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
       }
     }
 
@@ -146,14 +146,16 @@ public:
       std::cout << word << " ";
     }
 
-    std::cout << word_buffer_ << std::endl;
-
-    std::putchar('\n');
+    std::cout << word_buffer_;
   }
 
   auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
   {
-    switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
+    char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar());
+    std::cout << "\n\n"; // XXX ugly dislpay adjustment
+
+    // switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
+    switch (char_buffer_)
     {
 #define MEEVAX_DEBUG_KEYBIND
 #include <meevax/master-slave/ansi_escape_sequences.cpp>
