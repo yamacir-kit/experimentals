@@ -46,14 +46,15 @@ private:
 public:
   explicit shell(int argc, char** argv)
     : text_buffer_ {},
-      line_buffer_ {argv, argv + argc},
+      // line_buffer_ {argv, argv + argc},
+      line_buffer_ {},
       word_buffer_ {},
       char_buffer_ {}
   {
-    arguments_parse(line_buffer_);
-
-    text_buffer_.push_back(line_buffer_);
-    line_buffer_.clear();
+    // arguments_parse(line_buffer_);
+    //
+    // text_buffer_.push_back(line_buffer_);
+    // line_buffer_.clear();
 
     ::tcgetattr(STDIN_FILENO, &default_);
 
@@ -132,14 +133,32 @@ public:
 
   auto write() const
   {
+    for (const auto& line : text_buffer_)
+    {
+      for (const auto& word : line)
+      {
+        std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
+      }
+    }
+
+    for (const auto& word : line_buffer_)
+    {
+      std::cout << word << " ";
+    }
+
+    std::cout << word_buffer_;
   }
 
   auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
   {
-    switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
+    char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar());
+    std::cout << "\n\n"; // XXX ugly dislpay adjustment
+
+    // switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
+    switch (char_buffer_)
     {
 #define MEEVAX_DEBUG_KEYBIND
-#include <meevax/preproc/key_bind.cpp>
+#include <meevax/master-slave/ansi_escape_sequences.cpp>
 #undef  MEEVAX_DEBUG_KEYBIND
     }
   }

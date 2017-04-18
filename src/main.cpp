@@ -17,6 +17,7 @@ int main(int argc, char** argv)
     while (true)
     {
       sh.read();
+      sh.write();
     }
   }
 
