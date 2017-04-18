@@ -138,7 +138,7 @@ public:
   {
     switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
-#include "meevax/editor/key_bind.cpp"
+#include <meevax/preproc/key_bind.cpp>
     }
   }
 
