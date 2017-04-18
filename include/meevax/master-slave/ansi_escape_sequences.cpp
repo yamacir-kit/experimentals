@@ -1524,13 +1524,50 @@ case 126:
 
 case 127:
 #ifdef MEEVAX_DEBUG_KEYBIND
-  std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
-  std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Backspace" << std::endl;
+  std::cout << "[debug] FILE: \e[0;33m" << __FILE__ << "\e[0;37m" << std::endl;
+  std::cout << "        LINE: \e[0;36m" << __LINE__ << "\e[0;37m" << std::endl;
+  std::cout << "        ANSI: Backspace"                          << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
+
+  if (!word_buffer_.empty())
+  {
+    std::cout << "        TRUE: !word_buffer_.empty()"   << std::endl;
+    std::cout << "        THEN: word_buffer_.pop_back()" << std::endl;
+    std::cout << ""                                      << std::endl;
+
+    word_buffer_.pop_back();
+  }
+
+  else if (!line_buffer_.empty())
+  {
+    std::cout << "        TRUE: !line_buffer_.empty()"              << std::endl;
+    std::cout << "        THEN: word_buffer_ = line_buffer_.back()" << std::endl;
+    std::cout << "              line_buffer_.pop_back()"            << std::endl;
+    std::cout << ""                                                 << std::endl;
+
+    word_buffer_ = line_buffer_.back();
+    line_buffer_.pop_back();
+
+  }
+
+  else
+  {
+    std::cout << "        TRUE: word_buffer_.empty() && line_buffer_.empty()" << std::endl;
+    std::cout << "        THEN: the input sequence has no effect"             << std::endl;
+    std::cout << ""                                                           << std::endl;
+  }
 #else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
+  if (word_buffer_.size() > 0)
+  {
+    word_buffer_.pop_back();
+  }
+
+  else if (line_buffer_.size() > 0)
+  {
+    word_buffer_ = line_buffer_.back();
+    line_buffer_.pop_back();
+  }
 #endif
   break;
 
