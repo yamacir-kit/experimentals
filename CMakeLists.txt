@@ -17,8 +17,8 @@ set(${PROJECT_NAME}_HEADER_DIR
 )
 
 configure_file(
-  ${PROJECT_SOURCE_DIR}/cmake/metainfo.hpp.cmake
-  ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/metainfo.hpp
+  ${PROJECT_SOURCE_DIR}/cmake/version.hpp.cmake
+  ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/preproc/version.hpp
 )
 
 configure_file(

@@ -7,8 +7,9 @@
 #include <string>
 #include <system_error>
 #include <vector>
+#include <utility>
 
-#include "meevax/metainfo.hpp"
+#include <meevax/preproc/version.hpp>
 
 #include "meevax/unix/basename.hpp"
 #include "meevax/unix/execvp.hpp"
@@ -40,17 +41,38 @@ private:
 
   struct termios default_;
 
+  static constexpr trial::static_concatenate<char_type> scat {};
+
+  const std::vector<std::basic_string<char_type>> mode_message_ {
+    {"text"},
+    {"line"},
+    {"word"}
+  };
+
+  enum class semantic_parse_unit
+    : typename decltype(mode_message_)::size_type
+  {
+    text,
+    line,
+    word,
+  } parse_unit_;
+
+  std::pair<std::size_t, std::size_t> cursor_;
+
 public:
   explicit shell(int argc, char** argv)
     : text_buffer_ {},
-      line_buffer_ {argv, argv + argc},
+      // line_buffer_ {argv, argv + argc},
+      line_buffer_ {},
       word_buffer_ {},
-      char_buffer_ {}
+      char_buffer_ {},
+      parse_unit_  {semantic_parse_unit::line},
+      cursor_ {0, 0}
   {
-    arguments_parse(line_buffer_);
-
-    text_buffer_.push_back(line_buffer_);
-    line_buffer_.clear();
+    // arguments_parse(line_buffer_);
+    //
+    // text_buffer_.push_back(line_buffer_);
+    // line_buffer_.clear();
 
     ::tcgetattr(STDIN_FILENO, &default_);
 
@@ -68,10 +90,22 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  auto led()
+  [[deprecated]] auto led()
   {
     while (true)
     {
+      static constexpr auto color_green  {scat("\e[0;32m")};
+      static constexpr auto color_yellow {scat("\e[0;33m")};
+      static constexpr auto color_white  {scat("\e[0;37m")};
+
+      static constexpr auto prompt {scat(color_green, "meevax@master-slave: ", color_yellow)};
+
+      std::cout << prompt.data();
+      std::cout << "(" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") " << color_white.data();
+
+      for (const auto& word : line_buffer_) { std::cout << word << "_"; };
+      std::cout << word_buffer_ << std::endl;
+
       ::read(STDIN_FILENO, &char_buffer_, sizeof(decltype(char_buffer_)));
 
       switch (char_buffer_)
@@ -112,10 +146,42 @@ public:
           }
           break;
       }
+    }
+  }
 
-      std::cout << "[debug] (" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") ";
-      for (const auto& word : line_buffer_) { std::cout << word << "_"; };
-      std::cout << word_buffer_ << std::endl;
+  auto write() const
+  {
+    std::cout << "[semantic_parse_unit: "
+              << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)] << "]\n";
+
+    for (const auto& line : text_buffer_)
+    {
+      for (const auto& word : line)
+      {
+        std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
+      }
+    }
+
+    for (const auto& word : line_buffer_)
+    {
+      std::cout << word << " ";
+    }
+
+    std::cout << word_buffer_;
+  }
+
+  auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
+  {
+    char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar());
+    std::cout << "\n\n"; // XXX ugly dislpay adjustment
+
+    // switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
+    switch (char_buffer_)
+    {
+#undef  MEEVAX_DEBUG_KEYBIND
+#define MEEVAX_DEBUG_KEYBIND
+#include <meevax/master-slave/ansi_escape_sequences.cpp>
+#undef  MEEVAX_DEBUG_KEYBIND
     }
   }
 
