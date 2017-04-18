@@ -122,7 +122,7 @@ case  10:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + J" << std::endl;
+  std::cout << "        ANSI: Return, Ctrl + J"                   << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
