@@ -9,7 +9,7 @@
 #include <vector>
 #include <utility>
 
-#include "meevax/metainfo.hpp"
+#include <meevax/preproc/version.hpp>
 
 #include "meevax/unix/basename.hpp"
 #include "meevax/unix/execvp.hpp"
@@ -138,7 +138,9 @@ public:
   {
     switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
-#include "meevax/editor/key_bind.cpp"
+#define MEEVAX_DEBUG_KEYBIND
+#include <meevax/preproc/key_bind.cpp>
+#undef  MEEVAX_DEBUG_KEYBIND
     }
   }
 
