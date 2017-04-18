@@ -4,12 +4,18 @@
 
 #include "meevax/trial/static_concatenate.hpp"
 
+#define ALPHABETIC_EXPAND(PREFIX, CODE) \
+  PREFIX##A = CODE, PREFIX##B, PREFIX##C, PREFIX##D, PREFIX##E, PREFIX##F, PREFIX##G, PREFIX##H, PREFIX##I, PREFIX##J, PREFIX##K, PREFIX##L, PREFIX##M, PREFIX##N, PREFIX##O, PREFIX##P, PREFIX##Q, PREFIX##R, PREFIX##S, PREFIX##T, PREFIX##U, PREFIX##V, PREFIX##W, PREFIX##X, PREFIX##Y, PREFIX##Z
+
 
 namespace unix {
 
 
-class ansi_escape_seqence
+enum class ansi_escape_seqence
 {
+  ALPHABETIC_EXPAND(,       0x61),
+  ALPHABETIC_EXPAND(SHIFT_, 0x41),
+  ALPHABETIC_EXPAND(CTRL_,  0x01),
 };
 
 
