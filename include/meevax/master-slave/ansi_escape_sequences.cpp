@@ -125,9 +125,12 @@ case  10:
   std::cout << "        ANSI: Return, Ctrl + J"                   << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
-#else
-  std::cout << static_cast<decltype(char_buffer_)>(char_buffer_);
 #endif
+  line_buffer_.push_back(word_buffer_);
+  word_buffer_.clear();
+
+  text_buffer_.push_back(line_buffer_);
+  line_buffer_.clear();
   break;
 
 case  11:
