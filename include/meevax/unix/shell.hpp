@@ -157,6 +157,7 @@ public:
     // switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     switch (char_buffer_)
     {
+#undef  MEEVAX_DEBUG_KEYBIND
 #define MEEVAX_DEBUG_KEYBIND
 #include <meevax/master-slave/ansi_escape_sequences.cpp>
 #undef  MEEVAX_DEBUG_KEYBIND
