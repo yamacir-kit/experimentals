@@ -110,7 +110,7 @@ case   9:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + I" << std::endl;
+  std::cout << "        ANSI: Tab, Ctrl + I" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -398,7 +398,7 @@ case  33:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 1" << std::endl;
+  std::cout << "        ANSI: Shift + 1" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -422,7 +422,7 @@ case  35:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 3" << std::endl;
+  std::cout << "        ANSI: Shift + 3" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -434,7 +434,7 @@ case  36:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 4" << std::endl;
+  std::cout << "        ANSI: Shift + 4" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -446,7 +446,7 @@ case  37:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 5" << std::endl;
+  std::cout << "        ANSI: Shift + 5" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -458,7 +458,7 @@ case  38:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 7" << std::endl;
+  std::cout << "        ANSI: Shift + 7" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -482,7 +482,7 @@ case  40:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 9" << std::endl;
+  std::cout << "        ANSI: Shift + 9" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -494,7 +494,7 @@ case  41:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 0" << std::endl;
+  std::cout << "        ANSI: Shift + 0" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -506,7 +506,7 @@ case  42:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 8" << std::endl;
+  std::cout << "        ANSI: Shift + 8" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -770,7 +770,7 @@ case  64:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 2" << std::endl;
+  std::cout << "        ANSI: Shift + 2" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -1130,7 +1130,7 @@ case  94:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + 6" << std::endl;
+  std::cout << "        ANSI: Shift + 6" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -1142,7 +1142,7 @@ case  95:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + -" << std::endl;
+  std::cout << "        ANSI: Shift + Hyphen" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
@@ -1514,7 +1514,7 @@ case 126:
 #ifdef MEEVAX_DEBUG_KEYBIND
   std::cout << "[debug] FILE: " << __FILE__                       << std::endl;
   std::cout << "        LINE: " << __LINE__                       << std::endl;
-  std::cout << "        ANSI: Ctrl + Back Quote" << std::endl;
+  std::cout << "        ANSI: Shift + Back Quote" << std::endl;
   std::cout << "        CODE: " << static_cast<int>(char_buffer_) << std::endl;
   std::cout << ""                                                 << std::endl;
 #else
