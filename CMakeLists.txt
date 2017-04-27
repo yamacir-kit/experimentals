@@ -6,8 +6,6 @@ add_definitions("-std=c++14 -Wall")
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_COMPILER clang++)
 
-# find_package(Qt5Widgets REQUIRED)
-
 file(GLOB ${PROJECT_NAME}_SOURCES
   ${PROJECT_SOURCE_DIR}/src/*.cpp
 )
@@ -17,12 +15,12 @@ set(${PROJECT_NAME}_HEADER_DIR
 )
 
 configure_file(
-  ${PROJECT_SOURCE_DIR}/cmake/version.hpp.cmake
+  ${PROJECT_SOURCE_DIR}/configure/version.hpp.cmake
   ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/preproc/version.hpp
 )
 
 configure_file(
-  ${PROJECT_SOURCE_DIR}/cmake/readme.md.cmake
+  ${PROJECT_SOURCE_DIR}/configure/readme.md.cmake
   ${PROJECT_SOURCE_DIR}/readme.md
 )
 
@@ -34,7 +32,6 @@ link_directories(
 )
 
 add_executable(${PROJECT_NAME}
-# add_library(${PROJECT_NAME} SHARED
   ${${PROJECT_NAME}_SOURCES}
 )
 
