@@ -4,11 +4,11 @@
 
 #include <meevax/string/static_concatenate.hpp>
 
-static constexpr auto project_version {scat("0.1.5")};
+static constexpr auto project_version {scat("0.1.6")};
 
 static constexpr auto project_major_version {scat("0")};
 static constexpr auto project_minor_version {scat("1")};
-static constexpr auto project_patch_version {scat("5")};
+static constexpr auto project_patch_version {scat("6")};
 
 
 #endif
