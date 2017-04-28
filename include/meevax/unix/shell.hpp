@@ -16,7 +16,7 @@
 #include "meevax/unix/execvp.hpp"
 #include "meevax/unix/fork.hpp"
 
-#include "meevax/trial/static_concatenate.hpp"
+#include <meevax/string/static_concatenate.hpp>
 
 extern "C" {
 #include <sys/ioctl.h>
@@ -43,7 +43,7 @@ private:
 
   struct termios default_;
 
-  static constexpr trial::static_concatenate<char_type> scat {};
+  static constexpr utilib::static_concatenate<char_type> scat {};
 
   const std::vector<std::basic_string<char_type>> mode_message_ {
     {"text"}, {"line"}, {"word"}
@@ -168,7 +168,7 @@ private:
 
   static auto version()
   {
-    static constexpr auto s {trial::static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
+    static constexpr auto s {scat("version ", PROJECT_VERSION, " alpha")};
     return s.data();
   }
 
