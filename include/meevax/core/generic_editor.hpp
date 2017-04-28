@@ -12,9 +12,9 @@
 
 #include <meevax/version.hpp>
 
-#include "meevax/unix/basename.hpp"
-#include "meevax/unix/execvp.hpp"
-#include "meevax/unix/fork.hpp"
+#include <utilib/unix/basename.hpp>
+#include <utilib/unix/execvp.hpp>
+#include <utilib/unix/fork.hpp>
 
 #include <utilib/string/static_concatenate.hpp>
 
