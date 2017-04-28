@@ -215,19 +215,27 @@ private:
         }
       }
 
-      if (iter1 != text.end())
-      {
-        ++iter1;
-      }
-
-      if (!completed)
-      {
-        std::cout << "\e[" << column << "A" << "\r" << std::flush;
-      }
+      // if (!completed)
+      // {
+      //   std::cout << "\e[" << column << "A" << "\r" << std::flush;
+      // }
 
       if (completed && iter1 == text.end())
       {
         break;
+      }
+
+      else
+      {
+        if (iter1 != text.begin())
+        {
+          std::cout << "\e[" << column << "A" << "\r" << std::flush;
+        }
+      }
+
+      if (iter1 != text.end())
+      {
+        ++iter1;
       }
     }
   }
