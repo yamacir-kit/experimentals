@@ -25,11 +25,11 @@ extern "C" {
 }
 
 
-namespace unix {
+namespace meevax {
 
 
 template <typename C>
-class shell
+class generic_editor
 {
 public:
   using char_type = typename std::basic_string<C>::value_type;
@@ -58,7 +58,7 @@ private:
   std::pair<std::size_t, std::size_t> cursor_;
 
 public:
-  explicit shell(int argc, char** argv)
+  explicit generic_editor(int argc, char** argv)
     : text_buffer_ {},
       line_buffer_ {},
       word_buffer_ {},
@@ -77,7 +77,7 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &ios);
   };
 
-  ~shell()
+  ~generic_editor()
   {
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }

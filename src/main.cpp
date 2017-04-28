@@ -9,14 +9,14 @@
 
 int main(int argc, char** argv)
 {
-  unix::shell<char> sh {argc, argv};
+  meevax::generic_editor<char> editor {argc, argv};
 
   try
   {
     while (true)
     {
-      sh.read();
-      sh.write();
+      editor.read();
+      editor.write();
     }
   }
 
