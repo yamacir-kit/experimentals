@@ -162,15 +162,20 @@ private:
       ss << "        struct: std::vector<std::basic_string<char_type>>\n";
       ss << "\n";
 
-      for (const auto& c : ss.str())
-      {
-        std::cout << c << std::flush;
-        std::this_thread::sleep_for(std::chrono::milliseconds(10));
-      }
+      delayed_write(ss);
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 
       std::cout << "\n";
+    }
+  }
+
+  void delayed_write(const std::basic_stringstream<char_type>& sstream) const
+  {
+    for (const auto& buffer : sstream.str())
+    {
+      std::cout << buffer << std::flush;
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
   }
 
