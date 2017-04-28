@@ -204,7 +204,7 @@ private:
         if ((*iter2).first != (*iter2).second)
         {
           std::cout << (*iter2).first++ << std::flush;
-          std::this_thread::sleep_for(std::chrono::milliseconds(1));
+          std::this_thread::sleep_for(std::chrono::microseconds(500));
           completed = false;
         }
 
@@ -215,11 +215,6 @@ private:
         }
       }
 
-      // if (!completed)
-      // {
-      //   std::cout << "\e[" << column << "A" << "\r" << std::flush;
-      // }
-
       if (completed && iter1 == text.end())
       {
         break;
@@ -229,7 +224,12 @@ private:
       {
         if (iter1 != text.begin())
         {
-          std::cout << "\e[" << column << "A" << "\r" << std::flush;
+          if (column > 0)
+          {
+            std::cout << "\e[" << column << "A";
+          }
+
+          std::cout << "\r" << std::flush;
         }
       }
 
