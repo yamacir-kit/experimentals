@@ -179,6 +179,41 @@ private:
     }
   }
 
+  void delayed_incremental_write(const std::basic_stringstream<char_type>& sstream)
+  {
+    std::vector<std::vector<std::pair<char_type,char_type>>> incr_text {};
+    typename decltype(incr_text)::value_type paired_line {};
+
+    for (const auto& buffer : sstream.str())
+    {
+      std::pair<char_type,char_type>  paired_char {};
+
+      if (std::isprint(buffer))
+      {
+        paired_char.first  = ' ';
+        paired_char.second = buffer;
+        paired_line.push_back(paired_char);
+      }
+
+      else if (buffer == '\n')
+      {
+        incr_text.push_back(paired_line);
+      }
+
+      else
+      {
+        paired_char.first  = buffer;
+        paired_char.second = buffer;
+        paired_line.push_back(paired_char);
+      }
+    }
+
+    if (incr_text.empty())
+    {
+      incr_text.push_back(paired_line);
+    }
+  }
+
   static auto arguments_parse(const decltype(line_buffer_)& argv)
   {
     for (auto iter {argv.begin()}; iter != argv.end(); ++iter)
