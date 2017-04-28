@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <iomanip>
 #include <regex>
 #include <string>
 #include <system_error>
@@ -18,6 +19,7 @@
 #include "meevax/trial/static_concatenate.hpp"
 
 extern "C" {
+#include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
 }
@@ -82,36 +84,58 @@ public:
 
   auto write() const
   {
-    std::cout << "[semantic_parse_unit: "
-              << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)]
-              << "]\n";
+    // std::cout << "[semantic_parse_unit: "
+    //           << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)]
+    //           << "] ";
 
-    for (const auto& line : text_buffer_)
+    // for (const auto& line : text_buffer_)
+    // {
+    //   for (const auto& word : line)
+    //   {
+    //     std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
+    //   }
+    // }
+
+    struct winsize window_size {};
+    ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &window_size);
+
+    static constexpr auto remove_attributes {scat("\e[0m")};
+
+    static constexpr auto remove_line {scat("\r", "\e[K")};
+
+    static constexpr auto cursor_line        {scat("\e[0;38;5;252m", "\e[48;5;236m")};
+    static constexpr auto cursor_line_number {scat("\e[1;38;5;221m", "\e[48;5;236m")};
+
+    std::size_t digits {};
+    for (auto size {text_buffer_.size() + 1}; size /= 10; ++digits);
+
+    std::cout << remove_line.data()
+              << cursor_line.data();
+
+    for (decltype(window_size.ws_col) col {}; col < window_size.ws_col; col++)
     {
-      for (const auto& word : line)
-      {
-        std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
-      }
+      std::cout << " ";
     }
+
+    std::cout << "\r";
+
+    std::cout << cursor_line_number.data() << std::setw(digits + 2) << cursor_.first;
+    std::cout << cursor_line.data() << " $ ";
 
     for (const auto& word : line_buffer_)
     {
       std::cout << word << " ";
     }
 
-    std::cout << word_buffer_;
+    std::cout << word_buffer_ << remove_attributes.data();
   }
 
   auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
   {
-    char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar());
-    std::cout << "\n\n"; // XXX ugly dislpay adjustment
-
-    // switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
-    switch (char_buffer_)
+    switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
 #undef  MEEVAX_DEBUG_KEYBIND
-#define MEEVAX_DEBUG_KEYBIND
+// #define MEEVAX_DEBUG_KEYBIND
 #include <meevax/master-slave/ansi_escape_sequences.cpp>
 #undef  MEEVAX_DEBUG_KEYBIND
     }
