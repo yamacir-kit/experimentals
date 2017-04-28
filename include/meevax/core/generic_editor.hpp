@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_UNIX_SHELL_HPP_
-#define INCLUDED_MEEVAX_UNIX_SHELL_HPP_
+#ifndef INCLUDED_MEEVAX_CORE_GENERIC_EDITOR_HPP_
+#define INCLUDED_MEEVAX_CORE_GENERIC_EDITOR_HPP_
 
 
 #include <iostream>
@@ -12,11 +12,11 @@
 
 #include <meevax/version.hpp>
 
-#include "meevax/unix/basename.hpp"
-#include "meevax/unix/execvp.hpp"
-#include "meevax/unix/fork.hpp"
+#include <utilib/unix/basename.hpp>
+#include <utilib/unix/execvp.hpp>
+#include <utilib/unix/fork.hpp>
 
-#include <meevax/string/static_concatenate.hpp>
+#include <utilib/string/static_concatenate.hpp>
 
 extern "C" {
 #include <sys/ioctl.h>

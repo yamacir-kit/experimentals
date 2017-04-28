@@ -4,7 +4,7 @@
 #include <cerrno>
 #include <cstdlib>
 
-#include "meevax/unix/shell.hpp"
+#include <meevax/core/generic_editor.hpp>
 
 
 int main(int argc, char** argv)
