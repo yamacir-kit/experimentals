@@ -2,12 +2,14 @@
 #define INCLUDED_MEEVAX_CORE_GENERIC_EDITOR_HPP_
 
 
-#include <iostream>
+#include <chrono>
 #include <iomanip>
+#include <iostream>
 #include <regex>
 #include <string>
-#include <vector>
+#include <thread>
 #include <utility>
+#include <vector>
 
 #include <meevax/version.hpp>
 
@@ -144,19 +146,27 @@ private:
   {
     if (parse_unit_ == semantic_parse_unit::line)
     {
-      std::cout << "\n\n";
-      std::cout << "[debug] start semantic parse\n";
-      std::cout << "        target: line " << cursor_.first << " (";
+      std::basic_stringstream<char_type> ss {};
+
+      ss << "\n\n";
+      ss << "[debug] start semantic parse\n";
+      ss << "        target: line " << cursor_.first << " (";
 
       for (const auto& word : text_buffer_[cursor_.first])
       {
-        std::cout << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
+        ss << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
       }
 
-      std::cout << "        syntax: shell\n";
-      std::cout << "        parser: execvp(3)\n";
-      std::cout << "        struct: std::vector<std::basic_string<char_type>>\n";
-      std::cout << "\n";
+      ss << "        syntax: shell\n";
+      ss << "        parser: execvp(3)\n";
+      ss << "        struct: std::vector<std::basic_string<char_type>>\n";
+      ss << "\n";
+
+      for (const auto& c : ss.str())
+      {
+        std::cout << c << std::flush;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      }
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 
