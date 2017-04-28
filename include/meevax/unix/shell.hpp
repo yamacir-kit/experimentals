@@ -103,8 +103,8 @@ public:
 
     static constexpr auto remove_line {scat("\r", "\e[K")};
 
-    static constexpr auto cursor_line        {scat("\e[38;5;252m", "\e[48;5;236m")};
-    static constexpr auto cursor_line_number {scat("\e[38;5;221m", "\e[48;5;236m")};
+    static constexpr auto cursor_line        {scat("\e[0;38;5;252m", "\e[48;5;236m")};
+    static constexpr auto cursor_line_number {scat("\e[1;38;5;221m", "\e[48;5;236m")};
 
     std::size_t digits {};
     for (auto size {text_buffer_.size() + 1}; size /= 10; ++digits);
