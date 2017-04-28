@@ -182,8 +182,7 @@ private:
 
   void delayed_incremental_write(const std::basic_stringstream<char_type>& sstream)
   {
-    std::vector<std::pair<char_type,char_type>> incr_text {};
-    std::size_t column {0};
+    std::vector<std::pair<char_type,char_type>> text {};
 
     for (const auto& buffer : sstream.str())
     {
@@ -197,18 +196,48 @@ private:
 
       else
       {
-        if (buffer == '\n') { column++; }
         paired_char.first  = buffer;
         paired_char.second = buffer;
       }
 
-      incr_text.push_back(paired_char);
+      text.push_back(paired_char);
     }
 
-    for (auto&& pair : incr_text)
+    for (auto iter1 {text.begin()}; ; )
     {
-      std::cout << pair.first << std::flush;
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      bool completed {true};
+      std::size_t column {0};
+
+      for (auto iter2 {text.begin()}; iter2 != iter1; ++iter2)
+      {
+        if ((*iter2).first != (*iter2).second)
+        {
+          std::cout << (*iter2).first++ << std::flush;
+          std::this_thread::sleep_for(std::chrono::milliseconds(1));
+          completed = false;
+        }
+
+        else
+        {
+          std::cout << (*iter2).second << std::flush;
+          if ((*iter2).second == '\n') { column++; }
+        }
+      }
+
+      if (iter1 != text.end())
+      {
+        ++iter1;
+      }
+
+      if (!completed)
+      {
+        std::cout << "\e[" << column << "A" << "\r" << std::flush;
+      }
+
+      if (completed && iter1 == text.end())
+      {
+        break;
+      }
     }
   }
 
