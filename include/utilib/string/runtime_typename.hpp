@@ -1,12 +1,11 @@
-#ifndef INCLUDED_MEEVAX_TRIAL_RUNTIME_TYPEINFO_HPP_
-#define INCLUDED_MEEVAX_TRIAL_RUNTIME_TYPEINFO_HPP_
+#ifndef INCLUDED_UTILIB_STRING_RUNTIME_TYPENAME_HPP_
+#define INCLUDED_UTILIB_STRING_RUNTIME_TYPENAME_HPP_
 
 
+#include <cstdlib>
 #include <memory>
 #include <string>
 #include <typeinfo>
-
-#include <cstdlib>
 
 #include <cxxabi.h>
 
@@ -14,8 +13,9 @@
 namespace meevax {
 
 
-template <typename T>
-std::string runtime_typename(const T& object)
+template <typename C, typename T>
+auto runtime_typename(const T& object)
+  -> std::basic_string<C>
 {
   int status {0};
 
@@ -24,7 +24,7 @@ std::string runtime_typename(const T& object)
     [](void* ptr) noexcept { std::free(ptr); }
   };
 
-  return uptr.get();
+  return {uptr.get()};
 }
 
 
