@@ -140,6 +140,30 @@ public:
   }
 
 private:
+  void semantic_parse()
+  {
+    if (parse_unit_ == semantic_parse_unit::line)
+    {
+      std::cout << "\n\n";
+      std::cout << "[debug] start semantic parse\n";
+      std::cout << "        target: line " << cursor_.first << " (";
+
+      for (const auto& word : text_buffer_[cursor_.first])
+      {
+        std::cout << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
+      }
+
+      std::cout << "        syntax: shell\n";
+      std::cout << "        parser: execvp(3)\n";
+      std::cout << "        struct: std::vector<std::basic_string<char_type>>\n";
+      std::cout << "\n";
+
+      unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
+
+      std::cout << "\n";
+    }
+  }
+
   static auto arguments_parse(const decltype(line_buffer_)& argv)
   {
     for (auto iter {argv.begin()}; iter != argv.end(); ++iter)
