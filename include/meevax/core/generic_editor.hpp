@@ -162,7 +162,8 @@ private:
       ss << "        struct: std::vector<std::basic_string<char_type>>\n";
       ss << "\n";
 
-      delayed_write(ss);
+      // delayed_write(ss);
+      delayed_incremental_write(ss);
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 
@@ -181,8 +182,8 @@ private:
 
   void delayed_incremental_write(const std::basic_stringstream<char_type>& sstream)
   {
-    std::vector<std::vector<std::pair<char_type,char_type>>> incr_text {};
-    typename decltype(incr_text)::value_type paired_line {};
+    std::vector<std::pair<char_type,char_type>> incr_text {};
+    std::size_t column {0};
 
     for (const auto& buffer : sstream.str())
     {
@@ -192,25 +193,22 @@ private:
       {
         paired_char.first  = ' ';
         paired_char.second = buffer;
-        paired_line.push_back(paired_char);
-      }
-
-      else if (buffer == '\n')
-      {
-        incr_text.push_back(paired_line);
       }
 
       else
       {
+        if (buffer == '\n') { column++; }
         paired_char.first  = buffer;
         paired_char.second = buffer;
-        paired_line.push_back(paired_char);
       }
+
+      incr_text.push_back(paired_char);
     }
 
-    if (incr_text.empty())
+    for (auto&& pair : incr_text)
     {
-      incr_text.push_back(paired_line);
+      std::cout << pair.first << std::flush;
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
   }
 
