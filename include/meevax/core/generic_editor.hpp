@@ -188,17 +188,8 @@ private:
     {
       std::pair<char_type,char_type>  paired_char {};
 
-      if (std::isprint(buffer))
-      {
-        paired_char.first  = ' ';
-        paired_char.second = buffer;
-      }
-
-      else
-      {
-        paired_char.first  = buffer;
-        paired_char.second = buffer;
-      }
+      paired_char.first = (std::isprint(buffer) ? ' ' : buffer);
+      paired_char.second = buffer;
 
       text.push_back(paired_char);
     }
