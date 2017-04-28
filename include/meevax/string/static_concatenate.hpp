@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_TRIAL_STATIC_CONCATENATE_HPP_
-#define INCLUDED_MEEVAX_TRIAL_STATIC_CONCATENATE_HPP_
+#ifndef INCLUDED_UTILIB_STATIC_CONCATENATE_HPP_
+#define INCLUDED_UTILIB_STATIC_CONCATENATE_HPP_
 
 
 #include <array>
@@ -8,7 +8,7 @@
 #include <type_traits>
 
 
-namespace trial {
+namespace utilib {
 
 
 template <typename C>
@@ -54,7 +54,11 @@ protected:
 };
 
 
-} // namespace trial
+} // namespace utilib
+
+
+static constexpr utilib::static_concatenate<char>    scat  {};
+static constexpr utilib::static_concatenate<wchar_t> wscat {};
 
 
 #endif
