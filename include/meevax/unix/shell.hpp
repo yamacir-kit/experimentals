@@ -80,65 +80,6 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  [[deprecated]] auto led()
-  {
-    while (true)
-    {
-      static constexpr auto color_green  {scat("\e[0;32m")};
-      static constexpr auto color_yellow {scat("\e[0;33m")};
-      static constexpr auto color_white  {scat("\e[0;37m")};
-
-      static constexpr auto prompt {scat(color_green, "meevax@master-slave: ", color_yellow)};
-
-      std::cout << prompt.data();
-      std::cout << "(" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") " << color_white.data();
-
-      for (const auto& word : line_buffer_) { std::cout << word << "_"; };
-      std::cout << word_buffer_ << std::endl;
-
-      ::read(STDIN_FILENO, &char_buffer_, sizeof(decltype(char_buffer_)));
-
-      switch (char_buffer_)
-      {
-        case ' ':
-          line_buffer_.push_back(word_buffer_);
-          word_buffer_.clear();
-          break;
-
-        case '\n':
-          if (word_buffer_.size() > 0)
-          {
-            line_buffer_.push_back(word_buffer_);
-            word_buffer_.clear();
-          }
-
-          unix::fork()(unix::execvp<char_type>(line_buffer_));
-          line_buffer_.clear();
-          word_buffer_.clear();
-
-          break;
-
-        case 127:
-          if (word_buffer_.size() > 0) { word_buffer_.pop_back(); }
-
-          else if (line_buffer_.size() > 0)
-          {
-            word_buffer_ = line_buffer_.back();
-            line_buffer_.pop_back();
-          }
-
-          break;
-
-        default:
-          if (std::isgraph(char_buffer_))
-          {
-            word_buffer_.push_back(char_buffer_);
-          }
-          break;
-      }
-    }
-  }
-
   auto write() const
   {
     std::cout << "[semantic_parse_unit: "
