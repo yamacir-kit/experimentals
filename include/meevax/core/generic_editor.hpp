@@ -6,17 +6,15 @@
 #include <iomanip>
 #include <regex>
 #include <string>
-#include <system_error>
 #include <vector>
 #include <utility>
 
 #include <meevax/version.hpp>
 
+#include <utilib/string/static_concatenate.hpp>
 #include <utilib/unix/basename.hpp>
 #include <utilib/unix/execvp.hpp>
 #include <utilib/unix/fork.hpp>
-
-#include <utilib/string/static_concatenate.hpp>
 
 extern "C" {
 #include <sys/ioctl.h>
