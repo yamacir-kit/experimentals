@@ -168,7 +168,7 @@ private:
 
   static auto version()
   {
-    static constexpr auto s {scat_("version ", PROJECT_VERSION, " alpha")};
+    static constexpr auto s {scat_("version ", project_version, " alpha")};
     return s.data();
   }
 

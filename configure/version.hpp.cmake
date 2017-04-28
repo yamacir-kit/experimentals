@@ -1,12 +1,14 @@
-#ifndef INCLUDED_METAINFO_HPP_
-#define INCLUDED_METAINFO_HPP_
+#ifndef INCLUDED_MEEVAX_VERSION_HPP_
+#define INCLUDED_MEEVAX_VERSION_HPP_
 
 
-#define PROJECT_VERSION "${PROJECT_VERSION}"
+#include <meevax/string/static_concatenate.hpp>
 
-#define PROJECT_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}"
-#define PROJECT_VERSION_MINOR "${PROJECT_VERSION_MINOR}"
-#define PROJECT_VERSION_PATCH "${PROJECT_VERSION_PATCH}"
+static constexpr auto project_version {scat("${PROJECT_VERSION}")};
+
+static constexpr auto project_major_version {scat("${PROJECT_VERSION_MAJOR}")};
+static constexpr auto project_minor_version {scat("${PROJECT_VERSION_MINOR}")};
+static constexpr auto project_patch_version {scat("${PROJECT_VERSION_PATCH}")};
 
 
 #endif
