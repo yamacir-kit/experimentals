@@ -16,7 +16,7 @@
 #include "meevax/unix/execvp.hpp"
 #include "meevax/unix/fork.hpp"
 
-#include "meevax/trial/static_concatenate.hpp"
+#include <meevax/string/static_concatenate.hpp>
 
 extern "C" {
 #include <sys/ioctl.h>
@@ -43,7 +43,7 @@ private:
 
   struct termios default_;
 
-  static constexpr trial::static_concatenate<char_type> scat {};
+  static constexpr utilib::static_concatenate<char_type> scat_ {};
 
   const std::vector<std::basic_string<char_type>> mode_message_ {
     {"text"}, {"line"}, {"word"}
@@ -99,12 +99,12 @@ public:
     struct winsize window_size {};
     ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &window_size);
 
-    static constexpr auto remove_attributes {scat("\e[0m")};
+    static constexpr auto remove_attributes {scat_("\e[0m")};
 
-    static constexpr auto remove_line {scat("\r", "\e[K")};
+    static constexpr auto remove_line {scat_("\r", "\e[K")};
 
-    static constexpr auto cursor_line        {scat("\e[0;38;5;252m", "\e[48;5;236m")};
-    static constexpr auto cursor_line_number {scat("\e[1;38;5;221m", "\e[48;5;236m")};
+    static constexpr auto cursor_line        {scat_("\e[0;38;5;252m", "\e[48;5;236m")};
+    static constexpr auto cursor_line_number {scat_("\e[1;38;5;221m", "\e[48;5;236m")};
 
     std::size_t digits {};
     for (auto size {text_buffer_.size() + 1}; size /= 10; ++digits);
@@ -168,7 +168,7 @@ private:
 
   static auto version()
   {
-    static constexpr auto s {trial::static_concatenate<char_type>()("version ", PROJECT_VERSION, " alpha")};
+    static constexpr auto s {scat_("version ", PROJECT_VERSION, " alpha")};
     return s.data();
   }
 
