@@ -10,7 +10,7 @@
 #include <vector>
 #include <utility>
 
-#include <meevax/preproc/version.hpp>
+#include <meevax/version.hpp>
 
 #include "meevax/unix/basename.hpp"
 #include "meevax/unix/execvp.hpp"
