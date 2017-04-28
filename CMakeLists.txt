@@ -16,7 +16,7 @@ set(${PROJECT_NAME}_HEADER_DIR
 
 configure_file(
   ${PROJECT_SOURCE_DIR}/configure/version.hpp.cmake
-  ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/preproc/version.hpp
+  ${${PROJECT_NAME}_HEADER_DIR}/${PROJECT_NAME}/version.hpp
 )
 
 configure_file(
