@@ -18,13 +18,7 @@ namespace unix {
 
 class fork
 {
-  // int status_;
-
 public:
-  // explicit fork()
-  //   : status_ {}
-  // {}
-
   template <typename F>
   void operator()(F&& f) const noexcept(false)
   {
@@ -33,7 +27,11 @@ public:
     case  0:
       try { f(); }
 
-      catch (std::system_error&) { throw; }
+      catch (std::system_error& error)
+      {
+        std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+        return;
+      }
 
       catch (...) { throw; }
 

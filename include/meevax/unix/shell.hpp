@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+#include <iomanip>
 #include <regex>
 #include <string>
 #include <system_error>
@@ -18,6 +19,7 @@
 #include "meevax/trial/static_concatenate.hpp"
 
 extern "C" {
+#include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
 }
@@ -44,17 +46,13 @@ private:
   static constexpr trial::static_concatenate<char_type> scat {};
 
   const std::vector<std::basic_string<char_type>> mode_message_ {
-    {"text"},
-    {"line"},
-    {"word"}
+    {"text"}, {"line"}, {"word"}
   };
 
   enum class semantic_parse_unit
     : typename decltype(mode_message_)::size_type
   {
-    text,
-    line,
-    word,
+    text, line, word,
   } parse_unit_;
 
   std::pair<std::size_t, std::size_t> cursor_;
@@ -62,18 +60,12 @@ private:
 public:
   explicit shell(int argc, char** argv)
     : text_buffer_ {},
-      // line_buffer_ {argv, argv + argc},
       line_buffer_ {},
       word_buffer_ {},
       char_buffer_ {},
       parse_unit_  {semantic_parse_unit::line},
       cursor_ {0, 0}
   {
-    // arguments_parse(line_buffer_);
-    //
-    // text_buffer_.push_back(line_buffer_);
-    // line_buffer_.clear();
-
     ::tcgetattr(STDIN_FILENO, &default_);
 
     struct termios ios {default_};
@@ -90,96 +82,60 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
 
-  [[deprecated]] auto led()
-  {
-    while (true)
-    {
-      static constexpr auto color_green  {scat("\e[0;32m")};
-      static constexpr auto color_yellow {scat("\e[0;33m")};
-      static constexpr auto color_white  {scat("\e[0;37m")};
-
-      static constexpr auto prompt {scat(color_green, "meevax@master-slave: ", color_yellow)};
-
-      std::cout << prompt.data();
-      std::cout << "(" << line_buffer_.size() + 1 << ": " << word_buffer_.size() << ") " << color_white.data();
-
-      for (const auto& word : line_buffer_) { std::cout << word << "_"; };
-      std::cout << word_buffer_ << std::endl;
-
-      ::read(STDIN_FILENO, &char_buffer_, sizeof(decltype(char_buffer_)));
-
-      switch (char_buffer_)
-      {
-        case ' ':
-          line_buffer_.push_back(word_buffer_);
-          word_buffer_.clear();
-          break;
-
-        case '\n':
-          if (word_buffer_.size() > 0)
-          {
-            line_buffer_.push_back(word_buffer_);
-            word_buffer_.clear();
-          }
-
-          unix::fork()(unix::execvp<char_type>(line_buffer_));
-          line_buffer_.clear();
-          word_buffer_.clear();
-
-          break;
-
-        case 127:
-          if (word_buffer_.size() > 0) { word_buffer_.pop_back(); }
-
-          else if (line_buffer_.size() > 0)
-          {
-            word_buffer_ = line_buffer_.back();
-            line_buffer_.pop_back();
-          }
-
-          break;
-
-        default:
-          if (std::isgraph(char_buffer_))
-          {
-            word_buffer_.push_back(char_buffer_);
-          }
-          break;
-      }
-    }
-  }
-
   auto write() const
   {
-    std::cout << "[semantic_parse_unit: "
-              << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)] << "]\n";
+    // std::cout << "[semantic_parse_unit: "
+    //           << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)]
+    //           << "] ";
 
-    for (const auto& line : text_buffer_)
+    // for (const auto& line : text_buffer_)
+    // {
+    //   for (const auto& word : line)
+    //   {
+    //     std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
+    //   }
+    // }
+
+    struct winsize window_size {};
+    ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &window_size);
+
+    static constexpr auto remove_attributes {scat("\e[0m")};
+
+    static constexpr auto remove_line {scat("\r", "\e[K")};
+
+    static constexpr auto cursor_line        {scat("\e[0;38;5;252m", "\e[48;5;236m")};
+    static constexpr auto cursor_line_number {scat("\e[1;38;5;221m", "\e[48;5;236m")};
+
+    std::size_t digits {};
+    for (auto size {text_buffer_.size() + 1}; size /= 10; ++digits);
+
+    std::cout << remove_line.data()
+              << cursor_line.data();
+
+    for (decltype(window_size.ws_col) col {}; col < window_size.ws_col; col++)
     {
-      for (const auto& word : line)
-      {
-        std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
-      }
+      std::cout << " ";
     }
+
+    std::cout << "\r";
+
+    std::cout << cursor_line_number.data() << std::setw(digits + 2) << cursor_.first;
+    std::cout << cursor_line.data() << " $ ";
 
     for (const auto& word : line_buffer_)
     {
       std::cout << word << " ";
     }
 
-    std::cout << word_buffer_;
+    std::cout << word_buffer_ << remove_attributes.data();
   }
 
   auto read(decltype(word_buffer_)&& forwarded = "") // XXX HARD CODING !!!
   {
-    char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar());
-    std::cout << "\n\n"; // XXX ugly dislpay adjustment
-
-    // switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
-    switch (char_buffer_)
+    switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
 #undef  MEEVAX_DEBUG_KEYBIND
-#define MEEVAX_DEBUG_KEYBIND
+// #define MEEVAX_DEBUG_KEYBIND
 #include <meevax/master-slave/ansi_escape_sequences.cpp>
 #undef  MEEVAX_DEBUG_KEYBIND
     }

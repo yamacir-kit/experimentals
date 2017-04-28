@@ -13,7 +13,6 @@ int main(int argc, char** argv)
 
   try
   {
-    // sh.led(); // TODO signal handling
     while (true)
     {
       sh.read();
