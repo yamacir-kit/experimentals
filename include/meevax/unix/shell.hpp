@@ -19,6 +19,7 @@
 #include "meevax/trial/static_concatenate.hpp"
 
 extern "C" {
+#include <sys/ioctl.h>
 #include <termios.h>
 #include <unistd.h>
 }
@@ -95,6 +96,9 @@ public:
     //   }
     // }
 
+    struct winsize window_size {};
+    ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &window_size);
+
     static constexpr auto remove_attributes {scat("\e[0m")};
 
     static constexpr auto remove_line {scat("\r", "\e[K")};
@@ -106,8 +110,17 @@ public:
     for (auto size {text_buffer_.size() + 1}; size /= 10; ++digits);
 
     std::cout << remove_line.data()
-              << cursor_line_number.data() << std::setw(digits + 2) << cursor_.first
-              << cursor_line.data() << " $ ";
+              << cursor_line.data();
+
+    for (decltype(window_size.ws_col) col {}; col < window_size.ws_col; col++)
+    {
+      std::cout << " ";
+    }
+
+    std::cout << "\r";
+
+    std::cout << cursor_line_number.data() << std::setw(digits + 2) << cursor_.first;
+    std::cout << cursor_line.data() << " $ ";
 
     for (const auto& word : line_buffer_)
     {
