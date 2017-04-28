@@ -1,5 +1,5 @@
-#ifndef INCLUDED_UTILIB_UNIX_CD_HPP_
-#define INCLUDED_UTILIB_UNIX_CD_HPP_
+#ifndef INCLUDED_UTILIB_UNIX_CHDIR_HPP_
+#define INCLUDED_UTILIB_UNIX_CHDIR_HPP_
 
 
 #include <iostream>
@@ -13,7 +13,7 @@ namespace unix {
 
 
 template <typename C>
-auto cd(const std::basic_string<C>& path)
+auto chdir(const std::basic_string<C>& path)
 {
   if (::chdir(path.c_str()) != 0)
   {

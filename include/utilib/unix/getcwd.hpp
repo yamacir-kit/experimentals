@@ -1,5 +1,5 @@
-#ifndef INCLUDED_UTILIB_UNIX_PWD_HPP_
-#define INCLUDED_UTILIB_UNIX_PWD_HPP_
+#ifndef INCLUDED_UTILIB_UNIX_GETCWD_HPP_
+#define INCLUDED_UTILIB_UNIX_GETCWD_HPP_
 
 
 #include <memory>
@@ -13,7 +13,7 @@ namespace unix {
 
 
 template <typename C>
-auto pwd()
+auto getcwd()
   -> std::basic_string<C>
 {
   std::unique_ptr<C> buffer {new C[MAXPATHLEN]};
