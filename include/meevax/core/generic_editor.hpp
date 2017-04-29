@@ -2,18 +2,17 @@
 #define INCLUDED_MEEVAX_CORE_GENERIC_EDITOR_HPP_
 
 
-// #include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <regex>
 #include <string>
-// #include <thread>
 #include <utility>
 #include <vector>
 
 #include <meevax/version.hpp>
 #include <meevax/joke/delayed_write.hpp>
 
+#include <utilib/string/runtime_typename.hpp>
 #include <utilib/string/static_concatenate.hpp>
 #include <utilib/unix/basename.hpp>
 #include <utilib/unix/execvp.hpp>
@@ -41,7 +40,6 @@ private:
               std::vector<std::basic_string<char_type>>  line_buffer_;
                           std::basic_string<char_type>   word_buffer_;
                                             char_type    char_buffer_;
-
   struct termios default_;
 
   static constexpr utilib::static_concatenate<char_type> scat_ {};
@@ -147,23 +145,23 @@ private:
   {
     if (parse_unit_ == semantic_parse_unit::line)
     {
-      std::basic_stringstream<char_type> ss {};
+      std::basic_stringstream<char_type> bssc {};
 
-      ss << "\n\n";
-      ss << "[debug] start semantic parse\n";
-      ss << "        target: line " << cursor_.first << " (";
+      bssc << "\n\n";
+      bssc << "[parse] target: unnamed buffer line " << cursor_.first << " (";
 
       for (const auto& word : text_buffer_[cursor_.first])
       {
-        ss << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
+        bssc << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
       }
 
-      ss << "        syntax: shell\n";
-      ss << "        parser: execvp(3)\n";
-      ss << "        struct: std::vector<std::basic_string<char_type>>\n";
-      ss << "\n";
+      bssc << "\tsyntax: external commands\n";
+      bssc << "\tparser: execvp(3)\n";
+      bssc << "\tstructure: " << typeid(text_buffer_[cursor_.first]).name() << '\n';
+      bssc << '\n';
 
-      meevax::delayed_incremental_write(ss);
+      meevax::delayed_incremental_write(bssc);
+      // meevax::delayed_write(bssc);
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 
@@ -211,7 +209,7 @@ private:
 };
 
 
-} // namespace unix
+} // namespace meevax
 
 
 #endif
