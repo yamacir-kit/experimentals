@@ -183,11 +183,7 @@ private:
   void delayed_incremental_write(const std::basic_stringstream<char_type>& sstream)
   {
     std::vector<std::pair<char_type,char_type>> text {};
-
-    for (const auto& c : sstream.str())
-    {
-      text.emplace_back(std::isprint(c) ? ' ' : c, c);
-    }
+    for (const auto& c : sstream.str()) { text.emplace_back(std::isprint(c) ? ' ' : c, c); }
 
     std::cout << "\e[?25l" << std::flush;
 
@@ -212,28 +208,18 @@ private:
         }
       }
 
-      if (completed && iter1 == text.end())
-      {
-        break;
-      }
+      if (completed && iter1 == text.end()) { break; }
 
       else
       {
         if (iter1 != text.begin())
         {
-          if (column > 0)
-          {
-            std::cout << "\e[" << column << "A";
-          }
-
+          if (column > 0) { std::cout << "\e[" << column << "A"; }
           std::cout << "\r" << std::flush;
         }
       }
 
-      if (iter1 != text.end())
-      {
-        ++iter1;
-      }
+      if (iter1 != text.end()) { ++iter1; }
     }
 
     std::cout << "\e[?25h" << std::flush;
