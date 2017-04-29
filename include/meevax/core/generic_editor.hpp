@@ -148,20 +148,20 @@ private:
       std::basic_stringstream<char_type> bssc {};
 
       bssc << "\n\n";
-      bssc << "[parse] target: line " << cursor_.first << " (";
+      bssc << "[parse] target: unnamed buffer line " << cursor_.first << " (";
 
       for (const auto& word : text_buffer_[cursor_.first])
       {
         bssc << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
       }
 
-      bssc << "        syntax: external commands\n";
-      bssc << "        parser: execvp(3)\n";
-      // bssc << "        structure: " << utilib::runtime_typename<char_type>(text_buffer_[cursor_.first]) << '\n';
-      bssc << "        structure: " << typeid(text_buffer_[cursor_.first]).name() << '\n';
+      bssc << "\tsyntax: external commands\n";
+      bssc << "\tparser: execvp(3)\n";
+      bssc << "\tstructure: " << typeid(text_buffer_[cursor_.first]).name() << '\n';
       bssc << '\n';
 
       meevax::delayed_incremental_write(bssc);
+      // meevax::delayed_write(bssc);
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 
