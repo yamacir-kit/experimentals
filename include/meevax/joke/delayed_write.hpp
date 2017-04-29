@@ -9,6 +9,9 @@
 #include <thread>
 #include <vector>
 
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 
 namespace meevax {
 
@@ -30,18 +33,18 @@ void delayed_incremental_write(const std::basic_stringstream<C>& sstream)
   std::vector<std::pair<C,C>> text {};
   for (const auto& c : sstream.str()) { text.emplace_back(std::isprint(c) ? ' ' : c, c); }
 
-  std::cout << "\e[?25l" << std::flush;
+  std::cout << "\e[?7l" << "\e[?25l" << std::flush;
 
   for (auto iter1 {text.begin()}; ; )
   {
     bool completed {true};
-    std::size_t column {0};
+    std::pair<decltype(winsize::ws_row), decltype(winsize::ws_col)> cursor {0, 0};
 
     for (auto iter2 {text.begin()}; iter2 != iter1; ++iter2)
     {
       if ((*iter2).first != (*iter2).second)
       {
-        std::cout << (*iter2).first++ << std::flush;
+        std::cout << "\e[0;38;5;059m" << (*iter2).first++ << "\e[0m" << std::flush;
         std::this_thread::sleep_for(std::chrono::microseconds(500));
         completed = false;
       }
@@ -49,7 +52,7 @@ void delayed_incremental_write(const std::basic_stringstream<C>& sstream)
       else
       {
         std::cout << (*iter2).second << std::flush;
-        if ((*iter2).second == '\n') { column++; }
+        if ((*iter2).second == '\n') { cursor.first++; }
       }
     }
 
@@ -57,14 +60,14 @@ void delayed_incremental_write(const std::basic_stringstream<C>& sstream)
 
     else if (iter1 != text.begin())
     {
-      if (column > 0) { std::cout << "\e[" << column << "A"; }
+      if (cursor.first > 0) { std::cout << "\e[" << cursor.first << "A"; }
       std::cout << "\r" << std::flush;
     }
 
     if (iter1 != text.end()) { ++iter1; }
   }
 
-  std::cout << "\e[?25h" << std::flush;
+  std::cout << "\e[?7h" << "\e[?25h" << std::flush;
 }
 
 
