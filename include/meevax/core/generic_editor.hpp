@@ -39,7 +39,6 @@ private:
               std::vector<std::basic_string<char_type>>  line_buffer_;
                           std::basic_string<char_type>   word_buffer_;
                                             char_type    char_buffer_;
-
   struct termios default_;
 
   static constexpr utilib::static_concatenate<char_type> scat_ {};
