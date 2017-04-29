@@ -12,6 +12,7 @@
 #include <meevax/version.hpp>
 #include <meevax/joke/delayed_write.hpp>
 
+#include <utilib/string/runtime_typename.hpp>
 #include <utilib/string/static_concatenate.hpp>
 #include <utilib/unix/basename.hpp>
 #include <utilib/unix/execvp.hpp>
@@ -147,18 +148,18 @@ private:
       std::basic_stringstream<char_type> bssc {};
 
       bssc << "\n\n";
-      bssc << "[debug] start semantic parse\n";
-      bssc << "        target: line " << cursor_.first << " (";
+      bssc << "[parse] target: line " << cursor_.first << " (";
 
       for (const auto& word : text_buffer_[cursor_.first])
       {
         bssc << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
       }
 
-      bssc << "        syntax: shell\n";
+      bssc << "        syntax: external commands\n";
       bssc << "        parser: execvp(3)\n";
-      bssc << "        struct: std::vector<std::basic_string<char_type>>\n";
-      bssc << "\n";
+      // bssc << "        structure: " << utilib::runtime_typename<char_type>(text_buffer_[cursor_.first]) << '\n';
+      bssc << "        structure: " << typeid(text_buffer_[cursor_.first]).name() << '\n';
+      bssc << '\n';
 
       meevax::delayed_incremental_write(bssc);
 

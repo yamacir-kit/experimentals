@@ -15,8 +15,8 @@ int main(int argc, char** argv)
   {
     while (true)
     {
-      editor.read();
       editor.write();
+      editor.read();
     }
   }
 
