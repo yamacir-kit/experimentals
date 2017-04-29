@@ -2,12 +2,10 @@
 #define INCLUDED_MEEVAX_CORE_GENERIC_EDITOR_HPP_
 
 
-// #include <chrono>
 #include <iomanip>
 #include <iostream>
 #include <regex>
 #include <string>
-// #include <thread>
 #include <utility>
 #include <vector>
 
@@ -147,23 +145,23 @@ private:
   {
     if (parse_unit_ == semantic_parse_unit::line)
     {
-      std::basic_stringstream<char_type> ss {};
+      std::basic_stringstream<char_type> bssc {};
 
-      ss << "\n\n";
-      ss << "[debug] start semantic parse\n";
-      ss << "        target: line " << cursor_.first << " (";
+      bssc << "\n\n";
+      bssc << "[debug] start semantic parse\n";
+      bssc << "        target: line " << cursor_.first << " (";
 
       for (const auto& word : text_buffer_[cursor_.first])
       {
-        ss << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
+        bssc << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
       }
 
-      ss << "        syntax: shell\n";
-      ss << "        parser: execvp(3)\n";
-      ss << "        struct: std::vector<std::basic_string<char_type>>\n";
-      ss << "\n";
+      bssc << "        syntax: shell\n";
+      bssc << "        parser: execvp(3)\n";
+      bssc << "        struct: std::vector<std::basic_string<char_type>>\n";
+      bssc << "\n";
 
-      meevax::delayed_incremental_write(ss);
+      meevax::delayed_incremental_write(bssc);
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 
@@ -211,7 +209,7 @@ private:
 };
 
 
-} // namespace unix
+} // namespace meevax
 
 
 #endif
