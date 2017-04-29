@@ -210,13 +210,10 @@ private:
 
       if (completed && iter1 == text.end()) { break; }
 
-      else
+      else if (iter1 != text.begin())
       {
-        if (iter1 != text.begin())
-        {
-          if (column > 0) { std::cout << "\e[" << column << "A"; }
-          std::cout << "\r" << std::flush;
-        }
+        if (column > 0) { std::cout << "\e[" << column << "A"; }
+        std::cout << "\r" << std::flush;
       }
 
       if (iter1 != text.end()) { ++iter1; }
