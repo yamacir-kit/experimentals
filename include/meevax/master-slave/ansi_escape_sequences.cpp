@@ -132,26 +132,7 @@ case  10:
   text_buffer_.push_back(line_buffer_);
   line_buffer_.clear();
 
-  if (parse_unit_ == semantic_parse_unit::line)
-  {
-    std::cout << "\n\n";
-    std::cout << "[debug] start semantic parse\n";
-    std::cout << "        target: line " << cursor_.first << " (";
-
-    for (const auto& word : text_buffer_[cursor_.first])
-    {
-      std::cout << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
-    }
-
-    std::cout << "        syntax: shell\n";
-    std::cout << "        parser: execvp(3)\n";
-    std::cout << "        struct: std::vector<std::basic_string<char_type>>\n";
-    std::cout << "\n";
-
-    unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
-
-    std::cout << "\n";
-  }
+  semantic_parse();
 
   break;
 

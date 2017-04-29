@@ -2,21 +2,22 @@
 #define INCLUDED_MEEVAX_CORE_GENERIC_EDITOR_HPP_
 
 
-#include <iostream>
+// #include <chrono>
 #include <iomanip>
+#include <iostream>
 #include <regex>
 #include <string>
-#include <system_error>
-#include <vector>
+// #include <thread>
 #include <utility>
+#include <vector>
 
 #include <meevax/version.hpp>
+#include <meevax/joke/delayed_write.hpp>
 
+#include <utilib/string/static_concatenate.hpp>
 #include <utilib/unix/basename.hpp>
 #include <utilib/unix/execvp.hpp>
 #include <utilib/unix/fork.hpp>
-
-#include <utilib/string/static_concatenate.hpp>
 
 extern "C" {
 #include <sys/ioctl.h>
@@ -25,11 +26,11 @@ extern "C" {
 }
 
 
-namespace unix {
+namespace meevax {
 
 
 template <typename C>
-class shell
+class generic_editor
 {
 public:
   using char_type = typename std::basic_string<C>::value_type;
@@ -58,7 +59,7 @@ private:
   std::pair<std::size_t, std::size_t> cursor_;
 
 public:
-  explicit shell(int argc, char** argv)
+  explicit generic_editor(int argc, char** argv)
     : text_buffer_ {},
       line_buffer_ {},
       word_buffer_ {},
@@ -77,7 +78,7 @@ public:
     ::tcsetattr(STDIN_FILENO, TCSANOW, &ios);
   };
 
-  ~shell()
+  ~generic_editor()
   {
     ::tcsetattr(STDIN_FILENO, TCSANOW, &default_);
   }
@@ -134,14 +135,42 @@ public:
   {
     switch (char_buffer_ = static_cast<decltype(char_buffer_)>(std::getchar()))
     {
-#undef  MEEVAX_DEBUG_KEYBIND
-// #define MEEVAX_DEBUG_KEYBIND
-#include <meevax/master-slave/ansi_escape_sequences.cpp>
-#undef  MEEVAX_DEBUG_KEYBIND
+      #undef  MEEVAX_DEBUG_KEYBIND
+      // #define MEEVAX_DEBUG_KEYBIND
+      #include <meevax/master-slave/ansi_escape_sequences.cpp>
+      #undef  MEEVAX_DEBUG_KEYBIND
     }
   }
 
 private:
+  void semantic_parse()
+  {
+    if (parse_unit_ == semantic_parse_unit::line)
+    {
+      std::basic_stringstream<char_type> ss {};
+
+      ss << "\n\n";
+      ss << "[debug] start semantic parse\n";
+      ss << "        target: line " << cursor_.first << " (";
+
+      for (const auto& word : text_buffer_[cursor_.first])
+      {
+        ss << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
+      }
+
+      ss << "        syntax: shell\n";
+      ss << "        parser: execvp(3)\n";
+      ss << "        struct: std::vector<std::basic_string<char_type>>\n";
+      ss << "\n";
+
+      meevax::delayed_incremental_write(ss);
+
+      unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
+
+      std::cout << "\n";
+    }
+  }
+
   static auto arguments_parse(const decltype(line_buffer_)& argv)
   {
     for (auto iter {argv.begin()}; iter != argv.end(); ++iter)
