@@ -184,14 +184,9 @@ private:
   {
     std::vector<std::pair<char_type,char_type>> text {};
 
-    for (const auto& buffer : sstream.str())
+    for (const auto& c : sstream.str())
     {
-      std::pair<char_type,char_type>  paired_char {};
-
-      paired_char.first = (std::isprint(buffer) ? ' ' : buffer);
-      paired_char.second = buffer;
-
-      text.push_back(paired_char);
+      text.emplace_back(std::isprint(c) ? ' ' : c, c);
     }
 
     for (auto iter1 {text.begin()}; ; )
