@@ -189,6 +189,8 @@ private:
       text.emplace_back(std::isprint(c) ? ' ' : c, c);
     }
 
+    std::cout << "\e[?25l" << std::flush;
+
     for (auto iter1 {text.begin()}; ; )
     {
       bool completed {true};
@@ -233,6 +235,8 @@ private:
         ++iter1;
       }
     }
+
+    std::cout << "\e[?25h" << std::flush;
   }
 
   static auto arguments_parse(const decltype(line_buffer_)& argv)
