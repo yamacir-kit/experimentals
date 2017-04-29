@@ -12,6 +12,7 @@
 #include <meevax/version.hpp>
 #include <meevax/joke/delayed_write.hpp>
 
+#include <utilib/string/runtime_typename.hpp>
 #include <utilib/string/static_concatenate.hpp>
 #include <utilib/unix/basename.hpp>
 #include <utilib/unix/execvp.hpp>
@@ -39,7 +40,6 @@ private:
               std::vector<std::basic_string<char_type>>  line_buffer_;
                           std::basic_string<char_type>   word_buffer_;
                                             char_type    char_buffer_;
-
   struct termios default_;
 
   static constexpr utilib::static_concatenate<char_type> scat_ {};
@@ -148,20 +148,20 @@ private:
       std::basic_stringstream<char_type> bssc {};
 
       bssc << "\n\n";
-      bssc << "[debug] start semantic parse\n";
-      bssc << "        target: line " << cursor_.first << " (";
+      bssc << "[parse] target: unnamed buffer line " << cursor_.first << " (";
 
       for (const auto& word : text_buffer_[cursor_.first])
       {
         bssc << word << (&word != &text_buffer_[cursor_.first].back() ? " " : ")\n");
       }
 
-      bssc << "        syntax: shell\n";
-      bssc << "        parser: execvp(3)\n";
-      bssc << "        struct: std::vector<std::basic_string<char_type>>\n";
-      bssc << "\n";
+      bssc << "\tsyntax: external commands\n";
+      bssc << "\tparser: execvp(3)\n";
+      bssc << "\tstructure: " << typeid(text_buffer_[cursor_.first]).name() << '\n';
+      bssc << '\n';
 
       meevax::delayed_incremental_write(bssc);
+      // meevax::delayed_write(bssc);
 
       unix::fork()(unix::execvp<char_type>(text_buffer_[cursor_.first++]));
 

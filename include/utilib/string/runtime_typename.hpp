@@ -10,7 +10,7 @@
 #include <cxxabi.h>
 
 
-namespace meevax {
+namespace utilib {
 
 
 template <typename C, typename T>
@@ -24,11 +24,11 @@ auto runtime_typename(const T& object)
     [](void* ptr) noexcept { std::free(ptr); }
   };
 
-  return {uptr.get()};
+  return {status != 0 ? typeid(object).name() : uptr.get()};
 }
 
 
-} // namespace meevax
+} // namespace utilib
 
 
 #endif
