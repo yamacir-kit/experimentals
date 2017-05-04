@@ -10,7 +10,7 @@
 #include <vector>
 
 #include <meevax/version.hpp>
-#include <meevax/joke/delayed_write.hpp>
+#include <meevax/visual/delayed_write.hpp>
 
 #include <utilib/string/runtime_typename.hpp>
 #include <utilib/string/static_concatenate.hpp>
