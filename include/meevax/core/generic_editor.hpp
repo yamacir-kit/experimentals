@@ -10,7 +10,7 @@
 #include <vector>
 
 #include <meevax/version.hpp>
-#include <meevax/joke/delayed_write.hpp>
+#include <meevax/visual/delayed_write.hpp>
 
 #include <utilib/string/runtime_typename.hpp>
 #include <utilib/string/static_concatenate.hpp>
@@ -83,18 +83,6 @@ public:
 
   auto write() const
   {
-    // std::cout << "[semantic_parse_unit: "
-    //           << mode_message_[static_cast<typename std::underlying_type<decltype(parse_unit_)>::type>(parse_unit_)]
-    //           << "] ";
-
-    // for (const auto& line : text_buffer_)
-    // {
-    //   for (const auto& word : line)
-    //   {
-    //     std::cout << word << (&word != &line.back() ? " " : "\e[0;33m\\n\n\e[0;37m");
-    //   }
-    // }
-
     struct winsize window_size {};
     ::ioctl(STDOUT_FILENO, TIOCGWINSZ, &window_size);
 
