@@ -29,6 +29,7 @@ include_directories(
 )
 
 link_directories(
+  /usr/X11R6/lib
 )
 
 add_executable(${PROJECT_NAME}
@@ -36,7 +37,8 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
-  # Qt5::Widgets
+  X11
+  cairo
 )
 
 # set(CMAKE_INSTALL_PREFIX /usr/local)

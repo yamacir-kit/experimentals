@@ -12,6 +12,8 @@ int main(int argc, char** argv)
 {
   meevax::generic_editor<char> editor {argc, argv};
 
+  meevax::visual_stream vstream {};
+
   try
   {
     while (true)
