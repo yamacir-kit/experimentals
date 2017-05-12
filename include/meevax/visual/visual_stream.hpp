@@ -75,9 +75,15 @@ public:
     return contexts_.at(s);
   }
 
-  visual_context& operator<<(visual_context& (*manipulator)(visual_context&))
+  visual_context& operator<<(visual_context& (*f)(visual_context&))
   {
-    return (*manipulator)(master_);
+    return (*f)(master_);
+  }
+
+  template <typename F>
+  visual_context& operator<<(F&& f)
+  {
+    return f(*this);
   }
 };
 
