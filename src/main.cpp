@@ -40,7 +40,7 @@ int main(int argc, char** argv)
   // }
 
   meevax::visual_stream vstream {"", 320, 180};
-  vstream << meevax::map_raised;
+  vstream << meevax::map_raised << meevax::flush;
 
   std::string hello {"Hello, X Window System with cairo vector graphics library"};
 

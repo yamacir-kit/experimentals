@@ -3,6 +3,7 @@
 
 
 #include <memory>
+#include <string>
 
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
