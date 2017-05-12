@@ -5,7 +5,9 @@
 #include <cstdlib>
 
 #include <meevax/core/generic_editor.hpp>
+
 #include <meevax/visual/visual_stream.hpp>
+#include <meevax/visual/visual_manipulator.hpp>
 
 
 int main(int argc, char** argv)
@@ -38,4 +40,15 @@ int main(int argc, char** argv)
   // }
 
   meevax::visual_stream vstream {"", 320, 180};
+
+  {
+    using namespace meevax;
+
+    vstream["main"] << meevax::map_raised << meevax::flush;
+
+    auto hoge {0};
+    std::cin >> hoge; // for stop program while input something
+  }
+
+  return 0;
 }

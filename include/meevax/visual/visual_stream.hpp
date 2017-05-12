@@ -62,6 +62,7 @@ public:
       contexts_ {}
   {
     XSynchronize(display_, true); // for debug
+    XMapRaised(display_, master_);
   }
 
   visual_context& operator[](const std::string& s)
