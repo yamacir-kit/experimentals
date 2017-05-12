@@ -44,7 +44,9 @@ int main(int argc, char** argv)
   {
     using namespace meevax;
 
-    vstream["main"] << meevax::map_raised << meevax::flush;
+    vstream << map_raised;
+
+    vstream["main"] << map_raised << flush;
 
     auto hoge {0};
     std::cin >> hoge; // for stop program while input something

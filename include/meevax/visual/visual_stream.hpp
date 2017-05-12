@@ -62,7 +62,7 @@ public:
       contexts_ {}
   {
     XSynchronize(display_, true); // for debug
-    XMapRaised(display_, master_);
+    // XMapRaised(display_, master_);
   }
 
   visual_context& operator[](const std::string& s)
@@ -73,6 +73,11 @@ public:
     }
 
     return contexts_.at(s);
+  }
+
+  visual_context& operator<<(visual_context& (*manipulator)(visual_context&))
+  {
+    return (*manipulator)(master_);
   }
 };
 
