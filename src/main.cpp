@@ -12,7 +12,7 @@ int main(int argc, char** argv)
 {
   meevax::generic_editor<char> editor {argc, argv};
 
-  meevax::visual_stream vstream {};
+  meevax::visual_stream vstream {"", 320, 180};
 
   try
   {
