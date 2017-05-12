@@ -47,12 +47,11 @@ int main(int argc, char** argv)
   while (true)
   {
     vstream["subwin"] << meevax::map_raised
-                      << meevax::color(0, 0, 0) << meevax::paint;
+                      << meevax::color(0, 0, 0, 0.5) << meevax::paint;
 
-    vstream["subwin"] << meevax::font_face("Ricty Diminished");
-
-    cairo_set_font_size(vstream["subwin"], 20);
-    cairo_set_source_rgba(vstream["subwin"], 1.0, 1.0, 1.0, 1.0);
+    vstream["subwin"] << meevax::font_face("Ricty Diminished")
+                      << meevax::font_size(20)
+                      << meevax::color(1.0, 1.0, 1.0);
 
     cairo_move_to(vstream["subwin"], 10, 25);
     cairo_show_text(vstream["subwin"], hello.c_str());

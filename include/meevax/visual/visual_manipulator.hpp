@@ -87,6 +87,23 @@ public:
 };
 
 
+class font_size
+{
+  std::size_t size_;
+
+public:
+  font_size(std::size_t size)
+    : size_ {size}
+  {}
+
+  visual_context& operator()(visual_context& vc)
+  {
+    cairo_set_font_size(vc, size_);
+    return vc;
+  }
+};
+
+
 } // namespace meevax
 
 
