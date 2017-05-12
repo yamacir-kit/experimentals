@@ -24,6 +24,48 @@ public:
   {
     return (*manipulator)(*this);
   }
+
+public:
+  operator cairo_t*() const noexcept
+  {
+    return cairo_.get();
+  }
+
+  operator cairo_surface_t*() const
+  {
+    return cairo_get_target(cairo_.get());
+  }
+
+  operator Display*() const
+  {
+    return cairo_xlib_surface_get_display(cairo_get_target(cairo_.get()));
+  }
+
+  operator Screen*() const
+  {
+    return cairo_xlib_surface_get_screen(cairo_get_target(cairo_.get()));
+  }
+
+  operator Window() const
+  {
+    return cairo_xlib_surface_get_drawable(cairo_get_target(cairo_.get()));
+  }
+
+  operator Visual*() const
+  {
+    return cairo_xlib_surface_get_visual(cairo_get_target(cairo_.get()));
+  }
+
+public:
+  auto width() const
+  {
+    return cairo_xlib_surface_get_width(cairo_get_target(cairo_.get()));
+  }
+
+  auto height() const
+  {
+    return cairo_xlib_surface_get_height(cairo_get_target(cairo_.get()));
+  }
 };
 
 
