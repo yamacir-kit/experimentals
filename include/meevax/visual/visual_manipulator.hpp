@@ -2,6 +2,8 @@
 #define INCLUDED_MEEVAX_VISUAL_VISUAL_MANIPULATOR_HPP_
 
 
+#include <string>
+
 #include <meevax/visual/visual_context.hpp>
 
 #include <X11/Xlib.h>
@@ -62,6 +64,27 @@ visual_context& paint(visual_context& vc)
   cairo_paint(vc);
   return vc;
 }
+
+
+class font_face
+{
+  const std::string name_;
+  cairo_font_slant_t slant_;
+  cairo_font_weight_t weight_;
+
+public:
+  font_face(const std::string& name,
+            cairo_font_slant_t slant = CAIRO_FONT_SLANT_NORMAL,
+            cairo_font_weight_t weight = CAIRO_FONT_WEIGHT_NORMAL)
+    : name_ {name}, slant_ {slant}, weight_ {weight}
+  {}
+
+  visual_context& operator()(visual_context& vc)
+  {
+    cairo_select_font_face(vc, name_.c_str(), slant_, weight_);
+    return vc;
+  }
+};
 
 
 } // namespace meevax

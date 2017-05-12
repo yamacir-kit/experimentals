@@ -49,7 +49,8 @@ int main(int argc, char** argv)
     vstream["subwin"] << meevax::map_raised
                       << meevax::color(0, 0, 0) << meevax::paint;
 
-    cairo_select_font_face(vstream["subwin"], "Ricty Diminished", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    vstream["subwin"] << meevax::font_face("Ricty Diminished");
+
     cairo_set_font_size(vstream["subwin"], 20);
     cairo_set_source_rgba(vstream["subwin"], 1.0, 1.0, 1.0, 1.0);
 
