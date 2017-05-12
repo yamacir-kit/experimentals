@@ -18,6 +18,13 @@ visual_context& map(visual_context& vc) noexcept
 }
 
 
+visual_context& unmap(visual_context& vc) noexcept
+{
+  XUnmapWindow(vc, vc);
+  return vc;
+}
+
+
 visual_context& map_raised(visual_context& vc) noexcept
 {
   XMapRaised(vc, vc);
