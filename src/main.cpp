@@ -46,7 +46,8 @@ int main(int argc, char** argv)
 
     vstream << map_raised;
 
-    vstream["main"] << map_raised << flush;
+    vstream["main"] << map_raised << flush
+                    << color(0, 0, 0) << flush;
 
     auto hoge {0};
     std::cin >> hoge; // for stop program while input something

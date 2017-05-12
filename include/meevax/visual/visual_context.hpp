@@ -20,9 +20,15 @@ public:
     : cairo_ {cairo_create(surface), cairo_destroy}
   {}
 
-  visual_context& operator<<(visual_context& (*manipulator)(visual_context&))
+  visual_context& operator<<(visual_context& (*f)(visual_context&))
   {
-    return (*manipulator)(*this);
+    return (*f)(*this);
+  }
+
+  template <typename F>
+  visual_context& operator<<(F&& f)
+  {
+    return f(*this);
   }
 
 public:

@@ -40,6 +40,23 @@ visual_context& flush(visual_context& vc)
 }
 
 
+class color
+{
+  double red_, green_, blue_, alpha_;
+
+public:
+  color(double r, double g, double b, double a = 1.0)
+    : red_ {r}, green_ {g}, blue_ {b}, alpha_ {a}
+  {}
+
+  visual_context& operator()(visual_context& vc)
+  {
+    cairo_set_source_rgba(vc, red_, green_, blue_, alpha_);
+    return vc;
+  }
+};
+
+
 } // namespace meevax
 
 
