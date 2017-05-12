@@ -1,8 +1,8 @@
-#include <iostream>
-#include <system_error>
-
 #include <cerrno>
 #include <cstdlib>
+#include <iostream>
+#include <system_error>
+#include <thread>
 
 #include <meevax/core/generic_editor.hpp>
 
@@ -40,17 +40,34 @@ int main(int argc, char** argv)
   // }
 
   meevax::visual_stream vstream {"", 320, 180};
+  vstream << meevax::map_raised;
 
+  std::string hello {"Hello, X Window System with cairo vector graphics library"};
+
+  while (true)
   {
-    using namespace meevax;
+    vstream["subwin"] << meevax::map_raised;
 
-    vstream << map_raised;
+    cairo_set_source_rgba(vstream["subwin"], 0, 0, 0, 1.0);
+    cairo_paint(vstream["subwin"]);
 
-    vstream["main"] << map_raised << flush
-                    << color(0, 0, 0) << flush;
+    cairo_select_font_face(vstream["subwin"], "Ricty Diminished", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    cairo_set_font_size(vstream["subwin"], 20);
+    cairo_set_source_rgba(vstream["subwin"], 1.0, 1.0, 1.0, 1.0);
 
-    auto hoge {0};
-    std::cin >> hoge; // for stop program while input something
+    cairo_move_to(vstream["subwin"], 10, 25);
+    cairo_show_text(vstream["subwin"], hello.c_str());
+
+    vstream["subwin"] << meevax::flush;
+
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+    if (!hello.empty())
+    {
+      hello.erase(hello.begin());
+    }
+
+    else break;
   }
 
   return 0;
