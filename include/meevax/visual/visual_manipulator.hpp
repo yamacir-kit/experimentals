@@ -104,6 +104,23 @@ public:
 };
 
 
+class move_to
+{
+  double x_, y_;
+
+public:
+  move_to(double x, double y)
+    : x_ {x}, y_ {y}
+  {}
+
+  visual_context& operator()(visual_context& vc)
+  {
+    cairo_move_to(vc, x_, y_);
+    return vc;
+  }
+};
+
+
 } // namespace meevax
 
 

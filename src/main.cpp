@@ -53,7 +53,8 @@ int main(int argc, char** argv)
                       << meevax::font_size(20)
                       << meevax::color(1.0, 1.0, 1.0);
 
-    cairo_move_to(vstream["subwin"], 10, 25);
+    vstream["subwin"] << meevax::move_to(10, 25);
+
     cairo_show_text(vstream["subwin"], hello.c_str());
 
     vstream["subwin"] << meevax::flush;
