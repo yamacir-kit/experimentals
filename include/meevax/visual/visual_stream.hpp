@@ -63,6 +63,16 @@ public:
   {
     XSynchronize(display_, true); // for debug
   }
+
+  visual_context& operator[](const std::string& s)
+  {
+    if (contexts_.find(s) == contexts_.end())
+    {
+      contexts_.emplace(s, create_surface(master_, 160, 90));
+    }
+
+    return contexts_.at(s);
+  }
 };
 
 
