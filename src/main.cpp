@@ -39,21 +39,22 @@ int main(int argc, char** argv)
   //   std::exit(errno);
   // }
 
-  meevax::visual_stream vstream {"", 320, 180};
-  vstream << meevax::map_raised;
+  meevax::visual_stream vstream {"", 160 * 4, 90 * 4};
+  vstream << meevax::map_raised << meevax::flush;
 
   std::string hello {"Hello, X Window System with cairo vector graphics library"};
 
   while (true)
   {
     vstream["subwin"] << meevax::map_raised
-                      << meevax::color(0, 0, 0) << meevax::paint;
+                      << meevax::color(1, 1, 1) << meevax::paint;
 
-    cairo_select_font_face(vstream["subwin"], "Ricty Diminished", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-    cairo_set_font_size(vstream["subwin"], 20);
-    cairo_set_source_rgba(vstream["subwin"], 1.0, 1.0, 1.0, 1.0);
+    vstream["subwin"] << meevax::font_face("Ricty Diminished")
+                      << meevax::font_size(20)
+                      << meevax::color(0, 0, 0);
 
-    cairo_move_to(vstream["subwin"], 10, 25);
+    vstream["subwin"] << meevax::move_to(10, 25);
+
     cairo_show_text(vstream["subwin"], hello.c_str());
 
     vstream["subwin"] << meevax::flush;
