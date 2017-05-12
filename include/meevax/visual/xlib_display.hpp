@@ -13,12 +13,12 @@
 namespace meevax {
 
 
-class display
+class xlib_display
 {
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display_;
 
 public:
-  display(const std::string& name = {""})
+  xlib_display(const std::string& name = {""})
     : display_ {XOpenDisplay(name.c_str()), XCloseDisplay}
   {
     if (display_ == nullptr)

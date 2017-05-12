@@ -2,11 +2,23 @@
 #define INCLUDED_MEEVAX_VISUAL_VISUAL_STREAM_HPP_
 
 
+#include <string>
+
+#include <meevax/visual/xlib_display.hpp>
+
+
 namespace meevax {
 
 
 class visual_stream
-{};
+{
+  meevax::xlib_display display_;
+
+public:
+  visual_stream(const std::string& name = {""})
+    : display_ {name}
+  {}
+};
 
 
 } // namespace meevax

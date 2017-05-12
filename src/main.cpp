@@ -5,6 +5,7 @@
 #include <cstdlib>
 
 #include <meevax/core/generic_editor.hpp>
+#include <meevax/visual/visual_stream.hpp>
 
 
 int main(int argc, char** argv)
