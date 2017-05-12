@@ -4,6 +4,7 @@
 
 #include <string>
 
+#include <meevax/visual/visual_context.hpp>
 #include <meevax/visual/xlib_display.hpp>
 
 
