@@ -57,6 +57,13 @@ public:
 };
 
 
+visual_context& paint(visual_context& vc)
+{
+  cairo_paint(vc);
+  return vc;
+}
+
+
 } // namespace meevax
 
 
