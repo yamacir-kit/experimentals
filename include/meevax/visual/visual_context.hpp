@@ -74,6 +74,18 @@ private:
   }
 
 public:
+  auto x() noexcept
+  {
+    update_getometry();
+    return x_;
+  }
+
+  auto y() noexcept
+  {
+    update_getometry();
+    return y_;
+  }
+
   auto width() const
   {
     return cairo_xlib_surface_get_width(cairo_get_target(cairo_.get()));
