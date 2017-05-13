@@ -117,6 +117,11 @@ public:
   {
     XMoveResizeWindow(*this, *this, x, y, width, height);
   }
+
+  void select_input(long event_mask) noexcept
+  {
+    XSelectInput(*this, *this, event_mask);
+  }
 };
 
 

@@ -55,12 +55,7 @@ int main(int argc, char** argv)
                       << meevax::font_size(20)
                       << meevax::color(0, 0, 0);
 
-    vstream["subwin"] << meevax::move_to(10, 25);
-
-    // cairo_show_text(vstream["subwin"], hello.c_str());
-    vstream["subwin"] << meevax::text(hello);
-
-    vstream["subwin"] << meevax::flush;
+    vstream["subwin"] << meevax::move_to(10, 25) << meevax::text(hello) << meevax::flush;
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
