@@ -74,6 +74,11 @@ public:
     return contexts_.at(s);
   }
 
+  visual_context& master()
+  {
+    return master_;
+  }
+
   visual_context& operator<<(visual_context& (*f)(visual_context&))
   {
     return (*f)(master_);
@@ -85,9 +90,19 @@ public:
     return f(*this);
   }
 
+public:
   auto erase(const std::string& s)
   {
     contexts_.erase(s);
+  }
+
+  template <typename F>
+  void event_process(F&& f)
+  {
+    for (XEvent event {}; !XNextEvent(display_, &event); )
+    {
+      f(event);
+    }
   }
 };
 

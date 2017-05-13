@@ -67,5 +67,26 @@ int main(int argc, char** argv)
     else break;
   }
 
+  // vstream.erase("subwin");
+
+  vstream["event_test"].resize(320, 180);
+  vstream["event_test"].move_absolute(160, 90);
+  vstream["event_test"].select_inputs(ExposureMask | ButtonPressMask);
+
+  vstream["event_test"] << meevax::map_raised;
+
+  vstream.event_process([&](auto event) {
+    switch (event.type)
+    {
+    case Expose:
+      std::cout << "[debug] expose\n";
+      break;
+
+    case ButtonPress:
+      std::cout << "[debug] button press\n";
+      break;
+    }
+  });
+
   return 0;
 }
