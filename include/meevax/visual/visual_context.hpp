@@ -79,6 +79,16 @@ public:
   {
     XMoveWindow(*this, *this, x, y);
   }
+
+  void resize(std::size_t width, std::size_t height) noexcept
+  {
+    XResizeWindow(*this, *this, width, height);
+  }
+
+  void move_resize(int x, int y, std::size_t width, std::size_t height) noexcept
+  {
+    XMoveResizeWindow(*this, *this, x, y, width, height);
+  }
 };
 
 
