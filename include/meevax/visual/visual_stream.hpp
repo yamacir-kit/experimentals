@@ -51,12 +51,6 @@ private:
 private:
   auto create_surface(Window parents, std::size_t width, std::size_t height) const
   {
-    auto window {XCreateSimpleWindow(display_, parents, 0, 0, width, height, 0, black_pixel(), white_pixel())};
-    return cairo_xlib_surface_create(display_, window, default_visual(), width, height);
-  }
-
-  auto create_debug_surface(Window parents, std::size_t width, std::size_t height) const
-  {
     auto window {XCreateSimpleWindow(display_, parents, 0, 0, width, height, 1, black_pixel(), white_pixel())};
     return cairo_xlib_surface_create(display_, window, default_visual(), width, height);
   }
@@ -74,7 +68,7 @@ public:
   {
     if (contexts_.find(s) == contexts_.end())
     {
-      contexts_.emplace(s, create_debug_surface(master_, 160, 90));
+      contexts_.emplace(s, create_surface(master_, 160, 90));
     }
 
     return contexts_.at(s);
