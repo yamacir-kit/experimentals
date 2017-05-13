@@ -121,6 +121,23 @@ public:
 };
 
 
+class text
+{
+  std::string data_;
+
+public:
+  text(const std::string& data)
+    : data_ {data}
+  {}
+
+  visual_context& operator()(visual_context& vc)
+  {
+    cairo_show_text(vc, data_.c_str());
+    return vc;
+  }
+};
+
+
 } // namespace meevax
 
 

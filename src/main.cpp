@@ -57,7 +57,8 @@ int main(int argc, char** argv)
 
     vstream["subwin"] << meevax::move_to(10, 25);
 
-    cairo_show_text(vstream["subwin"], hello.c_str());
+    // cairo_show_text(vstream["subwin"], hello.c_str());
+    vstream["subwin"] << meevax::text(hello);
 
     vstream["subwin"] << meevax::flush;
 
