@@ -16,6 +16,10 @@ class visual_context
 {
   std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo_;
 
+  Window root_window_;
+  int x_, y_;
+  unsigned int width_, height_, border_width_, depth_;
+
 public:
   visual_context(cairo_surface_t* surface)
     : cairo_ {cairo_create(surface), cairo_destroy}
@@ -61,6 +65,12 @@ public:
   operator Visual*() const
   {
     return cairo_xlib_surface_get_visual(cairo_get_target(cairo_.get()));
+  }
+
+private:
+  void update_getometry() noexcept
+  {
+    XGetGeometry(*this, *this, &root_window_, &x_, &y_, &width_, &height_, &border_width_, &depth_);
   }
 
 public:
