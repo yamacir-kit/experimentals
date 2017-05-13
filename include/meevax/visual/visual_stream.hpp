@@ -6,6 +6,8 @@
 #include <unordered_map>
 
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
+#include <X11/keysym.h>
 #include <cairo/cairo-xlib.h>
 
 #include <meevax/visual/visual_context.hpp>
@@ -48,7 +50,6 @@ private:
     return XBlackPixel(display_, default_screen());
   }
 
-private:
   auto create_surface(Window parents, std::size_t width, std::size_t height) const
   {
     auto window {XCreateSimpleWindow(display_, parents, 0, 0, width, height, 1, black_pixel(), white_pixel())};
@@ -62,6 +63,8 @@ public:
       contexts_ {}
   {
     XSynchronize(display_, true); // for debug
+
+    XSelectInput(display_, master_, ExposureMask | KeyPressMask);
   }
 
   visual_context& operator[](const std::string& s)
