@@ -86,14 +86,16 @@ public:
     return y_;
   }
 
-  auto width() const
+  auto width() noexcept
   {
-    return cairo_xlib_surface_get_width(cairo_get_target(cairo_.get()));
+    update_getometry();
+    return width_;
   }
 
-  auto height() const
+  auto height() noexcept
   {
-    return cairo_xlib_surface_get_height(cairo_get_target(cairo_.get()));
+    update_getometry();
+    return height_;
   }
 
 public:
