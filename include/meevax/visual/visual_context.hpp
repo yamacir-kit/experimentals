@@ -16,9 +16,7 @@ class visual_context
 {
   std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo_;
 
-  Window root_window_;
-  int x_, y_;
-  unsigned int width_, height_, border_width_, depth_;
+  XWindowAttributes attr_;
 
 public:
   visual_context(cairo_surface_t* surface)
@@ -68,34 +66,34 @@ public:
   }
 
 private:
-  void update_getometry() noexcept
+  void get_window_attributes() noexcept
   {
-    XGetGeometry(*this, *this, &root_window_, &x_, &y_, &width_, &height_, &border_width_, &depth_);
+    XGetWindowAttributes(*this, *this, &attr_);
   }
 
 public:
   auto x() noexcept
   {
-    update_getometry();
-    return x_;
+    get_window_attributes();
+    return attr_.x;
   }
 
   auto y() noexcept
   {
-    update_getometry();
-    return y_;
+    get_window_attributes();
+    return attr_.y;
   }
 
   auto width() noexcept
   {
-    update_getometry();
-    return width_;
+    get_window_attributes();
+    return attr_.width;
   }
 
   auto height() noexcept
   {
-    update_getometry();
-    return height_;
+    get_window_attributes();
+    return attr_.height;
   }
 
 public:
@@ -106,8 +104,8 @@ public:
 
   void move_relative(int x, int y) noexcept
   {
-    update_getometry();
-    XMoveWindow(*this, *this, x + x_, y + y_);
+    get_window_attributes();
+    XMoveWindow(*this, *this, x + attr_.x, y + attr_.y);
   }
 
   void resize(std::size_t width, std::size_t height) noexcept
