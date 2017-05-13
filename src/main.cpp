@@ -46,8 +46,10 @@ int main(int argc, char** argv)
 
   while (true)
   {
-    vstream["subwin"] << meevax::map_raised
-                      << meevax::color(1, 1, 1) << meevax::paint;
+    vstream["subwin"] << meevax::map_raised;
+    vstream["subwin"].move_absolute(80, 45);
+
+    vstream["subwin"] << meevax::color(1, 1, 1) << meevax::paint;
 
     vstream["subwin"] << meevax::font_face("Ricty Diminished")
                       << meevax::font_size(20)

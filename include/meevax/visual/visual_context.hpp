@@ -73,6 +73,12 @@ public:
   {
     return cairo_xlib_surface_get_height(cairo_get_target(cairo_.get()));
   }
+
+public:
+  void move_absolute(int x, int y) noexcept
+  {
+    XMoveWindow(*this, *this, x, y);
+  }
 };
 
 
