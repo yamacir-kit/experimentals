@@ -84,6 +84,11 @@ public:
   {
     return f(*this);
   }
+
+  auto erase(const std::string& s)
+  {
+    contexts_.erase(s);
+  }
 };
 
 
