@@ -104,6 +104,12 @@ public:
     XMoveWindow(*this, *this, x, y);
   }
 
+  void move_relative(int x, int y) noexcept
+  {
+    update_getometry();
+    XMoveWindow(*this, *this, x + x_, y + y_);
+  }
+
   void resize(std::size_t width, std::size_t height) noexcept
   {
     XResizeWindow(*this, *this, width, height);
