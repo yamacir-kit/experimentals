@@ -89,13 +89,17 @@ int main(int argc, char** argv)
       break;
 
     case KeyPress:
-      static char char_buffer[32];
-      KeySym keysym;
-      XLookupString(&event.xkey, char_buffer, 32, &keysym, NULL);
+      char buffer[2] {};
+      KeySym keysym {};
 
-      std::cout << "[debug] char_buffer: " << char_buffer << std::endl;
+      if (!XLookupString(&event.xkey, buffer, 1, &keysym, NULL))
+      {
+        std::cout << "[debug] special character\n";
+      }
 
-      keycodes += keysym;
+      std::cout << "[debug] keysym: " << keysym << std::endl;
+
+      // keycodes += keysym;
       vstream["event_test"] << meevax::move_to(0, 20)
                             << meevax::text(keycodes) << meevax::flush;
 
