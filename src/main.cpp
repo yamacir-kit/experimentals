@@ -55,13 +55,9 @@ int main(int argc, char** argv)
                       << meevax::font_size(20)
                       << meevax::color(0, 0, 0);
 
-    vstream["subwin"] << meevax::move_to(10, 25);
+    vstream["subwin"] << meevax::move_to(10, 25) << meevax::text(hello) << meevax::flush;
 
-    cairo_show_text(vstream["subwin"], hello.c_str());
-
-    vstream["subwin"] << meevax::flush;
-
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
     if (!hello.empty())
     {
@@ -70,6 +66,31 @@ int main(int argc, char** argv)
 
     else break;
   }
+
+  // vstream.erase("subwin");
+
+  vstream["event_test"].resize(320, 180);
+  vstream["event_test"].move_absolute(160, 90);
+  vstream["event_test"].select_inputs(ExposureMask | KeyPressMask);
+
+  vstream["event_test"] << meevax::map_raised;
+
+  vstream["event_test"] << meevax::font_face("Ricty Diminished") << meevax::font_size(20)
+                        << meevax::color(0, 0, 0);
+
+  vstream.event_process([&](auto event)
+  {
+    switch (event.type)
+    {
+    case Expose:
+      std::cout << "[debug] expose\n";
+      break;
+
+    case KeyPress:
+      std::cout << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << std::endl;
+      break;
+    }
+  });
 
   return 0;
 }
