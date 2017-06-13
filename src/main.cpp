@@ -87,19 +87,7 @@ int main(int argc, char** argv)
       break;
 
     case KeyPress:
-      char buffer {};
-      KeySym keysym {};
-
-      if (!XLookupString(&event.xkey, &buffer, 1, &keysym, nullptr))
-      {
-        std::cout << "[debug] " << XKeysymToString(keysym) << std::endl;
-      }
-
-      else
-      {
-        std::cout << "[debug] " << static_cast<char>(keysym) << std::endl;
-      }
-
+      std::cout << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << std::endl;
       break;
     }
   });
