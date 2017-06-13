@@ -69,19 +69,17 @@ int main(int argc, char** argv)
 
   // vstream.erase("subwin");
 
-  std::string keycodes {};
-
   vstream["event_test"].resize(320, 180);
   vstream["event_test"].move_absolute(160, 90);
   vstream["event_test"].select_inputs(ExposureMask | KeyPressMask);
 
   vstream["event_test"] << meevax::map_raised;
 
-  vstream["event_test"] << meevax::font_face("Ricty Diminished")
-                        << meevax::font_size(20)
+  vstream["event_test"] << meevax::font_face("Ricty Diminished") << meevax::font_size(20)
                         << meevax::color(0, 0, 0);
 
-  vstream.event_process([&](auto event) {
+  vstream.event_process([&](auto event)
+  {
     switch (event.type)
     {
     case Expose:
@@ -92,16 +90,17 @@ int main(int argc, char** argv)
       char buffer[2] {};
       KeySym keysym {};
 
-      if (!XLookupString(&event.xkey, buffer, 1, &keysym, NULL))
+      if (!XLookupString(&event.xkey, buffer, 1, &keysym, nullptr))
       {
         std::cout << "[debug] special character\n";
       }
 
       std::cout << "[debug] keysym: " << keysym << std::endl;
 
-      // keycodes += keysym;
-      vstream["event_test"] << meevax::move_to(0, 20)
-                            << meevax::text(keycodes) << meevax::flush;
+      vstream["event_test"] << meevax::color(1, 1, 1) << meevax::paint;
+
+      // vstream["event_test"] << meevax::move_to(0, 20) << meevax::color(0, 0, 0)
+      //                       << meevax::text({static_cast<char>(keysym)}) << meevax::flush;
 
       break;
     }
