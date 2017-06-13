@@ -87,20 +87,18 @@ int main(int argc, char** argv)
       break;
 
     case KeyPress:
-      char buffer[2] {};
+      char buffer {};
       KeySym keysym {};
 
-      if (!XLookupString(&event.xkey, buffer, 1, &keysym, nullptr))
+      if (!XLookupString(&event.xkey, &buffer, 1, &keysym, nullptr))
       {
-        std::cout << "[debug] special character\n";
+        std::cout << "[debug] " << XKeysymToString(keysym) << std::endl;
       }
 
-      std::cout << "[debug] keysym: " << keysym << std::endl;
-
-      vstream["event_test"] << meevax::color(1, 1, 1) << meevax::paint;
-
-      // vstream["event_test"] << meevax::move_to(0, 20) << meevax::color(0, 0, 0)
-      //                       << meevax::text({static_cast<char>(keysym)}) << meevax::flush;
+      else
+      {
+        std::cout << "[debug] " << static_cast<char>(keysym) << std::endl;
+      }
 
       break;
     }
