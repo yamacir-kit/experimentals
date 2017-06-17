@@ -89,6 +89,18 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
     display_.get(),
     cairo_xlib_surface_get_drawable(cairo_get_target(surfaces_.at(surface_name).get()))
   );
+
+  cairo_set_source_rgba(
+    surfaces_.at(surface_name).get(),
+    1.0, 0.0, 0.0, 1.0
+  );
+
+  cairo_paint(
+    surfaces_.at(surface_name).get()
+  );
+
+  cairo_surface_flush(cairo_get_target(surfaces_.at(surface_name).get()));
+  XFlush(display_.get());
 }
 
 
