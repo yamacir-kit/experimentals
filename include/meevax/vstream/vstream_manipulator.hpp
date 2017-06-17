@@ -40,13 +40,23 @@ auto color = [](double r, double g, double b, double a = 1.0)
 };
 
 
-auto font_face = [](const std::string&  font_family,
-                    cairo_font_slant_t  font_slant  = CAIRO_FONT_SLANT_NORMAL,
-                    cairo_font_weight_t font_weight = CAIRO_FONT_WEIGHT_NORMAL) // TODO enum classfy
+auto face = [](const std::string&  font_family,
+               cairo_font_slant_t  font_slant  = CAIRO_FONT_SLANT_NORMAL,
+               cairo_font_weight_t font_weight = CAIRO_FONT_WEIGHT_NORMAL) // TODO enum classfy
 {
   return [&](auto& cairo) -> auto&
          {
            cairo_select_font_face(cairo.get(), font_family.c_str(), font_slant, font_weight);
+           return cairo;
+         };
+};
+
+
+auto size = [](auto size)
+{
+  return [&](auto& cairo) -> auto&
+         {
+           cairo_set_font_size(cairo.get(), std::forward<decltype(size)>(size));
            return cairo;
          };
 };
