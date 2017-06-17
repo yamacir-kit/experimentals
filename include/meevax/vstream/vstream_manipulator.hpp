@@ -100,6 +100,30 @@ auto move = [](auto&& x, auto&& y)
 };
 
 
+auto cursorhome = [](auto& cairo)
+  -> auto&
+{
+  cairo_text_extents_t extents {};
+  cairo_text_extents(cairo.get(), "hoge", &extents);
+  cairo_move_to(cairo.get(), 0, extents.height);
+  return cairo;
+};
+
+
+auto endl = [](auto& cairo)
+  -> auto&
+{
+  static cairo_text_extents_t extents {};
+  cairo_text_extents(cairo.get(), "hoge", &extents);
+
+  static double x {0}, y {0};
+  if (cairo_has_current_point(cairo.get())) { cairo_get_current_point(cairo.get(), &x, &y); }
+  cairo_move_to(cairo.get(), 0, y + extents.height);
+
+  return flush(cairo);
+};
+
+
 } // namespace meevax
 
 

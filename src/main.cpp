@@ -97,19 +97,13 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  auto text = [](auto& p) -> auto& {
-    cairo_show_text(p.get(), "hogehoge");
-    return p;
-  };
-
   {
     using namespace meevax;
     vstream["master"] << map_raised
-                      << face("Sans")
-                      << size(20)
-                      << color(0, 0, 0)
-                      << move(0, 20)
-                      << text << flush;
+                      << face("Sans") << size(20) << color(0, 0, 0)
+                      << cursorhome
+                      << "hogehoge" << endl
+                      << "fugafuga" << endl;
   }
 
   sleep(3);
