@@ -6,8 +6,8 @@
 
 #include <meevax/core/generic_editor.hpp>
 
-#include <meevax/visual/visual_stream.hpp>
-#include <meevax/visual/visual_manipulator.hpp>
+// #include <meevax/visual/visual_stream.hpp>
+// #include <meevax/visual/visual_manipulator.hpp>
 
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/vstream_manipulator.hpp>
@@ -97,14 +97,6 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  auto map_raised = [](auto& p) -> auto& {
-    XMapRaised(
-      cairo_xlib_surface_get_display(cairo_get_target(p.get())),
-      cairo_xlib_surface_get_drawable(cairo_get_target(p.get()))
-    );
-    return p;
-  };
-
   auto color = [](auto& p) -> auto& {
     cairo_set_source_rgba(p.get(), 0, 0, 0, 1);
     return p;
@@ -115,7 +107,10 @@ int main(int argc, char** argv)
     return p;
   };
 
-  vstream["master"] << map_raised << color << text;
+  {
+    using namespace meevax;
+    vstream["master"] << map_raised << color << text;
+  }
 
   sleep(3);
 
