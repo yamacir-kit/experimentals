@@ -10,9 +10,27 @@
 
 
 template <typename F>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& p, F&& f)
+auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo, F&& manip)
 {
-  return f(p);
+  return manip(cairo);
+}
+
+
+template <typename C = char>
+auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
+                 const C* utf8)
+{
+  cairo_show_text(cairo.get(), utf8);
+  return cairo;
+}
+
+
+template <typename C = char>
+auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
+                 const std::basic_string<C>& utf8)
+{
+  cairo_show_text(cairo.get(), utf8.c_str());
+  return cairo;
 }
 
 
@@ -38,7 +56,8 @@ auto flush = [](auto& cairo)
 };
 
 
-auto color = [](double&& r, double&& g, double&& b, double&& a = 1.0)
+auto color = [](auto&& r, auto&& g, auto&& b, double&& a = 1.0)
+  -> auto
 {
   return [&](auto& cairo) -> auto&
          {
@@ -51,6 +70,7 @@ auto color = [](double&& r, double&& g, double&& b, double&& a = 1.0)
 auto face = [](const std::string&  family,
                cairo_font_slant_t&&  slant  = CAIRO_FONT_SLANT_NORMAL,
                cairo_font_weight_t&& weight = CAIRO_FONT_WEIGHT_NORMAL)
+  -> auto
 {
   return [&](auto& cairo) -> auto&
          {
@@ -61,6 +81,7 @@ auto face = [](const std::string&  family,
 
 
 auto size = [](auto&& size)
+  -> auto
 {
   return [&](auto& cairo) -> auto&
          {
@@ -71,6 +92,7 @@ auto size = [](auto&& size)
 
 
 auto move = [](auto&& x, auto&& y)
+  -> auto
 {
   return [&](auto& cairo) -> auto&
          {
