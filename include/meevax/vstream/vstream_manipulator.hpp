@@ -67,14 +67,12 @@ auto color = [](auto&& r, auto&& g, auto&& b, double&& a = 1.0)
 };
 
 
-auto face = [](const std::string&  family,
-               cairo_font_slant_t&&  slant  = CAIRO_FONT_SLANT_NORMAL,
-               cairo_font_weight_t&& weight = CAIRO_FONT_WEIGHT_NORMAL)
+auto face = [](const std::string& family)
   -> auto
 {
   return [&](auto& cairo) -> auto&
          {
-           cairo_select_font_face(cairo.get(), family.c_str(), std::forward<decltype(slant)>(slant), std::forward<decltype(weight)>(weight));
+           cairo_select_font_face(cairo.get(), family.c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
            return cairo;
          };
 };
