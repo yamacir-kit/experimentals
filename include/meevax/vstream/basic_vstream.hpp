@@ -25,11 +25,14 @@ class basic_vstream
 public:
   basic_vstream(const std::basic_string<C>& name = {""});
 
-  // create();
+  auto& operator[](const std::basic_string<C>& surface)
+  {
+    return surfaces_.emplace(surface, create(surface)).first->second;
+  }
+
+private:
   auto create(const std::basic_string<C>& surface_name,
               const std::basic_string<C>& parent_surface = {""});
-
-  auto& operator[](const std::basic_string<C>& surface);
 };
 
 } // namespace meevax
@@ -85,13 +88,6 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
   };
 
   return typename decltype(surfaces_)::mapped_type {cairo_create(cairo_surface), cairo_destroy};
-}
-
-
-template <typename C>
-auto& meevax::basic_vstream<C>::operator[](const std::basic_string<C>& surface)
-{
-  return surfaces_.emplace(surface, create(surface)).first->second;
 }
 
 

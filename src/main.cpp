@@ -97,8 +97,6 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  vstream.create("master");
-
   auto map_raised = [](auto& p) -> auto& {
     XMapRaised(
       cairo_xlib_surface_get_display(cairo_get_target(p.get())),
