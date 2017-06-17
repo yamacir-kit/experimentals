@@ -70,6 +70,15 @@ auto size = [](auto&& size)
 };
 
 
+auto move = [](auto&& x, auto&& y)
+{
+  return [&](auto& cairo) -> auto&
+         {
+           cairo_move_to(cairo.get(), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
+           return cairo;
+         };
+};
+
 
 } // namespace meevax
 

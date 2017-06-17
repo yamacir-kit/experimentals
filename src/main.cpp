@@ -105,8 +105,11 @@ int main(int argc, char** argv)
   {
     using namespace meevax;
     vstream["master"] << map_raised
-                      << face("Sans") << size(20)
-                      << color(0, 0, 0) << text;
+                      << face("Sans")
+                      << size(20)
+                      << color(0, 0, 0)
+                      << move(0, 20)
+                      << text << flush;
   }
 
   sleep(3);
