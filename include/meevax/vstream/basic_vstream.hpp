@@ -7,6 +7,7 @@
 #include <memory>
 
 #include <X11/Xlib.h>
+#include <cairo/cairo-xlib.h>
 
 
 namespace meevax {
@@ -14,7 +15,12 @@ namespace meevax {
 template <typename C>
 class basic_vstream
 {
-  std::unique_ptr<Display,decltype(&XCloseDisplay)> display_;
+  std::unique_ptr<Display, decltype(&XCloseDisplay)> display_;
+
+  std::unordered_map<
+    std::string,
+    std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
+  > surfaces_;
 
 public:
   basic_vstream(const std::string& name = {""});
@@ -24,8 +30,9 @@ public:
 
 
 template <typename C>
-meevax::basic_vstream<C>::basic_vstream(const std::string& name)
-  : display_ {XOpenDisplay(name.c_str()), XCloseDisplay}
+meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& name)
+  : display_ {XOpenDisplay(name.c_str()), XCloseDisplay},
+    surfaces_ {}
 {
   if (display_ == nullptr)
   {
