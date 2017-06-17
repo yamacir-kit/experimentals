@@ -38,29 +38,29 @@ auto flush = [](auto& cairo)
 };
 
 
-auto color = [](double r, double g, double b, double a = 1.0)
+auto color = [](double&& r, double&& g, double&& b, double&& a = 1.0)
 {
   return [&](auto& cairo) -> auto&
          {
-           cairo_set_source_rgba(cairo.get(), r, g, b, a);
+           cairo_set_source_rgba(cairo.get(), std::forward<decltype(r)>(r), std::forward<decltype(g)>(g), std::forward<decltype(b)>(b), std::forward<decltype(a)>(a));
            return cairo;
          };
 };
 
 
-auto face = [](const std::string&  font_family,
-               cairo_font_slant_t  font_slant  = CAIRO_FONT_SLANT_NORMAL,
-               cairo_font_weight_t font_weight = CAIRO_FONT_WEIGHT_NORMAL) // TODO enum classfy
+auto face = [](const std::string&  family,
+               cairo_font_slant_t&&  slant  = CAIRO_FONT_SLANT_NORMAL,
+               cairo_font_weight_t&& weight = CAIRO_FONT_WEIGHT_NORMAL)
 {
   return [&](auto& cairo) -> auto&
          {
-           cairo_select_font_face(cairo.get(), font_family.c_str(), font_slant, font_weight);
+           cairo_select_font_face(cairo.get(), family.c_str(), std::forward<decltype(slant)>(slant), std::forward<decltype(weight)>(weight));
            return cairo;
          };
 };
 
 
-auto size = [](auto size)
+auto size = [](auto&& size)
 {
   return [&](auto& cairo) -> auto&
          {
