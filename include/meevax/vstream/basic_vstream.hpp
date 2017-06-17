@@ -34,6 +34,16 @@ public:
     return surfaces_.emplace(surface, create(surface)).first->second;
   }
 
+  template <typename F>
+  void operator>>(F&& event_handler)
+  {
+    for (XEvent event {}; !XNextEvent(display_.get(), &event);
+         std::cout << "[debug] event processed: " << event.xany.serial << std::endl)
+    {
+      event_handler(event);
+    }
+  }
+
 private:
   auto create(const std::basic_string<C>& surface_name,
               const std::basic_string<C>& parent_surface = {""});
@@ -80,6 +90,8 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
       background_pixel_color
     )
   };
+
+  XSelectInput(display_.get(), simple_window, ExposureMask | KeyPressMask);
 
   auto cairo_surface {
     cairo_xlib_surface_create(
