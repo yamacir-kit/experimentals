@@ -10,6 +10,7 @@
 #include <meevax/visual/visual_manipulator.hpp>
 
 #include <meevax/vstream/basic_vstream.hpp>
+#include <meevax/vstream/vstream_manipulator.hpp>
 
 
 int main(int argc, char** argv)

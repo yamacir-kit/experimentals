@@ -35,13 +35,6 @@ public:
 } // namespace meevax
 
 
-template <typename F>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& p, F&& f)
-{
-  return f(p);
-}
-
-
 template <typename C>
 meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& name)
   : display_ {XOpenDisplay(name.c_str()), XCloseDisplay},
