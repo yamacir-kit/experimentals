@@ -97,11 +97,6 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  auto color = [](auto& p) -> auto& {
-    cairo_set_source_rgba(p.get(), 0, 0, 0, 1);
-    return p;
-  };
-
   auto text = [](auto& p) -> auto& {
     cairo_show_text(p.get(), "hogehoge");
     return p;
@@ -109,7 +104,7 @@ int main(int argc, char** argv)
 
   {
     using namespace meevax;
-    vstream["master"] << map_raised << color << text;
+    vstream["master"] << map_raised << color(0, 0, 0) << text;
   }
 
   sleep(3);
