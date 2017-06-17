@@ -30,6 +30,14 @@ auto map_raised = [](auto& cairo)
 };
 
 
+auto flush = [](auto& cairo)
+  -> auto&
+{
+  cairo_surface_flush(cairo_get_target(cairo.get()));
+  return cairo;
+};
+
+
 auto color = [](double r, double g, double b, double a = 1.0)
 {
   return [&](auto& cairo) -> auto&
