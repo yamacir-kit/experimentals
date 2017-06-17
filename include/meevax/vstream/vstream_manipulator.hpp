@@ -37,10 +37,32 @@ auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo
 namespace meevax {
 
 
-auto map_raised = [](auto& cairo)
+auto map = [](auto& cairo)
+  -> auto&
+{
+  XMapWindow(
+    cairo_xlib_surface_get_display(cairo_get_target(cairo.get())),
+    cairo_xlib_surface_get_drawable(cairo_get_target(cairo.get()))
+  );
+  return cairo;
+};
+
+
+auto raise = [](auto& cairo)
   -> auto&
 {
   XMapRaised(
+    cairo_xlib_surface_get_display(cairo_get_target(cairo.get())),
+    cairo_xlib_surface_get_drawable(cairo_get_target(cairo.get()))
+  );
+  return cairo;
+};
+
+
+auto unmap = [](auto& cairo)
+  -> auto&
+{
+  XUnmapWindow(
     cairo_xlib_surface_get_display(cairo_get_target(cairo.get())),
     cairo_xlib_surface_get_drawable(cairo_get_target(cairo.get()))
   );
@@ -61,7 +83,7 @@ auto paint = [](auto& cairo)
 {
   cairo_paint(cairo.get());
   return cairo;
-}
+};
 
 
 auto color = [](auto&& r, auto&& g, auto&& b, double&& a = 1.0)
