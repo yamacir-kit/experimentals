@@ -43,6 +43,8 @@ meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& name)
     std::cerr << "[error] XOpenDisplay(3) - failed to open display " << name << std::endl;
     std::exit(EXIT_FAILURE);
   }
+
+  XSynchronize(display_.get(), true); // XXX for debug
 }
 
 
@@ -98,9 +100,6 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
   cairo_paint(
     surfaces_.at(surface_name).get()
   );
-
-  cairo_surface_flush(cairo_get_target(surfaces_.at(surface_name).get()));
-  XFlush(display_.get());
 }
 
 
