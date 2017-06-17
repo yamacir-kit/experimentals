@@ -56,6 +56,14 @@ auto flush = [](auto& cairo)
 };
 
 
+auto paint = [](auto& cairo)
+  -> auto&
+{
+  cairo_paint(cairo.get());
+  return cairo;
+}
+
+
 auto color = [](auto&& r, auto&& g, auto&& b, double&& a = 1.0)
   -> auto
 {

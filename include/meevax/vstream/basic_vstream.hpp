@@ -27,6 +27,10 @@ public:
 
   auto& operator[](const std::basic_string<C>& surface)
   {
+    // XXX
+    // 実行効率が悪い場合，ここで返すのをユニークポインタではなくその中身，
+    // つまり surfaces_.emplace(surface, create(surface)).first->second.get()
+    // を返すようにすれば，これを使う奴らがいちいち get を呼ばなくて済むようになる
     return surfaces_.emplace(surface, create(surface)).first->second;
   }
 
