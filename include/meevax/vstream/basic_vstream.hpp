@@ -28,9 +28,18 @@ public:
   // create();
   auto create(const std::basic_string<C>& surface_name,
               const std::basic_string<C>& parent_surface = {""});
+
+  auto& operator[](const std::basic_string<C>& surface);
 };
 
 } // namespace meevax
+
+
+template <typename F>
+auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& p, F&& f)
+{
+  return f(p);
+}
 
 
 template <typename C>
@@ -82,24 +91,33 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
     )
   };
 
-  surfaces_.emplace(
-    surface_name,
-    typename decltype(surfaces_)::mapped_type {cairo_create(cairo_surface), cairo_destroy}
-  );
+  return typename decltype(surfaces_)::mapped_type {cairo_create(cairo_surface), cairo_destroy};
 
-  XMapRaised(
-    display_.get(),
-    cairo_xlib_surface_get_drawable(cairo_get_target(surfaces_.at(surface_name).get()))
-  );
+  // surfaces_.emplace(
+  //   surface_name,
+  //   typename decltype(surfaces_)::mapped_type {cairo_create(cairo_surface), cairo_destroy}
+  // );
+  //
+  // XMapRaised(
+  //   display_.get(),
+  //   cairo_xlib_surface_get_drawable(cairo_get_target(surfaces_.at(surface_name).get()))
+  // );
+  //
+  // cairo_set_source_rgba(
+  //   surfaces_.at(surface_name).get(),
+  //   1.0, 0.0, 0.0, 1.0
+  // );
+  //
+  // cairo_paint(
+  //   surfaces_.at(surface_name).get()
+  // );
+}
 
-  cairo_set_source_rgba(
-    surfaces_.at(surface_name).get(),
-    1.0, 0.0, 0.0, 1.0
-  );
 
-  cairo_paint(
-    surfaces_.at(surface_name).get()
-  );
+template <typename C>
+auto& meevax::basic_vstream<C>::operator[](const std::basic_string<C>& surface)
+{
+  return surfaces_.emplace(surface, create(surface)).first->second;
 }
 
 
