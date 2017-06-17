@@ -9,6 +9,8 @@
 #include <meevax/visual/visual_stream.hpp>
 #include <meevax/visual/visual_manipulator.hpp>
 
+#include <meevax/vstream/basic_vstream.hpp>
+
 
 int main(int argc, char** argv)
 {
