@@ -6,10 +6,11 @@
 
 #include <meevax/core/generic_editor.hpp>
 
-#include <meevax/visual/visual_stream.hpp>
-#include <meevax/visual/visual_manipulator.hpp>
+// #include <meevax/visual/visual_stream.hpp>
+// #include <meevax/visual/visual_manipulator.hpp>
 
 #include <meevax/vstream/basic_vstream.hpp>
+#include <meevax/vstream/vstream_manipulator.hpp>
 
 
 int main(int argc, char** argv)
@@ -96,10 +97,16 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  vstream.create("master");
-  vstream.create("sub", "master");
+  {
+    using namespace meevax;
+    vstream["master"] << meevax::raise
+                      << face("Ricty Diminished") << size(20) << color(0, 0, 0)
+                      << cursorhome
+                      << "hogehoge\nfugafuga" << endl
+                      << "piyipiyo" << endl;
+  }
 
-  sleep(3);
+  std::this_thread::sleep_for(std::chrono::seconds(3));
 
   return 0;
 }

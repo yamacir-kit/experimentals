@@ -25,7 +25,16 @@ class basic_vstream
 public:
   basic_vstream(const std::basic_string<C>& name = {""});
 
-  // create();
+  auto& operator[](const std::basic_string<C>& surface)
+  {
+    // XXX
+    // 実行効率が悪い場合，ここで返すのをユニークポインタではなくその中身，
+    // つまり surfaces_.emplace(surface, create(surface)).first->second.get()
+    // を返すようにすれば，これを使う奴らがいちいち get を呼ばなくて済むようになる
+    return surfaces_.emplace(surface, create(surface)).first->second;
+  }
+
+private:
   auto create(const std::basic_string<C>& surface_name,
               const std::basic_string<C>& parent_surface = {""});
 };
@@ -43,6 +52,8 @@ meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& name)
     std::cerr << "[error] XOpenDisplay(3) - failed to open display " << name << std::endl;
     std::exit(EXIT_FAILURE);
   }
+
+  XSynchronize(display_.get(), true); // XXX for debug
 }
 
 
@@ -80,27 +91,7 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
     )
   };
 
-  surfaces_.emplace(
-    surface_name,
-    typename decltype(surfaces_)::mapped_type {cairo_create(cairo_surface), cairo_destroy}
-  );
-
-  XMapRaised(
-    display_.get(),
-    cairo_xlib_surface_get_drawable(cairo_get_target(surfaces_.at(surface_name).get()))
-  );
-
-  cairo_set_source_rgba(
-    surfaces_.at(surface_name).get(),
-    1.0, 0.0, 0.0, 1.0
-  );
-
-  cairo_paint(
-    surfaces_.at(surface_name).get()
-  );
-
-  cairo_surface_flush(cairo_get_target(surfaces_.at(surface_name).get()));
-  XFlush(display_.get());
+  return typename decltype(surfaces_)::mapped_type {cairo_create(cairo_surface), cairo_destroy};
 }
 
 
