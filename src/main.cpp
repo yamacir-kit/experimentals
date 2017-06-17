@@ -97,7 +97,26 @@ int main(int argc, char** argv)
   meevax::basic_vstream<char> vstream {""};
 
   vstream.create("master");
-  vstream.create("sub", "master");
+
+  auto map_raised = [](auto& p) -> auto& {
+    XMapRaised(
+      cairo_xlib_surface_get_display(cairo_get_target(p.get())),
+      cairo_xlib_surface_get_drawable(cairo_get_target(p.get()))
+    );
+    return p;
+  };
+
+  auto color = [](auto& p) -> auto& {
+    cairo_set_source_rgba(p.get(), 0, 0, 0, 1);
+    return p;
+  };
+
+  auto text = [](auto& p) -> auto& {
+    cairo_show_text(p.get(), "hogehoge");
+    return p;
+  };
+
+  vstream["master"] << map_raised << color << text;
 
   sleep(3);
 
