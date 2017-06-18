@@ -2,9 +2,9 @@
 #define INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP_
 
 
+#include <memory>
 #include <string>
 #include <unordered_map>
-#include <memory>
 
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
@@ -27,10 +27,6 @@ public:
 
   auto& operator[](const std::basic_string<C>& surface)
   {
-    // XXX
-    // 実行効率が悪い場合，ここで返すのをユニークポインタではなくその中身，
-    // つまり surfaces_.emplace(surface, create(surface)).first->second.get()
-    // を返すようにすれば，これを使う奴らがいちいち get を呼ばなくて済むようになる
     return surfaces_.emplace(surface, create(surface)).first->second;
   }
 
