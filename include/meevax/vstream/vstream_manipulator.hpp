@@ -46,6 +46,7 @@ auto flush = [](auto& cairo)
   -> auto&
 {
   cairo_surface_flush(cairo_get_target(cairo.get()));
+  XFlush(cairo_xlib_surface_get_display(cairo_get_target(cairo.get())));
   return cairo;
 };
 
