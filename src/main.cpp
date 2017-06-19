@@ -8,6 +8,7 @@
 
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/vstream_manipulator.hpp>
+#include <meevax/vstream/vstream_operator.hpp>
 
 
 int main(int argc, char** argv)
