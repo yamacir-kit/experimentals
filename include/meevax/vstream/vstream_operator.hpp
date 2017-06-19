@@ -26,6 +26,15 @@ auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo
 };
 
 
+template <typename C>
+auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
+                 const std::basic_string<C>& text)
+{
+  cairo_show_text(cairo.get(), text.c_str());
+  return cairo;
+};
+
+
 // template <typename C = char>
 // auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
 //                  std::vector<std::vector<std::basic_string<C>>>&& text)
