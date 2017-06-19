@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 
   vstream["master"] << meevax::raise
                     << meevax::face("Ricty Diminished")
-                    << meevax::size(20)
+                    << meevax::size(18.0)
                     << meevax::color(0, 0, 0)
                     << meevax::cursorhome
                     << "hogehoge" << meevax::cr << meevax::lf
@@ -65,10 +65,10 @@ int main(int argc, char** argv)
       break;
 
     case KeyPress:
-      vstream["master"] << meevax::color(1, 1, 1) << meevax::paint
-                        << meevax::color(0, 0, 0)
-                        // << "[debug] " << std::string(XKeysymToString(XLookupKeysym(&event.xkey, 0))).c_str() << meevax::cr;
-                        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
+      vstream["master"]
+        << meevax::color(1, 1, 1) << meevax::paint
+        << meevax::color(0, 0, 0)
+        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
       break;
     }
   }

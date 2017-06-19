@@ -144,7 +144,7 @@ auto lf = [](auto& cairo)
     cairo_get_current_point(cairo.get(), &x, &y);
   }
 
-  cairo_move_to(cairo.get(), x, y + extents.height);
+  cairo_move_to(cairo.get(), x, y + extents.height + 3);
 
   return cairo;
 };
