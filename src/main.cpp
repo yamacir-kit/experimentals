@@ -51,8 +51,9 @@ int main(int argc, char** argv)
                     << meevax::size(20)
                     << meevax::color(0, 0, 0)
                     << meevax::cursorhome
-                    << "hogehoge\nfugafuga" << meevax::endl
-                    << "piyipiyo"           << meevax::endl;
+                    << "hogehoge" << meevax::cr << meevax::lf
+                    << "fugafuga" << meevax::cr << meevax::lf
+                    << "piyipiyo" << meevax::cr << meevax::lf;
 
   while (true)
   {
@@ -66,7 +67,8 @@ int main(int argc, char** argv)
     case KeyPress:
       vstream["master"] << meevax::color(1, 1, 1) << meevax::paint
                         << meevax::color(0, 0, 0)
-                        << "[debug] " << std::string(XKeysymToString(XLookupKeysym(&event.xkey, 0))).c_str() << meevax::cr;
+                        // << "[debug] " << std::string(XKeysymToString(XLookupKeysym(&event.xkey, 0))).c_str() << meevax::cr;
+                        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
       break;
     }
   }
