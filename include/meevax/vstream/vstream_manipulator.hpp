@@ -2,20 +2,8 @@
 #define INCLUDED_MEEVAX_VSTREAM_VSTREAM_MANIPULATOR_HPP_
 
 
-#include <memory>
-#include <sstream>
-#include <string>
-#include <vector>
-
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
-
-
-template <typename F>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo, F&& manip)
-{
-  return manip(cairo);
-}
 
 
 namespace meevax {
@@ -117,9 +105,47 @@ auto move = [](auto&& x, auto&& y)
 auto cursorhome = [](auto& cairo)
   -> auto&
 {
-  cairo_text_extents_t extents {};
+  static cairo_text_extents_t extents {};
   cairo_text_extents(cairo.get(), "hoge", &extents);
+
   cairo_move_to(cairo.get(), 0, extents.height);
+
+  return cairo;
+};
+
+
+auto cr = [](auto& cairo)
+  -> auto&
+{
+  // static cairo_text_extents_t extents {};
+  // cairo_text_extents(cairo.get(), "hoge", &extents);
+
+  static double x {0}, y {0};
+  if (cairo_has_current_point(cairo.get()))
+  {
+    cairo_get_current_point(cairo.get(), &x, &y);
+  }
+
+  cairo_move_to(cairo.get(), 0, y);
+
+  return cairo;
+};
+
+
+auto lf = [](auto& cairo)
+  -> auto&
+{
+  static cairo_text_extents_t extents {};
+  cairo_text_extents(cairo.get(), "hoge", &extents);
+
+  static double x {0}, y {0};
+  if (cairo_has_current_point(cairo.get()))
+  {
+    cairo_get_current_point(cairo.get(), &x, &y);
+  }
+
+  cairo_move_to(cairo.get(), x, y + extents.height);
+
   return cairo;
 };
 
@@ -131,7 +157,11 @@ auto endl = [](auto& cairo)
   cairo_text_extents(cairo.get(), "hoge", &extents);
 
   static double x {0}, y {0};
-  if (cairo_has_current_point(cairo.get())) { cairo_get_current_point(cairo.get(), &x, &y); }
+  if (cairo_has_current_point(cairo.get()))
+  {
+    cairo_get_current_point(cairo.get(), &x, &y);
+  }
+
   cairo_move_to(cairo.get(), 0, y + extents.height);
 
   return flush(cairo);
@@ -139,41 +169,6 @@ auto endl = [](auto& cairo)
 
 
 } // namespace meevax
-
-
-template <typename C = char>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
-                 std::vector<std::vector<std::basic_string<C>>>&& text)
-{
-  for (const auto& line : text)
-  {
-    for (const auto& word : line)
-    {
-      cairo_show_text(cairo.get(), (&word != &line.back() ? word + " " : word).c_str());
-    }
-    if (&line != &text.back()) { cairo << meevax::endl; }
-  }
-
-  return cairo;
-}
-
-
-template <typename C = char>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
-                 const C* utf8)
-{
-  std::basic_stringstream<C> text {utf8};
-
-  std::vector<std::vector<std::basic_string<C>>> parsive {};
-              std::vector<std::basic_string<C>>  line_buffer {};
-
-  for (std::basic_string<C> buffer {}; std::getline(text, buffer); parsive.push_back(line_buffer))
-  {
-    for (std::basic_stringstream<C> line {buffer}; std::getline(line, buffer, ' '); line_buffer.push_back(buffer));
-  }
-
-  return cairo << std::move(parsive);
-}
 
 
 #endif

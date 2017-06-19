@@ -30,18 +30,15 @@ public:
     return surfaces_.emplace(surface, create(surface)).first->second;
   }
 
-  template <typename F>
-  void operator>>(F&& event_handler)
+  auto next_event()
   {
-    for (XEvent event {}; !XNextEvent(display_.get(), &event);
-         std::cout << "[debug] event processed: " << event.xany.serial << std::endl)
-    {
-      event_handler(event);
-    }
+    static XEvent event {};
+    XNextEvent(display_.get(), &event);
+    return event;
   }
 
 private:
-  auto create(const std::basic_string<C>& surface_name,
+  auto create(const std::basic_string<C>& target_surface,
               const std::basic_string<C>& parent_surface = {""});
 };
 
@@ -59,18 +56,20 @@ meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& name)
     std::exit(EXIT_FAILURE);
   }
 
-  XSynchronize(display_.get(), true); // XXX for debug
+#ifndef NDEBUG
+  XSynchronize(display_.get(), true);
+#endif
 }
 
 
 template <typename C>
-auto meevax::basic_vstream<C>::create(const std::basic_string<C>& surface_name,
+auto meevax::basic_vstream<C>::create(const std::basic_string<C>& target_surface,
                                       const std::basic_string<C>& parent_surface)
 {
-  std::size_t width {320}; // TODO
-  std::size_t height {240}; // TODO
-  std::size_t border_line_width {1};
-  auto border_pixel_color {XBlackPixel(display_.get(), XDefaultScreen(display_.get()))};
+  constexpr std::size_t width  {16 * 40}; // TODO
+  constexpr std::size_t height { 9 * 40}; // TODO
+  constexpr std::size_t border_line_width {0};
+  auto     border_pixel_color {XBlackPixel(display_.get(), XDefaultScreen(display_.get()))};
   auto background_pixel_color {XWhitePixel(display_.get(), XDefaultScreen(display_.get()))};
 
   auto simple_window {
