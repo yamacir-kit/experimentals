@@ -117,6 +117,24 @@ auto cursorhome = [](auto& cairo)
 auto cr = [](auto& cairo)
   -> auto&
 {
+  // static cairo_text_extents_t extents {};
+  // cairo_text_extents(cairo.get(), "hoge", &extents);
+
+  static double x {0}, y {0};
+  if (cairo_has_current_point(cairo.get()))
+  {
+    cairo_get_current_point(cairo.get(), &x, &y);
+  }
+
+  cairo_move_to(cairo.get(), 0, y);
+
+  return cairo;
+};
+
+
+auto lf = [](auto& cairo)
+  -> auto&
+{
   static cairo_text_extents_t extents {};
   cairo_text_extents(cairo.get(), "hoge", &extents);
 
@@ -126,7 +144,7 @@ auto cr = [](auto& cairo)
     cairo_get_current_point(cairo.get(), &x, &y);
   }
 
-  cairo_move_to(cairo.get(), x, extents.height);
+  cairo_move_to(cairo.get(), x, y + extents.height);
 
   return cairo;
 };
@@ -139,7 +157,11 @@ auto endl = [](auto& cairo)
   cairo_text_extents(cairo.get(), "hoge", &extents);
 
   static double x {0}, y {0};
-  if (cairo_has_current_point(cairo.get())) { cairo_get_current_point(cairo.get(), &x, &y); }
+  if (cairo_has_current_point(cairo.get()))
+  {
+    cairo_get_current_point(cairo.get(), &x, &y);
+  }
+
   cairo_move_to(cairo.get(), 0, y + extents.height);
 
   return flush(cairo);
