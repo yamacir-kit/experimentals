@@ -6,9 +6,6 @@
 
 #include <meevax/core/generic_editor.hpp>
 
-// #include <meevax/visual/visual_stream.hpp>
-// #include <meevax/visual/visual_manipulator.hpp>
-
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/vstream_manipulator.hpp>
 
@@ -56,10 +53,9 @@ int main(int argc, char** argv)
                     << "hogehoge\nfugafuga" << meevax::endl
                     << "piyipiyo"           << meevax::endl;
 
-  std::this_thread::sleep_for(std::chrono::seconds(3));
-
-  vstream >> [&](auto event)
+  while (true)
   {
+    auto event {vstream.next_event()};
     switch (event.type)
     {
     case Expose:
@@ -72,7 +68,7 @@ int main(int argc, char** argv)
                         << "[debug] " << std::string(XKeysymToString(XLookupKeysym(&event.xkey, 0))).c_str() << meevax::endl;
       break;
     }
-  };
+  }
 
 
   return 0;

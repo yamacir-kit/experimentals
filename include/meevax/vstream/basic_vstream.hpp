@@ -30,14 +30,11 @@ public:
     return surfaces_.emplace(surface, create(surface)).first->second;
   }
 
-  template <typename F>
-  void operator>>(F&& event_handler)
+  auto next_event()
   {
-    for (XEvent event {}; !XNextEvent(display_.get(), &event);
-         std::cout << "[debug] event processed: " << event.xany.serial << std::endl)
-    {
-      event_handler(event);
-    }
+    static XEvent event {};
+    XNextEvent(display_.get(), &event);
+    return event;
   }
 
 private:
