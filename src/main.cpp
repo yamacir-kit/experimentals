@@ -47,26 +47,6 @@ int main(int argc, char** argv)
 
   vstream << meevax::raise;
 
-  auto resize = [&](auto&& width = 0, auto&& height = 0)
-  {
-    return [&](auto& node) -> auto&
-    {
-      XWindowAttributes attr {};
-      XGetWindowAttributes(static_cast<Display*>(node), static_cast<Window>(node), &attr);
-
-      XResizeWindow(
-        static_cast<Display*>(node), static_cast<Window>(node),
-        std::forward<decltype(width)>(width != 0 ? width : attr.width),
-        std::forward<decltype(height)>(height != 0 ? height : attr.height)
-      );
-
-      cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(node), attr.width, attr.height);
-
-      return node;
-    };
-  };
-
-
   auto xmove = [&](auto&& x, auto&& y)
   {
     return [&](auto& cairo) -> auto&
