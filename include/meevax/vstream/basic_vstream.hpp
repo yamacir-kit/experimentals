@@ -12,13 +12,35 @@
 
 namespace meevax {
 
+
+template <typename C>
+class basic_surface;
+
+
+template <typename C>
+class basic_surface
+  : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
+{
+  std::unordered_map<std::basic_string<C>, meevax::basic_surface<C>> sub_surfaces_;
+
+public:
+  template <typename... Ts>
+  explicit basic_surface(Ts&&... args)
+    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...}
+  {}
+
+protected:
+  // create(const std::basic_string<C>& sub_surface);
+};
+
+
 template <typename C>
 class basic_vstream
 {
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display_;
 
   std::unordered_map<
-    std::string,
+    std::basic_string<C>,
     std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
   > surfaces_;
 
@@ -41,6 +63,7 @@ private:
   auto create(const std::basic_string<C>& target_surface,
               const std::basic_string<C>& parent_surface = {""});
 };
+
 
 } // namespace meevax
 

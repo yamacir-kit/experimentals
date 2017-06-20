@@ -75,17 +75,7 @@ int main(int argc, char** argv)
 
   [&]()
   {
-    // for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
-    // {
-    //   vstream["master"] << resize(16 * multiplex, 9 * multiplex);
-    //   std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    // }
-    //
-    // for (double multiplex {80.0}; 1.0 < multiplex; multiplex -= 0.1)
-    // {
-    //   vstream["master"] << resize(16 * multiplex, 9 * multiplex);
-    //   std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    // }
+    using namespace meevax;
 
     for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
     {
@@ -97,18 +87,9 @@ int main(int argc, char** argv)
     // vstream.create("hoge", "master");
     // vstream["hoge"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;;
 
-    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
-    {
-      using namespace meevax;
-
-      vstream["master"] << color(1, 1, 1) << paint;
-
-      vstream["master"] << face("Sans") << color(0, 0, 0)
-                        << size(multiplex) << cursorhome<< "Meevax System"
-                        << size(multiplex * 0.5) << cr << lf << "Version 0.2.1 Alpha" << endl;
-
-      std::this_thread::sleep_for(std::chrono::milliseconds(5));
-    }
+    vstream["master"] << face("Sans") << color(0, 0, 0)
+                      << size(80) << cursorhome<< "Meevax System"
+                      << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
 
     return 0;
   }();
