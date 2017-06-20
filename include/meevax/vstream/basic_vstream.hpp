@@ -19,7 +19,7 @@ class basic_surface;
 
 template <typename C>
 class basic_surface
-  : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
+  : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)> // TODO to be protected
 {
   std::unordered_map<
     std::basic_string<C>,
@@ -123,6 +123,37 @@ public:
 
 
 } // namespace meevax
+
+
+template <typename C, typename F>
+auto& operator<<(const meevax::basic_surface<C>& cairo, F&& manip)
+{
+  return manip(cairo);
+}
+
+
+template <typename C>
+auto& operator<<(const meevax::basic_surface<C>& cairo, C* c_str)
+{
+  cairo_show_text(static_cast<cairo_t*>(cairo), c_str);
+  return cairo;
+};
+
+
+template <typename C>
+auto& operator<<(const meevax::basic_surface<C>& cairo, const C* c_str)
+{
+  cairo_show_text(static_cast<cairo_t*>(cairo), c_str);
+  return cairo;
+};
+
+
+template <typename C>
+auto& operator<<(const meevax::basic_surface<C>& cairo, const std::basic_string<C>& text)
+{
+  cairo_show_text(static_cast<cairo_t*>(cairo), text.c_str());
+  return cairo;
+};
 
 
 #endif
