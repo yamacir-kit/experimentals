@@ -49,17 +49,15 @@ int main(int argc, char** argv)
 
   [&]()
   {
-    using namespace meevax;
-
     for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
     {
-      vstream << resize(16 * multiplex, 1);
+      vstream << meevax::resize(16 * multiplex, 1);
       std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
     for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
     {
-      vstream << resize(16 * 80, 9 * multiplex);
+      vstream << meevax::resize(16 * 80, 9 * multiplex);
       std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
@@ -83,6 +81,21 @@ int main(int argc, char** argv)
   vstream["debug"] << meevax::raise << meevax::resize(320, 50)
                    << meevax::xmove((1280-320)/2, (720-50)*3/4);
 
+  auto layer_test = [&]()
+  {
+    vstream["layer1"]
+      << meevax::raise
+      << meevax::resize(300, 300) << meevax::color(1, 0, 0) << meevax::paint;
+
+    vstream["layer1"]["layer2"]
+      << meevax::raise
+      << meevax::resize(200, 200) << meevax::color(0, 1, 0) << meevax::paint;
+
+    vstream["layer1"]["layer2"]["layer3"]
+      << meevax::raise
+      << meevax::resize(100, 100) << meevax::color(0, 0, 1) << meevax::paint;
+  };
+
   while (true)
   {
     auto event {vstream.next_event()};
@@ -91,6 +104,7 @@ int main(int argc, char** argv)
     case Expose:
       vstream << meevax::resize(0, 0);
       show_title();
+      layer_test();
       break;
 
     case KeyPress:

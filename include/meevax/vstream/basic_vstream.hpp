@@ -21,14 +21,16 @@ template <typename C>
 class visual_node
   : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
-  std::unordered_map<
-    std::basic_string<C>,
-    std::unique_ptr<meevax::visual_node<C>>
-  > sub_nodes_;
+  std::unordered_map<std::basic_string<C>, std::unique_ptr<meevax::visual_node<C>>> sub_nodes_;
 
   static constexpr std::size_t default_window_width  {1280};
   static constexpr std::size_t default_window_height { 720};
+
+#ifndef NDEBUG
   static constexpr std::size_t default_border_width  {   1};
+#else
+  static constexpr std::size_t default_border_width  {   0};
+#endif
 
 public:
   template <typename... Ts>
