@@ -47,16 +47,6 @@ int main(int argc, char** argv)
 
   vstream << meevax::raise;
 
-  auto xmove = [&](auto&& x, auto&& y)
-  {
-    return [&](auto& cairo) -> auto&
-    {
-      XMoveWindow(static_cast<Display*>(cairo), static_cast<Window>(cairo), x, y);
-      return cairo;
-    };
-  };
-
-
   [&]()
   {
     using namespace meevax;
@@ -90,8 +80,8 @@ int main(int argc, char** argv)
                      << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
   };
 
-  vstream["debug"] << meevax::raise << resize(320, 50)
-                   << xmove((1280-320)/2, (720-50)*3/4);
+  vstream["debug"] << meevax::raise << meevax::resize(320, 50)
+                   << meevax::xmove((1280-320)/2, (720-50)*3/4);
 
   while (true)
   {
@@ -99,7 +89,7 @@ int main(int argc, char** argv)
     switch (event.type)
     {
     case Expose:
-      vstream << resize(0, 0);
+      vstream << meevax::resize(0, 0);
       show_title();
       break;
 
