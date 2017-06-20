@@ -8,7 +8,6 @@
 
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/vstream_manipulator.hpp>
-#include <meevax/vstream/vstream_operator.hpp>
 
 
 int main(int argc, char** argv)
@@ -46,14 +45,43 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  vstream["master"] << meevax::raise
-                    << meevax::face("Ricty Diminished")
-                    << meevax::size(18.0)
-                    << meevax::color(0, 0, 0)
-                    << meevax::cursorhome
-                    << "hogehoge" << meevax::cr << meevax::lf
-                    << "fugafuga" << meevax::cr << meevax::lf
-                    << "piyipiyo" << meevax::cr << meevax::lf;
+  vstream << meevax::raise;
+
+  [&]()
+  {
+    using namespace meevax;
+
+    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
+    {
+      vstream << resize(16 * multiplex, 1);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
+    {
+      vstream << resize(16 * 80, 9 * multiplex);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    return 0;
+  }();
+
+  auto show_title = [&]()
+  {
+    using namespace meevax;
+
+    vstream["title"] << meevax::color(1, 1, 1) << meevax::paint;
+
+    vstream["title"] << meevax::raise << resize(640, 160)
+                     << xmove((1280-640)/2, (720-160)/4);
+
+    vstream["title"] << face("Sans") << color(0, 0, 0)
+                     << size(80) << cursorhome << "Meevax System"
+                     << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
+  };
+
+  vstream["debug"] << meevax::raise << meevax::resize(320, 50)
+                   << meevax::xmove((1280-320)/2, (720-50)*3/4);
 
   while (true)
   {
@@ -61,13 +89,15 @@ int main(int argc, char** argv)
     switch (event.type)
     {
     case Expose:
-      std::cout << "[debug] expose\n";
+      vstream << meevax::resize(0, 0);
+      show_title();
       break;
 
     case KeyPress:
-      vstream["master"]
+      vstream["debug"]
         << meevax::color(1, 1, 1) << meevax::paint
-        << meevax::color(0, 0, 0)
+        << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
+        << meevax::color(0, 0, 0) << meevax::cursorhome
         << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
       break;
     }
