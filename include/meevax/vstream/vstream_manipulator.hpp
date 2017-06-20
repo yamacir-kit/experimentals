@@ -8,14 +8,14 @@
 namespace meevax {
 
 
-auto xmove = [](auto&& x, auto&& y)
-{
-  return [&](auto& node) -> auto&
-  {
-    XMoveWindow(static_cast<Display*>(node), static_cast<Window>(node), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
-    return node;
-  };
-};
+// auto xmove = [](auto&& x, auto&& y)
+// {
+//   return [&](auto& node) -> auto&
+//   {
+//     XMoveWindow(static_cast<Display*>(node), static_cast<Window>(node), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
+//     return node;
+//   };
+// };
 
 
 auto map = [](auto& node) -> auto&

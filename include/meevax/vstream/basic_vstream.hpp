@@ -55,6 +55,12 @@ public:
     return *sub_nodes_.at(node_name);
   }
 
+  auto& operator()(std::size_t&& x, std::size_t&& y) const
+  {
+    XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
+    return *this;
+  }
+
 public:
   explicit operator cairo_t*() const noexcept
   {

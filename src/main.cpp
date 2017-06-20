@@ -68,18 +68,16 @@ int main(int argc, char** argv)
   {
     using namespace meevax;
 
-    vstream["title"] << meevax::color(1, 1, 1) << meevax::paint;
+    vstream["title"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;
 
-    vstream["title"] << meevax::raise << resize(640, 160)
-                     << xmove((1280-640)/2, (720-160)/4);
+    vstream["title"]((1280-640)/2, (720-160)/4) << resize(640, 160);
 
     vstream["title"] << face("Sans") << color(0, 0, 0)
                      << size(80) << cursorhome << "Meevax System"
                      << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
   };
 
-  vstream["debug"] << meevax::raise << meevax::resize(320, 50)
-                   << meevax::xmove((1280-320)/2, (720-50)*3/4);
+  vstream["debug"]((1280-320)/2, (720-50)*3/4) << meevax::resize(320, 50) << meevax::raise;
 
   auto layer_test = [&]()
   {
