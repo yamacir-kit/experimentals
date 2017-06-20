@@ -14,16 +14,16 @@ namespace meevax {
 
 
 template <typename C>
-class basic_surface;
+class visual_node;
 
 
 template <typename C>
-class basic_surface
+class visual_node
   : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)> // TODO to be protected
 {
   std::unordered_map<
     std::basic_string<C>,
-    std::unique_ptr<meevax::basic_surface<C>>
+    std::unique_ptr<meevax::visual_node<C>>
   > sub_surfaces_;
 
   static constexpr std::size_t default_window_width  {1280};
@@ -32,15 +32,15 @@ class basic_surface
 
 public:
   template <typename... Ts>
-  explicit basic_surface(Ts&&... args)
+  explicit visual_node(Ts&&... args)
     : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...},
       sub_surfaces_ {}
   {}
 
   auto& operator[](const std::basic_string<C>& surface_name)
   {
-    std::unique_ptr<meevax::basic_surface<C>> surface {
-      new meevax::basic_surface<C> {create(
+    std::unique_ptr<meevax::visual_node<C>> surface {
+      new meevax::visual_node<C> {create(
         static_cast<Display*>(*this),
         static_cast<Window>(*this)
       )}
@@ -82,7 +82,7 @@ protected:
 
     XSelectInput(display, simple_window, ExposureMask | KeyPressMask);
 
-    return meevax::basic_surface<C> {cairo_create(cairo_surface), cairo_destroy};
+    return meevax::visual_node<C> {cairo_create(cairo_surface), cairo_destroy};
   }
 };
 
@@ -90,12 +90,12 @@ protected:
 template <typename C>
 class basic_vstream
   : public std::unique_ptr<Display, decltype(&XCloseDisplay)>,
-    public meevax::basic_surface<C>
+    public meevax::visual_node<C>
 {
 public:
   basic_vstream(const std::basic_string<C>& display_name = {""})
     : std::unique_ptr<Display, decltype(&XCloseDisplay)> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      meevax::basic_surface<C> {meevax::basic_surface<C>::create(*this, XDefaultRootWindow(*this))}
+      meevax::visual_node<C> {meevax::visual_node<C>::create(*this, XDefaultRootWindow(*this))}
   {
     if (*this == nullptr)
     {
@@ -126,14 +126,14 @@ public:
 
 
 template <typename C, typename F>
-auto& operator<<(const meevax::basic_surface<C>& cairo, F&& manip)
+auto& operator<<(const meevax::visual_node<C>& cairo, F&& manip)
 {
   return manip(cairo);
 }
 
 
 template <typename C>
-auto& operator<<(const meevax::basic_surface<C>& cairo, C* c_str)
+auto& operator<<(const meevax::visual_node<C>& cairo, C* c_str)
 {
   cairo_show_text(static_cast<cairo_t*>(cairo), c_str);
   return cairo;
@@ -141,7 +141,7 @@ auto& operator<<(const meevax::basic_surface<C>& cairo, C* c_str)
 
 
 template <typename C>
-auto& operator<<(const meevax::basic_surface<C>& cairo, const C* c_str)
+auto& operator<<(const meevax::visual_node<C>& cairo, const C* c_str)
 {
   cairo_show_text(static_cast<cairo_t*>(cairo), c_str);
   return cairo;
@@ -149,7 +149,7 @@ auto& operator<<(const meevax::basic_surface<C>& cairo, const C* c_str)
 
 
 template <typename C>
-auto& operator<<(const meevax::basic_surface<C>& cairo, const std::basic_string<C>& text)
+auto& operator<<(const meevax::visual_node<C>& cairo, const std::basic_string<C>& text)
 {
   cairo_show_text(static_cast<cairo_t*>(cairo), text.c_str());
   return cairo;
