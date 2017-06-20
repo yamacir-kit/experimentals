@@ -49,25 +49,20 @@ int main(int argc, char** argv)
 
   auto resize = [&](auto&& width = 0, auto&& height = 0)
   {
-    return [&](auto& cairo) -> auto&
+    return [&](auto& node) -> auto&
     {
-      auto surface {cairo_get_target(cairo.get())};
-      auto display {cairo_xlib_surface_get_display(surface)};
-      auto window {cairo_xlib_surface_get_drawable(surface)};
-
       XWindowAttributes attr {};
-      XGetWindowAttributes(display, window, &attr);
+      XGetWindowAttributes(static_cast<Display*>(node), static_cast<Window>(node), &attr);
 
       XResizeWindow(
-        display,
-        window,
+        static_cast<Display*>(node), static_cast<Window>(node),
         std::forward<decltype(width)>(width != 0 ? width : attr.width),
         std::forward<decltype(height)>(height != 0 ? height : attr.height)
       );
 
-      cairo_xlib_surface_set_size(surface, attr.width, attr.height);
+      cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(node), attr.width, attr.height);
 
-      return cairo;
+      return node;
     };
   };
 

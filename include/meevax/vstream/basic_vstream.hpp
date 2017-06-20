@@ -19,7 +19,7 @@ class visual_node;
 
 template <typename C>
 class visual_node
-  : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)> // TODO to be protected
+  : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)> // TODO to be protected
 {
   std::unordered_map<
     std::basic_string<C>,
