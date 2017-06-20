@@ -19,12 +19,12 @@ class visual_node;
 
 template <typename C>
 class visual_node
-  : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)> // TODO to be protected
+  : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
   std::unordered_map<
     std::basic_string<C>,
     std::unique_ptr<meevax::visual_node<C>>
-  > sub_surfaces_;
+  > sub_nodes_;
 
   static constexpr std::size_t default_window_width  {1280};
   static constexpr std::size_t default_window_height { 720};
@@ -34,26 +34,21 @@ public:
   template <typename... Ts>
   explicit visual_node(Ts&&... args)
     : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...},
-      sub_surfaces_ {}
+      sub_nodes_ {}
   {}
 
   auto& operator[](const std::basic_string<C>& surface_name)
   {
     std::unique_ptr<meevax::visual_node<C>> surface {
-      new meevax::visual_node<C> {create(
-        static_cast<Display*>(*this),
-        static_cast<Window>(*this)
-      )}
+      new meevax::visual_node<C> {create(static_cast<Display*>(*this), static_cast<Window>(*this))}
     };
 
-    sub_surfaces_.emplace(
-      surface_name,
-      std::move(surface)
-    );
+    sub_nodes_.emplace(surface_name, std::move(surface));
 
-    return *sub_surfaces_.at(surface_name);
+    return *sub_nodes_.at(surface_name);
   }
 
+public:
   explicit operator cairo_t*() const noexcept
   {
     return (*this).get();
