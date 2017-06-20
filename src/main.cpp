@@ -47,7 +47,6 @@ int main(int argc, char** argv)
   meevax::basic_vstream<char> vstream {""};
 
   vstream << meevax::raise;
-  vstream["master"] << meevax::raise;
 
   auto resize = [&](auto&& width = 0, auto&& height = 0)
   {
@@ -80,39 +79,42 @@ int main(int argc, char** argv)
 
     for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
     {
-      vstream["master"] << resize(16 * multiplex, 9 * multiplex);
-                        // << meevax::color(1, 0, 0) << meevax::paint;
-      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+      vstream << resize(16 * multiplex, 1);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
     }
 
-    // vstream.create("hoge", "master");
-    // vstream["hoge"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;;
+    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
+    {
+      vstream << resize(16 * 80, 9 * multiplex);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
 
-    vstream["master"] << face("Sans") << color(0, 0, 0)
-                      << size(80) << cursorhome<< "Meevax System"
-                      << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
+    vstream["title"] << meevax::raise << resize(640, 160);
+
+    vstream["title"] << face("Sans") << color(0, 0, 0)
+                     << size(80) << cursorhome<< "Meevax System"
+                     << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
 
     return 0;
   }();
 
-  // while (true)
-  // {
-  //   auto event {vstream.next_event()};
-  //   switch (event.type)
-  //   {
-  //   case Expose:
-  //     // std::cout << "[debug] expose: " << event.xany.serial << std::endl;
-  //     vstream["master"] << resize(0, 0);
-  //     break;
-  //
-  //   case KeyPress:
-  //     vstream["master"]
-  //       << meevax::color(0, 0, 0) << meevax::paint
-  //       << meevax::color(1, 1, 1) << meevax::cursorhome
-  //       << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
-  //     break;
-  //   }
-  // }
+  while (true)
+  {
+    auto event {vstream.next_event()};
+    switch (event.type)
+    {
+    case Expose:
+      vstream << resize(0, 0);
+      break;
+
+    case KeyPress:
+      vstream
+        << meevax::color(0, 0, 0) << meevax::paint
+        << meevax::color(1, 1, 1) << meevax::cursorhome
+        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
+      break;
+    }
+  }
 
 
   return 0;
