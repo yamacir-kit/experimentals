@@ -10,14 +10,14 @@
 
 
 template <typename F>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo, F&& manip)
+[[deprecated]] auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo, F&& manip)
 {
   return manip(cairo);
 }
 
 
 template <typename C>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo, C* c_str)
+[[deprecated]] auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo, C* c_str)
 {
   cairo_show_text(cairo.get(), c_str);
   return cairo;
@@ -25,7 +25,7 @@ auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo
 
 
 template <typename C>
-auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
+[[deprecated]] auto& operator<<(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& cairo,
                  const std::basic_string<C>& text)
 {
   cairo_show_text(cairo.get(), text.c_str());
