@@ -36,9 +36,8 @@ protected:
 
 template <typename C>
 class basic_vstream
+  : public std::unique_ptr<Display, decltype(&XCloseDisplay)>
 {
-  std::unique_ptr<Display, decltype(&XCloseDisplay)> display_;
-
   std::unordered_map<
     std::basic_string<C>,
     std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
@@ -52,10 +51,15 @@ public:
     return surfaces_.emplace(surface, create(surface)).first->second;
   }
 
+  operator Display*() const noexcept
+  {
+    return (*this).get();
+  }
+
   auto next_event()
   {
     static XEvent event {};
-    XNextEvent(display_.get(), &event);
+    XNextEvent(*this, &event);
     return event;
   }
 
@@ -69,18 +73,18 @@ private:
 
 
 template <typename C>
-meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& name)
-  : display_ {XOpenDisplay(name.c_str()), XCloseDisplay},
+meevax::basic_vstream<C>::basic_vstream(const std::basic_string<C>& display_name)
+  : std::unique_ptr<Display, decltype(&XCloseDisplay)> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
     surfaces_ {}
 {
-  if (display_ == nullptr)
+  if (*this == nullptr)
   {
-    std::cerr << "[error] XOpenDisplay(3) - failed to open display " << name << std::endl;
+    std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
     std::exit(EXIT_FAILURE);
   }
 
 #ifndef NDEBUG
-  XSynchronize(display_.get(), true);
+  XSynchronize(*this, true);
 #endif
 }
 
@@ -92,13 +96,13 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& target_surface
   constexpr std::size_t width  {16 * 40}; // TODO
   constexpr std::size_t height { 9 * 40}; // TODO
   constexpr std::size_t border_line_width {0};
-  auto     border_pixel_color {XBlackPixel(display_.get(), XDefaultScreen(display_.get()))};
-  auto background_pixel_color {XWhitePixel(display_.get(), XDefaultScreen(display_.get()))};
+  auto     border_pixel_color {XBlackPixel(*this, XDefaultScreen(*this))};
+  auto background_pixel_color {XWhitePixel(*this, XDefaultScreen(*this))};
 
   auto simple_window {
     XCreateSimpleWindow(
-      display_.get(),
-      parent_surface.empty() ? XDefaultRootWindow(display_.get()) : cairo_xlib_surface_get_drawable(cairo_get_target(surfaces_.at(parent_surface).get())),
+      *this,
+      parent_surface.empty() ? XDefaultRootWindow(*this) : cairo_xlib_surface_get_drawable(cairo_get_target(surfaces_.at(parent_surface).get())),
       0, // position x form parent window
       0, // position y form parent window
       width,
@@ -109,13 +113,13 @@ auto meevax::basic_vstream<C>::create(const std::basic_string<C>& target_surface
     )
   };
 
-  XSelectInput(display_.get(), simple_window, ExposureMask | KeyPressMask);
+  XSelectInput(*this, simple_window, ExposureMask | KeyPressMask);
 
   auto cairo_surface {
     cairo_xlib_surface_create(
-      display_.get(),
+      *this,
       simple_window,
-      XDefaultVisual(display_.get(), XDefaultScreen(display_.get())),
+      XDefaultVisual(*this, XDefaultScreen(*this)),
       width,
       height
     )
