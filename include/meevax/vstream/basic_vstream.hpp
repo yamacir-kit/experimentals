@@ -41,8 +41,8 @@ public:
   {
     std::unique_ptr<meevax::basic_surface<C>> surface {
       new meevax::basic_surface<C> {create(
-        cairo_xlib_surface_get_display(cairo_get_target(*this)),
-        cairo_xlib_surface_get_drawable(cairo_get_target(*this))
+        static_cast<Display*>(*this),
+        static_cast<Window>(*this)
       )}
     };
 
@@ -54,9 +54,24 @@ public:
     return *sub_surfaces_.at(surface_name);
   }
 
-  operator cairo_t*() const noexcept
+  explicit operator cairo_t*() const noexcept
   {
     return (*this).get();
+  }
+
+  explicit operator cairo_surface_t*() const noexcept
+  {
+    return cairo_get_target(static_cast<cairo_t*>(*this));
+  }
+
+  explicit operator Display*() const noexcept
+  {
+    return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
+  }
+
+  explicit operator Window() const noexcept
+  {
+    return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
   }
 
 protected:
