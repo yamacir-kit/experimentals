@@ -23,6 +23,12 @@ class basic_surface
 {
   std::unordered_map<std::basic_string<C>, meevax::basic_surface<C>> sub_surfaces_;
 
+  static constexpr std::size_t default_position_x    {   0};
+  static constexpr std::size_t default_position_y    {   0};
+  static constexpr std::size_t default_window_width  {1280};
+  static constexpr std::size_t default_window_height { 720};
+  static constexpr std::size_t default_border_width  {   1};
+
 public:
   template <typename... Ts>
   explicit basic_surface(Ts&&... args)
@@ -30,7 +36,32 @@ public:
   {}
 
 protected:
-  // create(const std::basic_string<C>& sub_surface);
+  auto create(Display* display, const Window& window, const std::basic_string<C>& surface_name)
+  {
+    auto simple_window {XCreateSimpleWindow(
+      display,
+      window,
+      default_position_x,
+      default_position_y,
+      default_window_width,
+      default_window_height,
+      default_border_width,
+      XBlackPixel(display, XDefaultScreen(display)),
+      XWhitePixel(display, XDefaultScreen(display))
+    )};
+
+    XSelectInput(display, simple_window, ExposureMask | KeyPressMask);
+
+    auto surface {cairo_xlib_surface_create(
+      display,
+      simple_window,
+      XDefaultVisual(display, XDefaultScreen(display)),
+      default_window_width,
+      default_window_height
+    )};
+
+    return typename decltype(sub_surfaces_)::mapped_type {cairo_create(surface), cairo_destroy};
+  }
 };
 
 
@@ -46,9 +77,9 @@ class basic_vstream
 public:
   basic_vstream(const std::basic_string<C>& name = {""});
 
-  auto& operator[](const std::basic_string<C>& surface)
+  auto& operator[](const std::basic_string<C>& surface_name)
   {
-    return surfaces_.emplace(surface, create(surface)).first->second;
+    return surfaces_.emplace(surface_name, create(surface_name)).first->second;
   }
 
   operator Display*() const noexcept
