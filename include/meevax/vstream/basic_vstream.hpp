@@ -108,16 +108,17 @@ public:
 #endif
   }
 
-  operator Display*() const noexcept
-  {
-    return std::unique_ptr<Display, decltype(&XCloseDisplay)>::get();
-  }
-
   auto next_event()
   {
     static XEvent event {};
     XNextEvent(*this, &event);
     return event;
+  }
+
+private:
+  operator Display*() const noexcept
+  {
+    return std::unique_ptr<Display, decltype(&XCloseDisplay)>::get();
   }
 };
 
@@ -126,9 +127,9 @@ public:
 
 
 template <typename C, typename F>
-auto& operator<<(const meevax::visual_node<C>& cairo, F&& manip)
+auto& operator<<(const meevax::visual_node<C>& node, F&& f)
 {
-  return manip(cairo);
+  return f(node);
 }
 
 
