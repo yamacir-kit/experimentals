@@ -37,15 +37,20 @@ public:
       sub_nodes_ {}
   {}
 
-  auto& operator[](const std::basic_string<C>& surface_name)
+  auto& operator[](const std::basic_string<C>& node_name)
   {
-    std::unique_ptr<meevax::visual_node<C>> surface {
-      new meevax::visual_node<C> {create(static_cast<Display*>(*this), static_cast<Window>(*this))}
-    };
+    if (sub_nodes_.find(node_name) == sub_nodes_.end())
+    {
+      std::unique_ptr<meevax::visual_node<C>> surface {
+        new meevax::visual_node<C> {
+          create(static_cast<Display*>(*this), static_cast<Window>(*this))
+        }
+      };
 
-    sub_nodes_.emplace(surface_name, std::move(surface));
+      sub_nodes_.emplace(node_name, std::move(surface));
+    }
 
-    return *sub_nodes_.at(surface_name);
+    return *sub_nodes_.at(node_name);
   }
 
 public:
