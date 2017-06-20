@@ -32,18 +32,23 @@ class basic_surface
 
 public:
   template <typename... Ts>
-  basic_surface(Ts&&... args)
-    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...}
+  explicit basic_surface(Ts&&... args)
+    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...},
+      sub_surfaces_ {}
   {}
 
   auto& operator[](const std::basic_string<C>& surface_name)
   {
-    sub_surfaces_.emplace(
-      surface_name,
-      create(
+    std::unique_ptr<meevax::basic_surface<C>> surface {
+      new meevax::basic_surface<C> {create(
         cairo_xlib_surface_get_display(cairo_get_target(*this)),
         cairo_xlib_surface_get_drawable(cairo_get_target(*this))
-      )
+      )}
+    };
+
+    sub_surfaces_.emplace(
+      surface_name,
+      std::move(surface)
     );
 
     return *sub_surfaces_.at(surface_name);
@@ -56,14 +61,13 @@ public:
 
 protected:
   static auto create(Display* display, const Window& window)
-    -> meevax::basic_surface<C>
   {
     auto simple_window {XCreateSimpleWindow(display, window, 0, 0, default_window_width, default_window_height, default_border_width, XBlackPixel(display, XDefaultScreen(display)), XWhitePixel(display, XDefaultScreen(display)))};
     auto cairo_surface {cairo_xlib_surface_create(display, simple_window, XDefaultVisual(display, XDefaultScreen(display)), default_window_width, default_window_height)};
 
     XSelectInput(display, simple_window, ExposureMask | KeyPressMask);
 
-    return {cairo_create(cairo_surface), cairo_destroy};
+    return meevax::basic_surface<C> {cairo_create(cairo_surface), cairo_destroy};
   }
 };
 

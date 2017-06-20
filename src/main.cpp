@@ -46,54 +46,54 @@ int main(int argc, char** argv)
 
   meevax::basic_vstream<char> vstream {""};
 
-  // vstream["master"] << meevax::raise;
-  // vstream["master"];
+  vstream << meevax::raise;
+  vstream["master"] << meevax::raise;
 
-  // auto resize = [&](auto&& width = 0, auto&& height = 0)
-  // {
-  //   return [&](auto& cairo) -> auto&
-  //   {
-  //     auto surface {cairo_get_target(cairo.get())};
-  //     auto display {cairo_xlib_surface_get_display(surface)};
-  //     auto window {cairo_xlib_surface_get_drawable(surface)};
-  //
-  //     XWindowAttributes attr {};
-  //     XGetWindowAttributes(display, window, &attr);
-  //
-  //     XResizeWindow(
-  //       display,
-  //       window,
-  //       std::forward<decltype(width)>(width != 0 ? width : attr.width),
-  //       std::forward<decltype(height)>(height != 0 ? height : attr.height)
-  //     );
-  //
-  //     cairo_xlib_surface_set_size(surface, attr.width, attr.height);
-  //
-  //     return cairo;
-  //   };
-  // };
+  auto resize = [&](auto&& width = 0, auto&& height = 0)
+  {
+    return [&](auto& cairo) -> auto&
+    {
+      auto surface {cairo_get_target(cairo.get())};
+      auto display {cairo_xlib_surface_get_display(surface)};
+      auto window {cairo_xlib_surface_get_drawable(surface)};
+
+      XWindowAttributes attr {};
+      XGetWindowAttributes(display, window, &attr);
+
+      XResizeWindow(
+        display,
+        window,
+        std::forward<decltype(width)>(width != 0 ? width : attr.width),
+        std::forward<decltype(height)>(height != 0 ? height : attr.height)
+      );
+
+      cairo_xlib_surface_set_size(surface, attr.width, attr.height);
+
+      return cairo;
+    };
+  };
 
 
-  // [&]()
-  // {
-  //   using namespace meevax;
-  //
-  //   for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
-  //   {
-  //     vstream["master"] << resize(16 * multiplex, 9 * multiplex);
-  //                       // << meevax::color(1, 0, 0) << meevax::paint;
-  //     std::this_thread::sleep_for(std::chrono::milliseconds(5));
-  //   }
-  //
-  //   // vstream.create("hoge", "master");
-  //   // vstream["hoge"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;;
-  //
-  //   vstream["master"] << face("Sans") << color(0, 0, 0)
-  //                     << size(80) << cursorhome<< "Meevax System"
-  //                     << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
-  //
-  //   return 0;
-  // }();
+  [&]()
+  {
+    using namespace meevax;
+
+    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
+    {
+      vstream["master"] << resize(16 * multiplex, 9 * multiplex);
+                        // << meevax::color(1, 0, 0) << meevax::paint;
+      std::this_thread::sleep_for(std::chrono::milliseconds(5));
+    }
+
+    // vstream.create("hoge", "master");
+    // vstream["hoge"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;;
+
+    vstream["master"] << face("Sans") << color(0, 0, 0)
+                      << size(80) << cursorhome<< "Meevax System"
+                      << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
+
+    return 0;
+  }();
 
   // while (true)
   // {
