@@ -6,91 +6,116 @@
 
 #include <meevax/core/generic_editor.hpp>
 
-#include <meevax/visual/visual_stream.hpp>
-#include <meevax/visual/visual_manipulator.hpp>
+#include <meevax/vstream/basic_vstream.hpp>
+#include <meevax/vstream/vstream_manipulator.hpp>
 
 
 int main(int argc, char** argv)
 {
-  // meevax::generic_editor<char> editor {argc, argv};
-  //
-  // try
-  // {
-  //   while (true)
-  //   {
-  //     editor.write();
-  //     editor.read();
-  //   }
-  // }
-  //
-  // catch (std::system_error& error)
-  // {
-  //   std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
-  //   return error.code().value();
-  // }
-  //
-  // catch (...)
-  // {
-  //   std::cerr << "[fatal] An unexpected error occurred. Report the following output to the developer.\n"
-  //             << "\n"
-  //             << "\tdeveloper's email: httperror@404-notfound.jp\n"
-  //             << "\terrno: " << errno << " - " << std::strerror(errno) << std::endl;
-  //
-  //   std::exit(errno);
-  // }
+  if (false)
+  {
+    meevax::generic_editor<char> editor {argc, argv};
 
-  meevax::visual_stream vstream {"", 160 * 4, 90 * 4};
-  vstream << meevax::map_raised << meevax::flush;
+    try
+    {
+      while (true)
+      {
+        editor.write();
+        editor.read();
+      }
+    }
 
-  std::string hello {"Hello, X Window System with cairo vector graphics library"};
+    catch (std::system_error& error)
+    {
+      std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+      return error.code().value();
+    }
+
+    catch (...)
+    {
+      std::cerr << "[fatal] An unexpected error occurred. Report the following output to the developer.\n"
+                << "\n"
+                << "\tdeveloper's email: httperror@404-notfound.jp\n"
+                << "\terrno: " << errno << " - " << std::strerror(errno) << std::endl;
+
+      std::exit(errno);
+    }
+  }
+
+
+  meevax::basic_vstream<char> vstream {""};
+
+  vstream << meevax::raise;
+
+  [&]()
+  {
+    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
+    {
+      vstream << meevax::resize(16 * multiplex, 1);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
+    {
+      vstream << meevax::resize(16 * 80, 9 * multiplex);
+      std::this_thread::sleep_for(std::chrono::milliseconds(2));
+    }
+
+    return 0;
+  }();
+
+  auto show_title = [&]()
+  {
+    using namespace meevax;
+
+    vstream["title"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;
+
+    vstream["title"]((1280-640)/2, (720-160)/4) << resize(640, 160);
+
+    vstream["title"] << face("Sans") << color(0, 0, 0)
+                     << size(80) << cursorhome << "Meevax System"
+                     << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
+  };
+
+  vstream["debug"]((1280-320)/2, (720-50)*3/4) << meevax::resize(320, 50) << meevax::raise;
+
+  auto layer_test = [&]()
+  {
+    vstream["layer1"]
+      << meevax::raise
+      << meevax::resize(300, 300) << meevax::color(1, 0, 0) << meevax::paint;
+
+    vstream["layer1"]["layer2"]
+      << meevax::raise
+      << meevax::resize(200, 200) << meevax::color(0, 1, 0) << meevax::paint;
+
+    vstream["layer1"]["layer2"]["layer3"]
+      << meevax::raise
+      << meevax::resize(100, 100) << meevax::color(0, 0, 1) << meevax::paint;
+  };
 
   while (true)
   {
-    vstream["subwin"] << meevax::map_raised;
-    vstream["subwin"].move_absolute(80, 45);
-
-    vstream["subwin"] << meevax::color(1, 1, 1) << meevax::paint;
-
-    vstream["subwin"] << meevax::font_face("Ricty Diminished")
-                      << meevax::font_size(20)
-                      << meevax::color(0, 0, 0);
-
-    vstream["subwin"] << meevax::move_to(10, 25) << meevax::text(hello) << meevax::flush;
-
-    // std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-    if (!hello.empty())
-    {
-      hello.erase(hello.begin());
-    }
-
-    else break;
-  }
-
-  // vstream.erase("subwin");
-
-  vstream["event_test"].resize(320, 180);
-  vstream["event_test"].move_absolute(160, 90);
-  vstream["event_test"].select_inputs(ExposureMask | KeyPressMask);
-
-  vstream["event_test"] << meevax::map_raised;
-
-  vstream["event_test"] << meevax::font_face("Ricty Diminished") << meevax::font_size(20)
-                        << meevax::color(0, 0, 0);
-
-  vstream.event_process([&](auto event)
-  {
+    auto event {vstream.next_event()};
     switch (event.type)
     {
     case Expose:
-      std::cout << "[debug] expose\n";
+      std::cout << "\r[debug] expose: " << event.xexpose.count;
+      vstream << meevax::resize(0, 0);
+      show_title();
+      layer_test();
       break;
 
     case KeyPress:
-      std::cout << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << std::endl;
+      vstream["debug"]
+        << meevax::color(1, 1, 1) << meevax::paint
+        << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
+        << meevax::color(0, 0, 0) << meevax::cursorhome
+        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
       break;
     }
-  });
+  }
+
 
   return 0;
 }

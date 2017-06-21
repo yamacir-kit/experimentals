@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(meevax VERSION 0.2.1 LANGUAGES CXX)
 
-add_definitions("-std=c++14 -Wall")
+add_definitions("-std=c++14 -Wall -O3 -DNDEBUG")
 
 # set(CMAKE_VERBOSE_MAKEFILE ON)
 set(CMAKE_CXX_COMPILER clang++)
