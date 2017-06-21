@@ -100,6 +100,7 @@ int main(int argc, char** argv)
     switch (event.type)
     {
     case Expose:
+      std::cout << "\r[debug] expose: " << event.xexpose.count;
       vstream << meevax::resize(0, 0);
       show_title();
       layer_test();

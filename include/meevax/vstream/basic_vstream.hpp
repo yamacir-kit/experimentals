@@ -44,9 +44,7 @@ public:
     if (sub_nodes_.find(node_name) == sub_nodes_.end())
     {
       std::unique_ptr<meevax::visual_node<C>> surface {
-        new meevax::visual_node<C> {
-          create(static_cast<Display*>(*this), static_cast<Window>(*this))
-        }
+        new meevax::visual_node<C> {create(static_cast<Display*>(*this), static_cast<Window>(*this))}
       };
 
       sub_nodes_.emplace(node_name, std::move(surface));
