@@ -22,10 +22,7 @@ class visual_node
   : protected std::shared_ptr<Display>,
     protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
-  std::unordered_map<
-    std::basic_string<C>,
-    meevax::visual_edge<C>
-  > edges_;
+  std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>> edges_;
 
   static constexpr std::size_t default_window_width  {1280};
   static constexpr std::size_t default_window_height { 720};
@@ -39,10 +36,7 @@ class visual_node
 public:
   visual_node(const std::basic_string<C>& display_name = {""})
     : std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
-        create(static_cast<Display*>(*this), XDefaultRootWindow(static_cast<Display*>(*this))),
-        cairo_destroy
-      }
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), XDefaultRootWindow(static_cast<Display*>(*this))), cairo_destroy}
   {
     if (static_cast<Display*>(*this) == nullptr)
     {
@@ -53,10 +47,7 @@ public:
 
   explicit visual_node(const meevax::visual_node<C>& node)
     : std::shared_ptr<Display> {node},
-      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
-        create(static_cast<Display*>(*this), static_cast<Window>(node)),
-        cairo_destroy
-      }
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), static_cast<Window>(node)), cairo_destroy}
   {}
 
   auto& operator[](const std::basic_string<C>& node_name)
@@ -76,7 +67,7 @@ public:
     return *this;
   }
 
-  auto next_event() // XXX UGLY CODE
+  auto& next_event() // XXX UGLY CODE
   {
     static XEvent event {};
     XNextEvent(static_cast<Display*>(*this), &event);
