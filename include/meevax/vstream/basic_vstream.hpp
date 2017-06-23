@@ -21,17 +21,8 @@ template <typename C>
 class visual_node
   : private std::shared_ptr<Display>,
     private std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
-    public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
+    public  std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
 {
-  static constexpr std::size_t default_window_width  {1280};
-  static constexpr std::size_t default_window_height { 720};
-
-#ifndef NDEBUG
-  static constexpr std::size_t default_border_width  {   1};
-#else
-  static constexpr std::size_t default_border_width  {   0};
-#endif
-
 public:
   visual_node(const std::basic_string<C>& display_name = {""})
     : std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
@@ -60,7 +51,7 @@ public:
     return *(*this).at(node_name);
   }
 
-  auto& operator()(std::size_t&& x, std::size_t&& y) const
+  [[deprecated]] auto& operator()(std::size_t&& x, std::size_t&& y) const
   {
     XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
     return *this;
@@ -97,6 +88,15 @@ public:
 protected:
   static auto create(Display* display, const Window& window)
   {
+    static constexpr std::size_t default_window_width  {1280};
+    static constexpr std::size_t default_window_height { 720};
+
+#ifndef NDEBUG
+    static constexpr std::size_t default_border_width  {   1};
+#else
+    static constexpr std::size_t default_border_width  {   0};
+#endif
+
     auto simple_window {XCreateSimpleWindow(display, window, 0, 0, default_window_width, default_window_height, default_border_width, XBlackPixel(display, XDefaultScreen(display)), XWhitePixel(display, XDefaultScreen(display)))};
     auto cairo_surface {cairo_xlib_surface_create(display, simple_window, XDefaultVisual(display, XDefaultScreen(display)), default_window_width, default_window_height)};
 
