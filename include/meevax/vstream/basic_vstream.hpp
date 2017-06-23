@@ -19,8 +19,8 @@ template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>
 
 template <typename C>
 class visual_node
-  : protected std::shared_ptr<Display>,
-    protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
+  : private std::shared_ptr<Display>,
+    private std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
     public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
 {
   static constexpr std::size_t default_window_width  {1280};
@@ -74,6 +74,11 @@ public:
   }
 
 public:
+  explicit operator Display*() const noexcept
+  {
+    return std::shared_ptr<Display>::get();
+  }
+
   explicit operator cairo_t*() const noexcept
   {
     return std::unique_ptr<cairo_t, decltype(&cairo_destroy)>::get();
@@ -82,11 +87,6 @@ public:
   explicit operator cairo_surface_t*() const noexcept
   {
     return cairo_get_target(static_cast<cairo_t*>(*this));
-  }
-
-  explicit operator Display*() const noexcept
-  {
-    return std::shared_ptr<Display>::get();
   }
 
   explicit operator Window() const noexcept
