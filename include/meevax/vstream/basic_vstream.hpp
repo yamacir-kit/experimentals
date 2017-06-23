@@ -19,25 +19,26 @@ template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>
 
 template <typename C>
 class visual_node
-  : private std::shared_ptr<Display>,
-    private std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
+  : // private std::shared_ptr<Display>,
+    public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
     public  std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
 {
 public:
-  visual_node(const std::basic_string<C>& display_name = {""})
-    : std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), XDefaultRootWindow(static_cast<Display*>(*this))), cairo_destroy}
+  visual_node(Display* display)
+    : // std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(display, XDefaultRootWindow(display)), cairo_destroy}
   {
-    if (static_cast<Display*>(*this) == nullptr)
-    {
-      std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
-      std::exit(EXIT_FAILURE);
-    }
+    // if (static_cast<Display*>(*this) == nullptr)
+    // {
+    //   std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
+    //   std::exit(EXIT_FAILURE);
+    // }
   }
 
   explicit visual_node(const meevax::visual_node<C>& node)
-    : std::shared_ptr<Display> {node},
-      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), static_cast<Window>(node)), cairo_destroy}
+    : // std::shared_ptr<Display> {node},
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
+        create(static_cast<Display*>(node), static_cast<Window>(node)), cairo_destroy}
   {}
 
   auto& operator[](std::basic_string<C>&& node_name)
@@ -64,12 +65,7 @@ public:
     return event;
   }
 
-public:
-  explicit operator Display*() const noexcept
-  {
-    return std::shared_ptr<Display>::get();
-  }
-
+public: // XXX UGLY OPERATORS
   explicit operator cairo_t*() const noexcept
   {
     return std::unique_ptr<cairo_t, decltype(&cairo_destroy)>::get();
@@ -78,6 +74,11 @@ public:
   explicit operator cairo_surface_t*() const noexcept
   {
     return cairo_get_target(static_cast<cairo_t*>(*this));
+  }
+
+  explicit operator Display*() const noexcept
+  {
+    return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
   }
 
   explicit operator Window() const noexcept

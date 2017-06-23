@@ -44,8 +44,9 @@ int main(int argc, char** argv)
     }
   }
 
+  std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
 
-  meevax::visual_node<char> vstream {""};
+  meevax::visual_node<char> vstream {display.get()};
 
   vstream << meevax::raise
           << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
