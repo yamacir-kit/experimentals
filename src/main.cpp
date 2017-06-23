@@ -45,54 +45,31 @@ int main(int argc, char** argv)
 
   meevax::visual_node<char> vstream {""};
 
-  vstream << meevax::raise;
-
-  [&]()
-  {
-    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
-    {
-      vstream << meevax::resize(16 * multiplex, 1);
-      std::this_thread::sleep_for(std::chrono::milliseconds(2));
-    }
-
-    for (double multiplex {1.0}; multiplex < 80; multiplex += 0.1)
-    {
-      vstream << meevax::resize(16 * 80, 9 * multiplex);
-      std::this_thread::sleep_for(std::chrono::milliseconds(2));
-    }
-
-    return 0;
-  }();
+  vstream << meevax::raise
+          << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+          << meevax::paint;
 
   auto show_title = [&]()
   {
     using namespace meevax;
 
-    vstream["title"] << meevax::raise << meevax::color(1, 1, 1) << meevax::paint;
+    vstream["title"] << meevax::raise
+                     << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+                     << meevax::paint;
 
-    vstream["title"]((1280-640)/2, (720-160)/4) << resize(640, 160);
+    vstream["title"]((1280-640)/2, (720-200)/4) << resize(640, 200);
 
-    vstream["title"] << face("Sans") << color(0, 0, 0)
-                     << size(80) << cursorhome << "Meevax System"
-                     << size(40) << cr << lf << "Version 0.2.1 Alpha" << endl;
+    vstream["title"] << color<std::uint8_t>(0xD0, 0xD0, 0xD0)
+                     << face("Bitstream Charter") << size(90) << cursorhome << "Meevax System"
+                     << face("Noto Sans CJK JP")  << size(25) << cr << lf << size(18) << "ぼくがかんがえたさいきょうのえでぃた"
+                     << face("Sans")              << size(35) << cr << lf << "Version 0.2.1 Alpha (debug build)" << endl;
   };
 
-  vstream["debug"]((1280-320)/2, (720-50)*3/4) << meevax::resize(320, 50) << meevax::raise;
-
-  auto layer_test = [&]()
-  {
-    vstream["layer1"]
-      << meevax::raise
-      << meevax::resize(300, 300) << meevax::color(1, 0, 0) << meevax::paint;
-
-    vstream["layer1"]["layer2"]
-      << meevax::raise
-      << meevax::resize(200, 200) << meevax::color(0, 1, 0) << meevax::paint;
-
-    vstream["layer1"]["layer2"]["layer3"]
-      << meevax::raise
-      << meevax::resize(100, 100) << meevax::color(0, 0, 1) << meevax::paint;
-  };
+  vstream["debug"]((1280-320)/2, (720-50)*3/4)
+    << meevax::resize(320, 50)
+    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+    << meevax::paint
+    << meevax::raise;
 
   while (true)
   {
@@ -100,18 +77,27 @@ int main(int argc, char** argv)
     switch (event.type)
     {
     case Expose:
-      std::cout << "\r[debug] expose: " << event.xexpose.count;
-      vstream << meevax::resize(0, 0);
+      vstream << meevax::resize(0, 0)
+              << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+              << meevax::paint;
+
       show_title();
-      layer_test();
+
+      vstream["debug"]
+        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
+        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0) << meevax::cursorhome
+        << "[debug] " << "press any key" << meevax::cr;
+
       break;
 
     case KeyPress:
       vstream["debug"]
-        << meevax::color(1, 1, 1) << meevax::paint
+        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::color(0, 0, 0) << meevax::cursorhome
+        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0) << meevax::cursorhome
         << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
+
       break;
     }
   }

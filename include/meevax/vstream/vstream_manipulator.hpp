@@ -2,6 +2,8 @@
 #define INCLUDED_MEEVAX_VSTREAM_VSTREAM_MANIPULATOR_HPP_
 
 
+#include <limits>
+
 #include <meevax/vstream/basic_vstream.hpp>
 
 
@@ -54,14 +56,21 @@ auto paint = [](auto& node) -> auto&
 };
 
 
-auto color = [](auto&& r, auto&& g, auto&& b, double&& a = 1.0)
+template <typename T>
+auto color(T&& r, T&& g, T&& b, T&& a = std::numeric_limits<T>::max())
 {
   return [&](auto& node) -> auto&
   {
-    cairo_set_source_rgba(static_cast<cairo_t*>(node), std::forward<decltype(r)>(r), std::forward<decltype(g)>(g), std::forward<decltype(b)>(b), std::forward<decltype(a)>(a));
+    cairo_set_source_rgba(
+      static_cast<cairo_t*>(node),
+      std::forward<double>(r / static_cast<double>(std::numeric_limits<T>::max())),
+      std::forward<double>(g / static_cast<double>(std::numeric_limits<T>::max())),
+      std::forward<double>(b / static_cast<double>(std::numeric_limits<T>::max())),
+      std::forward<double>(a / static_cast<double>(std::numeric_limits<T>::max()))
+    );
     return node;
   };
-};
+}
 
 
 auto face = [](const std::string& family)
