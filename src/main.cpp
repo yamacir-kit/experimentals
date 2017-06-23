@@ -9,6 +9,8 @@
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/vstream_manipulator.hpp>
 
+#include <meevax/version.hpp>
+
 
 int main(int argc, char** argv)
 {
@@ -60,9 +62,13 @@ int main(int argc, char** argv)
     vstream["title"]((1280-640)/2, (720-200)/4) << resize(640, 200);
 
     vstream["title"] << color<std::uint8_t>(0xD0, 0xD0, 0xD0)
-                     << face("Bitstream Charter") << size(90) << cursorhome << "Meevax System"
-                     << face("Noto Sans CJK JP")  << size(25) << cr << lf << size(18) << "ぼくがかんがえたさいきょうのえでぃた"
-                     << face("Sans")              << size(35) << cr << lf << "Version 0.2.1 Alpha (debug build)" << endl;
+                     << face("Bitstream Charter") << size(90) << cursorhome
+                     << "Meevax System"
+                     << face("Noto Sans CJK JP") << size(25) << cr << lf << size(18)
+                     << "ぼくのかんがえたさいきょうのえでぃた"
+                     << face("Sans") << size(35) << cr << lf
+                     << "Version " << project_version.data() << " Alpha "
+                     << size(25) << "(" << build_type.data() << " Build)" << endl;
   };
 
   vstream["debug"]((1280-320)/2, (720-50)*3/4)

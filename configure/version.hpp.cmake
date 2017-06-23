@@ -10,5 +10,7 @@ static constexpr auto project_major_version {scat("${PROJECT_VERSION_MAJOR}")};
 static constexpr auto project_minor_version {scat("${PROJECT_VERSION_MINOR}")};
 static constexpr auto project_patch_version {scat("${PROJECT_VERSION_PATCH}")};
 
+static constexpr auto build_type {scat("${CMAKE_BUILD_TYPE}")};
+
 
 #endif
