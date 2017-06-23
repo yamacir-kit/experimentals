@@ -4,6 +4,7 @@
 
 #include <utilib/string/static_concatenate.hpp>
 
+
 static constexpr auto project_version {scat("0.2.1")};
 
 static constexpr auto project_major_version {scat("0")};
