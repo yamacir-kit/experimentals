@@ -16,9 +16,11 @@ namespace meevax {
 template <typename C> class visual_node;
 template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
 
+
 template <typename C>
 class visual_node
-  : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
+  : protected std::shared_ptr<Display>,
+    protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
   std::unordered_map<
     std::basic_string<C>,
@@ -35,19 +37,33 @@ class visual_node
 #endif
 
 public:
-  explicit visual_node(Display* display, Window window)
-    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(display, window), cairo_destroy},
-      edges_ {}
+  visual_node(const std::basic_string<C>& display_name = {""})
+    : std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
+        create(static_cast<Display*>(*this), XDefaultRootWindow(static_cast<Display*>(*this))),
+        cairo_destroy
+      }
+  {
+    if (static_cast<Display*>(*this) == nullptr)
+    {
+      std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
+  }
+
+  explicit visual_node(const meevax::visual_node<C>& node)
+    : std::shared_ptr<Display> {node},
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
+        create(static_cast<Display*>(*this), static_cast<Window>(node)),
+        cairo_destroy
+      }
   {}
 
   auto& operator[](const std::basic_string<C>& node_name)
   {
     if (edges_.find(node_name) == edges_.end())
     {
-      meevax::visual_edge<C> edge {
-        new meevax::visual_node<C> {static_cast<Display*>(*this), static_cast<Window>(*this)}
-      };
-
+      meevax::visual_edge<C> edge {new meevax::visual_node<C> {*this}};
       edges_.emplace(node_name, std::move(edge));
     }
 
@@ -60,10 +76,17 @@ public:
     return *this;
   }
 
+  auto next_event() // XXX UGLY CODE
+  {
+    static XEvent event {};
+    XNextEvent(static_cast<Display*>(*this), &event);
+    return event;
+  }
+
 public:
   explicit operator cairo_t*() const noexcept
   {
-    return (*this).get();
+    return std::unique_ptr<cairo_t, decltype(&cairo_destroy)>::get();
   }
 
   explicit operator cairo_surface_t*() const noexcept
@@ -73,7 +96,7 @@ public:
 
   explicit operator Display*() const noexcept
   {
-    return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
+    return std::shared_ptr<Display>::get();
   }
 
   explicit operator Window() const noexcept
@@ -92,46 +115,6 @@ protected:
     return cairo_create(cairo_surface);
   }
 };
-
-
-template <typename C>
-class visual_graph
-  : public std::unique_ptr<Display, decltype(&XCloseDisplay)>,
-    public meevax::visual_node<C>
-{
-public:
-  visual_graph(const std::basic_string<C>& display_name = {""})
-    : std::unique_ptr<Display, decltype(&XCloseDisplay)> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      meevax::visual_node<C> {*this, XDefaultRootWindow(*this)}
-  {
-    if (*this == nullptr)
-    {
-      std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
-      std::exit(EXIT_FAILURE);
-    }
-
-#ifndef NDEBUG
-    XSynchronize(*this, true);
-#endif
-  }
-
-  auto next_event()
-  {
-    static XEvent event {};
-    XNextEvent(*this, &event);
-    return event;
-  }
-
-private:
-  operator Display*() const noexcept
-  {
-    return std::unique_ptr<Display, decltype(&XCloseDisplay)>::get();
-  }
-};
-
-
-template <typename C>
-using basic_vstream = meevax::visual_graph<C>;
 
 
 } // namespace meevax

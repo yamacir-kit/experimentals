@@ -43,7 +43,7 @@ int main(int argc, char** argv)
   }
 
 
-  meevax::basic_vstream<char> vstream {""};
+  meevax::visual_node<char> vstream {""};
 
   vstream << meevax::raise;
 
