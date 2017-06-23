@@ -13,16 +13,16 @@
 namespace meevax {
 
 
-template <typename C>
-class visual_node;
+template <typename C> class visual_node;
+template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
 
 
 template <typename C>
 class visual_node
-  : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
+  : private std::shared_ptr<Display>,
+    private std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
+    public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
 {
-  std::unordered_map<std::basic_string<C>, std::unique_ptr<meevax::visual_node<C>>> sub_nodes_;
-
   static constexpr std::size_t default_window_width  {1280};
   static constexpr std::size_t default_window_height { 720};
 
@@ -33,24 +33,31 @@ class visual_node
 #endif
 
 public:
-  template <typename... Ts>
-  explicit visual_node(Ts&&... args)
-    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...},
-      sub_nodes_ {}
+  visual_node(const std::basic_string<C>& display_name = {""})
+    : std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), XDefaultRootWindow(static_cast<Display*>(*this))), cairo_destroy}
+  {
+    if (static_cast<Display*>(*this) == nullptr)
+    {
+      std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
+      std::exit(EXIT_FAILURE);
+    }
+  }
+
+  explicit visual_node(const meevax::visual_node<C>& node)
+    : std::shared_ptr<Display> {node},
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), static_cast<Window>(node)), cairo_destroy}
   {}
 
-  auto& operator[](const std::basic_string<C>& node_name)
+  auto& operator[](std::basic_string<C>&& node_name)
   {
-    if (sub_nodes_.find(node_name) == sub_nodes_.end())
+    if ((*this).find(node_name) == (*this).end())
     {
-      std::unique_ptr<meevax::visual_node<C>> surface {
-        new meevax::visual_node<C> {create(static_cast<Display*>(*this), static_cast<Window>(*this))}
-      };
-
-      sub_nodes_.emplace(node_name, std::move(surface));
+      meevax::visual_edge<C> edge {new meevax::visual_node<C> {*this}};
+      (*this).emplace(node_name, std::move(edge));
     }
 
-    return *sub_nodes_.at(node_name);
+    return *(*this).at(node_name);
   }
 
   auto& operator()(std::size_t&& x, std::size_t&& y) const
@@ -59,20 +66,27 @@ public:
     return *this;
   }
 
+  auto& next_event() // XXX UGLY CODE
+  {
+    static XEvent event {};
+    XNextEvent(static_cast<Display*>(*this), &event);
+    return event;
+  }
+
 public:
+  explicit operator Display*() const noexcept
+  {
+    return std::shared_ptr<Display>::get();
+  }
+
   explicit operator cairo_t*() const noexcept
   {
-    return (*this).get();
+    return std::unique_ptr<cairo_t, decltype(&cairo_destroy)>::get();
   }
 
   explicit operator cairo_surface_t*() const noexcept
   {
     return cairo_get_target(static_cast<cairo_t*>(*this));
-  }
-
-  explicit operator Display*() const noexcept
-  {
-    return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
   }
 
   explicit operator Window() const noexcept
@@ -86,45 +100,9 @@ protected:
     auto simple_window {XCreateSimpleWindow(display, window, 0, 0, default_window_width, default_window_height, default_border_width, XBlackPixel(display, XDefaultScreen(display)), XWhitePixel(display, XDefaultScreen(display)))};
     auto cairo_surface {cairo_xlib_surface_create(display, simple_window, XDefaultVisual(display, XDefaultScreen(display)), default_window_width, default_window_height)};
 
-    XSelectInput(display, simple_window, ExposureMask | KeyPressMask);
+    XSelectInput(display, simple_window, ExposureMask | KeyPressMask); // TODO functionize
 
-    return meevax::visual_node<C> {cairo_create(cairo_surface), cairo_destroy};
-  }
-};
-
-
-template <typename C>
-class basic_vstream
-  : public std::unique_ptr<Display, decltype(&XCloseDisplay)>,
-    public meevax::visual_node<C>
-{
-public:
-  basic_vstream(const std::basic_string<C>& display_name = {""})
-    : std::unique_ptr<Display, decltype(&XCloseDisplay)> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      meevax::visual_node<C> {meevax::visual_node<C>::create(*this, XDefaultRootWindow(*this))}
-  {
-    if (*this == nullptr)
-    {
-      std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
-      std::exit(EXIT_FAILURE);
-    }
-
-#ifndef NDEBUG
-    XSynchronize(*this, true);
-#endif
-  }
-
-  auto next_event()
-  {
-    static XEvent event {};
-    XNextEvent(*this, &event);
-    return event;
-  }
-
-private:
-  operator Display*() const noexcept
-  {
-    return std::unique_ptr<Display, decltype(&XCloseDisplay)>::get();
+    return cairo_create(cairo_surface);
   }
 };
 
