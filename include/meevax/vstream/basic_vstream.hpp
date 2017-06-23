@@ -35,9 +35,8 @@ class visual_node
 #endif
 
 public:
-  template <typename... Ts>
-  explicit visual_node(Ts&&... args)
-    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...},
+  explicit visual_node(Display* display, Window window)
+    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(display, window), cairo_destroy},
       edges_ {}
   {}
 
@@ -45,11 +44,11 @@ public:
   {
     if (edges_.find(node_name) == edges_.end())
     {
-      std::unique_ptr<meevax::visual_node<C>> surface {
-        new meevax::visual_node<C> {create(static_cast<Display*>(*this), static_cast<Window>(*this))}
+      meevax::visual_edge<C> edge {
+        new meevax::visual_node<C> {static_cast<Display*>(*this), static_cast<Window>(*this)}
       };
 
-      edges_.emplace(node_name, std::move(surface));
+      edges_.emplace(node_name, std::move(edge));
     }
 
     return *edges_.at(node_name);
@@ -88,9 +87,9 @@ protected:
     auto simple_window {XCreateSimpleWindow(display, window, 0, 0, default_window_width, default_window_height, default_border_width, XBlackPixel(display, XDefaultScreen(display)), XWhitePixel(display, XDefaultScreen(display)))};
     auto cairo_surface {cairo_xlib_surface_create(display, simple_window, XDefaultVisual(display, XDefaultScreen(display)), default_window_width, default_window_height)};
 
-    XSelectInput(display, simple_window, ExposureMask | KeyPressMask);
+    XSelectInput(display, simple_window, ExposureMask | KeyPressMask); // TODO functionize
 
-    return meevax::visual_node<C> {cairo_create(cairo_surface), cairo_destroy};
+    return cairo_create(cairo_surface);
   }
 };
 
@@ -103,7 +102,7 @@ class visual_graph
 public:
   visual_graph(const std::basic_string<C>& display_name = {""})
     : std::unique_ptr<Display, decltype(&XCloseDisplay)> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      meevax::visual_node<C> {meevax::visual_node<C>::create(*this, XDefaultRootWindow(*this))}
+      meevax::visual_node<C> {*this, XDefaultRootWindow(*this)}
   {
     if (*this == nullptr)
     {
