@@ -13,15 +13,17 @@
 namespace meevax {
 
 
-template <typename C>
-class visual_node;
-
+template <typename C> class visual_node;
+template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
 
 template <typename C>
 class visual_node
   : protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
-  std::unordered_map<std::basic_string<C>, std::unique_ptr<meevax::visual_node<C>>> sub_nodes_;
+  std::unordered_map<
+    std::basic_string<C>,
+    meevax::visual_edge<C>
+  > edges_;
 
   static constexpr std::size_t default_window_width  {1280};
   static constexpr std::size_t default_window_height { 720};
@@ -36,21 +38,21 @@ public:
   template <typename... Ts>
   explicit visual_node(Ts&&... args)
     : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {std::forward<Ts>(args)...},
-      sub_nodes_ {}
+      edges_ {}
   {}
 
   auto& operator[](const std::basic_string<C>& node_name)
   {
-    if (sub_nodes_.find(node_name) == sub_nodes_.end())
+    if (edges_.find(node_name) == edges_.end())
     {
       std::unique_ptr<meevax::visual_node<C>> surface {
         new meevax::visual_node<C> {create(static_cast<Display*>(*this), static_cast<Window>(*this))}
       };
 
-      sub_nodes_.emplace(node_name, std::move(surface));
+      edges_.emplace(node_name, std::move(surface));
     }
 
-    return *sub_nodes_.at(node_name);
+    return *edges_.at(node_name);
   }
 
   auto& operator()(std::size_t&& x, std::size_t&& y) const
@@ -94,12 +96,12 @@ protected:
 
 
 template <typename C>
-class basic_vstream
+class visual_graph
   : public std::unique_ptr<Display, decltype(&XCloseDisplay)>,
     public meevax::visual_node<C>
 {
 public:
-  basic_vstream(const std::basic_string<C>& display_name = {""})
+  visual_graph(const std::basic_string<C>& display_name = {""})
     : std::unique_ptr<Display, decltype(&XCloseDisplay)> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
       meevax::visual_node<C> {meevax::visual_node<C>::create(*this, XDefaultRootWindow(*this))}
   {
@@ -127,6 +129,10 @@ private:
     return std::unique_ptr<Display, decltype(&XCloseDisplay)>::get();
   }
 };
+
+
+template <typename C>
+using basic_vstream = meevax::visual_graph<C>;
 
 
 } // namespace meevax
