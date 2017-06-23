@@ -19,26 +19,16 @@ template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>
 
 template <typename C>
 class visual_node
-  : // private std::shared_ptr<Display>,
-    public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
-    public  std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
+  : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
+    public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
 {
 public:
   visual_node(Display* display)
-    : // std::shared_ptr<Display> {XOpenDisplay(display_name.c_str()), XCloseDisplay},
-      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(display, XDefaultRootWindow(display)), cairo_destroy}
-  {
-    // if (static_cast<Display*>(*this) == nullptr)
-    // {
-    //   std::cerr << "[error] XOpenDisplay(3) - failed to open display " << display_name << std::endl;
-    //   std::exit(EXIT_FAILURE);
-    // }
-  }
+    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(display, XDefaultRootWindow(display)), cairo_destroy}
+  {}
 
   explicit visual_node(const meevax::visual_node<C>& node)
-    : // std::shared_ptr<Display> {node},
-      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
-        create(static_cast<Display*>(node), static_cast<Window>(node)), cairo_destroy}
+    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(node), static_cast<Window>(node)), cairo_destroy}
   {}
 
   auto& operator[](std::basic_string<C>&& node_name)
