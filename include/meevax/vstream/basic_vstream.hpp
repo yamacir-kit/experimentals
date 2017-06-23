@@ -20,10 +20,9 @@ template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>
 template <typename C>
 class visual_node
   : protected std::shared_ptr<Display>,
-    protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
+    protected std::unique_ptr<cairo_t, decltype(&cairo_destroy)>,
+    public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
 {
-  std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>> edges_;
-
   static constexpr std::size_t default_window_width  {1280};
   static constexpr std::size_t default_window_height { 720};
 
@@ -50,15 +49,15 @@ public:
       std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(*this), static_cast<Window>(node)), cairo_destroy}
   {}
 
-  auto& operator[](const std::basic_string<C>& node_name)
+  auto& operator[](std::basic_string<C>&& node_name)
   {
-    if (edges_.find(node_name) == edges_.end())
+    if ((*this).find(node_name) == (*this).end())
     {
       meevax::visual_edge<C> edge {new meevax::visual_node<C> {*this}};
-      edges_.emplace(node_name, std::move(edge));
+      (*this).emplace(node_name, std::move(edge));
     }
 
-    return *edges_.at(node_name);
+    return *(*this).at(node_name);
   }
 
   auto& operator()(std::size_t&& x, std::size_t&& y) const
