@@ -14,6 +14,8 @@
 
 int main(int argc, char** argv)
 {
+  std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
+
   if (false)
   {
     meevax::generic_editor<char> editor {argc, argv};
