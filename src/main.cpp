@@ -68,7 +68,7 @@ int main(int argc, char** argv)
                      << face("Bitstream Charter") << size(90) << cursorhome
                      << "Meevax System"
                      << face("Noto Sans CJK JP") << size(25) << cr << lf << size(18)
-                     << "ぼくのかんがえたさいきょうのえでぃた"
+                     << "ぼくがかんがえたさいきょうのえでぃた"
                      << face("Sans") << size(35) << cr << lf
                      << "Version " << project_version.data() << " Alpha "
                      << size(25) << "(" << build_type.data() << " Build)" << endl;
