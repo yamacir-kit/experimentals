@@ -14,6 +14,8 @@
 
 int main(int argc, char** argv)
 {
+  std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
+
   if (false)
   {
     meevax::generic_editor<char> editor {argc, argv};
@@ -44,8 +46,9 @@ int main(int argc, char** argv)
     }
   }
 
+  std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
 
-  meevax::visual_node<char> vstream {""};
+  meevax::visual_node<char> vstream {display.get()};
 
   vstream << meevax::raise
           << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)

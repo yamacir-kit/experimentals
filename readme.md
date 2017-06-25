@@ -7,4 +7,4 @@ version 0.2.1 in development
 
 - C++14 Standard Library
 - X Window System Version 11 Release 6
-- Cairo Vector Graphics Library
+- Cairo Vector Graphics Library Version 1.14.6
