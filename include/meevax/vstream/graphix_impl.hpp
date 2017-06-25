@@ -14,7 +14,6 @@ namespace meevax {
 
 
 class graphix_impl
-  // : std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
   std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo_;
   XEvent event_;
@@ -22,12 +21,10 @@ class graphix_impl
 public:
   explicit graphix_impl(Display* display)
     : cairo_ {create(display, XDefaultRootWindow(display)), cairo_destroy}
-    // : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(display, XDefaultRootWindow(display)), cairo_destroy}
   {}
 
   explicit graphix_impl(const meevax::graphix_impl& impl)
     : cairo_ {create(static_cast<Display*>(impl), static_cast<Window>(impl)), cairo_destroy}
-    // : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {create(static_cast<Display*>(impl), static_cast<Window>(impl)), cairo_destroy}
   {}
 
   auto& next_event() // XXX UGLY CODE
