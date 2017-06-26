@@ -51,17 +51,18 @@ int main(int argc, char** argv)
 
   meevax::visual_node<char> vstream {display.get()};
 
-  vstream << meevax::raise
-          << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-          << meevax::paint;
+  vstream.raise()
+    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+    << meevax::paint;
 
   auto show_title = [&]()
   {
-    vstream["title"] << meevax::raise
-                     << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-                     << meevax::paint;
+    vstream["title"].raise()
+      << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+      << meevax::paint;
 
-    vstream["title"].move((1280-640)/2, (720-200)/4) << meevax::resize(640, 200);
+    vstream["title"].move((1280-640)/2, (720-200)/4);
+    vstream["title"].resize(640, 200);
 
     vstream["title"]
       << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
@@ -75,11 +76,9 @@ int main(int argc, char** argv)
       << "(" << build_type.data() << " Build)" << meevax::endl;
   };
 
-  vstream["debug"].move((1280-320)/2, (720-50)*3/4)
-    << meevax::resize(320, 50)
+  vstream["debug"].move((1280-320)/2, (720-50)*3/4).resize(320, 50).raise()
     << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint
-    << meevax::raise;
+    << meevax::paint;
 
   while (true)
   {
@@ -87,9 +86,9 @@ int main(int argc, char** argv)
     switch (event.type)
     {
     case Expose:
-      vstream << meevax::resize(0, 0)
-              << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-              << meevax::paint;
+      vstream.resize(0, 0)
+        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+        << meevax::paint;
 
       show_title();
 

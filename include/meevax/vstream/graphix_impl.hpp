@@ -32,16 +32,45 @@ public:
   {}
 
 public:
+  auto& map() const noexcept
+  {
+    XMapWindow(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& unmap() const noexcept
+  {
+    XUnmapWindow(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& raise() const noexcept
+  {
+    XMapRaised(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& move(std::size_t x, std::size_t y) const noexcept
+  {
+    XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), x, y);
+    return *this;
+  }
+
+  auto& resize(std::size_t width, std::size_t height) const noexcept
+  {
+    static XWindowAttributes attributes {};
+    XGetWindowAttributes(static_cast<Display*>(*this), static_cast<Window>(*this), &attributes);
+
+    XResizeWindow(static_cast<Display*>(*this), static_cast<Window>(*this), width != 0 ? width : attributes.width, height != 0 ? height : attributes.height);
+    cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(*this), attributes.width, attributes.height);
+
+    return *this;
+  }
+
   auto& event()
   {
     XNextEvent(static_cast<Display*>(*this), &event_);
     return event_;
-  }
-
-  auto& move(std::size_t&& x, std::size_t&& y) const
-  {
-    XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
-    return *this;
   }
 
 public: // Cairo Cast Operators
@@ -55,6 +84,7 @@ public: // Cairo Cast Operators
     return cairo_get_target(static_cast<cairo_t*>(*this));
   }
 
+private:
   explicit operator Display*() const noexcept
   {
     return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
