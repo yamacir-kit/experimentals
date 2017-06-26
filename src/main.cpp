@@ -56,22 +56,22 @@ int main(int argc, char** argv)
 
   auto show_title = [&]()
   {
-    using namespace meevax;
-
     vstream["title"] << meevax::raise
                      << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
                      << meevax::paint;
 
-    vstream["title"]((1280-640)/2, (720-200)/4) << resize(640, 200);
+    vstream["title"]((1280-640)/2, (720-200)/4) << meevax::resize(640, 200);
 
-    vstream["title"] << color<std::uint8_t>(0xD0, 0xD0, 0xD0)
-                     << face("Bitstream Charter") << size(90) << cursorhome
-                     << "Meevax System"
-                     << face("Noto Sans CJK JP") << size(25) << cr << lf << size(18)
-                     << "ぼくがかんがえたさいきょうのえでぃた"
-                     << face("Sans") << size(35) << cr << lf
-                     << "Version " << project_version.data() << " Alpha "
-                     << size(25) << "(" << build_type.data() << " Build)" << endl;
+    vstream["title"]
+      << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
+      << meevax::face("Bitstream Charter")
+      << meevax::size(90) << meevax::cursorhome
+      << "Meevax System"
+      << meevax::face("Sans")
+      << meevax::size(35) << meevax::endl << meevax::size(25)
+      << "Version " << project_version.data() << " Alpha "
+      << meevax::size(16)
+      << "(" << build_type.data() << " Build)" << meevax::endl;
   };
 
   vstream["debug"]((1280-320)/2, (720-50)*3/4)
