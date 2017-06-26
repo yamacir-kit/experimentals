@@ -8,6 +8,7 @@
 
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
+#include <meevax/vstream/graphix_operator.hpp>
 
 #include <meevax/version.hpp>
 
