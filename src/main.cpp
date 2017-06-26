@@ -60,7 +60,7 @@ int main(int argc, char** argv)
                      << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
                      << meevax::paint;
 
-    vstream["title"]((1280-640)/2, (720-200)/4) << meevax::resize(640, 200);
+    vstream["title"].move((1280-640)/2, (720-200)/4) << meevax::resize(640, 200);
 
     vstream["title"]
       << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
@@ -74,7 +74,7 @@ int main(int argc, char** argv)
       << "(" << build_type.data() << " Build)" << meevax::endl;
   };
 
-  vstream["debug"]((1280-320)/2, (720-50)*3/4)
+  vstream["debug"].move((1280-320)/2, (720-50)*3/4)
     << meevax::resize(320, 50)
     << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
     << meevax::paint

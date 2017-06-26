@@ -38,14 +38,13 @@ public:
     return event_;
   }
 
-public:
-  auto& operator()(std::size_t&& x, std::size_t&& y) const
+  auto& move(std::size_t&& x, std::size_t&& y) const
   {
     XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
     return *this;
   }
 
-public:
+public: // Cairo Cast Operators
   explicit operator cairo_t*() const noexcept
   {
     return std::unique_ptr<cairo_t, decltype(&cairo_destroy)>::get();
@@ -88,16 +87,6 @@ protected:
 };
 
 
-} // namespace meevax
-
-
-template <typename F>
-auto& operator<<(const meevax::graphix_impl& impl, F&& f)
-{
-  return f(impl);
-}
-
-
 template <typename C>
 auto& operator<<(const meevax::graphix_impl& impl, C* c_str)
 {
@@ -120,6 +109,16 @@ auto& operator<<(const meevax::graphix_impl& impl, const std::basic_string<C>& t
   cairo_show_text(static_cast<cairo_t*>(impl), text.c_str());
   return impl;
 };
+
+
+} // namespace meevax
+
+
+template <typename F>
+auto& operator<<(const meevax::graphix_impl& impl, F&& f)
+{
+  return f(impl);
+}
 
 
 #endif
