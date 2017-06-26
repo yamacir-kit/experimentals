@@ -58,11 +58,11 @@ public:
 
   auto& resize(std::size_t width, std::size_t height) const noexcept
   {
-    static XWindowAttributes attributes {};
-    XGetWindowAttributes(static_cast<Display*>(*this), static_cast<Window>(*this), &attributes);
+    static XWindowAttributes a;
+    XGetWindowAttributes(static_cast<Display*>(*this), static_cast<Window>(*this), &a);
 
-    XResizeWindow(static_cast<Display*>(*this), static_cast<Window>(*this), width != 0 ? width : attributes.width, height != 0 ? height : attributes.height);
-    cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(*this), attributes.width, attributes.height);
+    XResizeWindow(static_cast<Display*>(*this), static_cast<Window>(*this), width != 0 ? width : a.width, height != 0 ? height : a.height);
+    cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(*this), a.width, a.height);
 
     return *this;
   }
@@ -95,7 +95,6 @@ private:
     return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
   }
 
-protected:
   cairo_t* create(Display* display, const Window& parent)
   {
     static constexpr std::size_t default_window_width  {1280};
