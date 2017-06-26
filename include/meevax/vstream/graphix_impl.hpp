@@ -32,7 +32,7 @@ public:
   {}
 
 public:
-  auto& next_event() // XXX UGLY CODE
+  auto& event()
   {
     XNextEvent(static_cast<Display*>(*this), &event_);
     return event_;

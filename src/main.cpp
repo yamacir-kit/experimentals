@@ -7,7 +7,7 @@
 #include <meevax/core/generic_editor.hpp>
 
 #include <meevax/vstream/basic_vstream.hpp>
-#include <meevax/vstream/vstream_manipulator.hpp>
+#include <meevax/vstream/graphix_manipulator.hpp>
 
 #include <meevax/version.hpp>
 
@@ -82,7 +82,7 @@ int main(int argc, char** argv)
 
   while (true)
   {
-    auto event {vstream.next_event()};
+    auto event {vstream.event()};
     switch (event.type)
     {
     case Expose:
