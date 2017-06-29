@@ -7,12 +7,18 @@
 #include <meevax/vstream/graphix_manipulator.hpp>
 #include <meevax/vstream/graphix_operator.hpp>
 
+#include <meevax/string/magic_formula.hpp>
+
 #include <meevax/version.hpp>
 
 
 int main(int argc, char** argv) try
 {
   std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
+
+#ifndef NDEBUG
+  meevax::magic_formula<char> {argv, argv + argc};
+#endif
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
 
