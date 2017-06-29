@@ -1,10 +1,7 @@
-#include <cerrno>
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
 #include <thread>
-
-#include <meevax/core/generic_editor.hpp>
 
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
@@ -13,39 +10,9 @@
 #include <meevax/version.hpp>
 
 
-int main(int argc, char** argv)
+int main(int argc, char** argv) try
 {
   std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
-
-  if (false)
-  {
-    meevax::generic_editor<char> editor {argc, argv};
-
-    try
-    {
-      while (true)
-      {
-        editor.write();
-        editor.read();
-      }
-    }
-
-    catch (std::system_error& error)
-    {
-      std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
-      return error.code().value();
-    }
-
-    catch (...)
-    {
-      std::cerr << "[fatal] An unexpected error occurred. Report the following output to the developer.\n"
-                << "\n"
-                << "\tdeveloper's email: httperror@404-notfound.jp\n"
-                << "\terrno: " << errno << " - " << std::strerror(errno) << std::endl;
-
-      std::exit(errno);
-    }
-  }
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
 
@@ -83,6 +50,7 @@ int main(int argc, char** argv)
   while (true)
   {
     auto event {vstream.event()};
+
     switch (event.type)
     {
     case Expose:
@@ -114,3 +82,17 @@ int main(int argc, char** argv)
 
   return 0;
 }
+
+catch (const std::system_error& error)
+{
+  std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+  std::exit(error.code().value());
+}
+
+catch (...)
+{
+  std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n"
+            << "\tdeveloper's email: httperror@404-notfound.jp\n";
+  std::exit(errno);
+}
+
