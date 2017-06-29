@@ -32,16 +32,45 @@ public:
   {}
 
 public:
-  auto& next_event() // XXX UGLY CODE
+  auto& map() const noexcept
+  {
+    XMapWindow(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& unmap() const noexcept
+  {
+    XUnmapWindow(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& raise() const noexcept
+  {
+    XMapRaised(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& move(std::size_t x, std::size_t y) const noexcept
+  {
+    XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), x, y);
+    return *this;
+  }
+
+  auto& resize(std::size_t width, std::size_t height) const noexcept
+  {
+    static XWindowAttributes a;
+    XGetWindowAttributes(static_cast<Display*>(*this), static_cast<Window>(*this), &a);
+
+    XResizeWindow(static_cast<Display*>(*this), static_cast<Window>(*this), width != 0 ? width : a.width, height != 0 ? height : a.height);
+    cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(*this), a.width, a.height);
+
+    return *this;
+  }
+
+  auto& event()
   {
     XNextEvent(static_cast<Display*>(*this), &event_);
     return event_;
-  }
-
-  auto& move(std::size_t&& x, std::size_t&& y) const
-  {
-    XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
-    return *this;
   }
 
 public: // Cairo Cast Operators
@@ -55,6 +84,7 @@ public: // Cairo Cast Operators
     return cairo_get_target(static_cast<cairo_t*>(*this));
   }
 
+private:
   explicit operator Display*() const noexcept
   {
     return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
@@ -65,7 +95,6 @@ public: // Cairo Cast Operators
     return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
   }
 
-protected:
   cairo_t* create(Display* display, const Window& parent)
   {
     static constexpr std::size_t default_window_width  {1280};
@@ -87,38 +116,14 @@ protected:
 };
 
 
-template <typename C>
-auto& operator<<(const meevax::graphix_impl& impl, C* c_str)
-{
-  cairo_show_text(static_cast<cairo_t*>(impl), c_str);
-  return impl;
-};
-
-
-template <typename C>
-auto& operator<<(const meevax::graphix_impl& impl, const C* c_str)
-{
-  cairo_show_text(static_cast<cairo_t*>(impl), c_str);
-  return impl;
-};
-
-
-template <typename C>
-auto& operator<<(const meevax::graphix_impl& impl, const std::basic_string<C>& text)
-{
-  cairo_show_text(static_cast<cairo_t*>(impl), text.c_str());
-  return impl;
-};
-
-
-} // namespace meevax
-
-
 template <typename F>
 auto& operator<<(const meevax::graphix_impl& impl, F&& f)
 {
   return f(impl);
 }
+
+
+} // namespace meevax
 
 
 #endif

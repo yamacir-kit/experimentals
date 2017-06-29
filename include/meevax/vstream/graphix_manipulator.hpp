@@ -1,50 +1,18 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_VSTREAM_MANIPULATOR_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_VSTREAM_MANIPULATOR_HPP_
+#ifndef INCLUDED_MEEVAX_VSTREAM_GRAPHIX_MANIPULATOR_HPP_
+#define INCLUDED_MEEVAX_VSTREAM_GRAPHIX_MANIPULATOR_HPP_
 
 
 #include <limits>
 
-#include <meevax/vstream/basic_vstream.hpp>
+#include <cairo/cairo-xlib.h>
 
 
 namespace meevax {
 
 
-// auto xmove = [](auto&& x, auto&& y)
-// {
-//   return [&](auto& node) -> auto&
-//   {
-//     XMoveWindow(static_cast<Display*>(node), static_cast<Window>(node), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
-//     return node;
-//   };
-// };
-
-
-auto map = [](auto& node) -> auto&
-{
-  XMapWindow(static_cast<Display*>(node), static_cast<Window>(node));
-  return node;
-};
-
-
-auto raise = [](auto& node) -> auto&
-{
-  XMapRaised(static_cast<Display*>(node), static_cast<Window>(node));
-  return node;
-};
-
-
-auto unmap = [](auto& node) -> auto&
-{
-  XUnmapWindow(static_cast<Display*>(node), static_cast<Window>(node));
-  return node;
-};
-
-
 auto flush = [](auto& node) -> auto&
 {
   cairo_surface_flush(static_cast<cairo_surface_t*>(node));
-  XFlush(static_cast<Display*>(node));
   return node;
 };
 
@@ -57,7 +25,7 @@ auto paint = [](auto& node) -> auto&
 
 
 template <typename T>
-auto color(T&& r, T&& g, T&& b, T&& a = std::numeric_limits<T>::max())
+constexpr auto color(T&& r, T&& g, T&& b, T&& a = std::numeric_limits<T>::max())
 {
   return [&](auto& node) -> auto&
   {
@@ -93,7 +61,7 @@ auto size = [](auto&& size)
 };
 
 
-[[deprecated]] auto move = [](auto&& x, auto&& y)
+auto move = [](auto&& x, auto&& y)
 {
   return [&](auto& node) -> auto&
   {
@@ -157,26 +125,6 @@ auto endl = [](auto& node) -> auto&
   cairo_move_to(static_cast<cairo_t*>(node), 0, y + extents.height);
 
   return flush(node);
-};
-
-
-auto resize = [](auto&& width = 0, auto&& height = 0)
-{
-  return [&](auto& node) -> auto&
-  {
-    XWindowAttributes attr {};
-    XGetWindowAttributes(static_cast<Display*>(node), static_cast<Window>(node), &attr);
-
-    XResizeWindow(
-      static_cast<Display*>(node), static_cast<Window>(node),
-      std::forward<decltype(width)>(width != 0 ? width : attr.width),
-      std::forward<decltype(height)>(height != 0 ? height : attr.height)
-    );
-
-    cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(node), attr.width, attr.height);
-
-    return node;
-  };
 };
 
 
