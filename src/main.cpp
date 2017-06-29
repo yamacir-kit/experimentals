@@ -79,7 +79,6 @@ int main(int argc, char** argv) try
     }
   }
 
-
   return 0;
 }
 
@@ -92,7 +91,7 @@ catch (const std::system_error& error)
 catch (...)
 {
   std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n"
-            << "\tdeveloper's email: httperror@404-notfound.jp\n";
+            << "        developer's email: httperror@404-notfound.jp\n";
   std::exit(errno);
 }
 

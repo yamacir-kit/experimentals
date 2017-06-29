@@ -8,6 +8,13 @@
 namespace meevax {
 
 
+template <typename F>
+auto& operator<<(const meevax::graphix_impl& impl, F&& f)
+{
+  return f(impl);
+}
+
+
 template <typename C>
 auto& operator<<(const meevax::graphix_impl& impl, C* c_str)
 {

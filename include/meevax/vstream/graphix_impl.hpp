@@ -116,13 +116,6 @@ private:
 };
 
 
-template <typename F>
-auto& operator<<(const meevax::graphix_impl& impl, F&& f)
-{
-  return f(impl);
-}
-
-
 } // namespace meevax
 
 
