@@ -40,7 +40,7 @@ int main(int argc, char** argv) try
       << meevax::size(35) << meevax::endl << meevax::size(25)
       << "Version " << project_version.data() << " Alpha "
       << meevax::size(16)
-      << "(" << build_type.data() << " Build)" << meevax::endl;
+      << "(" << cmake_build_type.data() << " Build)" << meevax::endl;
   };
 
   vstream["debug"].move((1280-320)/2, (720-50)*3/4).resize(320, 50).raise()
