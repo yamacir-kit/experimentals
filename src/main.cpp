@@ -3,11 +3,11 @@
 #include <system_error>
 #include <thread>
 
+#include <meevax/string/magic_formula.hpp>
+
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 #include <meevax/vstream/graphix_operator.hpp>
-
-#include <meevax/string/magic_formula.hpp>
 
 #include <meevax/version.hpp>
 
@@ -18,6 +18,7 @@ int main(int argc, char** argv) try
 
 #ifndef NDEBUG
   meevax::magic_formula<char> {argv, argv + argc};
+  meevax::magic_formula<char> {"hoge fuga piyo"};
 #endif
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
