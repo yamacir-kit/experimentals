@@ -10,7 +10,7 @@
 namespace meevax {
 
 
-auto flush = [](auto& node) -> auto&
+[[deprecated]] auto flush = [](auto& node) -> auto&
 {
   cairo_surface_flush(static_cast<cairo_surface_t*>(node));
   return node;
@@ -82,7 +82,7 @@ auto cursorhome = [](auto& node) -> auto&
 
 auto cr = [](auto& node) -> auto&
 {
-  static double x {0}, y {0};
+  static double x, y;
   if (cairo_has_current_point(static_cast<cairo_t*>(node)))
   {
     cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
@@ -99,7 +99,7 @@ auto lf = [](auto& node) -> auto&
   static cairo_text_extents_t extents {};
   cairo_text_extents(static_cast<cairo_t*>(node), "hoge", &extents);
 
-  static double x {0}, y {0};
+  static double x, y;
   if (cairo_has_current_point(static_cast<cairo_t*>(node)))
   {
     cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
@@ -111,7 +111,7 @@ auto lf = [](auto& node) -> auto&
 };
 
 
-auto endl = [](auto& node) -> auto&
+[[deprecated]] auto endl = [](auto& node) -> auto&
 {
   static cairo_text_extents_t extents {};
   cairo_text_extents(static_cast<cairo_t*>(node), "hoge", &extents);

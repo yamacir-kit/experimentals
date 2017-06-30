@@ -12,40 +12,55 @@
 
 int main(int argc, char** argv) try
 {
-  std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
+  std::cout << "[debug] boost version: " << boost_version.data() << "\n";
+  std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
 
   meevax::visual_node<char> vstream {display.get()};
 
-  vstream.raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint;
+  vstream.raise() << "\\e[1C;1C;1Cbg";
+
+  vstream["title"].move((1280-640)/2, (720-200)/4).resize(640, 150).raise()
+    << "\\e[1C;1C;1Cbg";
 
   auto show_title = [&]()
   {
-    vstream["title"].raise()
-      << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-      << meevax::paint;
-
-    vstream["title"].move((1280-640)/2, (720-200)/4);
-    vstream["title"].resize(640, 200);
-
     vstream["title"]
-      << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
+      << "\\e[1C;1C;1Cbgc\\e[D0;D0;D0fg"
       << meevax::face("Bitstream Charter")
       << meevax::size(90) << meevax::cursorhome
       << "Meevax System"
       << meevax::face("Sans")
-      << meevax::size(35) << meevax::endl << meevax::size(25)
+      << meevax::size(35) << "\\n" << meevax::size(25)
       << "Version " << project_version.data() << " Alpha "
       << meevax::size(16)
-      << "(" << cmake_build_type.data() << " Build)" << meevax::endl;
+      << "(" << cmake_build_type.data() << " Build)";
   };
 
-  vstream["debug"].move((1280-320)/2, (720-50)*3/4).resize(320, 50).raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint;
+  vstream["debug"].move(600, (720-50)*3/4).resize(320, 50).raise()
+    << "\\e[1C;1C;1Cbg";
+
+  vstream["escseq"].move(50, 400).resize(500, 300).raise()
+    << "\\e[1C;1C;1Cbg";
+
+  auto show_hello_world = [&]()
+  {
+    vstream["escseq"]
+      << "\\e[1C;1C;1Cbg"
+      << meevax::face("Ricty Diminished")
+      << meevax::size(12.0 + 1.5 * 10)
+      << meevax::cursorhome
+      << "\\e[AF;87;FFfg#include \\e[FF;D7;5Ffg<iostream>\\n\\n"
+      << "\\e[87;D7;5Ffgint \\e[D0;D0;D0fgmain("
+      << "\\e[87;D7;5Ffgint \\e[D0;D0;D0fgargc, \\e[87;D7;5Ffgchar\\e[D0;D0;D0fg** argv)\\n"
+      << "{\\n  std::cout << \\e[FF;D7;5Ffg\"hello, world!\\e[FF;5F;00fg"
+      << "\\e[FF;D7;5Ffg\"\\e[D0;D0;D0fg;\\n\\n"
+      << "  \\e[FF;00;87fgreturn \\e[00;D7;D7fg0\\e[D0;D0;D0fg;\\n}";
+  };
+
+  vstream["serial"].resize(300, 60).raise()
+    << "\\e[1C;1C;1Cbg";
 
   while (true)
   {
@@ -54,26 +69,32 @@ int main(int argc, char** argv) try
     switch (event.type)
     {
     case Expose:
-      vstream.resize(0, 0)
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-        << meevax::paint;
+      vstream.resize(0, 0) << "\\e[1C;1C;1Cbg";
+
+      vstream["serial"]
+        << "\\e[1C;1C;1Cbg"
+        << meevax::face("Ricty Diminished")
+        << meevax::size(12.0 + 1.5 * 10)
+        << meevax::cursorhome
+        << "\\e[D0;D0;D0fgserial: " << std::to_string(event.xexpose.serial);
 
       show_title();
+      show_hello_world();
 
       vstream["debug"]
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << "\\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0) << meevax::cursorhome
-        << "[debug] " << "press any key" << meevax::cr;
+        << meevax::cursorhome
+        << "\\e[D0;D0;D0fg[debug] press any key";
 
       break;
 
     case KeyPress:
       vstream["debug"]
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << "\\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0) << meevax::cursorhome
-        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
+        << meevax::cursorhome
+        << "\\e[D0;D0;D0fg[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
 
       break;
     }
@@ -84,13 +105,20 @@ int main(int argc, char** argv) try
 
 catch (const std::system_error& error)
 {
-  std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+  std::cerr << "[error] system error occurred\n"
+            << "        code: " << error.code().value() << " - " << error.code().message() << std::endl;
   std::exit(error.code().value());
+}
+
+catch (const std::runtime_error& error)
+{
+  std::cerr << "[error] runtime error occurred - " << error.what() << std::endl;
+  std::exit(EXIT_FAILURE);
 }
 
 catch (...)
 {
-  std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n"
+  std::cerr << "[fatal] unexpected error occurred. report this to the developer.\n"
             << "        developer's email: httperror@404-notfound.jp\n";
   std::exit(errno);
 }
