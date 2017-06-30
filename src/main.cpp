@@ -16,11 +16,6 @@ int main(int argc, char** argv) try
 {
   std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
 
-#ifndef NDEBUG
-  meevax::magic_formula<char> {argv, argv + argc};
-  meevax::magic_formula<char> {"hoge fuga piyo"};
-#endif
-
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
 
   meevax::visual_node<char> vstream {display.get()};
