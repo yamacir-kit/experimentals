@@ -19,15 +19,15 @@ int main(int argc, char** argv) try
 
   meevax::visual_node<char> vstream {display.get()};
 
-  vstream.raise() << "\\e[1C;1C;1Cbgc";
+  vstream.raise() << "\\e[1C;1C;1Cbg";
 
   vstream["title"].move((1280-640)/2, (720-200)/4).resize(640, 150).raise()
-    << "\\e[1C;1C;1Cbgc";
+    << "\\e[1C;1C;1Cbg";
 
   auto show_title = [&]()
   {
     vstream["title"]
-      << "\\e[1C;1C;1Cbgc\\e[D0;D0;D0fgc"
+      << "\\e[1C;1C;1Cbgc\\e[D0;D0;D0fg"
       << meevax::face("Bitstream Charter")
       << meevax::size(90) << meevax::cursorhome
       << "Meevax System"
@@ -38,28 +38,29 @@ int main(int argc, char** argv) try
       << "(" << cmake_build_type.data() << " Build)";
   };
 
-  vstream["debug"].move((1280-320)/2, (720-50)*3/4).resize(320, 50).raise()
-    << "\\e[1C;1C;1Cbgc";
+  vstream["debug"].move(600, (720-50)*3/4).resize(320, 50).raise()
+    << "\\e[1C;1C;1Cbg";
 
-  vstream["escseq"].move(100, 300).resize(800, 200).raise()
-    << "\\e[1C;1C;1Cbgc";
+  vstream["escseq"].move(50, 400).resize(500, 300).raise()
+    << "\\e[1C;1C;1Cbg";
 
   auto show_hello_world = [&]()
   {
     vstream["escseq"]
-      // << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-      // << meevax::paint
-      << "\\e[1C;1C;1Cbgc"
+      << "\\e[1C;1C;1Cbg"
       << meevax::face("Ricty Diminished")
       << meevax::size(12.0 + 1.5 * 10)
       << meevax::cursorhome
-      << "\\e[D0;D0;D0fgc"
-      << "#include <iostream>\\n\\nint main(int argc, char** argv)\\n{\\n  std::cout"
-      << " << \"hello, world!\";\\n\\n  return 0;\\n}";
+      << "\\e[AF;87;FFfg#include \\e[FF;D7;5Ffg<iostream>\\n\\n"
+      << "\\e[87;D7;5Ffgint \\e[D0;D0;D0fgmain("
+      << "\\e[87;D7;5Ffgint \\e[D0;D0;D0fgargc, \\e[87;D7;5Ffgchar\\e[D0;D0;D0fg** argv)\\n"
+      << "{\\n  std::cout << \\e[FF;D7;5Ffg\"hello, world!\\e[FF;5F;00fg"
+      << "\\e[FF;D7;5Ffg\"\\e[D0;D0;D0fg;\\n\\n"
+      << "  \\e[FF;00;87fgreturn \\e[00;D7;D7fg0\\e[D0;D0;D0fg;\\n}";
   };
 
   vstream["serial"].resize(300, 60).raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint;
+    << "\\e[1C;1C;1Cbg";
 
   while (true)
   {
@@ -68,36 +69,32 @@ int main(int argc, char** argv) try
     switch (event.type)
     {
     case Expose:
-      vstream.resize(0, 0)
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-        << meevax::paint;
+      vstream.resize(0, 0) << "\\e[1C;1C;1Cbg";
 
       vstream["serial"]
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << "\\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished")
         << meevax::size(12.0 + 1.5 * 10)
-        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
         << meevax::cursorhome
-        <<   "serial: " << std::to_string(event.xexpose.serial)
-        << "\\n count: " << std::to_string(event.xexpose.count);
+        << "\\e[D0;D0;D0fgserial: " << std::to_string(event.xexpose.serial);
 
       show_title();
       show_hello_world();
 
       vstream["debug"]
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << "\\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0) << meevax::cursorhome
-        << "[debug] " << "press any key" << meevax::cr;
+        << meevax::cursorhome
+        << "\\e[D0;D0;D0fg[debug] press any key";
 
       break;
 
     case KeyPress:
       vstream["debug"]
-        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << "\\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0) << meevax::cursorhome
-        << "[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
+        << meevax::cursorhome
+        << "\\e[D0;D0;D0fg[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << meevax::cr;
 
       break;
     }

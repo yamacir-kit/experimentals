@@ -63,7 +63,7 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
       );
     }
 
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fgc.*$"}))
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fg.*$"}))
     {
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results[1], nullptr, 16),
@@ -76,13 +76,13 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
         std::basic_string<C> {
           (*iter).begin() + results[1].length()
                           + results[2].length()
-                          + results[3].length() + 7,
+                          + results[3].length() + 6,
           (*iter).end()
         }.c_str()
       );
     }
 
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bgc.*$"}))
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bg.*$"}))
     {
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results[1], nullptr, 16),
@@ -95,7 +95,7 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
         std::basic_string<C> {
           (*iter).begin() + results[1].length()
                           + results[2].length()
-                          + results[3].length() + 7,
+                          + results[3].length() + 6,
           (*iter).end()
         }.c_str()
       );
@@ -103,7 +103,8 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
 
     else
     {
-      throw std::runtime_error {"unexpected escape sequence: " + *iter};
+      // throw std::runtime_error {"unexpected escape sequence: " + *iter};
+      cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
     }
   }
 
