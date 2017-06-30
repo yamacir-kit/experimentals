@@ -103,17 +103,23 @@ int main(int argc, char** argv) try
   return 0;
 }
 
-catch (const std::system_error& error)
+catch (const std::logic_error& error)
 {
-  std::cerr << "[error] system error occurred\n"
-            << "        code: " << error.code().value() << " - " << error.code().message() << std::endl;
-  std::exit(error.code().value());
+  std::cerr << "[error] logic error occurred - " << error.what() << std::endl;
+  std::exit(EXIT_FAILURE);
 }
 
 catch (const std::runtime_error& error)
 {
   std::cerr << "[error] runtime error occurred - " << error.what() << std::endl;
   std::exit(EXIT_FAILURE);
+}
+
+catch (const std::system_error& error)
+{
+  std::cerr << "[error] system error occurred\n"
+            << "        code: " << error.code().value() << " - " << error.code().message() << std::endl;
+  std::exit(error.code().value());
 }
 
 catch (...)
