@@ -19,37 +19,30 @@ int main(int argc, char** argv) try
 
   meevax::visual_node<char> vstream {display.get()};
 
-  vstream.raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint;
+  vstream.raise() << "\\e[1C;1C;1Cbgc";
 
   vstream["title"].move((1280-640)/2, (720-200)/4).resize(640, 150).raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint;
+    << "\\e[1C;1C;1Cbgc";
 
   auto show_title = [&]()
   {
     vstream["title"]
-      << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-      << meevax::paint
-      << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
+      << "\\e[1C;1C;1Cbgc\\e[D0;D0;D0fgc"
       << meevax::face("Bitstream Charter")
       << meevax::size(90) << meevax::cursorhome
       << "Meevax System"
       << meevax::face("Sans")
-      << meevax::size(35) << meevax::cr << meevax::lf << meevax::size(25)
+      << meevax::size(35) << "\\n" << meevax::size(25)
       << "Version " << project_version.data() << " Alpha "
       << meevax::size(16)
-      << "(" << cmake_build_type.data() << " Build)"/* << meevax::endl*/;
+      << "(" << cmake_build_type.data() << " Build)";
   };
 
   vstream["debug"].move((1280-320)/2, (720-50)*3/4).resize(320, 50).raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint;
+    << "\\e[1C;1C;1Cbgc";
 
   vstream["escseq"].move(100, 300).resize(800, 200).raise()
-    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-    << meevax::paint;
+    << "\\e[1C;1C;1Cbgc";
 
   auto show_hello_world = [&]()
   {
