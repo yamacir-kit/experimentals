@@ -10,7 +10,7 @@
 namespace meevax {
 
 
-auto flush = [](auto& node) -> auto&
+[[deprecated]] auto flush = [](auto& node) -> auto&
 {
   cairo_surface_flush(static_cast<cairo_surface_t*>(node));
   return node;
@@ -111,7 +111,7 @@ auto lf = [](auto& node) -> auto&
 };
 
 
-auto endl = [](auto& node) -> auto&
+[[deprecated]] auto endl = [](auto& node) -> auto&
 {
   static cairo_text_extents_t extents {};
   cairo_text_extents(static_cast<cairo_t*>(node), "hoge", &extents);
