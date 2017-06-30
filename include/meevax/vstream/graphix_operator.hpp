@@ -44,7 +44,21 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string<C>& rh
   std::cout << "[debug] size: " << buffer.size() << ", \e[1;31m^\e[0m";
   for (const auto& s : buffer)
   {
-    std::cout << s << (&s != &buffer.back() ? "\e[1;31m\\e\e[0m" : "\e[1;31m$\e[0m\n");
+    if (s.front() == '\e')
+    {
+      std::cout << "\e[1;33m\\e\e[0m[" << std::string {s.begin() + 2, s.end()}
+                << (&s != &buffer.back() ? "\e[1;36m/\e[0m" : "\e[1;31m$\e[0m\n");
+    }
+    else if (s.front() == '\n')
+    {
+      std::cout << "\e[1;33m\\n\e[0m" << std::string {s.begin() + 1, s.end()}
+                << (&s != &buffer.back() ? "\e[1;36m/\e[0m" : "\e[1;31m$\e[0m\n");
+    }
+    else
+    {
+      std::cout << s
+                << (&s != &buffer.back() ? "\e[1;36m/\e[0m" : "\e[1;31m$\e[0m\n");
+    }
   }
 #endif
 
@@ -80,9 +94,10 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
 
   for (auto iter {rhs.begin()}; iter != rhs.end(); ++iter)
   {
-    if (std::regex_match(*iter, results, std::basic_regex<C> {"^(\\n)(.*)$"}))
+    if (std::regex_match(*iter, results, std::basic_regex<C> {"^(\n)(.*)$"}))
     {
-      std::cout << "[debug] \e[1;31m^\e[1;36m" << "\\n" << "\e[1;33m" << results[2] << "\e[1;31m$\e[0m\n";
+      // std::cout << "[debug] \e[1;31m^\e[1;36m" << "\\n"
+      //                            << "\e[1;33m" << results[2] << "\e[1;31m$\e[0m\n";
 
       lhs << meevax::cr << meevax::lf;
 
@@ -93,13 +108,16 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
     }
 
     else if (std::regex_match(*iter, results, std::basic_regex<C> {
-               "^(\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fg).*$"
+               "^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fg)(.*)$"
             }))
     {
+      // std::cout << "[debug] \e[1;31m^\e[1;36m" << results[1]
+      //                            << "\e[1;33m" << results[2] << "\e[1;31m$\e[0m\n";
+
       lhs << meevax::color<std::uint8_t>(
-        std::stoi(results.str(2), nullptr, 16),
-        std::stoi(results.str(3), nullptr, 16),
-        std::stoi(results.str(4), nullptr, 16)
+        std::stoi(results[2], nullptr, 16),
+        std::stoi(results[3], nullptr, 16),
+        std::stoi(results[4], nullptr, 16)
       );
 
       cairo_show_text(
@@ -109,9 +127,12 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
     }
 
     else if (std::regex_match(*iter, results, std::basic_regex<C> {
-               "^(\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bg).*$"
+               "^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bg).*$"
             }))
     {
+      // std::cout << "[debug] \e[1;31m^\e[1;36m" << results[1]
+      //                            << "\e[1;33m" << results[2] << "\e[1;31m$\e[0m\n";
+
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results.str(2), nullptr, 16),
         std::stoi(results.str(3), nullptr, 16),
@@ -128,7 +149,7 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
     {
       if (!(*iter).empty())
       {
-      // throw std::runtime_error {"unexpected escape sequence: \\e" + *iter};
+        // throw std::runtime_error {"unexpected escape sequence: \\e" + *iter};
         cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
       }
     }

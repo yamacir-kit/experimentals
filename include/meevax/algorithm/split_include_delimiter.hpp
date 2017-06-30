@@ -25,8 +25,8 @@ void split_include_delimiter(V<S>& result, const S& target, S&& delims)
     //   std::cout << "[debug] found: " << std::distance(target.begin(), last) << std::endl;
     // }
 
-    result.emplace_back(iter, last != target.end() ? ++last : last);
-    iter = last;
+    result.emplace_back(iter != target.begin() ? iter - 1 : iter, last);
+    iter = (last != target.end() ? ++last : last);
   }
 }
 
