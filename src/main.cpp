@@ -37,10 +37,10 @@ int main(int argc, char** argv) try
       << meevax::size(90) << meevax::cursorhome
       << "Meevax System"
       << meevax::face("Sans")
-      << meevax::size(35) << meevax::endl << meevax::size(25)
+      << meevax::size(35) << meevax::cr << meevax::lf << meevax::size(25)
       << "Version " << project_version.data() << " Alpha "
       << meevax::size(16)
-      << "(" << cmake_build_type.data() << " Build)" << meevax::endl;
+      << "(" << cmake_build_type.data() << " Build)"/* << meevax::endl*/;
   };
 
   vstream["debug"].move((1280-320)/2, (720-50)*3/4).resize(320, 50).raise()
@@ -64,6 +64,9 @@ int main(int argc, char** argv) try
       << " << \"hello, world!\";\\n\\n  return 0;\\n}";
   };
 
+  vstream["serial"].resize(300, 60).raise()
+    << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint;
+
   while (true)
   {
     auto event {vstream.event()};
@@ -74,6 +77,15 @@ int main(int argc, char** argv) try
       vstream.resize(0, 0)
         << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
         << meevax::paint;
+
+      vstream["serial"]
+        << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C) << meevax::paint
+        << meevax::face("Ricty Diminished")
+        << meevax::size(12.0 + 1.5 * 10)
+        << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
+        << meevax::cursorhome
+        <<   "serial: " << std::to_string(event.xexpose.serial)
+        << "\\n count: " << std::to_string(event.xexpose.count);
 
       show_title();
       show_hello_world();
