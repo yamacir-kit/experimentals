@@ -1,4 +1,4 @@
-### ${PROJECT_NAME}
+## ${PROJECT_NAME}
 
 version ${PROJECT_VERSION} in development
 
@@ -6,5 +6,6 @@ version ${PROJECT_VERSION} in development
 ### dependency
 
 - C++14 Standard Library
-- X Window System Version 11 Release 6
+- Boost C++ Libraries Version 1.58.0
+- XLib Version 11 Release 6
 - Cairo Vector Graphics Library Version 1.14.6

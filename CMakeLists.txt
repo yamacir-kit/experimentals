@@ -5,6 +5,8 @@ set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_FLAGS "-std=c++14 -Wall -Wextra -O3 -pipe")
 set(CMAKE_BUILD_TYPE Debug)
 
+find_package(Boost 1.58.0 REQUIRED COMPONENTS)
+
 file(GLOB ${PROJECT_NAME}_SOURCES
   ${PROJECT_SOURCE_DIR}/src/*.cpp
 )
@@ -21,6 +23,7 @@ configure_file(
 
 include_directories(
   ${PROJECT_SOURCE_DIR}/include
+  ${Boost_INCLUDE_DIRS}
 )
 
 link_directories(
@@ -32,6 +35,7 @@ add_executable(${PROJECT_NAME}
 )
 
 target_link_libraries(${PROJECT_NAME}
+  ${Boost_LIBRARIES}
   X11
   cairo
 )

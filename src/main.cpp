@@ -3,8 +3,6 @@
 #include <system_error>
 #include <thread>
 
-#include <meevax/string/magic_formula.hpp>
-
 #include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 #include <meevax/vstream/graphix_operator.hpp>
@@ -14,6 +12,7 @@
 
 int main(int argc, char** argv) try
 {
+  std::cout << "[debug] boost version: " << boost_version.data() << std::endl;
   std::cout << "[debug] cairo version: " << cairo_version_string() << std::endl;
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
