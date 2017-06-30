@@ -56,21 +56,50 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
 {
   cairo_show_text(static_cast<cairo_t*>(lhs), rhs.front().c_str());
 
+  static std::match_results<typename std::basic_string<C>::const_iterator> results;
+
   for (auto iter {rhs.begin() + 1}; iter != rhs.end(); ++iter)
   {
-    if (std::regex_match(*iter, std::basic_regex<C> {"^n.*"}))
+    if (std::regex_match(*iter, std::basic_regex<C> {"^n.*$"}))
     {
-      lhs << meevax::cr << meevax::lf;
+      lhs << meevax::cr
+          << meevax::lf; // TODO CR+LF to be CRLF
+
       cairo_show_text(
         static_cast<cairo_t*>(lhs),
-        std::basic_string<C>((*iter).begin() + 1, (*iter).end()).c_str()
+        std::basic_string<C> {(*iter).begin() + 1, (*iter).end()}.c_str()
       );
+    }
+
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {
+               "^e\\[([0-9xa-fA-F]+);([0-9xa-fA-F]+);([0-9xa-fA-F]+)c.*$"
+             }))
+    {
+      lhs << meevax::color<std::uint8_t>(
+        std::stoi(results[1], nullptr, 16),
+        std::stoi(results[2], nullptr, 16),
+        std::stoi(results[3], nullptr, 16)
+      );
+
+      cairo_show_text(
+        static_cast<cairo_t*>(lhs),
+        std::basic_string<C> {
+          (*iter).begin() + results[1].length()
+                          + results[2].length()
+                          + results[3].length() + 5,
+          (*iter).end()
+        }.c_str()
+      );
+    }
+
+    else
+    {
+      throw std::runtime_error {"unexpected escape sequence: " + *iter};
     }
   }
 
   return lhs;
 }
-    // cairo_show_text(static_cast<cairo_t*>(lhs), (&s != &rhs.back() ? std::basic_string<C> {s + " "} : s).c_str());
 
 
 } // namespace meevax

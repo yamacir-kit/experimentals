@@ -58,8 +58,9 @@ int main(int argc, char** argv) try
       << meevax::paint
       << meevax::face("Ricty Diminished")
       << meevax::size(12.0 + 1.5 * 10)
-      << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
+      // << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
       << meevax::cursorhome
+      << "\\e[D0;D0;D0c"
       << "#include <iostream>\\n\\nint main(int argc, char** argv)\\n{\\n  std::cout"
       << " << \"hello, world!\";\\n\\n  return 0;\\n}";
   };
@@ -114,13 +115,20 @@ int main(int argc, char** argv) try
 
 catch (const std::system_error& error)
 {
-  std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
+  std::cerr << "[error] system error occurred\n"
+            << "        code: " << error.code().value() << " - " << error.code().message() << std::endl;
   std::exit(error.code().value());
+}
+
+catch (const std::runtime_error& error)
+{
+  std::cerr << "[error] runtime error occurred - " << error.what() << std::endl;
+  std::exit(EXIT_FAILURE);
 }
 
 catch (...)
 {
-  std::cerr << "[fatal] an unexpected error occurred. report this to the developer.\n"
+  std::cerr << "[fatal] unexpected error occurred. report this to the developer.\n"
             << "        developer's email: httperror@404-notfound.jp\n";
   std::exit(errno);
 }
