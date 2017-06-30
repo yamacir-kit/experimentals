@@ -37,33 +37,61 @@ template <typename C>
 auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string<C>& rhs)
 {
   std::vector<std::basic_string<C>> buffer {};
-  boost::algorithm::split(buffer, rhs, boost::is_any_of("\\"));
+  boost::algorithm::split(buffer, rhs, boost::is_any_of("\e"));
+
+#ifndef NDEBUG
+  std::cout << "[debug] size: " << buffer.size() << ", \e[1;31m^\e[0m";
+  for (const auto& s : buffer)
+  {
+    std::cout << s << (&s != &buffer.back() ? "\e[1;31m\\e\e[0m" : "\e[1;31m$\e[0m\n");
+  }
+#endif
 
   return lhs << buffer;
 }
 
 
 template <typename C>
+auto& print(const meevax::graphix_impl& lhs, const std::basic_string<C>& rhs)
+{
+  std::vector<std::basic_string<C>> buffer {};
+  boost::algorithm::split(buffer, rhs, boost::is_any_of("\n"));
+
+  for (const auto& s : buffer)
+  {
+    cairo_show_text(static_cast<cairo_t*>(lhs), s.c_str());
+    if (&s != &buffer.back()) { lhs << meevax::cr << meevax::lf; }
+  }
+
+  return lhs;
+}
+
+
+template <typename C>
 auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_string<C>>& rhs)
 {
-  cairo_show_text(static_cast<cairo_t*>(lhs), rhs.front().c_str());
+  // cairo_show_text(static_cast<cairo_t*>(lhs), rhs.front().c_str());
+  if (!rhs.front().empty())
+  {
+    meevax::print(lhs, rhs.front());
+  }
 
   static std::match_results<typename std::basic_string<C>::const_iterator> results;
 
   for (auto iter {rhs.begin() + 1}; iter != rhs.end(); ++iter)
   {
-    if (std::regex_match(*iter, std::basic_regex<C> {"^n.*$"}))
-    {
-      lhs << meevax::cr
-          << meevax::lf; // TODO CR+LF to be CRLF
+    // if (std::regex_match(*iter, std::basic_regex<C> {"^n.*$"}))
+    // {
+    //   lhs << meevax::cr
+    //       << meevax::lf; // TODO CR+LF to be CRLF
+    //
+    //   cairo_show_text(
+    //     static_cast<cairo_t*>(lhs),
+    //     std::basic_string<C> {(*iter).begin() + 1, (*iter).end()}.c_str()
+    //   );
+    // }
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
-        std::basic_string<C> {(*iter).begin() + 1, (*iter).end()}.c_str()
-      );
-    }
-
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fg.*$"}))
+    if (std::regex_match(*iter, results, std::basic_regex<C> {"^\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fg.*$"}))
     {
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results[1], nullptr, 16),
@@ -71,18 +99,27 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
         std::stoi(results[3], nullptr, 16)
       );
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
+      // cairo_show_text(
+      //   static_cast<cairo_t*>(lhs),
+      //   std::basic_string<C> {
+      //     (*iter).begin() + results[1].length()
+      //                     + results[2].length()
+      //                     + results[3].length() + 5,
+      //     (*iter).end()
+      //   }.c_str()
+      // );
+      print(
+        lhs,
         std::basic_string<C> {
           (*iter).begin() + results[1].length()
                           + results[2].length()
-                          + results[3].length() + 6,
+                          + results[3].length() + 5,
           (*iter).end()
-        }.c_str()
+        }
       );
     }
 
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bg.*$"}))
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bg.*$"}))
     {
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results[1], nullptr, 16),
@@ -90,21 +127,31 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
         std::stoi(results[3], nullptr, 16)
       ) << meevax::paint;
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
+      // cairo_show_text(
+      //   static_cast<cairo_t*>(lhs),
+      //   std::basic_string<C> {
+      //     (*iter).begin() + results[1].length()
+      //                     + results[2].length()
+      //                     + results[3].length() + 5,
+      //     (*iter).end()
+      //   }.c_str()
+      // );
+      print(
+        lhs,
         std::basic_string<C> {
           (*iter).begin() + results[1].length()
                           + results[2].length()
-                          + results[3].length() + 6,
+                          + results[3].length() + 5,
           (*iter).end()
-        }.c_str()
+        }
       );
     }
 
     else
     {
-      // throw std::runtime_error {"unexpected escape sequence: " + *iter};
-      cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
+      // throw std::runtime_error {"unexpected escape sequence: \\e" + *iter};
+      // cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
+      meevax::print(lhs, *iter);
     }
   }
 
