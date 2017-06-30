@@ -25,14 +25,6 @@ auto operator<<(const meevax::graphix_impl& lhs, F&& rhs)
 }
 
 
-// template <typename C>
-// auto& operator<<(const meevax::graphix_impl& lhs, C* rhs)
-// {
-//   std::basic_string<C> buffer {rhs};
-//   return lhs << std::forward<decltype(buffer)>(buffer);
-// }
-
-
 template <typename C>
 auto& operator<<(const meevax::graphix_impl& lhs, const C* rhs)
 {
@@ -71,9 +63,7 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
       );
     }
 
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {
-               "^e\\[([0-9xa-fA-F]+);([0-9xa-fA-F]+);([0-9xa-fA-F]+)c.*$"
-             }))
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fgc.*$"}))
     {
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results[1], nullptr, 16),
@@ -86,7 +76,26 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
         std::basic_string<C> {
           (*iter).begin() + results[1].length()
                           + results[2].length()
-                          + results[3].length() + 5,
+                          + results[3].length() + 7,
+          (*iter).end()
+        }.c_str()
+      );
+    }
+
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bgc.*$"}))
+    {
+      lhs << meevax::color<std::uint8_t>(
+        std::stoi(results[1], nullptr, 16),
+        std::stoi(results[2], nullptr, 16),
+        std::stoi(results[3], nullptr, 16)
+      ) << meevax::paint;
+
+      cairo_show_text(
+        static_cast<cairo_t*>(lhs),
+        std::basic_string<C> {
+          (*iter).begin() + results[1].length()
+                          + results[2].length()
+                          + results[3].length() + 7,
           (*iter).end()
         }.c_str()
       );

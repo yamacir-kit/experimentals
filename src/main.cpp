@@ -54,13 +54,13 @@ int main(int argc, char** argv) try
   auto show_hello_world = [&]()
   {
     vstream["escseq"]
-      << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
-      << meevax::paint
+      // << meevax::color<std::uint8_t>(0x1C, 0x1C, 0x1C)
+      // << meevax::paint
+      << "\\e[1C;1C;1Cbgc"
       << meevax::face("Ricty Diminished")
       << meevax::size(12.0 + 1.5 * 10)
-      // << meevax::color<std::uint8_t>(0xD0, 0xD0, 0xD0)
       << meevax::cursorhome
-      << "\\e[D0;D0;D0c"
+      << "\\e[D0;D0;D0fgc"
       << "#include <iostream>\\n\\nint main(int argc, char** argv)\\n{\\n  std::cout"
       << " << \"hello, world!\";\\n\\n  return 0;\\n}";
   };
