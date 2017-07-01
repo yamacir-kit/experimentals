@@ -12,7 +12,7 @@ namespace meevax {
 // TODO THIS MUST BE MORE EFFICIENTLY
 
 template <template <typename...> class V, typename S>
-void split_include_delimiter(V<S>& result, const S& target, S&& delims)
+inline void split_include_delimiter(V<S>& result, const S& target, S&& delims)
 {
   for (auto iter {target.begin()}; iter != target.end(); )
   {
