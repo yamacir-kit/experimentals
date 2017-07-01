@@ -52,10 +52,10 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
     {
       lhs << meevax::cr << meevax::lf;
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
-        std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
-      );
+      // cairo_show_text(
+      //   static_cast<cairo_t*>(lhs),
+      //   std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
+      // );
     }
 
     else if (std::regex_match(*iter, results, std::basic_regex<C> {
@@ -73,19 +73,24 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_s
         lhs << meevax::paint;
       }
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
-        std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
-      );
+      // cairo_show_text(
+      //   static_cast<cairo_t*>(lhs),
+      //   std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
+      // );
     }
 
-    else
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^()(.*)$"}))
     {
-      if (!(*iter).empty())
-      {
-        cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
-      }
+      // if (!(*iter).empty())
+      // {
+      //   cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
+      // }
     }
+
+    cairo_show_text(
+      static_cast<cairo_t*>(lhs),
+      std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
+    );
   }
 
   return lhs;
