@@ -8,9 +8,7 @@
 
 #include <cairo/cairo-xlib.h>
 
-#include <boost/algorithm/string/split.hpp>
-#include <boost/algorithm/string/classification.hpp>
-
+#include <meevax/algorithm/split_include_delimiter.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 
 
@@ -37,7 +35,7 @@ template <typename C>
 auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string<C>& rhs)
 {
   std::vector<std::basic_string<C>> buffer {};
-  boost::algorithm::split(buffer, rhs, boost::is_any_of("\\"));
+  meevax::algorithm::split_include_delimiter(buffer, rhs, std::basic_string<C> {"\e\n"});
 
   return lhs << buffer;
 }
@@ -46,66 +44,37 @@ auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string<C>& rh
 template <typename C>
 auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_string<C>>& rhs)
 {
-  cairo_show_text(static_cast<cairo_t*>(lhs), rhs.front().c_str());
-
   static std::match_results<typename std::basic_string<C>::const_iterator> results;
 
-  for (auto iter {rhs.begin() + 1}; iter != rhs.end(); ++iter)
+  for (auto iter {rhs.begin()}; iter != rhs.end(); ++iter)
   {
-    if (std::regex_match(*iter, std::basic_regex<C> {"^n.*$"}))
+    if (std::regex_match(*iter, results, std::basic_regex<C> {"^(\n)(.*)$"}))
     {
-      lhs << meevax::cr
-          << meevax::lf; // TODO CR+LF to be CRLF
-
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
-        std::basic_string<C> {(*iter).begin() + 1, (*iter).end()}.c_str()
-      );
+      lhs << meevax::cr << meevax::lf;
     }
 
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)fg.*$"}))
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {
+               "^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)([fb])g)(.*)$"
+            }))
     {
       lhs << meevax::color<std::uint8_t>(
-        std::stoi(results[1], nullptr, 16),
         std::stoi(results[2], nullptr, 16),
-        std::stoi(results[3], nullptr, 16)
+        std::stoi(results[3], nullptr, 16),
+        std::stoi(results[4], nullptr, 16)
       );
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
-        std::basic_string<C> {
-          (*iter).begin() + results[1].length()
-                          + results[2].length()
-                          + results[3].length() + 6,
-          (*iter).end()
-        }.c_str()
-      );
+      if (results[5] == 'b')
+      {
+        lhs << meevax::paint;
+      }
     }
 
-    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)bg.*$"}))
-    {
-      lhs << meevax::color<std::uint8_t>(
-        std::stoi(results[1], nullptr, 16),
-        std::stoi(results[2], nullptr, 16),
-        std::stoi(results[3], nullptr, 16)
-      ) << meevax::paint;
+    else if (std::regex_match(*iter, results, std::basic_regex<C> {"^()(.*)$"})) {};
 
-      cairo_show_text(
-        static_cast<cairo_t*>(lhs),
-        std::basic_string<C> {
-          (*iter).begin() + results[1].length()
-                          + results[2].length()
-                          + results[3].length() + 6,
-          (*iter).end()
-        }.c_str()
-      );
-    }
-
-    else
-    {
-      // throw std::runtime_error {"unexpected escape sequence: " + *iter};
-      cairo_show_text(static_cast<cairo_t*>(lhs), (*iter).c_str());
-    }
+    cairo_show_text(
+      static_cast<cairo_t*>(lhs),
+      std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
+    );
   }
 
   return lhs;
