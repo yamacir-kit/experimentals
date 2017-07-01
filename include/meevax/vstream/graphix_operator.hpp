@@ -47,17 +47,18 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::
 {
   static std::match_results<typename std::basic_string<C>::const_iterator> results;
 
-  static const std::basic_regex<C>  crlf_regex {"^(\n)(.*)$"};
-  static const std::basic_regex<C> color_regex {"^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)([fb])g)(.*)$"};
+  static const std::basic_regex<C>   crlf_regex {"^(\n)(.*)$"};
+  static const std::basic_regex<C>  color_regex {"^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)([fb])g)(.*)$"};
+  // static const std::basic_regex<C> cursor_regex {"^(\\\e\\[([0-9]*);([0-9]*)([Hf])(.*)$"};
 
-  for (auto iter {rhs.begin()}; iter != rhs.end(); ++iter)
+  for (const auto& s : rhs)
   {
-    if (std::regex_match(*iter, results, crlf_regex))
+    if (std::regex_match(s, results, crlf_regex))
     {
       lhs << meevax::cr << meevax::lf;
     }
 
-    else if (std::regex_match(*iter, results, color_regex))
+    else if (std::regex_match(s, results, color_regex))
     {
       lhs << meevax::color<std::uint8_t>(
         std::stoi(results[2], nullptr, 16),
@@ -65,21 +66,18 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::
         std::stoi(results[4], nullptr, 16)
       );
 
-      if (results[5] == 'b')
-      {
-        lhs << meevax::paint;
-      }
+      if (results[5] == 'b') { lhs << meevax::paint; }
     }
 
-    else // if (std::regex_match(*iter, results, std::basic_regex<C> {"^()(.*)$"})) {};
+    else
     {
-      cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {*iter}.c_str());
+      cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {s}.c_str());
       continue;
     }
 
     cairo_show_text(
       static_cast<cairo_t*>(lhs),
-      std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
+      std::basic_string<C> {s.begin() + results[1].length(), s.end()}.c_str()
     );
   }
 
