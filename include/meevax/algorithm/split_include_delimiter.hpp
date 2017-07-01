@@ -16,17 +16,42 @@ void split_include_delimiter(V<S>& result, const S& target, S&& delims)
   {
     auto last {std::find_first_of(iter, target.end(), delims.begin(), delims.end())};
 
-    // if (last == target.end())
-    // {
-    //   std::cout << "[debug] not found\n";
-    // }
-    // else
-    // {
-    //   std::cout << "[debug] found: " << std::distance(target.begin(), last) << std::endl;
-    // }
+#ifndef NDEBUG
+    std::cout << "[finder] ";
+    for (const auto& c : target)
+    {
+      if (&c == &*iter && &c == &*last) { std::cout << "\e[0m\e[1;33;42m"; }
+      else if (&c == &*iter) { std::cout << "\e[0m\e[1;33m"; }
+      else if (&c == &*last) { std::cout << "\e[0m\e[1;42m"; }
+      else { std::cout << "\e[0m"; }
+      std::cout << (c == '\e' ? "\\e" : c == '\n' ? "\\n" : std::string {c});
+    }
+    std::cout << "\e[0m\n";
+#endif
 
     result.emplace_back(iter != target.begin() ? iter - 1 : iter, last);
     iter = (last != target.end() ? ++last : last);
+
+#ifndef NDEBUG
+    std::cout << "[update] ";
+    for (const auto& c : target)
+    {
+      if (&c == &*iter && &c == &*last) { std::cout << "\e[0m\e[1;33;42m"; }
+      else if (&c == &*iter) { std::cout << "\e[0m\e[1;33m"; }
+      else if (&c == &*last) { std::cout << "\e[0m\e[1;42m"; }
+      else { std::cout << "\e[0m"; }
+      std::cout << (c == '\e' ? "\\e" : c == '\n' ? "\\n" : std::string {c});
+    }
+    std::cout << "\e[0m\n";
+#endif
+  }
+
+  for (const auto& c : delims)
+  {
+    if (target.back() == c)
+    {
+      result.emplace_back(target.end() - 1, target.end());
+    }
   }
 }
 
