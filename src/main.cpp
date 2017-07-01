@@ -72,29 +72,25 @@ int main(int argc, char** argv) try
       vstream.resize(0, 0) << "\e[1C;1C;1Cbg";
 
       vstream["serial"]
-        << "\e[1C;1C;1Cbg"
-        << meevax::face("Ricty Diminished")
-        << meevax::size(12.0 + 1.5 * 10)
+        << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[D0;D0;D0fgserial: " << std::to_string(event.xexpose.serial);
+        << "\e[1C;1C;1Cbg\e[D0;D0;D0fgserial: " << std::to_string(event.xexpose.serial);
 
       show_title();
       show_hello_world();
 
       vstream["debug"]
-        << "\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[D0;D0;D0fg[debug] press any key";
+        << "\e[1C;1C;1Cbg\e[D0;D0;D0fg[debug] press any key";
 
       break;
 
     case KeyPress:
       vstream["debug"]
-        << "\e[1C;1C;1Cbg"
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[D0;D0;D0fg[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0)) << "\n";
+        << "\e[1C;1C;1Cbg\e[D0;D0;D0fg[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0));
 
       break;
     }
