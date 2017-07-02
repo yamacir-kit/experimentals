@@ -10,6 +10,7 @@
 #include <cairo/cairo-xlib.h>
 
 #include <meevax/algorithm/split_include_delimiter.hpp>
+#include <meevax/algorithm/regex_split_include_delimiter.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 
 
