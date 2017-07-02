@@ -9,7 +9,6 @@
 
 #include <cairo/cairo-xlib.h>
 
-// #include <meevax/algorithm/split_include_delimiter.hpp>
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 
@@ -62,7 +61,7 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::
   > results;
 
   static const std::basic_regex<C>  crlf_regex {"^(\n)$"};
-  static const std::basic_regex<C> color_regex {"^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)([Mm]))$"};
+  static const std::basic_regex<C> color_regex {"^(\\\e\\[(\\d+);(\\d+);(\\d+)([Mm]))$"};
 
   for (const auto& s : rhs)
   {
