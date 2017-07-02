@@ -16,18 +16,19 @@ int main(int argc, char** argv) try
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
+  XSynchronize(display.get(), true);
 
   meevax::visual_node<char> vstream {display.get()};
 
-  vstream.raise() << "\e[1C;1C;1Cbg";
+  vstream.raise() << "\e[28;28;28M";
 
   vstream["title"].move((1280-640)/2, (720-200)/4).resize(640, 150).raise()
-    << "\e[1C;1C;1Cbg";
+    << "\e[28;28;28M";
 
   auto show_title = [&]()
   {
     vstream["title"]
-      << "\e[1C;1C;1Cbg\e[D0;D0;D0fg"
+      << "\e[28;28;28M\e[208;208;208m"
       << meevax::face("Bitstream Charter")
       << meevax::size(90) << meevax::cursorhome
       << "Meevax System"
@@ -39,28 +40,28 @@ int main(int argc, char** argv) try
   };
 
   vstream["debug"].move(600, (720-50)*3/4).resize(320, 50).raise()
-    << "\e[1C;1C;1Cbg";
+    << "\e[28;28;28M";
 
   vstream["escseq"].move(50, 400).resize(500, 300).raise()
-    << "\e[1C;1C;1Cbg";
+    << "\e[28;28;28M";
 
   auto show_hello_world = [&]()
   {
     vstream["escseq"]
-      << "\e[1C;1C;1Cbg"
+      << "\e[28;28;28M"
       << meevax::face("Ricty Diminished")
       << meevax::size(12.0 + 1.5 * 10)
       << meevax::cursorhome
-      << "\e[AF;87;FFfg#include \e[FF;D7;5Ffg<iostream>\n\n"
-      << "\e[87;D7;5Ffgint \e[D0;D0;D0fgmain("
-      << "\e[87;D7;5Ffgint \e[D0;D0;D0fgargc, \e[87;D7;5Ffgchar\e[D0;D0;D0fg** argv)\n"
-      << "{\n  std::cout << \e[FF;D7;5Ffg\"hello, world!\e[FF;5F;00fg"
-      << "\e[FF;D7;5Ffg\"\e[D0;D0;D0fg;\n\n"
-      << "  \e[FF;00;87fgreturn \e[00;D7;D7fg0\e[D0;D0;D0fg;\n}";
+      << "\e[175;135;255m#include \e[255;215;95m<iostream>\n\n"
+      << "\e[135;215;95mint \e[208;208;208mmain("
+      << "\e[135;215;95mint \e[208;208;208margc, \e[135;215;95mchar\e[208;208;208m** argv)\n"
+      << "{\n  std::cout << \e[255;215;95m\"hello, world!\e[255;95;00m"
+      << "\e[255;215;95m\"\e[208;208;208m;\n\n"
+      << "  \e[255;00;135mreturn \e[00;215;215m0\e[208;208;208m;\n}";
   };
 
   vstream["serial"].resize(300, 60).raise()
-    << "\e[1C;1C;1Cbg";
+    << "\e[28;28;28M";
 
   while (true)
   {
@@ -69,12 +70,12 @@ int main(int argc, char** argv) try
     switch (event.type)
     {
     case Expose:
-      vstream.resize(0, 0) << "\e[1C;1C;1Cbg";
+      vstream.resize(0, 0) << "\e[28;28;28M";
 
       vstream["serial"]
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[1C;1C;1Cbg\e[D0;D0;D0fgserial: " << std::to_string(event.xexpose.serial);
+        << "\e[28;28;28M\e[208;208;208mserial: " << std::to_string(event.xexpose.serial);
 
       show_title();
       show_hello_world();
@@ -82,7 +83,7 @@ int main(int argc, char** argv) try
       vstream["debug"]
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[1C;1C;1Cbg\e[D0;D0;D0fg[debug] press any key";
+        << "\e[28;28;28M\e[208;208;208m[debug] press any key";
 
       break;
 
@@ -90,7 +91,7 @@ int main(int argc, char** argv) try
       vstream["debug"]
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[1C;1C;1Cbg\e[D0;D0;D0fg[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0));
+        << "\e[28;28;28M\e[208;208;208m[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0));
 
       break;
     }
