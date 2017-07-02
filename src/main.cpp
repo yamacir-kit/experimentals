@@ -100,15 +100,9 @@ int main(int argc, char** argv) try
   return 0;
 }
 
-catch (const std::logic_error& error)
+catch (const std::exception& error)
 {
-  std::cerr << "[error] logic error occurred - " << error.what() << std::endl;
-  std::exit(EXIT_FAILURE);
-}
-
-catch (const std::runtime_error& error)
-{
-  std::cerr << "[error] runtime error occurred - " << error.what() << std::endl;
+  std::cerr << "[error] standard exception occurred - " << error.what() << std::endl;
   std::exit(EXIT_FAILURE);
 }
 
