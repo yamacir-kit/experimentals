@@ -70,20 +70,23 @@ int main(int argc, char** argv) try
     switch (event.type)
     {
     case Expose:
-      vstream.resize(0, 0) << "\e[28;28;28M";
+      if (!event.xexpose.count)
+      {
+        vstream.resize(0, 0) << "\e[28;28;28M";
 
-      vstream["serial"]
-        << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::cursorhome
-        << "\e[28;28;28M\e[208;208;208mserial: " << std::to_string(event.xexpose.serial);
+        vstream["serial"]
+          << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
+          << meevax::cursorhome
+          << "\e[28;28;28M\e[208;208;208mserial: " << std::to_string(event.xexpose.serial);
 
-      show_title();
-      show_hello_world();
+        show_title();
+        show_hello_world();
 
-      vstream["debug"]
-        << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
-        << meevax::cursorhome
-        << "\e[28;28;28M\e[208;208;208m[debug] press any key";
+        vstream["debug"]
+          << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
+          << meevax::cursorhome
+          << "\e[28;28;28M\e[208;208;208m[debug] press any key";
+      }
 
       break;
 
