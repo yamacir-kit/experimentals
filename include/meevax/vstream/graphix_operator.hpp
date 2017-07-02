@@ -9,7 +9,7 @@
 
 #include <cairo/cairo-xlib.h>
 
-#include <meevax/algorithm/split_include_delimiter.hpp>
+#include <meevax/algorithm/regex_split_include_delimiter.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 
 
@@ -36,7 +36,18 @@ template <typename C>
 inline auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string<C>& rhs)
 {
   std::vector<std::basic_string<C>> buffer {};
-  meevax::algorithm::split_include_delimiter(buffer, rhs, std::basic_string<C> {"\e\n"});
+
+  static const std::vector<std::basic_regex<C>> delimiters {
+    std::basic_regex<C> {"\\\e\\[(\\d*;?)+(.)"}, // escape sequence
+    std::basic_regex<C> {"\n"}
+  };
+
+  meevax::algorithm::regex_split_include_delimiter(buffer, rhs, delimiters);
+
+  buffer.erase(
+    std::remove_if(std::begin(buffer), std::end(buffer), [](auto s) { return s.empty(); }),
+    std::end(buffer)
+  );
 
   return lhs << std::move(buffer);
 }
@@ -45,42 +56,34 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string
 template <typename C>
 inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_string<C>>& rhs)
 {
-  static std::match_results<typename std::basic_string<C>::const_iterator> results;
+  static std::match_results<
+    typename std::basic_string<C>::const_iterator
+  > results;
 
-  static const std::basic_regex<C>  crlf_regex {"^(\n)(.*)$"};
-  static const std::basic_regex<C> color_regex {"^(\\\e\\[([0-9xXa-fA-F]+);([0-9xXa-fA-F]+);([0-9xXa-fA-F]+)([fb])g)(.*)$"};
+  static const std::basic_regex<C>  crlf_regex {"^(\n)$"};
+  static const std::basic_regex<C> color_regex {"^(\\\e\\[(\\d+);(\\d+);(\\d+)([Mm]))$"};
 
-  for (auto iter {rhs.begin()}; iter != rhs.end(); ++iter)
+  for (const auto& s : rhs)
   {
-    if (std::regex_match(*iter, results, crlf_regex))
+    if (std::regex_match(s, results, crlf_regex))
     {
       lhs << meevax::cr << meevax::lf;
     }
 
-    else if (std::regex_match(*iter, results, color_regex))
+    else if (std::regex_match(s, results, color_regex))
     {
       lhs << meevax::color<std::uint8_t>(
-        std::stoi(results[2], nullptr, 16),
-        std::stoi(results[3], nullptr, 16),
-        std::stoi(results[4], nullptr, 16)
+        std::stoi(results[2]), std::stoi(results[3]), std::stoi(results[4])
       );
 
-      if (results[5] == 'b')
-      {
-        lhs << meevax::paint;
-      }
+      if (results[5] == 'M') { lhs << meevax::paint; }
     }
 
-    else // if (std::regex_match(*iter, results, std::basic_regex<C> {"^()(.*)$"})) {};
+    else if (!s.empty())
     {
-      cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {*iter}.c_str());
+      cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {s}.c_str());
       continue;
     }
-
-    cairo_show_text(
-      static_cast<cairo_t*>(lhs),
-      std::basic_string<C> {(*iter).begin() + results[1].length(), (*iter).end()}.c_str()
-    );
   }
 
   return lhs;
