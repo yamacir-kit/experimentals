@@ -79,10 +79,13 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::
       if (results[5] == 'M') { lhs << meevax::paint; }
     }
 
-    else if (!s.empty())
+    else
     {
-      cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {s}.c_str());
-      continue;
+      if (!s.empty())
+      {
+        cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {s}.c_str());
+        continue;
+      }
     }
   }
 
