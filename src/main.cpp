@@ -15,6 +15,8 @@ int main(int argc, char** argv) try
   std::cout << "[debug] boost version: " << boost_version.data() << "\n";
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
+  std::vector<std::string> argv_ {argv, argv + argc};
+
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
   XSynchronize(display.get(), true);
 
@@ -31,7 +33,7 @@ int main(int argc, char** argv) try
     vstream["title"]
       << meevax::face("Bitstream Charter")
       << meevax::size(90) << meevax::cursorhome
-      << "\e[28;28;28M\e[208;208;208mMeevax System"
+      << "\e[48;2;28;28;28m\e[38;2;208;208;208mMeevax System"
       << meevax::face("Sans")
       << meevax::size(35) << "\n" << meevax::size(25)
       << "Version " << project_version.data() << " Alpha "
@@ -45,13 +47,18 @@ int main(int argc, char** argv) try
       << meevax::face("Ricty Diminished")
       << meevax::size(12.0 + 1.5 * 10)
       << meevax::cursorhome
-      << "\e[28;28;28M\e[175;135;255m#include \e[255;215;95m<iostream>\n\n"
-      << "\e[135;215;95mint \e[208;208;208mmain("
-      << "\e[135;215;95mint \e[208;208;208margc, "
-      << "\e[135;215;95mchar\e[208;208;208m** argv)\n"
-      << "{\n  std::cout << \e[255;215;95m\"hello, world!\e[255;95;00m"
-      << "\e[255;215;95m\"\e[208;208;208m;\n\n"
-      << "  \e[255;00;135mreturn \e[00;215;215m0\e[208;208;208m;\n}";
+      << "\e[48;2;28;28;28m"
+      << "\e[38;2;175;135;255m#include \e[38;2;255;215;95m<iostream>\n"
+      << "\n"
+      << "\e[38;2;135;215;95mint \e[38;2;208;208;208mmain("
+      << "\e[38;2;135;215;95mint \e[38;2;208;208;208margc, "
+      << "\e[38;2;135;215;95mchar\e[38;2;208;208;208m** argv)\n"
+      << "{\n"
+      << "  std::cout << \e[38;2;255;215;95m\"hello, world!\e[38;2;255;95;0m\\n"
+      << "\e[38;2;255;215;95m\"\e[38;2;208;208;208m;\n"
+      << "\n"
+      << "  \e[38;2;255;0;135mreturn \e[38;2;00;215;215m0\e[38;2;208;208;208m;\n"
+      << "}";
   };
 
   while (true)
@@ -63,12 +70,12 @@ int main(int argc, char** argv) try
     case Expose:
       if (!event.xexpose.count)
       {
-        vstream.resize(0, 0) << "\e[28;28;28M";
+        vstream.resize(0, 0) << "\e[48;2;28;28;28m";
 
         vstream["count"]
           << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
           << meevax::cursorhome
-          << "\e[28;28;28M\e[208;208;208mserial: " << std::to_string(event.xexpose.serial);
+          << "\e[48;2;28;28;28m\e[38;2;208;208;208mserial: " << std::to_string(event.xexpose.serial);
 
         show_title();
         show_hello_world();
@@ -76,7 +83,7 @@ int main(int argc, char** argv) try
         vstream["debug"]
           << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
           << meevax::cursorhome
-          << "\e[28;28;28M\e[208;208;208m[debug] press any key";
+          << "\e[48;2;28;28;28m\e[38;2;208;208;208m[debug] press any key";
       }
 
       break;
@@ -85,7 +92,7 @@ int main(int argc, char** argv) try
       vstream["debug"]
         << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
         << meevax::cursorhome
-        << "\e[28;28;28M\e[208;208;208m[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0));
+        << "\e[48;2;28;28;28m\e[38;2;208;208;208m[debug] " << XKeysymToString(XLookupKeysym(&event.xkey, 0));
 
       break;
     }

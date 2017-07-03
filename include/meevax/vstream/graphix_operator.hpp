@@ -4,8 +4,8 @@
 
 #include <regex>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 #include <cairo/cairo-xlib.h>
 
@@ -60,8 +60,8 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::
     typename std::basic_string<C>::const_iterator
   > results;
 
-  static const std::basic_regex<C>  crlf_regex {"^(\n)$"};
-  static const std::basic_regex<C> color_regex {"^(\\\e\\[(\\d+);(\\d+);(\\d+)([Mm]))$"};
+  static const std::basic_regex<C>      crlf_regex {"^\n$"};
+  static const std::basic_regex<C> rgb_color_regex {"^\\\e\\[(\\d+);(\\d+);(\\d+);(\\d+);(\\d+)m$"};
 
   for (const auto& s : rhs)
   {
@@ -70,21 +70,38 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::
       lhs << meevax::cr << meevax::lf;
     }
 
-    else if (std::regex_match(s, results, color_regex))
+    else if (std::regex_match(s, results, rgb_color_regex)) // XXX UGLY CODE
     {
-      lhs << meevax::color<std::uint8_t>(
-        std::stoi(results[2]), std::stoi(results[3]), std::stoi(results[4])
-      );
-
-      if (results[5] == 'M') { lhs << meevax::paint; }
+      if (std::stoi(results[1]) == 38 && std::stoi(results[2]) == 2)
+      {
+        lhs << meevax::color<std::uint8_t>(
+          std::stoi(results[3]), std::stoi(results[4]), std::stoi(results[5])
+        );
+      }
+      else if (std::stoi(results[1]) == 48 && std::stoi(results[2]) == 2)
+      {
+        lhs << meevax::color<std::uint8_t>(
+          std::stoi(results[3]), std::stoi(results[4]), std::stoi(results[5])
+        ) << meevax::paint;
+      }
+      else
+      {
+        std::basic_string<C> invalid {results[0]};
+        invalid.replace(std::begin(invalid), std::begin(invalid) + 1, "\\e");
+        cairo_show_text(static_cast<cairo_t*>(lhs), invalid.c_str());
+      }
     }
 
     else
     {
       if (!s.empty())
       {
-        cairo_show_text(static_cast<cairo_t*>(lhs), std::basic_string<C> {s}.c_str());
-        continue;
+        std::basic_string<C> plain_text {s};
+        if (plain_text[0] == '\e')
+        {
+          plain_text.replace(std::begin(plain_text), std::begin(plain_text) + 1, "\\e");
+        }
+        cairo_show_text(static_cast<cairo_t*>(lhs), plain_text.c_str());
       }
     }
   }
