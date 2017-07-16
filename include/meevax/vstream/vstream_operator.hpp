@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_GRAPHIX_OPERATOR_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_GRAPHIX_OPERATOR_HPP_
+#ifndef INCLUDED_MEEVAX_VSTREAM_VSTREAM_OPERATOR_HPP_
+#define INCLUDED_MEEVAX_VSTREAM_VSTREAM_OPERATOR_HPP_
 
 
 #include <regex>
@@ -16,8 +16,8 @@
 namespace meevax {
 
 
-template <typename F>
-inline auto operator<<(const meevax::graphix_impl& lhs, F&& rhs)
+template <typename C, typename F>
+inline auto operator<<(const meevax::basic_xlib_vstream<C>& lhs, F&& rhs)
   -> decltype(rhs(lhs))
 {
   return rhs(lhs);
@@ -25,7 +25,7 @@ inline auto operator<<(const meevax::graphix_impl& lhs, F&& rhs)
 
 
 template <typename C>
-inline auto& operator<<(const meevax::graphix_impl& lhs, const C* rhs)
+inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const C* rhs)
 {
   std::basic_string<C> buffer {rhs};
   return lhs << std::move(buffer);
@@ -33,7 +33,7 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const C* rhs)
 
 
 template <typename C>
-inline auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string<C>& rhs)
+inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const std::basic_string<C>& rhs)
 {
   std::vector<std::basic_string<C>> buffer {};
 
@@ -54,7 +54,7 @@ inline auto& operator<<(const meevax::graphix_impl& lhs, const std::basic_string
 
 
 template <typename C>
-inline auto& operator<<(const meevax::graphix_impl& lhs, const std::vector<std::basic_string<C>>& rhs)
+inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const std::vector<std::basic_string<C>>& rhs)
 {
   static std::match_results<
     typename std::basic_string<C>::const_iterator

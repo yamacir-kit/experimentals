@@ -36,7 +36,7 @@ public:
 };
 
 
-} // namespace meevax
+} // namespace meevax::graph
 
 
 #endif

@@ -1,13 +1,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
-#include <thread>
 
 #include <meevax/graph/labeled_tree.hpp>
 
-#include <meevax/vstream/graphix_impl.hpp>
+#include <meevax/vstream/basic_xlib_vstream.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
-#include <meevax/vstream/graphix_operator.hpp>
+#include <meevax/vstream/vstream_operator.hpp>
 
 #include <meevax/version.hpp>
 
@@ -22,8 +21,7 @@ int main(int argc, char** argv) try
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
   XSynchronize(display.get(), true);
 
-  // meevax::visual_node<char> vstream {display.get()};
-  meevax::graph::labeled_tree<std::string, meevax::graphix_impl> vstream {display.get()};
+  meevax::graph::labeled_tree<std::string, meevax::basic_xlib_vstream<char>> vstream {display.get()};
 
   vstream.raise();
   vstream["title"].move(320, 130).resize(640, 150).raise();

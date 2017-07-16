@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_GRAPHIX_IMPL_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_GRAPHIX_IMPL_HPP_
+#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
+#define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
 
 
 #include <string>
@@ -13,21 +13,22 @@
 namespace meevax {
 
 
-class graphix_impl
+template <typename C>
+class basic_xlib_vstream
   : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
   XEvent event_;
 
 public:
-  explicit graphix_impl(Display* display)
+  explicit basic_xlib_vstream(Display* display)
     : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
         create(display, XDefaultRootWindow(display)), cairo_destroy
       }
   {}
 
-  explicit graphix_impl(const meevax::graphix_impl& impl)
+  explicit basic_xlib_vstream(const meevax::basic_xlib_vstream<C>& vstream)
     : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {
-        create(static_cast<Display*>(impl), static_cast<Window>(impl)), cairo_destroy
+        create(static_cast<Display*>(vstream), static_cast<Window>(vstream)), cairo_destroy
       }
   {}
 
@@ -95,7 +96,7 @@ private:
     return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
   }
 
-  cairo_t* create(Display* display, const Window& parent)
+  auto create(Display* display, const Window& parent)
   {
     static constexpr std::size_t default_window_width  {1280};
     static constexpr std::size_t default_window_height { 720};
