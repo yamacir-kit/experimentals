@@ -9,29 +9,32 @@
 #include <meevax/vstream/graphix_impl.hpp>
 
 
-namespace meevax {
+namespace meevax::graph {
 
 
-template <typename C> class visual_node;
-template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
+// template <typename C> class visual_node;
+// template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
 
 
-template <typename C>
-class visual_node
-  : public meevax::graphix_impl,
-    public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
+template <typename T, typename C = char>
+class labeled_tree
+  : public T,
+    public std::unordered_map<std::basic_string<C>, std::unique_ptr<T>>
 {
+  using node_type = T;
+  using edge_type = std::unique_ptr<T>;
+
 public:
   template <typename... Ts>
-  explicit visual_node(Ts&&... args)
-    : meevax::graphix_impl {std::forward<Ts>(args)...}
+  explicit labeled_tree(Ts&&... args)
+    : node_type {std::forward<Ts>(args)...}
   {}
 
   auto& operator[](std::basic_string<C>&& node_name)
   {
     if ((*this).find(node_name) == (*this).end())
     {
-      meevax::visual_edge<C> edge {new meevax::visual_node<C> {*this}};
+      edge_type edge {new node_type {*this}};
       (*this).emplace(node_name, std::move(edge));
     }
 

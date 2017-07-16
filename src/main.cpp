@@ -20,7 +20,8 @@ int main(int argc, char** argv) try
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
   XSynchronize(display.get(), true);
 
-  meevax::visual_node<char> vstream {display.get()};
+  // meevax::visual_node<char> vstream {display.get()};
+  meevax::graph::labeled_tree<meevax::graphix_impl> vstream {display.get()};
 
   vstream.raise();
   vstream["title"].move(320, 130).resize(640, 150).raise();
