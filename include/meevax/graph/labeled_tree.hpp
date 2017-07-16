@@ -1,19 +1,13 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP_
+#ifndef INCLUDED_MEEVAX_GRAPH_LABELED_TREE_HPP_
+#define INCLUDED_MEEVAX_GRAPH_LABELED_TREE_HPP_
 
 
 #include <memory>
 #include <unordered_map>
 #include <utility>
 
-#include <meevax/vstream/graphix_impl.hpp>
-
 
 namespace meevax::graph {
-
-
-// template <typename C> class visual_node;
-// template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
 
 
 template <typename T, typename C = char>

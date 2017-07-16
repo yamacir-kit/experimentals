@@ -3,7 +3,9 @@
 #include <system_error>
 #include <thread>
 
-#include <meevax/vstream/basic_vstream.hpp>
+#include <meevax/graph/labeled_tree.hpp>
+
+#include <meevax/vstream/graphix_impl.hpp>
 #include <meevax/vstream/graphix_manipulator.hpp>
 #include <meevax/vstream/graphix_operator.hpp>
 
