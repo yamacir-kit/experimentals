@@ -23,7 +23,7 @@ int main(int argc, char** argv) try
   XSynchronize(display.get(), true);
 
   // meevax::visual_node<char> vstream {display.get()};
-  meevax::graph::labeled_tree<meevax::graphix_impl> vstream {display.get()};
+  meevax::graph::labeled_tree<std::string, meevax::graphix_impl> vstream {display.get()};
 
   vstream.raise();
   vstream["title"].move(320, 130).resize(640, 150).raise();
@@ -87,6 +87,10 @@ int main(int argc, char** argv) try
           << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
           << meevax::cursorhome
           << "\e[48;2;28;28;28m\e[38;2;208;208;208m[debug] press any key";
+
+        vstream["hoge"].resize(300, 300).raise() << "\e[48;2;255;0;0m";
+        vstream["hoge"]["fuga"].resize(200, 200).raise() << "\e[48;2;0;255;0m";
+        vstream["hoge"]["fuga"]["piyo"].resize(100, 100).raise() << "\e[48;2;0;0;255m";
       }
 
       break;

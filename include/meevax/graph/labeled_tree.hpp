@@ -10,26 +10,25 @@
 namespace meevax::graph {
 
 
-template <typename T, typename C = char>
+template <typename S, typename T>
 class labeled_tree
   : public T,
-    public std::unordered_map<std::basic_string<C>, std::unique_ptr<T>>
+    public std::unordered_map<S, std::unique_ptr<meevax::graph::labeled_tree<S,T>>>
 {
-  using node_type = T;
-  using edge_type = std::unique_ptr<T>;
+  using node_type = meevax::graph::labeled_tree<S,T>;
+  using edge_type = std::unique_ptr<meevax::graph::labeled_tree<S,T>>;
 
 public:
   template <typename... Ts>
   explicit labeled_tree(Ts&&... args)
-    : node_type {std::forward<Ts>(args)...}
+    : T {std::forward<Ts>(args)...}
   {}
 
-  auto& operator[](std::basic_string<C>&& node_name)
+  auto& operator[](S&& node_name)
   {
     if ((*this).find(node_name) == (*this).end())
     {
-      edge_type edge {new node_type {*this}};
-      (*this).emplace(node_name, std::move(edge));
+      (*this).emplace(node_name, edge_type {new node_type {*this}});
     }
 
     return *(*this).at(node_name);
