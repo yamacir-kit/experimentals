@@ -23,7 +23,7 @@ int main(int argc, char** argv) try
 
   meevax::graph::labeled_tree<std::string, meevax::basic_xlib_vstream<char>> vstream {display.get()};
 
-  vstream.raise();
+  vstream.resize(1280, 720).raise();
   vstream["title"].move(320, 130).resize(640, 150).raise();
   vstream["debug"].move(600, 500).resize(320,  50).raise();
   vstream["hello"].move( 50, 400).resize(500, 300).raise();
@@ -86,9 +86,9 @@ int main(int argc, char** argv) try
           << meevax::cursorhome
           << "\e[48;2;28;28;28m\e[38;2;208;208;208m[debug] press any key";
 
-        vstream["hoge"].resize(300, 300).raise() << "\e[48;2;255;0;0m";
-        vstream["hoge"]["fuga"].resize(200, 200).raise() << "\e[48;2;0;255;0m";
-        vstream["hoge"]["fuga"]["piyo"].resize(100, 100).raise() << "\e[48;2;0;0;255m";
+        vstream["hoge"].move(0, 50).resize(300, 300).raise() << "\e[48;2;255;0;0m";
+        vstream["hoge"]["fuga"].move(0, 50).resize(200, 200).raise() << "\e[48;2;0;255;0m";
+        vstream["hoge"]["fuga"]["piyo"].move(0, 50).resize(100, 100).raise() << "\e[48;2;0;0;255m";
       }
 
       break;
