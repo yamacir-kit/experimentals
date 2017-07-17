@@ -107,6 +107,15 @@ public:
   {
     return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
   }
+
+public:
+  template <typename C>
+  auto& extents(const std::basic_string<C>& text) const
+  {
+    static cairo_text_extents_t extents {};
+    cairo_text_extents(static_cast<cairo_t*>(*this), text.c_str(), &extents);
+    return extents;
+  }
 };
 
 

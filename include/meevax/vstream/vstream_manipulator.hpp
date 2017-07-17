@@ -71,12 +71,10 @@ auto move = [](auto&& x, auto&& y)
 };
 
 
-auto cursorhome = [](auto& node) -> auto&
+auto cursorhome = [](auto& lhs) -> auto&
 {
-  static cairo_text_extents_t extents {};
-  cairo_text_extents(static_cast<cairo_t*>(node), "hoge", &extents);
-  cairo_move_to(static_cast<cairo_t*>(node), 0, extents.height);
-  return node;
+  cairo_move_to(static_cast<cairo_t*>(lhs), 0, lhs.extents(std::string {"hoge"}).height);
+  return lhs;
 };
 
 
