@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_GRAPHIX_MANIPULATOR_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_GRAPHIX_MANIPULATOR_HPP_
+#ifndef INCLUDED_MEEVAX_VSTREAM_VSTREAM_MANIPULATOR_HPP_
+#define INCLUDED_MEEVAX_VSTREAM_VSTREAM_MANIPULATOR_HPP_
 
 
 #include <limits>
@@ -10,63 +10,63 @@
 namespace meevax {
 
 
-[[deprecated]] auto flush = [](auto& node) -> auto&
+auto flush = [](auto& lhs) -> auto&
 {
-  cairo_surface_flush(static_cast<cairo_surface_t*>(node));
-  return node;
+  cairo_surface_flush(static_cast<cairo_surface_t*>(lhs));
+  return lhs;
 };
 
 
-auto paint = [](auto& node) -> auto&
+auto paint = [](auto& lhs) -> auto&
 {
-  cairo_paint(static_cast<cairo_t*>(node));
-  return node;
+  cairo_paint(static_cast<cairo_t*>(lhs));
+  return lhs;
 };
 
 
 template <typename T>
-constexpr auto color(T&& r, T&& g, T&& b, T&& a = std::numeric_limits<T>::max())
+auto color(T&& r, T&& g, T&& b, T&& a = std::numeric_limits<T>::max())
 {
-  return [&](auto& node) -> auto&
+  return [&](auto& lhs) -> auto&
   {
     cairo_set_source_rgba(
-      static_cast<cairo_t*>(node),
-      std::forward<double>(r / static_cast<double>(std::numeric_limits<T>::max())),
-      std::forward<double>(g / static_cast<double>(std::numeric_limits<T>::max())),
-      std::forward<double>(b / static_cast<double>(std::numeric_limits<T>::max())),
-      std::forward<double>(a / static_cast<double>(std::numeric_limits<T>::max()))
+      static_cast<cairo_t*>(lhs),
+      std::forward<double>(static_cast<double>(r) / std::numeric_limits<T>::max()),
+      std::forward<double>(static_cast<double>(g) / std::numeric_limits<T>::max()),
+      std::forward<double>(static_cast<double>(b) / std::numeric_limits<T>::max()),
+      std::forward<double>(static_cast<double>(a) / std::numeric_limits<T>::max())
     );
-    return node;
+    return lhs;
   };
 }
 
 
 auto face = [](const std::string& family)
 {
-  return [&](auto& node) -> auto&
+  return [&](auto& lhs) -> auto&
   {
-    cairo_select_font_face(static_cast<cairo_t*>(node), family.c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
-    return node;
+    cairo_select_font_face(static_cast<cairo_t*>(lhs), family.c_str(), CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+    return lhs;
   };
 };
 
 
 auto size = [](auto&& size)
 {
-  return [&](auto& node) -> auto&
+  return [&](auto& lhs) -> auto&
   {
-    cairo_set_font_size(static_cast<cairo_t*>(node), std::forward<decltype(size)>(size));
-    return node;
+    cairo_set_font_size(static_cast<cairo_t*>(lhs), std::forward<decltype(size)>(size));
+    return lhs;
   };
 };
 
 
 auto move = [](auto&& x, auto&& y)
 {
-  return [&](auto& node) -> auto&
+  return [&](auto& lhs) -> auto&
   {
-    cairo_move_to(static_cast<cairo_t*>(node), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
-    return node;
+    cairo_move_to(static_cast<cairo_t*>(lhs), std::forward<decltype(x)>(x), std::forward<decltype(y)>(y));
+    return lhs;
   };
 };
 

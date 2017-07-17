@@ -10,7 +10,7 @@
 #include <cairo/cairo-xlib.h>
 
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
-#include <meevax/vstream/graphix_manipulator.hpp>
+#include <meevax/vstream/vstream_manipulator.hpp>
 
 
 namespace meevax {

@@ -88,22 +88,22 @@ public:
   };
 
 public:
-  explicit operator cairo_t*() const noexcept
+  explicit operator cairo_t*() const
   {
     return cairo_.get();
   }
 
-  explicit operator cairo_surface_t*() const noexcept
+  explicit operator cairo_surface_t*() const
   {
     return cairo_get_target(static_cast<cairo_t*>(*this));
   }
 
-  explicit operator Display*() const noexcept
+  explicit operator Display*() const
   {
     return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
   }
 
-  explicit operator Window() const noexcept
+  explicit operator Window() const
   {
     return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
   }
