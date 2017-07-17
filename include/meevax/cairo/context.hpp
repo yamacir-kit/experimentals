@@ -65,16 +65,12 @@ namespace meevax::cairo::xlib {
 
 
 class context
-  // : public std::shared_ptr<cairo_t>
-  : public std::unique_ptr<cairo_t, decltype(&cairo_destroy)>
 {
-  // std::shared_ptr<cairo_t> cairo_;
+  std::shared_ptr<cairo_t> cairo_;
 
 public:
   explicit context(Display* display, const Window& parent)
-    // : cairo_ {nullptr, cairo_destroy}
-    // : std::shared_ptr<cairo_t> {nullptr, cairo_destroy}
-    : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {nullptr, cairo_destroy}
+    : cairo_ {nullptr, cairo_destroy}
   {
     auto window {XCreateSimpleWindow(
       display, parent, 0, 0, 1280, 720, 1,
@@ -88,16 +84,13 @@ public:
 
     XSelectInput(display, window, ExposureMask | KeyPressMask);
 
-    // cairo_.reset(cairo_create(surface), cairo_destroy);
-    // (*this).reset(cairo_create(surface), cairo_destroy);
-    (*this).reset(cairo_create(surface));
+    cairo_.reset(cairo_create(surface), cairo_destroy);
   };
 
 public:
   explicit operator cairo_t*() const noexcept
   {
-    // return std::shared_ptr<cairo_t>::get();
-    return std::unique_ptr<cairo_t, decltype(&cairo_destroy)>::get();
+    return cairo_.get();
   }
 
   explicit operator cairo_surface_t*() const noexcept
@@ -121,3 +114,4 @@ public:
 
 
 #endif
+
