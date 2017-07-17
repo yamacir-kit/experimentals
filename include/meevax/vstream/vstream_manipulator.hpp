@@ -80,49 +80,22 @@ auto cursorhome = [](auto& lhs) -> auto&
 
 auto cr = [](auto& lhs) -> auto&
 {
-  // static double x, y;
-  // if (cairo_has_current_point(static_cast<cairo_t*>(node)))
-  // {
-  //   cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
-  // }
-
   cairo_move_to(static_cast<cairo_t*>(lhs), 0, lhs.points().y);
-
   return lhs;
 };
 
 
-auto lf = [](auto& node) -> auto&
+auto lf = [](auto& lhs) -> auto&
 {
-  static cairo_text_extents_t extents {};
-  cairo_text_extents(static_cast<cairo_t*>(node), "hoge", &extents);
-
-  static double x, y;
-  if (cairo_has_current_point(static_cast<cairo_t*>(node)))
-  {
-    cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
-  }
-
-  cairo_move_to(static_cast<cairo_t*>(node), x, y + extents.height + 3);
-
-  return node;
+  cairo_move_to(static_cast<cairo_t*>(lhs), lhs.points().x, lhs.points().y + lhs.extents(std::string {"hoge"}).height + 3);
+  return lhs;
 };
 
 
-[[deprecated]] auto endl = [](auto& node) -> auto&
+auto endl = [](auto& lhs) -> auto&
 {
-  static cairo_text_extents_t extents {};
-  cairo_text_extents(static_cast<cairo_t*>(node), "hoge", &extents);
-
-  static double x {0}, y {0};
-  if (cairo_has_current_point(static_cast<cairo_t*>(node)))
-  {
-    cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
-  }
-
-  cairo_move_to(static_cast<cairo_t*>(node), 0, y + extents.height);
-
-  return flush(node);
+  cairo_move_to(static_cast<cairo_t*>(lhs), 0, lhs.points().y + lhs.extents(std::string {"hoge"}).height);
+  return flush(lhs);
 };
 
 
