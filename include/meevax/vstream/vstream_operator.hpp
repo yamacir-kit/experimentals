@@ -17,7 +17,7 @@ namespace meevax {
 
 
 template <typename C, typename F>
-inline auto operator<<(const meevax::basic_xlib_vstream<C>& lhs, F&& rhs)
+inline auto operator<<(const meevax::basic_vstream<C>& lhs, F&& rhs)
   -> decltype(rhs(lhs))
 {
   return rhs(lhs);
@@ -25,7 +25,7 @@ inline auto operator<<(const meevax::basic_xlib_vstream<C>& lhs, F&& rhs)
 
 
 template <typename C>
-inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const C* rhs)
+inline auto& operator<<(const meevax::basic_vstream<C>& lhs, const C* rhs)
 {
   std::basic_string<C> buffer {rhs};
   return lhs << std::move(buffer);
@@ -33,7 +33,7 @@ inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const C* rhs)
 
 
 template <typename C>
-inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const std::basic_string<C>& rhs)
+inline auto& operator<<(const meevax::basic_vstream<C>& lhs, const std::basic_string<C>& rhs)
 {
   std::vector<std::basic_string<C>> buffer {};
 
@@ -54,7 +54,7 @@ inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const std::bas
 
 
 template <typename C>
-inline auto& operator<<(const meevax::basic_xlib_vstream<C>& lhs, const std::vector<std::basic_string<C>>& rhs)
+inline auto& operator<<(const meevax::basic_vstream<C>& lhs, const std::vector<std::basic_string<C>>& rhs)
 {
   static std::match_results<
     typename std::basic_string<C>::const_iterator

@@ -4,7 +4,7 @@
 
 #include <meevax/graph/labeled_tree.hpp>
 
-#include <meevax/vstream/basic_xlib_vstream.hpp>
+#include <meevax/vstream/basic_vstream.hpp>
 #include <meevax/vstream/vstream_manipulator.hpp>
 #include <meevax/vstream/vstream_operator.hpp>
 

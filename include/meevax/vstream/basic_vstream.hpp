@@ -19,8 +19,6 @@ template <typename C>
 class basic_xlib_vstream
   : public meevax::cairo::xlib::context
 {
-  XEvent event_;
-
 public:
   explicit basic_xlib_vstream(Display* display)
     : meevax::cairo::xlib::context {display, XDefaultRootWindow(display)}
@@ -68,10 +66,15 @@ public:
 
   auto& event()
   {
+    static XEvent event_;
     XNextEvent(static_cast<Display*>(*this), &event_);
     return event_;
   }
 };
+
+
+template <typename C>
+using basic_vstream = basic_xlib_vstream<C>;
 
 
 } // namespace meevax
