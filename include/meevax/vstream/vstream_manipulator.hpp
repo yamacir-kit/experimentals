@@ -78,17 +78,17 @@ auto cursorhome = [](auto& lhs) -> auto&
 };
 
 
-auto cr = [](auto& node) -> auto&
+auto cr = [](auto& lhs) -> auto&
 {
-  static double x, y;
-  if (cairo_has_current_point(static_cast<cairo_t*>(node)))
-  {
-    cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
-  }
+  // static double x, y;
+  // if (cairo_has_current_point(static_cast<cairo_t*>(node)))
+  // {
+  //   cairo_get_current_point(static_cast<cairo_t*>(node), &x, &y);
+  // }
 
-  cairo_move_to(static_cast<cairo_t*>(node), 0, y);
+  cairo_move_to(static_cast<cairo_t*>(lhs), 0, lhs.points().y);
 
-  return node;
+  return lhs;
 };
 
 

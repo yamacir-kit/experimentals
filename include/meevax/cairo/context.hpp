@@ -3,12 +3,15 @@
 
 
 #include <memory>
+#include <utility>
 
 #include <xcb/xcb.h>
 #include <cairo/cairo-xcb.h>
 
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
+
+#include <meevax/utility/paired_points.hpp>
 
 
 namespace meevax::cairo::xcb {
@@ -115,6 +118,13 @@ public:
     static cairo_text_extents_t extents {};
     cairo_text_extents(static_cast<cairo_t*>(*this), text.c_str(), &extents);
     return extents;
+  }
+
+  auto& points() const
+  {
+    static meevax::utility::paired_points<double> points {};
+    cairo_get_current_point(static_cast<cairo_t*>(*this), &points.x, &points.y);
+    return points;
   }
 };
 
