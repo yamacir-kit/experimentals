@@ -77,7 +77,7 @@ public:
     : std::unique_ptr<cairo_t, decltype(&cairo_destroy)> {nullptr, cairo_destroy}
   {
     auto window {XCreateSimpleWindow(
-      display, parent, 0, 0, 1, 1, 1,
+      display, parent, 0, 0, 1280, 720, 1,
       XBlackPixel(display, XDefaultScreen(display)),
       XWhitePixel(display, XDefaultScreen(display))
     )};
