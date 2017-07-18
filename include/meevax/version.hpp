@@ -8,9 +8,9 @@
 
 static constexpr auto project_major_version {scat("0")};
 static constexpr auto project_minor_version {scat("2")};
-static constexpr auto project_patch_version {scat("3")};
+static constexpr auto project_patch_version {scat("4")};
 
-static constexpr auto project_version {scat("0.2.3")};
+static constexpr auto project_version {scat("0.2.4")};
 
 
 static constexpr auto boost_major_version {scat("1")};

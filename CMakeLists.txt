@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.0)
-project(meevax VERSION 0.2.3 LANGUAGES CXX)
+project(meevax VERSION 0.2.4 LANGUAGES CXX)
 
 set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -O3 -pipe")
