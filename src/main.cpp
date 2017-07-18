@@ -1,11 +1,12 @@
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
-#include <thread>
+
+#include <meevax/graph/labeled_tree.hpp>
 
 #include <meevax/vstream/basic_vstream.hpp>
-#include <meevax/vstream/graphix_manipulator.hpp>
-#include <meevax/vstream/graphix_operator.hpp>
+#include <meevax/vstream/vstream_manipulator.hpp>
+#include <meevax/vstream/vstream_operator.hpp>
 
 #include <meevax/version.hpp>
 
@@ -20,9 +21,9 @@ int main(int argc, char** argv) try
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
   XSynchronize(display.get(), true);
 
-  meevax::visual_node<char> vstream {display.get()};
+  meevax::graph::labeled_tree<std::string, meevax::basic_xlib_vstream<char>> vstream {display.get()};
 
-  vstream.raise();
+  vstream.resize(1280, 720).raise();
   vstream["title"].move(320, 130).resize(640, 150).raise();
   vstream["debug"].move(600, 500).resize(320,  50).raise();
   vstream["hello"].move( 50, 400).resize(500, 300).raise();
@@ -84,6 +85,10 @@ int main(int argc, char** argv) try
           << meevax::face("Ricty Diminished") << meevax::size(12.0 + 1.5 * 10)
           << meevax::cursorhome
           << "\e[48;2;28;28;28m\e[38;2;208;208;208m[debug] press any key";
+
+        vstream["hoge"].move(0, 50).resize(300, 300).raise() << "\e[48;2;255;0;0m";
+        vstream["hoge"]["fuga"].move(0, 50).resize(200, 200).raise() << "\e[48;2;0;255;0m";
+        vstream["hoge"]["fuga"]["piyo"].move(0, 50).resize(100, 100).raise() << "\e[48;2;0;0;255m";
       }
 
       break;

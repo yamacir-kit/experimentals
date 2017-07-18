@@ -1,46 +1,84 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP_
+#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
+#define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
 
 
+#include <string>
 #include <memory>
-#include <unordered_map>
 #include <utility>
 
-#include <meevax/vstream/graphix_impl.hpp>
+#include <X11/Xlib.h>
+#include <cairo/cairo-xlib.h>
+
+#include <meevax/cairo/context.hpp>
 
 
 namespace meevax {
 
 
-template <typename C> class visual_node;
-template <typename C> using visual_edge = std::unique_ptr<meevax::visual_node<C>>;
+template <typename C>
+class basic_xlib_vstream
+  : public meevax::cairo::xlib::context
+{
+public:
+  explicit basic_xlib_vstream(Display* display)
+    : meevax::cairo::xlib::context {display, XDefaultRootWindow(display)}
+  {}
+
+  explicit basic_xlib_vstream(const meevax::basic_xlib_vstream<C>& vstream)
+    : meevax::cairo::xlib::context {static_cast<Display*>(vstream), static_cast<Window>(vstream)}
+  {}
+
+public:
+  auto& map() const noexcept
+  {
+    XMapWindow(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& unmap() const noexcept
+  {
+    XUnmapWindow(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& raise() const noexcept
+  {
+    XMapRaised(static_cast<Display*>(*this), static_cast<Window>(*this));
+    return *this;
+  }
+
+  auto& move(std::size_t x, std::size_t y) const noexcept
+  {
+    XMoveWindow(static_cast<Display*>(*this), static_cast<Window>(*this), x, y);
+    return *this;
+  }
+
+  auto& resize(std::size_t width, std::size_t height) const noexcept
+  {
+    static XWindowAttributes a;
+    XGetWindowAttributes(static_cast<Display*>(*this), static_cast<Window>(*this), &a);
+
+    XResizeWindow(static_cast<Display*>(*this), static_cast<Window>(*this), width != 0 ? width : a.width, height != 0 ? height : a.height);
+    cairo_xlib_surface_set_size(static_cast<cairo_surface_t*>(*this), a.width, a.height);
+
+    return *this;
+  }
+
+  auto& event()
+  {
+    static XEvent event_;
+    XNextEvent(static_cast<Display*>(*this), &event_);
+    return event_;
+  }
+};
 
 
 template <typename C>
-class visual_node
-  : public meevax::graphix_impl,
-    public std::unordered_map<std::basic_string<C>, meevax::visual_edge<C>>
-{
-public:
-  template <typename... Ts>
-  explicit visual_node(Ts&&... args)
-    : meevax::graphix_impl {std::forward<Ts>(args)...}
-  {}
-
-  auto& operator[](std::basic_string<C>&& node_name)
-  {
-    if ((*this).find(node_name) == (*this).end())
-    {
-      meevax::visual_edge<C> edge {new meevax::visual_node<C> {*this}};
-      (*this).emplace(node_name, std::move(edge));
-    }
-
-    return *(*this).at(node_name);
-  }
-};
+using basic_vstream = basic_xlib_vstream<C>;
 
 
 } // namespace meevax
 
 
 #endif
+
