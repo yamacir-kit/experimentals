@@ -39,6 +39,29 @@ public:
   {
     return (*this).data != rhs.data;
   }
+
+  auto& operator++() noexcept
+  {
+    Next(this);
+    return *this;
+  }
+
+  auto operator++(int) noexcept
+  {
+    typename std::remove_reference<decltype(*this)>::type copy {*this};
+    Next(this);
+    return copy;
+  }
+
+  auto& operator*() const noexcept
+  {
+    return *(*this).data;
+  }
+
+  auto operator->() const noexcept
+  {
+    return (*this).data;
+  }
 };
 
 
