@@ -11,7 +11,7 @@
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
 
-#include <meevax/utility/paired_points.hpp>
+#include <meevax/utility/renamed_pair.hpp>
 
 
 namespace meevax::cairo::xcb {
@@ -120,11 +120,11 @@ public:
     return extents;
   }
 
-  auto& points() const
+  auto& point() const
   {
-    static meevax::utility::paired_points<double> points {};
-    cairo_get_current_point(static_cast<cairo_t*>(*this), &points.x, &points.y);
-    return points;
+    static meevax::utility::renamed_pair::point<double> point {};
+    cairo_get_current_point(static_cast<cairo_t*>(*this), &point.x, &point.y);
+    return point;
   }
 };
 
