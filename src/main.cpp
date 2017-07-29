@@ -35,17 +35,17 @@ int main(int argc, char** argv) try
       std::cout << "[debug] " << screen.width_in_pixels << "x" << screen.height_in_pixels << std::endl;
     }
 
-    meevax::xcb::context context {connection, screen_access.begin()->root};
+    meevax::xcb::window window {connection, screen_access.begin()->root};
 
-    xcb_map_window(context.connection().get(), context.window_id());
+    xcb_map_window(window.connection().get(), window.id);
 
     xcb_configure_window(
-      context.connection().get(), context.window_id(),
+      window.connection().get(), window.id,
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
       std::vector<std::uint32_t> {640, 480}.data()
     );
 
-    xcb_flush(context.connection().get());
+    xcb_flush(window.connection().get());
 
     while (true);
 
