@@ -25,9 +25,10 @@ int main(int argc, char** argv) try
       xcb_connect(nullptr, nullptr), xcb_disconnect
     };
 
-    meevax::xcb::window window {connection};
-
-    std::cout << "[debug] connection: " << connection.use_count() << std::endl;
+    meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen {
+      xcb_get_setup(connection.get())
+    };
+    meevax::xcb::window window {connection, screen.begin()->root};
 
     xcb_map_window(window.connection().get(), window.id);
 

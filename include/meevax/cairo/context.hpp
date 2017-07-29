@@ -11,10 +11,14 @@
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
 
+#include <meevax/xcb/window.hpp>
+#include <meevax/xcb/accessor.hpp>
+#include <meevax/xcb/iterator.hpp>
+
 #include <meevax/utility/renamed_pair.hpp>
 
 
-namespace meevax::cairo::xcb {
+namespace meevax::cairo {
 
 
 // https://lists.cairographics.org/archives/cairo/2015-June/026336.html
@@ -61,7 +65,32 @@ public:
 };
 
 
-} // namespace meevax::cairo::xcb
+class surface
+  : public meevax::xcb::window
+{
+  std::shared_ptr<cairo_surface_t> surface_;
+
+public:
+  explicit surface(std::shared_ptr<xcb_connection_t>& connection)
+    : meevax::xcb::window {
+        connection,
+        meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> {
+          xcb_get_setup(connection.get())
+        }.begin()->root
+      }
+  {
+    // meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen {xcb_get_setup(connection().get())};
+    // for (const auto& screen : )
+    // {}
+  }
+
+  explicit surface(const meevax::cairo::surface& surface)
+    : meevax::xcb::window {surface.connection(), surface.id}
+  {}
+};
+
+
+} // namespace meevax::cairo
 
 
 namespace meevax::cairo::xlib {
