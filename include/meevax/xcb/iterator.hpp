@@ -21,7 +21,7 @@ public:
     : XcbIterator {iter}
   {}
 
-  explicit iterator(const xcb_generic_iterator& iter)
+  explicit iterator(const xcb_generic_iterator_t& iter)
     : XcbIterator {reinterpret_cast<const XcbIterator&>(iter)}
   {}
 

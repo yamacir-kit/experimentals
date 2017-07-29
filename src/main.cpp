@@ -8,6 +8,10 @@
 #include <meevax/vstream/vstream_manipulator.hpp>
 #include <meevax/vstream/vstream_operator.hpp>
 
+#include <meevax/xcb/accessor.hpp>
+#include <meevax/xcb/context.hpp>
+#include <meevax/xcb/iterator.hpp>
+
 #include <meevax/version.hpp>
 
 
@@ -15,6 +19,38 @@ int main(int argc, char** argv) try
 {
   std::cout << "[debug] boost version: " << boost_version.data() << "\n";
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
+
+  {
+    const std::shared_ptr<xcb_connection_t> connection {
+      xcb_connect(nullptr, nullptr), xcb_disconnect
+    };
+
+    meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen_access {
+      xcb_get_setup(connection.get())
+    };
+
+    std::cout << "[debug] screen: " << screen_access.size() << std::endl;
+    for (const auto& screen : screen_access)
+    {
+      std::cout << "[debug] " << screen.width_in_pixels << "x" << screen.height_in_pixels << std::endl;
+    }
+
+    meevax::xcb::context context {connection, screen_access.begin()->root};
+
+    xcb_map_window(context.connection().get(), context.window_id());
+
+    xcb_configure_window(
+      context.connection().get(), context.window_id(),
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 480}.data()
+    );
+
+    xcb_flush(context.connection().get());
+
+    while (true);
+
+    return 0;
+  }
 
   std::vector<std::string> argv_ {argv, argv + argc};
 
