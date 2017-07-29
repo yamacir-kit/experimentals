@@ -9,8 +9,8 @@
 #include <meevax/vstream/vstream_operator.hpp>
 
 #include <meevax/xcb/accessor.hpp>
-#include <meevax/xcb/context.hpp>
 #include <meevax/xcb/iterator.hpp>
+#include <meevax/xcb/window.hpp>
 
 #include <meevax/version.hpp>
 
@@ -25,17 +25,9 @@ int main(int argc, char** argv) try
       xcb_connect(nullptr, nullptr), xcb_disconnect
     };
 
-    meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen_access {
-      xcb_get_setup(connection.get())
-    };
+    meevax::xcb::window window {connection};
 
-    std::cout << "[debug] screen: " << screen_access.size() << std::endl;
-    for (const auto& screen : screen_access)
-    {
-      std::cout << "[debug] " << screen.width_in_pixels << "x" << screen.height_in_pixels << std::endl;
-    }
-
-    meevax::xcb::window window {connection, screen_access.begin()->root};
+    std::cout << "[debug] connection: " << connection.use_count() << std::endl;
 
     xcb_map_window(window.connection().get(), window.id);
 
