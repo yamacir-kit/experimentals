@@ -74,14 +74,33 @@ public:
   explicit surface(std::shared_ptr<xcb_connection_t>& connection)
     : meevax::xcb::window {
         connection,
-        meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> {
+        xcb::accessor<xcb_setup_t, xcb_screen_t> {
           xcb_get_setup(connection.get())
         }.begin()->root
       }
   {
-    // meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen {xcb_get_setup(connection().get())};
-    // for (const auto& screen : )
-    // {}
+    for (const auto& screen : xcb::accessor<xcb_setup_t, xcb_screen_t> {
+                                xcb_get_setup(xcb::window::connection().get())
+                              })
+    {
+      for (const auto& depth : xcb::accessor<xcb_screen_t, xcb_depth_t> {&screen})
+      {
+        for (auto&& visualtype : xcb::accessor<xcb_depth_t, xcb_visualtype_t> {&depth})
+        {
+          if (screen.root_visual == visualtype.visual_id)
+          {
+            surface_ = std::shared_ptr<cairo_surface_t> {
+              cairo_xcb_surface_create(
+                xcb::window::connection().get(),
+                xcb::window::id,
+                &visualtype, 0, 0
+              ),
+              cairo_surface_destroy
+            };
+          }
+        }
+      }
+    }
   }
 
   explicit surface(const meevax::cairo::surface& surface)
