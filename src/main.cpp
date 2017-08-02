@@ -1,6 +1,8 @@
+#include <chrono>
 #include <cstdlib>
 #include <iostream>
 #include <system_error>
+#include <thread>
 
 #include <meevax/graph/labeled_tree.hpp>
 
@@ -11,6 +13,8 @@
 #include <meevax/xcb/accessor.hpp>
 #include <meevax/xcb/iterator.hpp>
 #include <meevax/xcb/window.hpp>
+
+#include <meevax/cairo/context.hpp>
 
 #include <meevax/version.hpp>
 
@@ -25,22 +29,33 @@ int main(int argc, char** argv) try
       xcb_connect(nullptr, nullptr), xcb_disconnect
     };
 
-    meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen {
-      xcb_get_setup(connection.get())
-    };
-    meevax::xcb::window window {connection, screen.begin()->root};
+    meevax::cairo::surface surface {connection};
 
-    xcb_map_window(window.connection.get(), window.id);
+    xcb_map_window(surface.connection.get(), surface.id);
 
     xcb_configure_window(
-      window.connection.get(), window.id,
+      surface.connection.get(), surface.id,
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
       std::vector<std::uint32_t> {640, 480}.data()
     );
+    cairo_xcb_surface_set_size(
+      surface.get(), 640, 480
+    );
 
-    xcb_flush(window.connection.get());
+    while (true)
+    {
+      std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
+        cairo_create(surface.get()), cairo_destroy
+      };
 
-    while (true);
+      cairo_set_source_rgba(cairo.get(), 1.0, 0.0, 0.0, 0.5);
+      cairo_paint(cairo.get());
+
+      cairo_surface_flush(surface.get());
+      xcb_flush(surface.connection.get());
+
+      std::this_thread::sleep_for(std::chrono::milliseconds {100});
+    }
 
     return 0;
   }

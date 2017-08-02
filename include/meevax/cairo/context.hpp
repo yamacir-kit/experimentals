@@ -26,7 +26,7 @@ class surface
     public std::shared_ptr<cairo_surface_t>
 {
 public:
-  explicit surface(std::shared_ptr<xcb_connection_t>& connection)
+  explicit surface(const std::shared_ptr<xcb_connection_t>& connection)
     : meevax::xcb::window {
         connection,
         xcb::accessor<xcb_setup_t, xcb_screen_t> {
@@ -38,7 +38,7 @@ public:
             xcb::window::connection.get(),
             xcb::window::id,
             root_visualtype(xcb::window::connection),
-            0, 0
+            1, 1
         ),
         cairo_surface_destroy
       }
@@ -51,7 +51,7 @@ public:
             xcb::window::connection.get(),
             xcb::window::id,
             root_visualtype(xcb::window::connection),
-            0, 0
+            1, 1
         ),
         cairo_surface_destroy
       }
