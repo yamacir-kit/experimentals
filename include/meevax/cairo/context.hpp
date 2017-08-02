@@ -2,6 +2,7 @@
 #define INCLUDED_MEEVAX_CAIRO_CONTEXT_HPP_
 
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -38,7 +39,8 @@ public:
             xcb::window::connection.get(),
             xcb::window::id,
             root_visualtype(xcb::window::connection),
-            1, 1
+            std::max<int>(1, 0),
+            std::max<int>(1, 0)
         ),
         cairo_surface_destroy
       }
@@ -51,7 +53,8 @@ public:
             xcb::window::connection.get(),
             xcb::window::id,
             root_visualtype(xcb::window::connection),
-            1, 1
+            std::max<int>(1, 0),
+            std::max<int>(1, 0)
         ),
         cairo_surface_destroy
       }
