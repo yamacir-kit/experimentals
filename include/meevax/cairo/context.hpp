@@ -79,8 +79,37 @@ public:
         }.begin()->root
       }
   {
+    surface_ = std::shared_ptr<cairo_surface_t> {
+      cairo_xcb_surface_create(
+          xcb::window::connection().get(),
+          xcb::window::id,
+          root_visualtype(xcb::window::connection()),
+          0, 0
+      ),
+      cairo_surface_destroy
+    };
+  }
+
+  explicit surface(const meevax::cairo::surface& surface)
+    : meevax::xcb::window {surface.connection(), surface.id}
+  {
+    surface_ = std::shared_ptr<cairo_surface_t> {
+      cairo_xcb_surface_create(
+          xcb::window::connection().get(),
+          xcb::window::id,
+          root_visualtype(xcb::window::connection()),
+          0, 0
+      ),
+      cairo_surface_destroy
+    };
+  }
+
+private:
+  static auto root_visualtype(const std::shared_ptr<xcb_connection_t>& connection)
+    -> xcb_visualtype_t*
+  {
     for (const auto& screen : xcb::accessor<xcb_setup_t, xcb_screen_t> {
-                                xcb_get_setup(xcb::window::connection().get())
+                                xcb_get_setup(connection.get())
                               })
     {
       for (const auto& depth : xcb::accessor<xcb_screen_t, xcb_depth_t> {&screen})
@@ -89,23 +118,14 @@ public:
         {
           if (screen.root_visual == visualtype.visual_id)
           {
-            surface_ = std::shared_ptr<cairo_surface_t> {
-              cairo_xcb_surface_create(
-                xcb::window::connection().get(),
-                xcb::window::id,
-                &visualtype, 0, 0
-              ),
-              cairo_surface_destroy
-            };
+            return &visualtype;
           }
         }
       }
     }
-  }
 
-  explicit surface(const meevax::cairo::surface& surface)
-    : meevax::xcb::window {surface.connection(), surface.id}
-  {}
+    return nullptr;
+  }
 };
 
 
