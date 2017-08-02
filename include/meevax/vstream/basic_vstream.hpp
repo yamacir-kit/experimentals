@@ -2,9 +2,10 @@
 #define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
 
 
-#include <string>
 #include <memory>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
@@ -70,6 +71,20 @@ public:
     XNextEvent(static_cast<Display*>(*this), &event_);
     return event_;
   }
+};
+
+
+template <typename C>
+class basic_xcb_vstream
+  : public meevax::cairo::surface
+{
+public:
+  std::vector<std::basic_string<C>> data;
+
+  template <typename... Ts>
+  explicit basic_xcb_vstream(Ts&&... args)
+    : meevax::cairo::surface {std::forward<Ts>(args)...}
+  {}
 };
 
 
