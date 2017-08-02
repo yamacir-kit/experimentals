@@ -14,7 +14,7 @@
 #include <meevax/xcb/iterator.hpp>
 #include <meevax/xcb/window.hpp>
 
-#include <meevax/cairo/context.hpp>
+#include <meevax/cairo/surface.hpp>
 
 #include <meevax/version.hpp>
 

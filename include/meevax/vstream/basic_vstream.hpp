@@ -9,7 +9,7 @@
 #include <X11/Xlib.h>
 #include <cairo/cairo-xlib.h>
 
-#include <meevax/cairo/context.hpp>
+#include <meevax/cairo/surface.hpp>
 
 
 namespace meevax {
