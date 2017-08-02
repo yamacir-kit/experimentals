@@ -16,21 +16,20 @@ namespace meevax::xcb {
 
 class window
 {
-  const std::shared_ptr<xcb_connection_t> connection_;
-
 public:
+  const std::shared_ptr<xcb_connection_t> connection;
   const xcb_window_t id;
 
-  explicit window(const std::shared_ptr<xcb_connection_t>& connection, xcb_window_t parent_id)
-    : connection_ {connection},
-      id {xcb_generate_id(connection_.get())}
+  explicit window(const std::shared_ptr<xcb_connection_t>& connection_, xcb_window_t parent_id)
+    : connection {connection_},
+      id {xcb_generate_id(connection.get())}
   {
-    meevax::xcb::accessor<xcb_setup_t, xcb_screen_t> screen {
-      xcb_get_setup(connection_.get())
+    xcb::accessor<xcb_setup_t, xcb_screen_t> screen {
+      xcb_get_setup(connection.get())
     };
 
     xcb_create_window(
-      connection_.get(),
+      connection.get(),
       XCB_COPY_FROM_PARENT, // depth
       (*this).id, parent_id,
       0, 0,
@@ -40,11 +39,6 @@ public:
       screen.begin()->root_visual,
       0, nullptr
     );
-  }
-
-  const auto& connection() const noexcept
-  {
-    return connection_;
   }
 };
 

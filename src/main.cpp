@@ -30,15 +30,15 @@ int main(int argc, char** argv) try
     };
     meevax::xcb::window window {connection, screen.begin()->root};
 
-    xcb_map_window(window.connection().get(), window.id);
+    xcb_map_window(window.connection.get(), window.id);
 
     xcb_configure_window(
-      window.connection().get(), window.id,
+      window.connection.get(), window.id,
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
       std::vector<std::uint32_t> {640, 480}.data()
     );
 
-    xcb_flush(window.connection().get());
+    xcb_flush(window.connection.get());
 
     while (true);
 
