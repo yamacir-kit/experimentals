@@ -29,30 +29,22 @@ int main(int argc, char** argv) try
       xcb_connect(nullptr, nullptr), xcb_disconnect
     };
 
-    meevax::cairo::surface surface {connection};
+    meevax::basic_xcb_vstream<char> vstream {connection};
 
-    xcb_map_window(surface.connection.get(), surface.id);
-
-    xcb_configure_window(
-      surface.connection.get(), surface.id,
-      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-      std::vector<std::uint32_t> {640, 480}.data()
-    );
-    cairo_xcb_surface_set_size(
-      surface.get(), 640, 480
-    );
+    vstream.map();
+    vstream.resize(640, 480);
 
     while (true)
     {
       std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
-        cairo_create(surface.get()), cairo_destroy
+        cairo_create(vstream.get()), cairo_destroy
       };
 
       cairo_set_source_rgba(cairo.get(), 1.0, 0.0, 0.0, 0.5);
       cairo_paint(cairo.get());
 
-      cairo_surface_flush(surface.get());
-      xcb_flush(surface.connection.get());
+      cairo_surface_flush(vstream.get());
+      xcb_flush(vstream.connection.get());
 
       std::this_thread::sleep_for(std::chrono::milliseconds {100});
     }
@@ -61,6 +53,14 @@ int main(int argc, char** argv) try
   }
 
   std::vector<std::string> argv_ {argv, argv + argc};
+
+  // const std::shared_ptr<xcb_connection_t> connection {
+  //   xcb_connect(nullptr, nullptr), xcb_disconnect
+  // };
+  //
+  // meevax::graph::labeled_tree<
+  //   std::string, meevax::basic_xcb_vstream<char>
+  // > vstream {connection};
 
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
   XSynchronize(display.get(), true);
