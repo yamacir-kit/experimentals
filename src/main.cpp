@@ -11,6 +11,19 @@ int main(int argc, char** argv) try
   std::cout << "[debug] boost version: " << boost_version.data() << "\n";
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
+  const std::shared_ptr<xcb_connection_t> connection {
+    xcb_connect(nullptr, nullptr), xcb_disconnect
+  };
+
+  meevax::graph::labeled_tree<
+    std::string, meevax::basic_vstream<char>
+  > master {connection};
+
+  auto leftward_overwrite = [&](auto& lhs) -> auto& {
+    std::cout << "[debug] leftward_overwrite\n";
+    return lhs;
+  };
+  master << leftward_overwrite;
 
   return 0;
 }

@@ -4,27 +4,26 @@
 
 #include <memory>
 #include <string>
+#include <type_traits>
 #include <utility>
 #include <vector>
 
-#include <xcb/xcb.h>
-#include <cairo/cairo-xcb.h>
-
 #include <meevax/cairo/surface.hpp>
+#include <meevax/type_traits/has_function_call_operator.hpp>
 
 
 namespace meevax {
 
 
-template <typename C>
-class basic_xcb_vstream
+template <typename Char>
+class basic_vstream
   : public meevax::cairo::surface
 {
-  std::vector<std::basic_string<C>> data_;
+  std::vector<std::basic_string<Char>> data_;
 
 public:
   template <typename... Ts>
-  explicit basic_xcb_vstream(Ts&&... args)
+  explicit basic_vstream(Ts&&... args)
     : meevax::cairo::surface {std::forward<Ts>(args)...}
   {}
 
@@ -40,18 +39,23 @@ public:
   void resize(std::uint32_t width, std::uint32_t height) const noexcept
   {
     xcb_configure_window(
-      (*this).connection.get(), (*this).id,
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id,
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
       std::vector<std::uint32_t> {width, height}.data()
     );
 
-    cairo_xcb_surface_set_size((*this).get(), width, height);
+    cairo_xcb_surface_set_size(meevax::cairo::surface::get(), width, height);
   }
 };
 
 
-template <typename C>
-using basic_vstream = meevax::basic_xcb_vstream<C>;
+template <typename Char, typename Functor,
+          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, const meevax::basic_vstream<Char>&>::value>::type>
+inline decltype(auto) operator<<(const meevax::basic_vstream<Char>& lhs, Functor& rhs)
+{
+  return rhs(lhs);
+}
 
 
 } // namespace meevax
