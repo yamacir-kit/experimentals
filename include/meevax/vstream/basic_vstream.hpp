@@ -50,6 +50,10 @@ public:
 };
 
 
+template <typename C>
+using basic_vstream = meevax::basic_xcb_vstream<C>;
+
+
 } // namespace meevax
 
 

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 project(meevax VERSION 0.2.4 LANGUAGES CXX)
 
 set(CMAKE_CXX_COMPILER clang++)
-set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -O3 -pipe")
+set(CMAKE_CXX_FLAGS "-std=c++1z -Wall -Wextra -Wno-unused-parameter -O3 -pipe")
 set(CMAKE_BUILD_TYPE Debug)
 
 find_package(Boost 1.58.0 REQUIRED COMPONENTS)
