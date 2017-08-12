@@ -10,21 +10,27 @@
 namespace meevax::graph {
 
 
-template <typename S, typename T>
+// TODO
+// 動くけどあまりに可読性が低いので命名の見直しや型の定義（特にコイツが酷い）を直すこと
+// そもそもの原因は基底クラスの名前がクソ長いこと
+// クラス外でノード、エッジのテンプレート型エイリアスをかけることも検討すること
+
+
+template <typename Key, typename Mapped>
 class labeled_tree
-  : public T,
-    public std::unordered_map<S, std::unique_ptr<meevax::graph::labeled_tree<S,T>>>
+  : public Mapped,
+    public std::unordered_map<Key, std::unique_ptr<meevax::graph::labeled_tree<Key,Mapped>>>
 {
-  using node_type = meevax::graph::labeled_tree<S,T>;
-  using edge_type = std::unique_ptr<meevax::graph::labeled_tree<S,T>>;
+  using node_type = meevax::graph::labeled_tree<Key,Mapped>;
+  using edge_type = std::unique_ptr<node_type>;
 
 public:
   template <typename... Ts>
   explicit labeled_tree(Ts&&... args)
-    : T {std::forward<Ts>(args)...}
+    : Mapped {std::forward<Ts>(args)...}
   {}
 
-  auto& operator[](S&& node_name)
+  auto& operator[](Key&& node_name)
   {
     if ((*this).find(node_name) == (*this).end())
     {
