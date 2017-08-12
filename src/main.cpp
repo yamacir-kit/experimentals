@@ -54,14 +54,6 @@ int main(int argc, char** argv) try
 
   std::vector<std::string> argv_ {argv, argv + argc};
 
-  // const std::shared_ptr<xcb_connection_t> connection {
-  //   xcb_connect(nullptr, nullptr), xcb_disconnect
-  // };
-  //
-  // meevax::graph::labeled_tree<
-  //   std::string, meevax::basic_xcb_vstream<char>
-  // > vstream {connection};
-
   std::unique_ptr<Display, decltype(&XCloseDisplay)> display {XOpenDisplay(""), XCloseDisplay};
   XSynchronize(display.get(), true);
 
@@ -161,12 +153,5 @@ catch (const std::system_error& error)
   std::cerr << "[error] system error occurred\n"
             << "        code: " << error.code().value() << " - " << error.code().message() << std::endl;
   std::exit(error.code().value());
-}
-
-catch (...)
-{
-  std::cerr << "[fatal] unexpected error occurred. report this to the developer.\n"
-            << "        developer's email: httperror@404-notfound.jp\n";
-  std::exit(errno);
 }
 
