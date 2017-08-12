@@ -1,13 +1,9 @@
 #include <iostream>
 #include <system_error>
 
-#include <meevax/graph/labeled_tree.hpp>
-
-#include <meevax/vstream/basic_vstream.hpp>
-#include <meevax/vstream/vstream_manipulator.hpp>
-#include <meevax/vstream/vstream_operator.hpp>
-
 #include <meevax/configure/version.hpp>
+#include <meevax/graph/labeled_tree.hpp>
+#include <meevax/vstream/basic_vstream.hpp>
 
 
 int main(int argc, char** argv) try
