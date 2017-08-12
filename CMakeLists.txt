@@ -13,7 +13,7 @@ file(GLOB ${PROJECT_NAME}_SOURCES
 
 configure_file(
   ${PROJECT_SOURCE_DIR}/configure/version.hpp.cmake
-  ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME}/version.hpp
+  ${PROJECT_SOURCE_DIR}/include/${PROJECT_NAME}/configure/version.hpp
 )
 
 configure_file(
