@@ -36,7 +36,7 @@ public:
     );
   }
 
-  void resize(std::uint32_t width, std::uint32_t height) const noexcept
+  [[deprecated]] void resize(std::uint32_t width, std::uint32_t height) const noexcept
   {
     xcb_configure_window(
       meevax::xcb::window::connection.get(),
@@ -47,20 +47,30 @@ public:
 
     cairo_xcb_surface_set_size(meevax::cairo::surface::get(), width, height);
   }
+
+  template <typename... Ts>
+  void configure(Ts&&... args)
+  {
+    xcb_configure_window(
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id,
+      std::forward<Ts>(args)...
+    );
+  }
 };
 
 
 template <typename T, typename Functor,
-          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, const T&>::value>::type>
-inline decltype(auto) operator<<(const T& lhs, Functor& rhs)
+          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, T&>::value>::type>
+inline decltype(auto) operator<<(T& lhs, Functor& rhs)
 {
   return rhs(lhs);
 }
 
 
 template <typename T, typename Functor,
-          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, const T&>::value>::type>
-inline decltype(auto) operator>>(Functor& lhs, const T& rhs)
+          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, T&>::value>::type>
+inline decltype(auto) operator>>(Functor& lhs, T& rhs)
 {
   return lhs(rhs);
 }

@@ -19,20 +19,6 @@ int main(int argc, char** argv) try
     std::string, meevax::basic_vstream<char>
   > master {connection};
 
-  auto leftward_write = [&](auto& lhs) -> auto& {
-    std::cout << "[debug] leftward_write\n";
-    return lhs;
-  };
-
-  master << leftward_write;
-
-  auto rightward_write = [&](auto& rhs) -> auto& {
-    std::cout << "[debug] rightward_write\n";
-    return rhs;
-  };
-
-  rightward_write >> master;
-
   return 0;
 }
 
