@@ -50,11 +50,19 @@ public:
 };
 
 
-template <typename Char, typename Functor,
-          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, const meevax::basic_vstream<Char>&>::value>::type>
-inline decltype(auto) operator<<(const meevax::basic_vstream<Char>& lhs, Functor& rhs)
+template <typename T, typename Functor,
+          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, const T&>::value>::type>
+inline decltype(auto) operator<<(const T& lhs, Functor& rhs)
 {
   return rhs(lhs);
+}
+
+
+template <typename T, typename Functor,
+          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, const T&>::value>::type>
+inline decltype(auto) operator>>(Functor& lhs, const T& rhs)
+{
+  return lhs(rhs);
 }
 
 
