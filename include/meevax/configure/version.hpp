@@ -3,26 +3,30 @@
 
 
 #include <boost/version.hpp>
-#include <meevax/string/static_concatenate.hpp>
+#include <meevax/string/static_concat.hpp>
 
 
-static constexpr auto project_major_version {scat("0")};
-static constexpr auto project_minor_version {scat("2")};
-static constexpr auto project_patch_version {scat("4")};
-
-static constexpr auto project_version {scat("0.2.4")};
+namespace meevax {
 
 
-static constexpr auto boost_major_version {scat("1")};
-static constexpr auto boost_minor_version {scat("58")};
-static constexpr auto boost_patch_version {scat("0")};
+constexpr auto major_version {meevax::static_concat("0")};
+constexpr auto minor_version {meevax::static_concat("2")};
+constexpr auto patch_version {meevax::static_concat("4")};
 
-static constexpr auto boost_version {scat(
+constexpr auto version {meevax::static_concat("0.2.4")};
+
+static constexpr auto boost_major_version {meevax::static_concat("1")};
+static constexpr auto boost_minor_version {meevax::static_concat("58")};
+static constexpr auto boost_patch_version {meevax::static_concat("0")};
+
+constexpr auto boost_version {meevax::static_concat(
   boost_major_version, ".", boost_minor_version, ".", boost_patch_version
 )};
 
+constexpr auto cmake_build_type {meevax::static_concat("Debug")};
 
-static constexpr auto cmake_build_type {scat("Debug")};
+
+} // namespace meevax
 
 
 #endif
