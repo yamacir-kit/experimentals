@@ -19,7 +19,7 @@ configure_file(
 
 configure_file(
   ${PROJECT_SOURCE_DIR}/configure/readme.md.cmake
-  ${PROJECT_SOURCE_DIR}/readme.md
+  ${PROJECT_SOURCE_DIR}/README.md
 )
 
 
@@ -30,7 +30,6 @@ include_directories(
 
 link_directories(
   ${Boost_LIBRARY_DIRS}
-  /usr/X11R6/lib
 )
 
 add_executable(${PROJECT_NAME}
@@ -39,8 +38,13 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
-  X11
   cairo
   xcb
+)
+
+
+install(
+  DIRECTORY ${${PROJECT_NAME}_INCLUDE_DIR}/
+  DESTINATION include
 )
 
