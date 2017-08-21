@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
-#define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP_
+#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP
+#define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP
 
 
 #include <memory>
@@ -73,6 +73,13 @@ template <typename T, typename Functor,
 inline decltype(auto) operator>>(Functor& lhs, T& rhs)
 {
   return lhs(rhs);
+}
+
+
+template <typename Char>
+inline decltype(auto) operator<<(meevax::basic_vstream<Char>& lhs, const Char* rhs)
+{
+  return lhs << std::move(std::basic_string<Char> {rhs});
 }
 
 
