@@ -12,6 +12,9 @@
 namespace meevax {
 
 
+// TODO make metafunction "is_char_type"
+
+
 template <typename T, std::size_t N>
 constexpr decltype(auto) static_array_size_(const T(&)[N]) noexcept
 {
@@ -38,7 +41,8 @@ template <typename T>
 using static_array_size = decltype(meevax::static_array_size_(std::declval<T>()));
 
 
-template <typename T, typename U, std::size_t... Ts, std::size_t... Us>
+template <typename T, typename U, std::size_t... Ts, std::size_t... Us,
+          typename = typename std::enable_if<!std::is_same<typename std::remove_reference<decltype(std::declval<T>()[0])>::type, char>::value>::type>
 constexpr auto static_concat_(const T& lhs, const U& rhs,
                               std::integer_sequence<std::size_t, Ts...>,
                               std::integer_sequence<std::size_t, Us...>) noexcept
@@ -48,6 +52,19 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
      >
 {
   return {{lhs[Ts]..., rhs[Us]...}};
+}
+
+
+template <typename T, typename U, std::size_t... Ts, std::size_t... Us>
+constexpr auto static_concat_(const T& lhs, const U& rhs,
+                              std::integer_sequence<std::size_t, Ts...>,
+                              std::integer_sequence<std::size_t, Us...>) noexcept
+  -> std::array<
+       typename std::remove_reference<decltype(std::declval<T>()[0])>::type,
+       meevax::static_array_size<T>::value + meevax::static_array_size<U>::value + 1
+     >
+{
+  return {{lhs[Ts]..., rhs[Us]..., '\0'}};
 }
 
 
