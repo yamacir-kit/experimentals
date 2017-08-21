@@ -57,12 +57,22 @@ public:
       std::forward<Ts>(args)...
     );
   }
+
+  template <typename... Ts>
+  void change_attributes(Ts&&... args)
+  {
+    xcb_change_window_attributes(
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id,
+      std::forward<Ts>(args)...
+    );
+  }
 };
 
 
 template <typename T, typename Functor,
           typename = typename std::enable_if<meevax::has_function_call_operator<Functor, T&>::value>::type>
-inline decltype(auto) operator<<(T& lhs, Functor& rhs)
+inline decltype(auto) operator<<(T& lhs, Functor&& rhs)
 {
   return rhs(lhs);
 }
@@ -70,7 +80,7 @@ inline decltype(auto) operator<<(T& lhs, Functor& rhs)
 
 template <typename T, typename Functor,
           typename = typename std::enable_if<meevax::has_function_call_operator<Functor, T&>::value>::type>
-inline decltype(auto) operator>>(Functor& lhs, T& rhs)
+inline decltype(auto) operator>>(Functor& lhs, T&& rhs)
 {
   return lhs(rhs);
 }

@@ -40,6 +40,7 @@ target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
   cairo
   xcb
+  xcb-keysyms
 )
 
 
