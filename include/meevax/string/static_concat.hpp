@@ -43,7 +43,7 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
                               std::integer_sequence<std::size_t, Ts...>,
                               std::integer_sequence<std::size_t, Us...>) noexcept
   -> std::array<
-       typename std::remove_reference<decltype(lhs[0])>::type,
+       typename std::remove_reference<decltype(std::declval<T>()[0])>::type,
        meevax::static_array_size<T>::value + meevax::static_array_size<U>::value
      >
 {
@@ -51,8 +51,8 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
 }
 
 
-template <typename T, typename U = const T(&)[1]>
-constexpr decltype(auto) static_concat(T&& lhs, U&& rhs = {""}) noexcept
+template <typename T, typename U = const typename std::remove_reference<decltype(std::declval<T>()[0])>::type(&)[1]>
+constexpr decltype(auto) static_concat(T&& lhs, U&& rhs = "") noexcept
 {
   return meevax::static_concat_(
     std::forward<T>(lhs), std::forward<U>(rhs),
