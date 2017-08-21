@@ -19,7 +19,7 @@ configure_file(
 
 configure_file(
   ${PROJECT_SOURCE_DIR}/configure/readme.md.cmake
-  ${PROJECT_SOURCE_DIR}/readme.md
+  ${PROJECT_SOURCE_DIR}/README.md
 )
 
 
