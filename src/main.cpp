@@ -22,15 +22,16 @@ int main(int argc, char** argv) try
   return 0;
 }
 
+catch (const std::system_error& error)
+{
+  const auto error_code {error.code().value()};
+  std::cerr << "[error] code: " << error_code << " - " << error.code().message() << "\n";
+  std::exit(error_code);
+}
+
 catch (const std::exception& error)
 {
   std::cerr << "[error] " << error.what() << std::endl;
   std::exit(EXIT_FAILURE);
-}
-
-catch (const std::system_error& error)
-{
-  std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << std::endl;
-  std::exit(error.code().value());
 }
 
