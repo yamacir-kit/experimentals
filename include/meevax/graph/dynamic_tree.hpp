@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_GRAPH_LABELED_TREE_HPP_
-#define INCLUDED_MEEVAX_GRAPH_LABELED_TREE_HPP_
+#ifndef INCLUDED_MEEVAX_GRAPH_DYNAMIC_TREE_HPP
+#define INCLUDED_MEEVAX_GRAPH_DYNAMIC_TREE_HPP
 
 
 #include <memory>
@@ -17,16 +17,16 @@ namespace meevax::graph {
 
 
 template <typename Key, typename Mapped>
-class labeled_tree
+class dynamic_tree
   : public Mapped,
-    public std::unordered_map<Key, std::unique_ptr<meevax::graph::labeled_tree<Key,Mapped>>>
+    public std::unordered_map<Key, std::unique_ptr<meevax::graph::dynamic_tree<Key, Mapped>>>
 {
-  using node_type = meevax::graph::labeled_tree<Key,Mapped>;
+  using node_type = meevax::graph::dynamic_tree<Key,Mapped>;
   using edge_type = std::unique_ptr<node_type>;
 
 public:
   template <typename... Ts>
-  explicit labeled_tree(Ts&&... args)
+  explicit dynamic_tree(Ts&&... args)
     : Mapped {std::forward<Ts>(args)...}
   {}
 

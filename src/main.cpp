@@ -5,7 +5,7 @@
 #include <xcb/xcb_keysyms.h>
 
 #include <meevax/configure/version.hpp>
-#include <meevax/graph/labeled_tree.hpp>
+#include <meevax/graph/dynamic_tree.hpp>
 #include <meevax/vstream/basic_vstream.hpp>
 
 
@@ -24,7 +24,7 @@ int main(int argc, char** argv) try
     std::exit(EXIT_FAILURE);
   }
 
-  meevax::graph::labeled_tree<
+  meevax::graph::dynamic_tree<
     std::string, meevax::basic_vstream<char>
   > master {connection};
 
