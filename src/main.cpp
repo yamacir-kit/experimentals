@@ -33,11 +33,11 @@ int main(int argc, char** argv) try
   );
 
   master.map();
-  master.resize(320, 180);
+  master.resize(1280 / 2, 720 / 2);
 
   xcb_flush(connection.get());
 
-  for (std::unique_ptr<xcb_generic_event_t> generic_event {nullptr};
+  for (std::shared_ptr<xcb_generic_event_t> generic_event {nullptr};
        generic_event.reset(xcb_wait_for_event(connection.get())), generic_event;)
   {
     switch (generic_event->response_type & ~0x80)
@@ -59,20 +59,30 @@ int main(int argc, char** argv) try
       break;
 
     case XCB_KEY_PRESS:
-      [&]()
+      [&]() -> void
       {
-        auto deleter = [&](auto pointer) { std::free(pointer); };
-        std::unique_ptr<xcb_key_symbols_t, decltype(deleter)> symbols {
-          xcb_key_symbols_alloc(connection.get()), deleter
-        };
-
-        if (!symbols) { return; }
-
         auto keysym {xcb_key_press_lookup_keysym(
-          symbols.get(), reinterpret_cast<xcb_key_press_event_t*>(generic_event.get()), 0
+          std::unique_ptr<xcb_key_symbols_t, decltype(&xcb_key_symbols_free)> {
+            xcb_key_symbols_alloc(connection.get()), xcb_key_symbols_free
+          }.get(),
+          reinterpret_cast<xcb_key_press_event_t*>(generic_event.get()),
+          reinterpret_cast<xcb_key_press_event_t*>(generic_event.get())->state & ~XCB_MOD_MASK_CONTROL
         )};
 
-        std::cout << "[debug] keysym: " << keysym << "\n";
+        switch (auto modmask {reinterpret_cast<xcb_key_press_event_t*>(generic_event.get())->state})
+        {
+        case XCB_MOD_MASK_CONTROL:
+        case XCB_MOD_MASK_CONTROL | XCB_MOD_MASK_SHIFT:
+          std::cout << "^" << static_cast<char>(keysym) << std::flush;
+          break;
+
+        default:
+          if (31 < keysym && keysym < 127)
+          {
+            std::cout << static_cast<char>(keysym) << std::flush;
+          }
+          break;
+        }
       }();
 
       break;
