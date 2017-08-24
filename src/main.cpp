@@ -8,6 +8,8 @@
 #include <meevax/graph/dynamic_tree.hpp>
 #include <meevax/vstream/basic_vstream.hpp>
 
+#include <meevax/xcb/ascii_keyboard.hpp>
+
 
 int main(int argc, char** argv) try
 {
@@ -27,6 +29,8 @@ int main(int argc, char** argv) try
   meevax::graph::dynamic_tree<
     std::string, meevax::basic_vstream<char>
   > master {connection};
+
+  meevax::xcb::ascii_keyboard<char> keyboard {connection};
 
   master.change_attributes(
     XCB_CW_EVENT_MASK,
@@ -140,8 +144,12 @@ int main(int argc, char** argv) try
           }
           break;
         }
-      }();
+      };
 
+      if (keyboard.press(generic_event))
+      {
+        std::cout << keyboard.code << std::flush;
+      }
       break;
 
     default:
