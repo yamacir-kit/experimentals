@@ -2,6 +2,7 @@
 #define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP
 
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <type_traits>
@@ -19,13 +20,19 @@ template <typename Char>
 class basic_vstream
   : public meevax::cairo::surface
 {
-  std::vector<std::basic_string<Char>> data_;
-
 public:
+  std::basic_string<Char> data;
+
   template <typename... Ts>
   explicit basic_vstream(Ts&&... args)
     : meevax::cairo::surface {std::forward<Ts>(args)...}
   {}
+
+public:
+  decltype(auto) read(Char c) noexcept(noexcept(data.push_back(std::declval<Char>())))
+  {
+    return data.push_back(c);
+  }
 
 public:
   void map() const noexcept
@@ -49,9 +56,9 @@ public:
   }
 
   template <typename... Ts>
-  void configure(Ts&&... args)
+  decltype(auto) configure(Ts&&... args)
   {
-    xcb_configure_window(
+    return xcb_configure_window(
       meevax::xcb::window::connection.get(),
       meevax::xcb::window::id,
       std::forward<Ts>(args)...
@@ -59,9 +66,9 @@ public:
   }
 
   template <typename... Ts>
-  void change_attributes(Ts&&... args)
+  decltype(auto) change_attributes(Ts&&... args)
   {
-    xcb_change_window_attributes(
+    return xcb_change_window_attributes(
       meevax::xcb::window::connection.get(),
       meevax::xcb::window::id,
       std::forward<Ts>(args)...
@@ -83,13 +90,6 @@ template <typename T, typename Functor,
 inline decltype(auto) operator>>(Functor& lhs, T&& rhs)
 {
   return lhs(rhs);
-}
-
-
-template <typename Char>
-inline decltype(auto) operator<<(meevax::basic_vstream<Char>& lhs, const Char* rhs)
-{
-  return lhs << std::move(std::basic_string<Char> {rhs});
 }
 
 

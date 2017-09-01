@@ -36,7 +36,8 @@ int main(int argc, char** argv) try
   xcb_flush(connection.get());
 
   for (std::shared_ptr<xcb_generic_event_t> generic_event {nullptr};
-       generic_event.reset(xcb_wait_for_event(connection.get())), generic_event;)
+       generic_event.reset(xcb_wait_for_event(connection.get())), generic_event;
+       xcb_flush(connection.get()))
   {
     switch (generic_event->response_type & ~0x80)
     {
@@ -57,7 +58,14 @@ int main(int argc, char** argv) try
       break;
 
     case XCB_KEY_PRESS:
-      if (keyboard.press(generic_event)) { std::cout << keyboard.code << std::flush; }
+      if (keyboard.press(generic_event))
+      {
+        std::cout << "[debug] keyboard input: " << keyboard.code << std::endl;
+
+        vstream["input"].read(keyboard.code);
+        std::cout << "[debug] vstream size: " << vstream["input"].data.size()
+                                << ", data: " << vstream["input"].data << std::endl;
+      }
       break;
 
     default:
