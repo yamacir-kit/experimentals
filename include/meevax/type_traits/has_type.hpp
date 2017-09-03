@@ -10,10 +10,11 @@ namespace meevax {
 
 
 #define implement_has_type(token) \
-struct has_##token##_                                                           \
+class has_##token##_                                                            \
 {                                                                               \
+public:                                                                         \
   template <typename T, typename = typename T::token>                           \
-  static constexpr decltype(auto) check(T&) noexcept                            \
+  static constexpr decltype(auto) check(T&&) noexcept                           \
   {                                                                             \
     return std::true_type {};                                                   \
   }                                                                             \
@@ -42,6 +43,16 @@ implement_has_type(size_type);
 
 
 } // namespace meevax
+
+
+#ifndef DEBUG
+#include <vector>
+static_assert(meevax::has_allocator_type<std::vector<int>>::value);
+static_assert(meevax::has_iterator<std::vector<int>>::value);
+static_assert(meevax::has_const_iterator<std::vector<int>>::value);
+static_assert(meevax::has_value_type<std::vector<int>>::value);
+static_assert(meevax::has_size_type<std::vector<int>>::value);
+#endif
 
 
 #endif
