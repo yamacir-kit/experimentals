@@ -80,14 +80,14 @@ auto cursorhome = [](auto& lhs) -> auto&
 
 auto cr = [](auto& lhs) -> auto&
 {
-  cairo_move_to(static_cast<cairo_t*>(lhs), 0, lhs.points().y);
+  cairo_move_to(static_cast<cairo_t*>(lhs), 0, lhs.point().y);
   return lhs;
 };
 
 
 auto lf = [](auto& lhs) -> auto&
 {
-  cairo_move_to(static_cast<cairo_t*>(lhs), lhs.points().x, lhs.points().y + lhs.extents(std::string {"hoge"}).height + 3);
+  cairo_move_to(static_cast<cairo_t*>(lhs), lhs.point().x, lhs.point().y + lhs.extents(std::string {"hoge"}).height + 3);
   return lhs;
 };
 
