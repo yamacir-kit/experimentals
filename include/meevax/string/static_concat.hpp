@@ -6,7 +6,7 @@
 #include <type_traits>
 #include <utility>
 
-#include <meevax/type_traits/has_value_type.hpp>
+#include <meevax/type_traits/has_type.hpp>
 
 
 namespace meevax {
