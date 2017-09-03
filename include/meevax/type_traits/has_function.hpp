@@ -28,7 +28,7 @@ class has_##token##_                                                            
                                                                                 \
 template <typename T>                                                           \
 class has_##token                                                               \
-  : public decltype(has##token##_::check<T>(std::declval<T>()))                 \
+  : public decltype(has_##token##_::check<T>(std::declval<T>()))                 \
 {};
 
 

@@ -31,11 +31,11 @@ class has_##token                                                               
 {};
 
 
-inplement_has_type(allocator_type);
-inplement_has_type(iterator);
-inplement_has_type(const_iterator);
-inplement_has_type(value_type);
-inplement_has_type(size_type);
+implement_has_type(allocator_type);
+implement_has_type(iterator);
+implement_has_type(const_iterator);
+implement_has_type(value_type);
+implement_has_type(size_type);
 
 
 #undef inplement_has_type

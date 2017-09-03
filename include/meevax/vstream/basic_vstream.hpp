@@ -10,7 +10,7 @@
 #include <vector>
 
 #include <meevax/cairo/surface.hpp>
-#include <meevax/type_traits/has_function_call_operator.hpp>
+#include <meevax/type_traits/has_operator.hpp>
 
 
 namespace meevax {
