@@ -9,14 +9,9 @@
 #include <xcb/xcb.h>
 #include <cairo/cairo-xcb.h>
 
-#include <X11/Xlib.h>
-#include <cairo/cairo-xlib.h>
-
 #include <meevax/xcb/window.hpp>
 #include <meevax/xcb/accessor.hpp>
 #include <meevax/xcb/iterator.hpp>
-
-#include <meevax/utility/renamed_pair.hpp>
 
 
 namespace meevax::cairo {
@@ -86,74 +81,6 @@ private:
 
 
 } // namespace meevax::cairo
-
-
-namespace meevax::cairo::xlib {
-
-
-class context
-{
-  std::shared_ptr<cairo_t> cairo_;
-
-public:
-  explicit context(Display* display, const Window& parent)
-    : cairo_ {nullptr, cairo_destroy}
-  {
-    auto window {XCreateSimpleWindow(
-      display, parent, 0, 0, 1280, 720, 1,
-      XBlackPixel(display, XDefaultScreen(display)),
-      XWhitePixel(display, XDefaultScreen(display))
-    )};
-
-    auto surface {cairo_xlib_surface_create(
-      display, window, XDefaultVisual(display, XDefaultScreen(display)), 1, 1
-    )};
-
-    XSelectInput(display, window, ExposureMask | KeyPressMask);
-
-    cairo_.reset(cairo_create(surface), cairo_destroy);
-  };
-
-public:
-  explicit operator cairo_t*() const
-  {
-    return cairo_.get();
-  }
-
-  explicit operator cairo_surface_t*() const
-  {
-    return cairo_get_target(static_cast<cairo_t*>(*this));
-  }
-
-  explicit operator Display*() const
-  {
-    return cairo_xlib_surface_get_display(static_cast<cairo_surface_t*>(*this));
-  }
-
-  explicit operator Window() const
-  {
-    return cairo_xlib_surface_get_drawable(static_cast<cairo_surface_t*>(*this));
-  }
-
-public:
-  template <typename C>
-  auto& extents(const std::basic_string<C>& text) const
-  {
-    static cairo_text_extents_t extents {};
-    cairo_text_extents(static_cast<cairo_t*>(*this), text.c_str(), &extents);
-    return extents;
-  }
-
-  auto& point() const
-  {
-    static meevax::utility::renamed_pair::point<double> point {};
-    cairo_get_current_point(static_cast<cairo_t*>(*this), &point.x, &point.y);
-    return point;
-  }
-};
-
-
-} // namespace meevax::cairo::xlib
 
 
 #endif
