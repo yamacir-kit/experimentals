@@ -6,6 +6,9 @@
 #include <utility>
 
 
+namespace meevax {
+
+
 #define implement_has_type(token) \
 struct has_##token##_ \
 { \
@@ -32,6 +35,9 @@ inplement_has_type(size_type);
 
 
 #undef inplement_has_type
+
+
+} // namespace meevax
 
 
 #endif
