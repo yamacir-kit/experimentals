@@ -6,6 +6,10 @@
 #include <memory>
 #include <utility>
 
+#ifndef NDEBUG
+#include <iostream>
+#endif
+
 #include <xcb/xcb.h>
 #include <cairo/cairo-xcb.h>
 
@@ -41,7 +45,7 @@ public:
       }
   {}
 
-  explicit surface(const meevax::cairo::surface& surface)
+  explicit surface(const meevax::cairo::surface& surface, const std::string& node_name)
     : meevax::xcb::window {surface.connection, surface.id},
       std::shared_ptr<cairo_surface_t> {
         cairo_xcb_surface_create(
@@ -53,7 +57,11 @@ public:
         ),
         cairo_surface_destroy
       }
-  {}
+  {
+#ifndef NDEBUG
+    std::cout << "[debug] meevax::cairo::surface - new node created (" << node_name << ")\n";
+#endif
+  }
 
 private:
   static auto root_visualtype(const std::shared_ptr<xcb_connection_t>& connection)

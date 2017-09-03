@@ -15,6 +15,10 @@ namespace meevax::graph {
 // そもそもの原因は基底クラスの名前がクソ長いこと
 // クラス外でノード、エッジのテンプレート型エイリアスをかけることも検討すること
 
+// TODO
+// Mapped型が要件を満たしていることをSFINAEで確認するよう修正すること
+// - dynamic_tree 自体の作成時の引数はそのままルートノードへのMapped型のコンストラクタ引数となること
+// - operator[] によって子ノードが作成される時、親ノードへの参照とノード名が渡されること
 
 template <typename Key, typename Mapped>
 class dynamic_tree
@@ -34,7 +38,7 @@ public:
   {
     if ((*this).find(node_name) == (*this).end())
     {
-      (*this).emplace(node_name, edge_type {new node_type {*this}});
+      (*this).emplace(node_name, edge_type {new node_type {*this, node_name}});
     }
 
     return *(*this).at(node_name);
