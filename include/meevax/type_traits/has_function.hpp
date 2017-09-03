@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_HAS_TYPE_HPP
-#define INCLUDED_MEEVAX_TYPE_TRAITS_HAS_TYPE_HPP
+#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_HAS_FUNCTION_HPP
+#define INCLUDED_MEEVAX_TYPE_TRAITS_HAS_FUNCTION_HPP
 
 
 #include <type_traits>
@@ -9,11 +9,12 @@
 namespace meevax {
 
 
-#define implement_has_type(token) \
-struct has_##token##_                                                           \
+#define implement_has_function(token) \
+class has_##token##_                                                            \
 {                                                                               \
-  template <typename T, typename = typename T::token>                           \
-  static constexpr decltype(auto) check(T&) noexcept                            \
+  template <typename T>                                                         \
+  static constexpr auto check(T& structure) noexcept                            \
+    -> decltype(structure.token(), std::true_type {})                           \
   {                                                                             \
     return std::true_type {};                                                   \
   }                                                                             \
@@ -27,18 +28,18 @@ struct has_##token##_                                                           
                                                                                 \
 template <typename T>                                                           \
 class has_##token                                                               \
-  : public decltype(has_##token##_::check<T>(std::declval<T>()))                \
+  : public decltype(has##token##_::check<T>(std::declval<T>()))                 \
 {};
 
 
-inplement_has_type(allocator_type);
-inplement_has_type(iterator);
-inplement_has_type(const_iterator);
-inplement_has_type(value_type);
-inplement_has_type(size_type);
+implement_has_function(begin);
+implement_has_function(end);
+implement_has_function(cbegin);
+implement_has_function(cend);
+implement_has_function(size);
 
 
-#undef inplement_has_type
+#undef implement_has_function
 
 
 } // namespace meevax
