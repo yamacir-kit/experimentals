@@ -9,8 +9,9 @@
 namespace meevax {
 
 
-struct has_value_type_
+class has_value_type_
 {
+public:
   template <typename T, typename = typename T::value_type>
   static constexpr decltype(auto) check(T&) noexcept
   {
@@ -26,7 +27,9 @@ struct has_value_type_
 
 
 template <typename T>
-using has_value_type = decltype(has_value_type_::check<T>(std::declval<T>()));
+class has_value_type
+  : public decltype(has_value_type_::check<T>(std::declval<T>()))
+{};
 
 
 } // namespace meevax
