@@ -22,6 +22,12 @@ int main(int argc, char** argv) try
     std::exit(EXIT_FAILURE);
   }
 
+#ifndef NDEBUG
+  meevax::basic_vstream<char> debug {connection};
+  debug.map();
+  debug.resize(1280 / 2, 720 / 2);
+#endif
+
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
   meevax::xcb::ascii_keyboard<char> keyboard {connection};
 
@@ -62,7 +68,20 @@ int main(int argc, char** argv) try
       if (keyboard.press(generic_event))
       {
         vstream << keyboard.code << std::flush;
-        vstream.write();
+        vstream.output();
+
+#ifndef NDEBUG
+        debug.clear();
+        if (std::isgraph(keyboard.code))
+        {
+          debug << "keyboard input: " << keyboard.code << "\n";
+        }
+        else
+        {
+          debug << "keyboard input: 0x" << std::hex << static_cast<int>(keyboard.code) << "\n";
+        }
+        debug.output();
+#endif
       }
       break;
 

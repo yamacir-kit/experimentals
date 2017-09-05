@@ -48,7 +48,7 @@ public:
     };
   }
 
-  auto write() // write to window surface
+  auto output() // write to window surface
   {
     std::vector<std::basic_string<Char>> buffer {};
 
@@ -143,6 +143,26 @@ public:
         }
       }
     }
+  }
+
+  void clear()
+  {
+    const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+      cairo_create(meevax::cairo::surface::get()), cairo_destroy
+    };
+
+    cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
+    cairo_paint(context.get());
+    cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
+
+    cairo_text_extents_t extents {};
+    cairo_text_extents(context.get(), "hoge", &extents);
+
+    cairo_move_to(context.get(), 0, extents.height);
+
+    auto size {buffer_.size()};
+
+    buffer_.consume(size);
   }
 
 public:
