@@ -64,7 +64,9 @@ int main(int argc, char** argv) try
         std::cout << "[debug] keyboard input: " << keyboard.code << std::endl;
 
         vstream << keyboard.code << std::flush;
-        std::cout << "[debug] vstream: " << vstream.data().size() << "\n";
+        std::cout << "[debug] size: " << vstream.data().size() << "\n";
+
+        vstream.write();
       }
       break;
 
