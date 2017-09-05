@@ -25,7 +25,7 @@ class dynamic_tree
   : public Mapped,
     public std::unordered_map<Key, std::unique_ptr<meevax::graph::dynamic_tree<Key, Mapped>>>
 {
-  using node_type = meevax::graph::dynamic_tree<Key,Mapped>;
+  using node_type = meevax::graph::dynamic_tree<Key, Mapped>;
   using edge_type = std::unique_ptr<node_type>;
 
 public:
@@ -36,12 +36,14 @@ public:
 
   auto& operator[](Key&& node_name)
   {
-    if ((*this).find(node_name) == (*this).end())
+    using unordered_map = std::unordered_map<Key, edge_type>;
+
+    if (unordered_map::find(node_name) == unordered_map::end())
     {
-      (*this).emplace(node_name, edge_type {new node_type {*this, node_name}});
+      unordered_map::emplace(node_name, edge_type {new node_type {*this, node_name}});
     }
 
-    return *(*this).at(node_name);
+    return *unordered_map::at(node_name);
   }
 };
 
