@@ -61,11 +61,7 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        std::cout << "[debug] keyboard input: " << keyboard.code << std::endl;
-
         vstream << keyboard.code << std::flush;
-        std::cout << "[debug] size: " << vstream.data().size() << "\n";
-
         vstream.write();
       }
       break;

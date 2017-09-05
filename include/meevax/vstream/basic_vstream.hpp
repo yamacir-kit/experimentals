@@ -81,6 +81,7 @@ public:
 
     cairo_set_source_rgb(cairo.get(), 1.0, 1.0, 1.0);
     cairo_paint(cairo.get());
+    cairo_set_source_rgb(cairo.get(), 0.0, 0.0, 0.0);
 
     cairo_move_to(cairo.get(), 0, extents.height);
 
@@ -102,18 +103,18 @@ public:
         {
           cairo_set_source_rgb(
             cairo.get(),
-            std::stod(results[3]) / std::numeric_limits<std::uint8_t>::max(),
-            std::stod(results[4]) / std::numeric_limits<std::uint8_t>::max(),
-            std::stod(results[5]) / std::numeric_limits<std::uint8_t>::max()
+            std::stod(results[3]) / std::numeric_limits<std::int8_t>::max(),
+            std::stod(results[4]) / std::numeric_limits<std::int8_t>::max(),
+            std::stod(results[5]) / std::numeric_limits<std::int8_t>::max()
           );
         }
         else if (std::stoi(results[1]) == 48 && std::stoi(results[2]) == 2)
         {
           cairo_set_source_rgb(
             cairo.get(),
-            std::stod(results[3]) / std::numeric_limits<std::uint8_t>::max(),
-            std::stod(results[4]) / std::numeric_limits<std::uint8_t>::max(),
-            std::stod(results[5]) / std::numeric_limits<std::uint8_t>::max()
+            std::stod(results[3]) / std::numeric_limits<std::int8_t>::max(),
+            std::stod(results[4]) / std::numeric_limits<std::int8_t>::max(),
+            std::stod(results[5]) / std::numeric_limits<std::int8_t>::max()
           );
 
           cairo_paint(cairo.get());
@@ -138,7 +139,6 @@ public:
             plain_text.replace(std::begin(plain_text), std::begin(plain_text) + 1, "\\e");
           }
 
-          cairo_set_source_rgb(cairo.get(), 0.0, 0.0, 0.0);
           cairo_show_text(cairo.get(), plain_text.c_str());
         }
       }
