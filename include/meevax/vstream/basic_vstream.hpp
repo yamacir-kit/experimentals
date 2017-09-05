@@ -2,15 +2,19 @@
 #define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP
 
 
+#include <iostream>
 #include <algorithm>
 #include <memory>
 #include <string>
 #include <type_traits>
 #include <utility>
-#include <vector>
+
+#include <boost/asio/basic_streambuf.hpp>
+#include <boost/asio/buffers_iterator.hpp>
 
 #include <meevax/cairo/surface.hpp>
 #include <meevax/type_traits/has_operator.hpp>
+#include <meevax/algorithm/regex_split_include_delimiter.hpp>
 
 
 namespace meevax {
@@ -18,20 +22,26 @@ namespace meevax {
 
 template <typename Char>
 class basic_vstream
-  : public meevax::cairo::surface
+  : public meevax::cairo::surface,
+    public std::basic_iostream<Char>
 {
-public:
-  std::basic_string<Char> data;
+  boost::asio::basic_streambuf<std::allocator<Char>> buffer_;
 
+public:
   template <typename... Ts>
   explicit basic_vstream(Ts&&... args)
-    : meevax::cairo::surface {std::forward<Ts>(args)...}
+    : meevax::cairo::surface {std::forward<Ts>(args)...},
+      std::basic_iostream<Char> {&buffer_}
   {}
 
 public:
-  decltype(auto) read(Char c) noexcept(noexcept(data.push_back(std::declval<Char>())))
+  decltype(auto) data()
   {
-    return data.push_back(c);
+    auto buffer {buffer_.data()};
+
+    return std::basic_string<Char> {
+      boost::asio::buffers_begin(buffer), boost::asio::buffers_end(buffer)
+    };
   }
 
 public:
