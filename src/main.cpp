@@ -29,41 +29,46 @@ int main(int argc, char** argv) try
     XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
     std::vector<std::uint32_t> {640, 360}.data()
   );
+  cairo_xcb_surface_set_size(debug.meevax::cairo::surface::get(), 640, 320);
 #endif
 
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
   meevax::xcb::ascii_keyboard<char> keyboard {connection};
 
-  vstream.change_attributes(
-    XCB_CW_EVENT_MASK,
-    std::vector<std::uint32_t> {XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_KEY_PRESS}.data()
-  );
+  {
+    vstream.map();
+    vstream.change_attributes(
+      XCB_CW_EVENT_MASK,
+      std::vector<std::uint32_t> {XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_KEY_PRESS}.data()
+    );
+    vstream.configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 360}.data()
+    );
+    cairo_xcb_surface_set_size(vstream.meevax::cairo::surface::get(), 640, 320);
 
-  vstream.map();
-  vstream.configure(
-    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-    std::vector<std::uint32_t> {640, 360}.data()
-  );
+    vstream["raw_input"].map();
+    vstream["raw_input"].configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180}.data()
+    );
+    vstream["raw_input"].configure(
+      XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+      std::vector<std::uint32_t> {0, 0}.data()
+    );
+    cairo_xcb_surface_set_size(vstream["raw_input"].meevax::cairo::surface::get(), 640, 320);
 
-  vstream["raw_input"].map();
-  vstream["raw_input"].configure(
-    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-    std::vector<std::uint32_t> {640, 180}.data()
-  );
-  vstream["raw_input"].configure(
-    XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
-    std::vector<std::uint32_t> {0, 0}.data()
-  );
-
-  vstream["parsed"].map();
-  vstream["parsed"].configure(
-    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-    std::vector<std::uint32_t> {640, 180}.data()
-  );
-  vstream["parsed"].configure(
-    XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
-    std::vector<std::uint32_t> {0, 180}.data()
-  );
+    vstream["parsed"].map();
+    vstream["parsed"].configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180}.data()
+    );
+    vstream["parsed"].configure(
+      XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+      std::vector<std::uint32_t> {0, 180}.data()
+    );
+    cairo_xcb_surface_set_size(vstream["parsed"].meevax::cairo::surface::get(), 640, 320);
+  }
 
   xcb_flush(connection.get());
 
