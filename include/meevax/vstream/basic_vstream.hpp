@@ -3,6 +3,7 @@
 
 
 #include <algorithm>
+#include <functional>
 #include <iostream>
 #include <limits>
 #include <memory>
@@ -130,17 +131,18 @@ public:
 
       else
       {
-        if (!s.empty())
-        {
-          std::basic_string<Char> plain_text {s};
-
-          if (plain_text[0] == '\e')
-          {
-            plain_text.replace(std::begin(plain_text), std::begin(plain_text) + 1, "\\e");
-          }
-
-          cairo_show_text(cairo.get(), plain_text.c_str());
-        }
+        // if (!s.empty())
+        // {
+        //   std::basic_string<Char> plain_text {s};
+        //
+        //   if (plain_text[0] == '\e')
+        //   {
+        //     plain_text.replace(std::begin(plain_text), std::begin(plain_text) + 1, "\\e");
+        //   }
+        //
+        //   cairo_show_text(cairo.get(), plain_text.c_str());
+        // }
+        draw(cairo, std::begin(s), std::end(s));
       }
     }
   }
@@ -163,6 +165,72 @@ public:
     auto size {buffer_.size()};
 
     buffer_.consume(size);
+  }
+
+  auto hoge() noexcept(false)
+  {
+    std::match_results<typename std::basic_string<Char>::const_iterator> results {};
+
+    static const std::basic_regex<Char> insert {"^(i)(.*)(\\\e)(.*)$"};
+
+    const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+      cairo_create(meevax::cairo::surface::get()), cairo_destroy
+    };
+
+    {
+      cairo_select_font_face(context.get(), "Ricty Diminished", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+      cairo_set_font_size(context.get(), 18);
+
+      cairo_text_extents_t extents {};
+      cairo_text_extents(context.get(), "hoge", &extents);
+
+      cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
+      cairo_paint(context.get());
+      cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
+
+      cairo_move_to(context.get(), 0, extents.height);
+    }
+
+    for (auto buffer {data()}; !buffer.empty(); )
+    {
+      if (std::regex_match(buffer, results, insert))
+      {
+        cairo_show_text(context.get(), results[2].str().c_str());
+
+        buffer.erase(
+          std::begin(buffer),
+          std::begin(buffer) + results[1].length() + results[2].length() + results[3].length()
+        );
+      }
+
+      else
+      {
+        std::cout << "[debug] invalid command \"" << buffer << "\" will be ignored\n";
+        return;
+      }
+    }
+  }
+
+private:
+  template <typename InputIterator>
+  decltype(auto) draw(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
+                      InputIterator begin, InputIterator end) // XXX 効率度外視の一時的な処理切り分け
+  {
+    // const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+    //   cairo_create(meevax::cairo::surface::get()), cairo_destroy
+    // };
+    //
+    std::basic_string<Char> string {begin, end};
+
+    for (auto position {string.find("\e")}; position != std::string::npos; )
+    {
+      string.replace(position, std::basic_string<Char> {"\e"}.size(), "\\e");
+      position = string.find("\e", position + std::basic_string<Char> {"\\e"}.size());
+    }
+
+    std::cout << "[debug] draw string: " << string << "\n";
+
+    return cairo_show_text(context.get(), string.c_str());
   }
 
 public:
