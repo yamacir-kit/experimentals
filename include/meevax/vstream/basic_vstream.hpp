@@ -131,17 +131,6 @@ public:
 
       else
       {
-        // if (!s.empty())
-        // {
-        //   std::basic_string<Char> plain_text {s};
-        //
-        //   if (plain_text[0] == '\e')
-        //   {
-        //     plain_text.replace(std::begin(plain_text), std::begin(plain_text) + 1, "\\e");
-        //   }
-        //
-        //   cairo_show_text(cairo.get(), plain_text.c_str());
-        // }
         draw(cairo, std::begin(s), std::end(s));
       }
     }
@@ -216,10 +205,6 @@ private:
   decltype(auto) draw(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
                       InputIterator begin, InputIterator end) // XXX 効率度外視の一時的な処理切り分け
   {
-    // const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
-    //   cairo_create(meevax::cairo::surface::get()), cairo_destroy
-    // };
-    //
     std::basic_string<Char> string {begin, end};
 
     for (auto position {string.find("\e")}; position != std::string::npos; )
@@ -227,8 +212,6 @@ private:
       string.replace(position, std::basic_string<Char> {"\e"}.size(), "\\e");
       position = string.find("\e", position + std::basic_string<Char> {"\\e"}.size());
     }
-
-    std::cout << "[debug] draw string: " << string << "\n";
 
     return cairo_show_text(context.get(), string.c_str());
   }
