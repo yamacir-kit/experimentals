@@ -48,19 +48,22 @@ int main(int argc, char** argv) try
     switch (generic_event->response_type & ~0x80)
     {
     case XCB_EXPOSE:
-      std::cout << "[debug] expose\n";
-
-      vstream << [&](auto& surface) -> auto&
+      if (!reinterpret_cast<xcb_expose_event_t*>(generic_event.get())->count)
       {
-        std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
-          cairo_create(surface.meevax::cairo::surface::get()), cairo_destroy
+        std::cout << "[debug] expose\n";
+
+        vstream << [&](auto& surface) -> auto&
+        {
+          std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
+            cairo_create(surface.meevax::cairo::surface::get()), cairo_destroy
+          };
+
+          cairo_set_source_rgba(cairo.get(), 1.0, 1.0, 1.0, 1.0);
+          cairo_paint(cairo.get());
+
+          return surface;
         };
-
-        cairo_set_source_rgba(cairo.get(), 1.0, 1.0, 1.0, 1.0);
-        cairo_paint(cairo.get());
-
-        return surface;
-      };
+      }
 
       break;
 
