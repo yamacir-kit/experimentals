@@ -25,7 +25,10 @@ int main(int argc, char** argv) try
 #ifndef NDEBUG
   meevax::basic_vstream<char> debug {connection};
   debug.map();
-  debug.resize(1280 / 2, 720 / 2);
+  debug.configure(
+    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+    std::vector<std::uint32_t> {640, 360}.data()
+  );
 #endif
 
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
@@ -37,7 +40,30 @@ int main(int argc, char** argv) try
   );
 
   vstream.map();
-  vstream.resize(1280 / 2, 720 / 2);
+  vstream.configure(
+    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+    std::vector<std::uint32_t> {640, 360}.data()
+  );
+
+  vstream["raw_input"].map();
+  vstream["raw_input"].configure(
+    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+    std::vector<std::uint32_t> {640, 180}.data()
+  );
+  vstream["raw_input"].configure(
+    XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+    std::vector<std::uint32_t> {0, 0}.data()
+  );
+
+  vstream["parsed"].map();
+  vstream["parsed"].configure(
+    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+    std::vector<std::uint32_t> {640, 180}.data()
+  );
+  vstream["parsed"].configure(
+    XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+    std::vector<std::uint32_t> {0, 180}.data()
+  );
 
   xcb_flush(connection.get());
 
@@ -50,8 +76,6 @@ int main(int argc, char** argv) try
     case XCB_EXPOSE:
       if (!reinterpret_cast<xcb_expose_event_t*>(generic_event.get())->count)
       {
-        std::cout << "[debug] expose\n";
-
         vstream << [&](auto& surface) -> auto&
         {
           std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
@@ -70,8 +94,11 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        vstream << keyboard.code << std::flush;
-        vstream.output();
+        vstream["raw_input"] << keyboard.code << std::flush;
+        vstream["raw_input"].output();
+
+        vstream["parsed"] << keyboard.code << std::flush;
+        vstream["parsed"].output();
 
 #ifndef NDEBUG
         debug.clear();

@@ -174,18 +174,6 @@ public:
     );
   }
 
-  [[deprecated]] void resize(std::uint32_t width, std::uint32_t height) const noexcept
-  {
-    xcb_configure_window(
-      meevax::xcb::window::connection.get(),
-      meevax::xcb::window::id,
-      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-      std::vector<std::uint32_t> {width, height}.data()
-    );
-
-    cairo_xcb_surface_set_size(meevax::cairo::surface::get(), width, height);
-  }
-
   template <typename... Ts>
   decltype(auto) configure(Ts&&... args)
   {
