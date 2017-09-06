@@ -22,6 +22,12 @@ int main(int argc, char** argv) try
     std::exit(EXIT_FAILURE);
   }
 
+#ifndef NDEBUG
+  meevax::basic_vstream<char> debug {connection};
+  debug.map();
+  debug.resize(1280 / 2, 720 / 2);
+#endif
+
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
   meevax::xcb::ascii_keyboard<char> keyboard {connection};
 
@@ -33,15 +39,6 @@ int main(int argc, char** argv) try
   vstream.map();
   vstream.resize(1280 / 2, 720 / 2);
 
-  vstream["hoge"].resize(300, 300);
-  vstream["hoge"].map();
-
-  vstream["hoge"]["fuga"].resize(200, 200);
-  vstream["hoge"]["fuga"].map();
-
-  vstream["hoge"]["fuga"]["piyo"].resize(100, 100);
-  vstream["hoge"]["fuga"]["piyo"].map();
-
   xcb_flush(connection.get());
 
   for (std::shared_ptr<xcb_generic_event_t> generic_event {nullptr};
@@ -51,62 +48,43 @@ int main(int argc, char** argv) try
     switch (generic_event->response_type & ~0x80)
     {
     case XCB_EXPOSE:
-      std::cout << "[debug] expose\n";
+      if (!reinterpret_cast<xcb_expose_event_t*>(generic_event.get())->count)
+      {
+        std::cout << "[debug] expose\n";
 
-      vstream << [&](auto& surface) -> auto& {
-        std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
-          cairo_create(surface.get()), cairo_destroy
+        vstream << [&](auto& surface) -> auto&
+        {
+          std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
+            cairo_create(surface.meevax::cairo::surface::get()), cairo_destroy
+          };
+
+          cairo_set_source_rgba(cairo.get(), 1.0, 1.0, 1.0, 1.0);
+          cairo_paint(cairo.get());
+
+          return surface;
         };
-
-        cairo_set_source_rgba(cairo.get(), 1.0, 1.0, 1.0, 1.0);
-        cairo_paint(cairo.get());
-
-        return surface;
-      };
-
-      vstream["hoge"] << [&](auto& surface) -> auto& {
-        std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
-          cairo_create(surface.get()), cairo_destroy
-        };
-
-        cairo_set_source_rgba(cairo.get(), 0.0, 0.0, 1.0, 1.0);
-        cairo_paint(cairo.get());
-
-        return surface;
-      };
-
-      vstream["hoge"]["fuga"] << [&](auto& surface) -> auto& {
-        std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
-          cairo_create(surface.get()), cairo_destroy
-        };
-
-        cairo_set_source_rgba(cairo.get(), 0.0, 1.0, 0.0, 1.0);
-        cairo_paint(cairo.get());
-
-        return surface;
-      };
-
-      vstream["hoge"]["fuga"]["piyo"] << [&](auto& surface) -> auto& {
-        std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
-          cairo_create(surface.get()), cairo_destroy
-        };
-
-        cairo_set_source_rgba(cairo.get(), 1.0, 0.0, 0.0, 1.0);
-        cairo_paint(cairo.get());
-
-        return surface;
-      };
+      }
 
       break;
 
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        std::cout << "[debug] keyboard input: " << keyboard.code << std::endl;
+        vstream << keyboard.code << std::flush;
+        vstream.output();
 
-        vstream["input"].read(keyboard.code);
-        std::cout << "[debug] vstream size: " << vstream["input"].data.size()
-                                << ", data: " << vstream["input"].data << std::endl;
+#ifndef NDEBUG
+        debug.clear();
+        if (std::isgraph(keyboard.code))
+        {
+          debug << "keyboard input: " << keyboard.code << "\n";
+        }
+        else
+        {
+          debug << "keyboard input: 0x" << std::hex << static_cast<int>(keyboard.code) << "\n";
+        }
+        debug.output();
+#endif
       }
       break;
 
