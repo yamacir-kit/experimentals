@@ -103,7 +103,7 @@ int main(int argc, char** argv) try
         vstream["raw_input"].output();
 
         vstream["parsed"] << keyboard.code << std::flush;
-        vstream["parsed"].hoge();
+        vstream["parsed"].parse();
 
 #ifndef NDEBUG
         debug.clear();

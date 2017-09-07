@@ -131,7 +131,7 @@ public:
 
       else
       {
-        draw(cairo, std::begin(s), std::end(s));
+        write(cairo, std::begin(s), std::end(s));
       }
     }
   }
@@ -156,11 +156,11 @@ public:
     buffer_.consume(size);
   }
 
-  auto hoge() noexcept(false)
+  auto parse() noexcept(false)
   {
     std::match_results<typename std::basic_string<Char>::const_iterator> results {};
 
-    static const std::basic_regex<Char> insert {"^(i)(.*)(\\\e)(.*)$"};
+    static const std::basic_regex<Char> insert {"^(i)([^\\\e]*)(\\\e)?(.*)$"};
 
     const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
       cairo_create(meevax::cairo::surface::get()), cairo_destroy
@@ -194,9 +194,16 @@ public:
 
       else
       {
-        std::cout << "[debug] invalid command \"" << buffer << "\" will be ignored\n";
-        return;
+        std::cout << "[debug] invalid command \"" << buffer.front() << "\" will be ignored\n";
+        buffer.erase(
+          std::begin(buffer),
+          std::begin(buffer) + 1
+        );
       }
+
+      // MEMO
+      // システムに対して副作用のある式は最初の構文成立時にのみ実行すること
+      // つまり、正規表現末尾の(.*)のサイズがゼロの時のみ実行
     }
   }
 
