@@ -201,19 +201,30 @@ public:
   }
 
 private:
-  template <typename InputIterator>
-  decltype(auto) draw(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
-                      InputIterator begin, InputIterator end) // XXX 効率度外視の一時的な処理切り分け
+  template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
+  decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
+                      InputIterator begin, InputIterator end)
   {
-    std::basic_string<Char> string {begin, end};
+    return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
+  }
 
-    for (auto position {string.find("\e")}; position != std::string::npos; )
+  template <typename InputIterator>
+  auto replace_unprintable(InputIterator begin, InputIterator end)
+  {
+    std::basic_string<Char> buffer {begin, end};
+
+    using type = std::vector<std::pair<std::basic_string<Char>, std::basic_string<Char>>>;
+
+    for (const auto& pair : type {{"\e", "\\e"}, {"\n", "\\n"}, {"\t", "\\t"}})
     {
-      string.replace(position, std::basic_string<Char> {"\e"}.size(), "\\e");
-      position = string.find("\e", position + std::basic_string<Char> {"\\e"}.size());
+      for (auto position {buffer.find(pair.first)}; position != std::basic_string<Char>::npos; )
+      {
+        buffer.replace(position, pair.first.size(), pair.second);
+        position = buffer.find(pair.first, position + pair.second.size());
+      }
     }
 
-    return cairo_show_text(context.get(), string.c_str());
+    return buffer;
   }
 
 public:

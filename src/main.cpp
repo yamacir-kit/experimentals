@@ -29,7 +29,7 @@ int main(int argc, char** argv) try
     XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
     std::vector<std::uint32_t> {640, 360}.data()
   );
-  cairo_xcb_surface_set_size(debug.meevax::cairo::surface::get(), 640, 320);
+  cairo_xcb_surface_set_size(debug.meevax::cairo::surface::get(), 640, 360);
 #endif
 
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
