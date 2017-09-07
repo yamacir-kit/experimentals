@@ -160,7 +160,7 @@ public:
   {
     std::match_results<typename std::basic_string<Char>::const_iterator> results {};
 
-    static const std::basic_regex<Char> insert {"^(i)([^\\\e]*)(\\\e)?(.*)$"};
+    static const std::basic_regex<Char> insert {"^(i)([^\\\e]*)(\\\e)?([^]*)$"};
 
     const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
       cairo_create(meevax::cairo::surface::get()), cairo_destroy
@@ -184,7 +184,7 @@ public:
     {
       if (std::regex_match(buffer, results, insert))
       {
-        cairo_show_text(context.get(), results[2].str().c_str());
+        cairo_show_text(context.get(), replace_unprintable(results[2].str()).c_str());
 
         buffer.erase(
           std::begin(buffer),
@@ -194,11 +194,10 @@ public:
 
       else
       {
-        std::cout << "[debug] invalid command \"" << buffer.front() << "\" will be ignored\n";
-        buffer.erase(
-          std::begin(buffer),
-          std::begin(buffer) + 1
-        );
+        std::cout << "[debug] unimplemented command \""
+                  << replace_unprintable({buffer.front()}) << "\" will be ignored\n";
+
+        buffer.erase(std::begin(buffer), std::begin(buffer) + 1);
       }
 
       // MEMO
@@ -215,10 +214,9 @@ private:
     return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
   }
 
-  template <typename InputIterator>
-  auto replace_unprintable(InputIterator begin, InputIterator end)
+  auto replace_unprintable(const std::basic_string<Char>& string)
   {
-    std::basic_string<Char> buffer {begin, end};
+    auto buffer {string};
 
     using type = std::vector<std::pair<std::basic_string<Char>, std::basic_string<Char>>>;
 
@@ -232,6 +230,12 @@ private:
     }
 
     return buffer;
+  }
+
+  template <typename InputIterator>
+  decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
+  {
+    return replace_unprintable({begin, end});
   }
 
 public:
