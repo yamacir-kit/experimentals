@@ -7,30 +7,33 @@
 #include <meevax/xcb/ascii_keyboard.hpp>
 
 
+namespace meevax {
+
+class shared_connection
+  : public std::shared_ptr<xcb_connection_t>
+{
+public:
+  template <typename... Ts>
+  explicit shared_connection(Ts&&... args)
+    : std::shared_ptr<xcb_connection_t> {xcb_connect(std::forward<Ts>(args)...), xcb_disconnect}
+  {
+    if (xcb_connection_has_error(std::shared_ptr<xcb_connection_t>::get()))
+    {
+      std::cerr << "[error] xcb_connect - failed to connect X server\n";
+      std::exit(EXIT_FAILURE);
+    }
+  }
+};
+
+} // namespace meevax
+
+
 int main(int argc, char** argv) try
 {
   std::cout << "[debug] boost version: " << meevax::boost_version.data() << "\n";
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
-  const std::shared_ptr<xcb_connection_t> connection {
-    xcb_connect(nullptr, nullptr), xcb_disconnect
-  };
-
-  if (xcb_connection_has_error(connection.get()))
-  {
-    std::cerr << "[error] xcb_connect - failed to connect X server\n";
-    std::exit(EXIT_FAILURE);
-  }
-
-#ifndef NDEBUG
-  meevax::basic_vstream<char> debug {connection};
-  debug.map();
-  debug.configure(
-    XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-    std::vector<std::uint32_t> {640, 360}.data()
-  );
-  cairo_xcb_surface_set_size(debug.meevax::cairo::surface::get(), 640, 360);
-#endif
+  const meevax::shared_connection connection {nullptr, nullptr};
 
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
   meevax::xcb::ascii_keyboard<char> keyboard {connection};
