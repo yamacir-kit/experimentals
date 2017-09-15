@@ -21,6 +21,8 @@
 #include <meevax/type_traits/has_operator.hpp>
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
 
+#include <meevax/string/runtime_typename.hpp>
+
 
 namespace meevax {
 
@@ -40,9 +42,15 @@ public:
   {}
 
 public:
-  auto data()
+  auto string()
   {
     return std::basic_string<Char> {boost::asio::buffer_cast<const char*>(buffer_.data())};
+  }
+
+  template <typename... Ts>
+  decltype(auto) data(Ts&&... args)
+  {
+    return buffer_.data(std::forward<Ts>(args)...);
   }
 
   template <typename... Ts>
@@ -250,7 +258,9 @@ public:
     {
       std::cout << "[debug] debug_write() - buffer is empty\n";
     }
-    cairo_show_text(context.get(), replace_unprintable(data()).c_str());
+
+    cairo_show_text(context.get(), replace_unprintable(string()).c_str());
+    cairo_surface_flush(meevax::cairo::surface::get());
   }
 
   static auto replace_unprintable(const std::basic_string<Char>& string)
@@ -325,19 +335,130 @@ inline decltype(auto) operator<<(T& lhs, Functor&& rhs)
 
 
 template <typename Char>
-decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
+decltype(auto) operator,(std::basic_ostream<Char>& lhs, std::basic_ostream<Char>& rhs)
 {
-  return ostream << std::basic_string<Char> {input};
+  std::cout << "[debug] comma operator (ostream vs osream)" << std::endl;
+  return std::forward_as_tuple(lhs, rhs);
 }
 
 
 template <typename Char>
-decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_string<Char> input)
+decltype(auto) operator,(std::basic_ostream<Char>& lhs, meevax::basic_vstream<Char>& rhs)
 {
-  ostream.prepare(input.size());
+  std::cout << "[debug] comma operator (ostream vs vsream)" << std::endl;
+  return std::forward_as_tuple(lhs, rhs);
+}
 
-  std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
-  ostream.commit(input.size());
+
+template <typename Char>
+decltype(auto) operator,(meevax::basic_vstream<Char>& lhs, std::basic_ostream<Char>& rhs)
+{
+  std::cout << "[debug] comma operator (vstream vs osream)" << std::endl;
+  return std::forward_as_tuple(lhs, rhs);
+}
+
+
+template <typename... Ts, typename Char>
+decltype(auto) operator,(std::tuple<Ts...>& lhs, std::basic_ostream<Char>& rhs)
+{
+  std::cout << "[debug] comma operator (tuple vs ostream)" << std::endl;
+  return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
+}
+
+
+template <typename... Ts, typename Char>
+decltype(auto) operator,(std::tuple<Ts...>& lhs, meevax::basic_vstream<Char>& rhs)
+{
+  std::cout << "[debug] comma operator (tuple vs vstream)" << std::endl;
+  return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  std::cout << "[debug] create tuple from a vstream" << std::endl;
+  return std::tuple<meevax::basic_vstream<Char>&> {
+    // std::forward<decltype(ostream)>(ostream)
+    ostream
+  } << istream; // 385
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  std::cout << "[debug] create tuple from an ostream" << std::endl;
+  return std::tuple<std::basic_ostream<Char>&> {
+    // std::forward<decltype(ostream)>(ostream)
+    ostream
+  } << istream; // 396
+}
+
+
+template <typename T, typename U, typename... Ts, typename Char>
+decltype(auto) operator<<(std::tuple<T, U, Ts...> ostreams, meevax::basic_vstream<Char>& istream)
+{
+  std::cout << "[debug] copying ";
+  copy(std::forward<T>(std::get<T>(ostreams)), istream);
+
+  return std::tuple<U, Ts...> {
+    std::get<U>(ostreams), std::get<Ts>(ostreams)...
+  } << istream;
+}
+
+
+template <typename T, typename Char>
+decltype(auto) operator<<(std::tuple<T> ostream, meevax::basic_vstream<Char>& istream)
+{
+  std::cout << "[debug] transferring ";
+  transfer(std::forward<T>(std::get<T>(ostream)), istream);
+
+  return std::get<T>(ostream);
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
+{
+  std::cout << "[debug] create string from char input" << std::endl;
+  return ostream << std::basic_string<Char> {input};
+}
+
+
+// template <typename Char>
+// decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_string<Char> input)
+// {
+//   std::cout << "[debug] copying string to vstream" << std::endl;
+//   // ostream.prepare(input.size());
+//   //
+//   // // std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
+//   // ostream.commit(input.size());
+//
+//   ostream.commit(boost::asio::buffer_copy(
+//     ostream.prepare(input.size()),
+//     boost::asio::basic_streambuf<Char> {std::begin(input), std::end(input)}
+//   ));
+//   std::cout << "[debug] ostream data: " << ostream.data() << std::endl;
+//
+//   ostream.debug_write();
+//
+//   return ostream;
+// }
+
+
+template <typename Char>
+decltype(auto) copy(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to vstream" << std::endl;
+  ostream.prepare(istream.size());
+
+  std::copy(std::istream_iterator<Char> {istream}, std::istream_iterator<Char> {}, std::ostream_iterator<Char> {ostream});
+  ostream.commit(istream.size());
+
+  // istream.clear();
 
   ostream.debug_write();
 
@@ -346,12 +467,37 @@ decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_strin
 
 
 template <typename Char>
-decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+decltype(auto) copy(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
 {
+  static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to ostream" << std::endl;
+  auto buffer {meevax::basic_vstream<Char>::replace_unprintable(istream.data())};
+  std::cout << "        istream data: " << buffer << std::endl;
+
+  std::copy(std::begin(buffer), std::end(buffer), std::ostream_iterator<Char> {ostream});
+
+  // istream.clear();
+
+  return ostream;
+}
+
+
+template <typename Char>
+decltype(auto) transfer(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to vstream" << std::endl;
   ostream.prepare(istream.size());
 
   std::copy(std::istream_iterator<Char> {istream}, std::istream_iterator<Char> {}, std::ostream_iterator<Char> {ostream});
   ostream.commit(istream.size());
+
+  // ostream.commit(boost::asio::buffer_copy(
+  //   ostream.prepare(istream.size()),
+  //   istream.data()
+  // ));
 
   istream.consume(istream.size());
   istream.clear();
@@ -363,13 +509,17 @@ decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, meevax::basic_vs
 
 
 template <typename Char>
-decltype(auto) operator<<(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+decltype(auto) transfer(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
 {
-  decltype(istream.data()) buffer {};
-  istream >> buffer;
+  static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
-  ostream << meevax::basic_vstream<Char>::replace_unprintable(buffer); // TODO replace to free function
+  std::cout << "vsream to ostream" << std::endl;
+  auto buffer {meevax::basic_vstream<Char>::replace_unprintable(istream.string())};
+  std::cout << "        istream data: " << buffer << std::endl;
 
+  std::copy(std::begin(buffer), std::end(buffer), std::ostream_iterator<Char> {ostream});
+
+  istream.consume(istream.size());
   istream.clear();
 
   return ostream;

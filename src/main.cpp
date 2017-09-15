@@ -102,14 +102,16 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        // TODO 連続結合のために右向きのストリーム演算子を定義すること
-        //      左向きのストリーム演算子は左結合であるため
+        // TODO 連続結合のために右結合な右向きのストリーム演算子を定義すること
+        //      左向きのストリーム演算子は左結合であるためそのままで大丈夫
         //      あとブロック線図の書式に合わせるため
 
         vstream["input"] << keyboard.code;
         vstream["output"] << vstream["input"];
 
-        std::cout << vstream["output"] << std::endl;
+        (vstream["input"], std::cout) << vstream["output"] << std::endl;
+        // std::cout << vstream["output"] << std::endl;
+        // vstream["input"] << vstream["output"];
       }
       break;
 
