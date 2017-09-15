@@ -50,27 +50,27 @@ int main(int argc, char** argv) try
     );
     cairo_xcb_surface_set_size(vstream.meevax::cairo::surface::get(), 640, 320);
 
-    vstream["raw_input"].map();
-    vstream["raw_input"].configure(
+    vstream["input"].map();
+    vstream["input"].configure(
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
       std::vector<std::uint32_t> {640, 180}.data()
     );
-    vstream["raw_input"].configure(
+    vstream["input"].configure(
       XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
       std::vector<std::uint32_t> {0, 0}.data()
     );
-    cairo_xcb_surface_set_size(vstream["raw_input"].meevax::cairo::surface::get(), 640, 320);
+    cairo_xcb_surface_set_size(vstream["input"].meevax::cairo::surface::get(), 640, 320);
 
-    vstream["parsed"].map();
-    vstream["parsed"].configure(
+    vstream["output"].map();
+    vstream["output"].configure(
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
       std::vector<std::uint32_t> {640, 180}.data()
     );
-    vstream["parsed"].configure(
+    vstream["output"].configure(
       XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
       std::vector<std::uint32_t> {0, 180}.data()
     );
-    cairo_xcb_surface_set_size(vstream["parsed"].meevax::cairo::surface::get(), 640, 320);
+    cairo_xcb_surface_set_size(vstream["output"].meevax::cairo::surface::get(), 640, 320);
   }
 
   xcb_flush(connection.get());
@@ -102,24 +102,14 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        vstream["raw_input"] << keyboard.code << std::flush;
-        vstream["raw_input"].output();
+        // TODO 連続結合のために右向きのストリーム演算子を定義すること
+        //      左向きのストリーム演算子は左結合であるため
+        //      あとブロック線図の書式に合わせるため
 
-        vstream["parsed"] << keyboard.code << std::flush;
-        vstream["parsed"].parse();
+        vstream["input"] << keyboard.code;
+        vstream["output"] << vstream["input"];
 
-#ifndef NDEBUG
-        debug.clear();
-        if (std::isgraph(keyboard.code))
-        {
-          debug << "keyboard input: " << keyboard.code << "\n";
-        }
-        else
-        {
-          debug << "keyboard input: 0x" << std::hex << static_cast<int>(keyboard.code) << "\n";
-        }
-        debug.output();
-#endif
+        std::cout << vstream["output"] << std::endl;
       }
       break;
 

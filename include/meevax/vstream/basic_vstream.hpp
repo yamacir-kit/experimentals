@@ -40,16 +40,36 @@ public:
   {}
 
 public:
-  decltype(auto) data()
+  auto data()
   {
-    auto buffer {buffer_.data()};
-
-    return std::basic_string<Char> {
-      boost::asio::buffers_begin(buffer), boost::asio::buffers_end(buffer)
-    };
+    return std::basic_string<Char> {boost::asio::buffer_cast<const char*>(buffer_.data())};
   }
 
-  auto output() // write to window surface
+  template <typename... Ts>
+  decltype(auto) size(Ts&&... args)
+  {
+    return buffer_.size(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) commit(Ts&&... args)
+  {
+    return buffer_.commit(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) prepare(Ts&&... args)
+  {
+    return buffer_.prepare(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) consume(Ts&&... args)
+  {
+    return buffer_.consume(std::forward<Ts>(args)...);
+  }
+
+  [[deprecated]] auto output() // write to window surface
   {
     std::vector<std::basic_string<Char>> buffer {};
 
@@ -136,31 +156,31 @@ public:
     }
   }
 
-  void clear()
-  {
-    const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
-      cairo_create(meevax::cairo::surface::get()), cairo_destroy
-    };
-
-    cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
-    cairo_paint(context.get());
-    cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
-
-    cairo_text_extents_t extents {};
-    cairo_text_extents(context.get(), "hoge", &extents);
-
-    cairo_move_to(context.get(), 0, extents.height);
-
-    auto size {buffer_.size()};
-
-    buffer_.consume(size);
-  }
+  // void clear()
+  // {
+  //   const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+  //     cairo_create(meevax::cairo::surface::get()), cairo_destroy
+  //   };
+  //
+  //   cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
+  //   cairo_paint(context.get());
+  //   cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
+  //
+  //   cairo_text_extents_t extents {};
+  //   cairo_text_extents(context.get(), "hoge", &extents);
+  //
+  //   cairo_move_to(context.get(), 0, extents.height);
+  //
+  //   auto size {buffer_.size()};
+  //
+  //   buffer_.consume(size);
+  // }
 
   auto parse() noexcept(false)
   {
     std::match_results<typename std::basic_string<Char>::const_iterator> results {};
 
-    static const std::basic_regex<Char> insert {"^(i)([^\\\e]*)(\\\e)?([^]*)$"};
+    static const std::basic_regex<Char> apply_raw_input {"^(Ar)([^\\\e]*)(\\\e)?([^]*)$"};
 
     const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
       cairo_create(meevax::cairo::surface::get()), cairo_destroy
@@ -182,7 +202,7 @@ public:
 
     for (auto buffer {data()}; !buffer.empty(); )
     {
-      if (std::regex_match(buffer, results, insert))
+      if (std::regex_match(buffer, results, apply_raw_input))
       {
         cairo_show_text(context.get(), replace_unprintable(results[2].str()).c_str());
 
@@ -194,8 +214,8 @@ public:
 
       else
       {
-        std::cout << "[debug] unimplemented command \""
-                  << replace_unprintable({buffer.front()}) << "\" will be ignored\n";
+        // std::cout << "[debug] unimplemented command \""
+        //           << replace_unprintable({buffer.front()}) << "\" will be ignored\n";
 
         buffer.erase(std::begin(buffer), std::begin(buffer) + 1);
       }
@@ -206,15 +226,34 @@ public:
     }
   }
 
-private:
-  template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
-  decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
-                      InputIterator begin, InputIterator end)
+  void debug_write()
   {
-    return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
+    const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+      cairo_create(meevax::cairo::surface::get()), cairo_destroy
+    };
+
+    {
+      cairo_select_font_face(context.get(), "Ricty Diminished", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+      cairo_set_font_size(context.get(), 18);
+
+      cairo_text_extents_t extents {};
+      cairo_text_extents(context.get(), "hoge", &extents);
+
+      cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
+      cairo_paint(context.get());
+      cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
+
+      cairo_move_to(context.get(), 0, extents.height);
+    }
+
+    if (!size())
+    {
+      std::cout << "[debug] debug_write() - buffer is empty\n";
+    }
+    cairo_show_text(context.get(), replace_unprintable(data()).c_str());
   }
 
-  auto replace_unprintable(const std::basic_string<Char>& string)
+  static auto replace_unprintable(const std::basic_string<Char>& string)
   {
     auto buffer {string};
 
@@ -233,9 +272,17 @@ private:
   }
 
   template <typename InputIterator>
-  decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
+  static decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
   {
     return replace_unprintable({begin, end});
+  }
+
+private:
+  template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
+  decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
+                      InputIterator begin, InputIterator end)
+  {
+    return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
   }
 
 public:
@@ -274,6 +321,58 @@ template <typename T, typename Functor,
 inline decltype(auto) operator<<(T& lhs, Functor&& rhs)
 {
   return rhs(lhs);
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
+{
+  return ostream << std::basic_string<Char> {input};
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_string<Char> input)
+{
+  ostream.prepare(input.size());
+
+  std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
+  ostream.commit(input.size());
+
+  ostream.debug_write();
+
+  return ostream;
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  ostream.prepare(istream.size());
+
+  std::copy(std::istream_iterator<Char> {istream}, std::istream_iterator<Char> {}, std::ostream_iterator<Char> {ostream});
+  ostream.commit(istream.size());
+
+  istream.consume(istream.size());
+  istream.clear();
+
+  ostream.debug_write();
+
+  return ostream;
+}
+
+
+template <typename Char>
+decltype(auto) operator<<(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  decltype(istream.data()) buffer {};
+  istream >> buffer;
+
+  ostream << meevax::basic_vstream<Char>::replace_unprintable(buffer); // TODO replace to free function
+
+  istream.clear();
+
+  return ostream;
 }
 
 
