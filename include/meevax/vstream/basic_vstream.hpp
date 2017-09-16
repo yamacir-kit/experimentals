@@ -380,25 +380,26 @@ decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 }
 
 
-template <typename Char>
-decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+template <typename T, typename Char,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type
+         >
+#ifdef NDEBUG
+constexpr
+#endif
+decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
 {
-  std::cout << "[debug] create tuple from a vstream" << std::endl;
-  return std::tuple<meevax::basic_vstream<Char>&> {
-    // std::forward<decltype(ostream)>(ostream)
-    ostream
-  } << istream; // 385
-}
-
-
-template <typename Char>
-decltype(auto) operator<<(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
-{
-  std::cout << "[debug] create tuple from an ostream" << std::endl;
-  return std::tuple<std::basic_ostream<Char>&> {
-    // std::forward<decltype(ostream)>(ostream)
-    ostream
-  } << istream; // 396
+#ifndef NDEBUG
+  std::cerr << "[debug] meevax::operator<< - typename T = "
+            << meevax::string::runtime_typename<char>(ostream) << "\n"
+            << "        serial data transfer from "
+            << meevax::string::runtime_typename<char>(istream) << std::endl;
+#endif
+  return std::tuple<T> {std::forward<T>(ostream)} << istream;
 }
 
 
