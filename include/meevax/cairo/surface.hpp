@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <memory>
 #include <utility>
+#include <string>
 
 #ifndef NDEBUG
 #include <iostream>
@@ -25,6 +26,8 @@ class surface
   : public meevax::xcb::window,
     public std::shared_ptr<cairo_surface_t>
 {
+  const std::string node_name_;
+
 public:
   explicit surface(const std::shared_ptr<xcb_connection_t>& connection)
     : meevax::xcb::window {
@@ -42,7 +45,8 @@ public:
             std::max<int>(1, 0)
         ),
         cairo_surface_destroy
-      }
+      },
+      node_name_ {"unnamed"}
   {}
 
   explicit surface(const meevax::cairo::surface& surface, const std::string& node_name)
@@ -56,10 +60,11 @@ public:
             std::max<int>(1, 0)
         ),
         cairo_surface_destroy
-      }
+      },
+      node_name_ {node_name}
   {
 #ifndef NDEBUG
-    std::cout << "[debug] meevax::cairo::surface - new node created (" << node_name << ")\n";
+    std::cout << "[debug] meevax::cairo::surface - new node created \"" << node_name_ << "\"\n";
 #endif
   }
 
