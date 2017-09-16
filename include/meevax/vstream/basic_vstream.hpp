@@ -22,6 +22,7 @@
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
 
 #include <meevax/string/runtime_typename.hpp>
+#include <meevax/string/replace_unprintable.hpp>
 
 
 namespace meevax {
@@ -259,11 +260,11 @@ public:
       std::cout << "[debug] debug_write() - buffer is empty\n";
     }
 
-    cairo_show_text(context.get(), replace_unprintable(string()).c_str());
+    cairo_show_text(context.get(), meevax::string::replace_unprintable(string()).c_str());
     cairo_surface_flush(meevax::cairo::surface::get());
   }
 
-  static auto replace_unprintable(const std::basic_string<Char>& string)
+  [[deprecated]] static auto replace_unprintable(const std::basic_string<Char>& string)
   {
     auto buffer {string};
 
@@ -282,7 +283,7 @@ public:
   }
 
   template <typename InputIterator>
-  static decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
+  [[deprecated]] static decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
   {
     return replace_unprintable({begin, end});
   }
@@ -430,16 +431,16 @@ decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
 // decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_string<Char> input)
 // {
 //   std::cout << "[debug] copying string to vstream" << std::endl;
-//   // ostream.prepare(input.size());
-//   //
-//   // // std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
-//   // ostream.commit(input.size());
+//   ostream.prepare(input.size());
 //
-//   ostream.commit(boost::asio::buffer_copy(
-//     ostream.prepare(input.size()),
-//     boost::asio::basic_streambuf<Char> {std::begin(input), std::end(input)}
-//   ));
-//   std::cout << "[debug] ostream data: " << ostream.data() << std::endl;
+//   std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
+//   ostream.commit(input.size());
+//
+//   // ostream.commit(boost::asio::buffer_copy(
+//   //   ostream.prepare(input.size()),
+//   //   boost::asio::basic_streambuf<Char> {std::begin(input), std::end(input)}
+//   // ));
+//   std::cout << "[debug] ostream data: " << ostream.string() << std::endl;
 //
 //   ostream.debug_write();
 //
@@ -514,7 +515,7 @@ decltype(auto) transfer(std::basic_ostream<Char>& ostream, meevax::basic_vstream
   static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
   std::cout << "vsream to ostream" << std::endl;
-  auto buffer {meevax::basic_vstream<Char>::replace_unprintable(istream.string())};
+  auto buffer {meevax::string::replace_unprintable(istream.string())};
   std::cout << "        istream data: " << buffer << std::endl;
 
   std::copy(std::begin(buffer), std::end(buffer), std::ostream_iterator<Char> {ostream});
