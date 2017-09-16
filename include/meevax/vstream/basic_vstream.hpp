@@ -400,37 +400,46 @@ decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
             << meevax::string::runtime_typename<char>(istream) << std::endl;
 #endif
   return std::tuple<T> {std::forward<T>(ostream)} << istream;
+  // return std::tuple<T> {ostream} << istream;
 }
 
 
 template <typename T, typename U, typename... Ts, typename Char>
-decltype(auto) operator<<(std::tuple<T, U, Ts...> ostreams, meevax::basic_vstream<Char>& istream)
+decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstream<Char>& istream)
 {
-  std::cout << "[debug] copying ";
+#ifndef NDEBUG
+  std::cerr << "[debug] std::tuple<T, U, Ts...> = "
+            << meevax::string::runtime_typename<char>(ostreams) << std::endl;
+  std::cerr << "[debug] copying " << std::flush;
+#endif
   copy(std::forward<T>(std::get<T>(ostreams)), istream);
 
-  return std::tuple<U, Ts...> {
-    std::get<U>(ostreams), std::get<Ts>(ostreams)...
-  } << istream;
+  return std::forward_as_tuple(
+    std::forward<U>(std::get<U>(ostreams)), std::forward<Ts>(std::get<Ts>(ostreams))...
+  ) << istream;
 }
 
 
 template <typename T, typename Char>
-decltype(auto) operator<<(std::tuple<T> ostream, meevax::basic_vstream<Char>& istream)
+decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& istream)
 {
+#ifndef NDEBUG
+  std::cerr << "[debug] std::tuple<T> = "
+            << meevax::string::runtime_typename<char>(ostream) << std::endl;
   std::cout << "[debug] transferring ";
+#endif
   transfer(std::forward<T>(std::get<T>(ostream)), istream);
 
   return std::get<T>(ostream);
 }
 
 
-template <typename Char>
-decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
-{
-  std::cout << "[debug] create string from char input" << std::endl;
-  return ostream << std::basic_string<Char> {input};
-}
+// template <typename Char>
+// decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
+// {
+//   std::cout << "[debug] create string from char input" << std::endl;
+//   return ostream << std::basic_string<Char> {input};
+// }
 
 
 // template <typename Char>
