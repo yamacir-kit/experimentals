@@ -3,6 +3,7 @@
 
 
 #include <memory>
+#include <type_traits>
 #include <unordered_map>
 #include <utility>
 
@@ -40,10 +41,25 @@ public:
 
     if (unordered_map::find(node_name) == unordered_map::end())
     {
-      unordered_map::emplace(node_name, edge_type {new node_type {*this, node_name}});
+      unordered_map::emplace(
+        node_name, edge_type {create(*this, node_name)}
+      );
     }
 
     return *unordered_map::at(node_name);
+  }
+
+private:
+  template <typename... Ts,
+            typename = typename std::enable_if<std::is_constructible<Mapped, Ts...>::value>::type>
+  auto create(Ts&&... args)
+  {
+    return new node_type {std::forward<Ts>(args)...};
+  }
+
+  auto create(Mapped&& parent_node, Key&& node_name)
+  {
+    return new node_type {std::forward<decltype(parent_node)>(parent_node)};
   }
 };
 

@@ -10,7 +10,7 @@
 #include <cxxabi.h>
 
 
-namespace meevax {
+namespace meevax::string {
 
 
 template <typename C, typename T>
@@ -28,7 +28,7 @@ auto runtime_typename(const T& object)
 }
 
 
-} // namespace utilib
+} // namespace meevax::string
 
 
 #endif

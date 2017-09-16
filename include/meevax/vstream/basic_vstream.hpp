@@ -21,6 +21,13 @@
 #include <meevax/type_traits/has_operator.hpp>
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
 
+#include <meevax/string/replace_unprintable.hpp>
+
+
+#ifndef NDEBUG
+#include <meevax/string/runtime_typename.hpp>
+#endif
+
 
 namespace meevax {
 
@@ -40,16 +47,42 @@ public:
   {}
 
 public:
-  decltype(auto) data()
+  [[deprecated]] auto string() // XXX
   {
-    auto buffer {buffer_.data()};
-
-    return std::basic_string<Char> {
-      boost::asio::buffers_begin(buffer), boost::asio::buffers_end(buffer)
-    };
+    return std::basic_string<Char> {boost::asio::buffer_cast<const Char*>(buffer_.data())};
   }
 
-  auto output() // write to window surface
+  template <typename... Ts>
+  decltype(auto) data(Ts&&... args)
+  {
+    return buffer_.data(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) size(Ts&&... args)
+  {
+    return buffer_.size(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) commit(Ts&&... args)
+  {
+    return buffer_.commit(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) prepare(Ts&&... args)
+  {
+    return buffer_.prepare(std::forward<Ts>(args)...);
+  }
+
+  template <typename... Ts>
+  decltype(auto) consume(Ts&&... args)
+  {
+    return buffer_.consume(std::forward<Ts>(args)...);
+  }
+
+  [[deprecated]] auto output() // write to window surface
   {
     std::vector<std::basic_string<Char>> buffer {};
 
@@ -136,31 +169,31 @@ public:
     }
   }
 
-  void clear()
-  {
-    const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
-      cairo_create(meevax::cairo::surface::get()), cairo_destroy
-    };
+  // void clear()
+  // {
+  //   const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+  //     cairo_create(meevax::cairo::surface::get()), cairo_destroy
+  //   };
+  //
+  //   cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
+  //   cairo_paint(context.get());
+  //   cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
+  //
+  //   cairo_text_extents_t extents {};
+  //   cairo_text_extents(context.get(), "hoge", &extents);
+  //
+  //   cairo_move_to(context.get(), 0, extents.height);
+  //
+  //   auto size {buffer_.size()};
+  //
+  //   buffer_.consume(size);
+  // }
 
-    cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
-    cairo_paint(context.get());
-    cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
-
-    cairo_text_extents_t extents {};
-    cairo_text_extents(context.get(), "hoge", &extents);
-
-    cairo_move_to(context.get(), 0, extents.height);
-
-    auto size {buffer_.size()};
-
-    buffer_.consume(size);
-  }
-
-  auto parse() noexcept(false)
+  [[deprecated]] auto parse() noexcept(false)
   {
     std::match_results<typename std::basic_string<Char>::const_iterator> results {};
 
-    static const std::basic_regex<Char> insert {"^(i)([^\\\e]*)(\\\e)?([^]*)$"};
+    static const std::basic_regex<Char> apply_raw_input {"^(Ar)([^\\\e]*)(\\\e)?([^]*)$"};
 
     const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
       cairo_create(meevax::cairo::surface::get()), cairo_destroy
@@ -182,7 +215,7 @@ public:
 
     for (auto buffer {data()}; !buffer.empty(); )
     {
-      if (std::regex_match(buffer, results, insert))
+      if (std::regex_match(buffer, results, apply_raw_input))
       {
         cairo_show_text(context.get(), replace_unprintable(results[2].str()).c_str());
 
@@ -194,8 +227,8 @@ public:
 
       else
       {
-        std::cout << "[debug] unimplemented command \""
-                  << replace_unprintable({buffer.front()}) << "\" will be ignored\n";
+        // std::cout << "[debug] unimplemented command \""
+        //           << replace_unprintable({buffer.front()}) << "\" will be ignored\n";
 
         buffer.erase(std::begin(buffer), std::begin(buffer) + 1);
       }
@@ -206,36 +239,49 @@ public:
     }
   }
 
+  void debug_write()
+  {
+    const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
+      cairo_create(meevax::cairo::surface::get()), cairo_destroy
+    };
+
+    {
+      cairo_select_font_face(context.get(), "Ricty Diminished", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+      cairo_set_font_size(context.get(), 18);
+
+      cairo_text_extents_t extents {};
+      cairo_text_extents(context.get(), "hoge", &extents);
+
+      cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
+      cairo_paint(context.get());
+      cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
+
+      cairo_move_to(context.get(), 0, extents.height);
+    }
+
+    if (!size())
+    {
+      std::cout << "[debug] debug_write() - buffer is empty\n";
+    }
+
+    const std::basic_string<Char> buffer {
+      boost::asio::buffers_begin(buffer_.data()),
+      boost::asio::buffers_end(buffer_.data())
+    };
+
+    std::cerr << "[debug] debug_write() - buffer size: " << buffer.size() << std::endl;
+
+    // cairo_show_text(context.get(), meevax::string::replace_unprintable(string()).c_str());
+    cairo_show_text(context.get(), buffer.c_str());
+    cairo_surface_flush(meevax::cairo::surface::get());
+  }
+
 private:
   template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
   decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
                       InputIterator begin, InputIterator end)
   {
     return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
-  }
-
-  auto replace_unprintable(const std::basic_string<Char>& string)
-  {
-    auto buffer {string};
-
-    using type = std::vector<std::pair<std::basic_string<Char>, std::basic_string<Char>>>;
-
-    for (const auto& pair : type {{"\e", "\\e"}, {"\n", "\\n"}, {"\t", "\\t"}})
-    {
-      for (auto position {buffer.find(pair.first)}; position != std::basic_string<Char>::npos; )
-      {
-        buffer.replace(position, pair.first.size(), pair.second);
-        position = buffer.find(pair.first, position + pair.second.size());
-      }
-    }
-
-    return buffer;
-  }
-
-  template <typename InputIterator>
-  decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
-  {
-    return replace_unprintable({begin, end});
   }
 
 public:
@@ -270,10 +316,243 @@ public:
 
 
 template <typename T, typename Functor,
-          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, T&>::value>::type>
-inline decltype(auto) operator<<(T& lhs, Functor&& rhs)
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type,
+          typename = typename std::enable_if<
+                                meevax::has_function_call_operator<Functor, T>::value
+                              >::type
+         >
+constexpr decltype(auto) operator<<(T&& lhs, Functor&& rhs)
 {
-  return rhs(lhs);
+  return rhs(std::forward<T>(lhs));
+}
+
+
+template <typename T, typename U,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<U>::type::char_type>,
+                                  typename std::remove_reference<U>::type
+                                >::value
+                              >::type
+         >
+#ifdef NDEBUG
+constexpr
+#endif
+decltype(auto) operator,(T&& lhs, U&& rhs)
+{
+#ifndef NDEBUG
+  std::cerr << "[debug] meevax::operator, - typename T = "
+            << meevax::string::runtime_typename<char>(lhs) << "\n"
+            << "                            typename U = "
+            << meevax::string::runtime_typename<char>(rhs) << std::endl;
+#endif
+  return std::forward_as_tuple(
+    std::forward<T>(lhs), std::forward<U>(rhs)
+  );
+}
+
+
+template <typename... Ts, typename T,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type
+         >
+#ifdef NDEBUG
+constexpr
+#endif
+decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
+{
+#ifndef NDEBUG
+  std::cerr << "[debug] meevax::operator, - std::tuple<Ts...> = "
+            << meevax::string::runtime_typename<char>(lhs) << "\n"
+            << "                            typename U = "
+            << meevax::string::runtime_typename<char>(rhs) << std::endl;
+#endif
+  return std::forward_as_tuple(
+    std::forward<Ts>(std::get<Ts>(lhs))..., std::forward<T>(rhs)
+  );
+}
+
+
+template <typename T, typename Char,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type
+         >
+#ifdef NDEBUG
+constexpr
+#endif
+decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
+{
+#ifndef NDEBUG
+  std::cerr << "[debug] meevax::operator<< - typename T = "
+            << meevax::string::runtime_typename<char>(ostream) << "\n"
+            << "        serial data transfer from "
+            << meevax::string::runtime_typename<char>(istream) << std::endl;
+#endif
+  return std::tuple<T> {std::forward<T>(ostream)} << istream;
+}
+
+
+template <typename T, typename U, typename... Ts, typename Char>
+decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstream<Char>& istream)
+{
+#ifndef NDEBUG
+  std::cerr << "[debug] std::tuple<T, U, Ts...> = "
+            << meevax::string::runtime_typename<char>(ostreams) << std::endl;
+  std::cerr << "[debug] copying " << std::flush;
+#endif
+  copy(std::forward<T>(std::get<T>(ostreams)), istream);
+
+  return std::forward_as_tuple(
+    std::forward<U>(std::get<U>(ostreams)), std::forward<Ts>(std::get<Ts>(ostreams))...
+  ) << istream;
+}
+
+
+template <typename T, typename Char>
+decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& istream)
+{
+#ifndef NDEBUG
+  std::cerr << "[debug] std::tuple<T> = "
+            << meevax::string::runtime_typename<char>(ostream) << std::endl;
+  std::cout << "[debug] transferring ";
+#endif
+  transfer(std::forward<T>(std::get<T>(ostream)), istream);
+
+  return std::get<T>(ostream);
+}
+
+
+// template <typename Char>
+// decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
+// {
+//   std::cout << "[debug] create string from char input" << std::endl;
+//   return ostream << std::basic_string<Char> {input};
+// }
+
+
+// template <typename Char>
+// decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_string<Char> input)
+// {
+//   std::cout << "[debug] copying string to vstream" << std::endl;
+//   ostream.prepare(input.size());
+//
+//   std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
+//   ostream.commit(input.size());
+//
+//   // ostream.commit(boost::asio::buffer_copy(
+//   //   ostream.prepare(input.size()),
+//   //   boost::asio::basic_streambuf<Char> {std::begin(input), std::end(input)}
+//   // ));
+//   std::cout << "[debug] ostream data: " << ostream.string() << std::endl;
+//
+//   ostream.debug_write();
+//
+//   return ostream;
+// }
+
+
+template <typename Char>
+decltype(auto) copy(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to vstream" << std::endl;
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
+
+  const auto sent_size {boost::asio::buffer_copy(
+    ostream.prepare(istream.size()),
+    istream.data()
+  )};
+  std::cout << "        \e[32mostream copied size: " << sent_size << "\e[0m" << std::endl;
+
+  ostream.commit(sent_size);
+
+  ostream.debug_write();
+
+  return ostream;
+}
+
+
+template <typename Char>
+decltype(auto) copy(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to ostream" << std::endl;
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
+
+  std::copy(
+    boost::asio::buffers_begin(istream.data()),
+    boost::asio::buffers_end(istream.data()),
+    std::ostreambuf_iterator<Char> {ostream}
+  );
+
+  istream.clear();
+
+  return ostream;
+}
+
+
+template <typename Char>
+decltype(auto) transfer(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to vstream" << std::endl;
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
+
+  const auto sent_size {boost::asio::buffer_copy(
+    ostream.prepare(istream.size()),
+    istream.data()
+  )};
+  std::cout << "        \e[32mostream copied size: " << sent_size << "\e[0m" << std::endl;
+
+  ostream.commit(sent_size);
+  istream.consume(sent_size);
+
+  ostream.debug_write();
+
+  return ostream;
+}
+
+
+template <typename Char>
+decltype(auto) transfer(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
+{
+  static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
+
+  std::cout << "vsream to ostream" << std::endl;
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
+
+  std::copy(
+    boost::asio::buffers_begin(istream.data()),
+    boost::asio::buffers_end(istream.data()),
+    std::ostreambuf_iterator<Char> {ostream}
+  );
+
+  istream.consume(istream.size());
+  istream.clear();
+
+  return ostream;
 }
 
 
