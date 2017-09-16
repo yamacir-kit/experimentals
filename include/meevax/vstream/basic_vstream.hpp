@@ -264,30 +264,6 @@ public:
     cairo_surface_flush(meevax::cairo::surface::get());
   }
 
-  [[deprecated]] static auto replace_unprintable(const std::basic_string<Char>& string)
-  {
-    auto buffer {string};
-
-    using type = std::vector<std::pair<std::basic_string<Char>, std::basic_string<Char>>>;
-
-    for (const auto& pair : type {{"\e", "\\e"}, {"\n", "\\n"}, {"\t", "\\t"}})
-    {
-      for (auto position {buffer.find(pair.first)}; position != std::basic_string<Char>::npos; )
-      {
-        buffer.replace(position, pair.first.size(), pair.second);
-        position = buffer.find(pair.first, position + pair.second.size());
-      }
-    }
-
-    return buffer;
-  }
-
-  template <typename InputIterator>
-  [[deprecated]] static decltype(auto) replace_unprintable(InputIterator begin, InputIterator end)
-  {
-    return replace_unprintable({begin, end});
-  }
-
 private:
   template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
   decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
