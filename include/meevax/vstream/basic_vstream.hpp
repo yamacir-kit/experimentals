@@ -315,8 +315,10 @@ template <typename T, typename Functor,
                                 >::value
                               >::type,
           typename = typename std::enable_if<
-                                meevax::has_function_call_operator<Functor, T>::value>::type>
-decltype(auto) operator<<(T&& lhs, Functor&& rhs)
+                                meevax::has_function_call_operator<Functor, T>::value
+                              >::type
+         >
+constexpr decltype(auto) operator<<(T&& lhs, Functor&& rhs)
 {
   return rhs(std::forward<T>(lhs));
 }
@@ -353,30 +355,6 @@ decltype(auto) operator,(T&& lhs, U&& rhs)
 }
 
 
-// template <typename Char>
-// decltype(auto) operator,(std::basic_ostream<Char>& lhs, std::basic_ostream<Char>& rhs)
-// {
-//   std::cout << "[debug] comma operator (ostream vs osream)" << std::endl;
-//   return std::forward_as_tuple(lhs, rhs);
-// }
-//
-//
-// template <typename Char>
-// decltype(auto) operator,(std::basic_ostream<Char>& lhs, meevax::basic_vstream<Char>& rhs)
-// {
-//   std::cout << "[debug] comma operator (ostream vs vsream)" << std::endl;
-//   return std::forward_as_tuple(lhs, rhs);
-// }
-//
-//
-// template <typename Char>
-// decltype(auto) operator,(meevax::basic_vstream<Char>& lhs, std::basic_ostream<Char>& rhs)
-// {
-//   std::cout << "[debug] comma operator (vstream vs osream)" << std::endl;
-//   return std::forward_as_tuple(lhs, rhs);
-// }
-
-
 template <typename... Ts, typename T,
           typename = typename std::enable_if<
                                 std::is_base_of<
@@ -400,22 +378,6 @@ decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
     std::forward<Ts>(std::get<Ts>(lhs))..., std::forward<T>(rhs)
   );
 }
-
-
-// template <typename... Ts, typename Char>
-// decltype(auto) operator,(std::tuple<Ts...>& lhs, std::basic_ostream<Char>& rhs)
-// {
-//   std::cout << "[debug] comma operator (tuple vs ostream)" << std::endl;
-//   return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
-// }
-//
-//
-// template <typename... Ts, typename Char>
-// decltype(auto) operator,(std::tuple<Ts...>& lhs, meevax::basic_vstream<Char>& rhs)
-// {
-//   std::cout << "[debug] comma operator (tuple vs vstream)" << std::endl;
-//   return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
-// }
 
 
 template <typename Char>
