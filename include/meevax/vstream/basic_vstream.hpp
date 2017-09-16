@@ -400,7 +400,6 @@ decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
             << meevax::string::runtime_typename<char>(istream) << std::endl;
 #endif
   return std::tuple<T> {std::forward<T>(ostream)} << istream;
-  // return std::tuple<T> {ostream} << istream;
 }
 
 
@@ -471,7 +470,11 @@ decltype(auto) copy(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<
   std::cout << "vsream to vstream" << std::endl;
   ostream.prepare(istream.size());
 
-  std::copy(std::istream_iterator<Char> {istream}, std::istream_iterator<Char> {}, std::ostream_iterator<Char> {ostream});
+  std::copy(
+    std::istreambuf_iterator<Char> {istream},
+    std::istreambuf_iterator<Char> {},
+    std::ostreambuf_iterator<Char> {ostream}
+  );
   ostream.commit(istream.size());
 
   // istream.clear();
@@ -491,7 +494,11 @@ decltype(auto) copy(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Cha
   auto buffer {meevax::string::replace_unprintable(istream.string())};
   std::cout << "        istream data: " << buffer << std::endl;
 
-  std::copy(std::begin(buffer), std::end(buffer), std::ostream_iterator<Char> {ostream});
+  std::copy(
+    std::begin(buffer),
+    std::end(buffer),
+    std::ostreambuf_iterator<Char> {ostream}
+  );
 
   // istream.clear();
 
@@ -507,7 +514,11 @@ decltype(auto) transfer(meevax::basic_vstream<Char>& ostream, meevax::basic_vstr
   std::cout << "vsream to vstream" << std::endl;
   ostream.prepare(istream.size());
 
-  std::copy(std::istream_iterator<Char> {istream}, std::istream_iterator<Char> {}, std::ostream_iterator<Char> {ostream});
+  std::copy(
+    std::istreambuf_iterator<Char> {istream},
+    std::istreambuf_iterator<Char> {},
+    std::ostreambuf_iterator<Char> {ostream}
+  );
   ostream.commit(istream.size());
 
   // ostream.commit(boost::asio::buffer_copy(
@@ -533,7 +544,11 @@ decltype(auto) transfer(std::basic_ostream<Char>& ostream, meevax::basic_vstream
   auto buffer {meevax::string::replace_unprintable(istream.string())};
   std::cout << "        istream data: " << buffer << std::endl;
 
-  std::copy(std::begin(buffer), std::end(buffer), std::ostream_iterator<Char> {ostream});
+  std::copy(
+    std::begin(buffer),
+    std::end(buffer),
+    std::ostreambuf_iterator<Char> {ostream}
+  );
 
   istream.consume(istream.size());
   istream.clear();
