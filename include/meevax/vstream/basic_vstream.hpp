@@ -47,9 +47,9 @@ public:
   {}
 
 public:
-  auto string()
+  [[deprecated]] auto string() // XXX
   {
-    return std::basic_string<Char> {boost::asio::buffer_cast<const char*>(buffer_.data())};
+    return std::basic_string<Char> {boost::asio::buffer_cast<const Char*>(buffer_.data())};
   }
 
   template <typename... Ts>
@@ -264,7 +264,15 @@ public:
       std::cout << "[debug] debug_write() - buffer is empty\n";
     }
 
-    cairo_show_text(context.get(), meevax::string::replace_unprintable(string()).c_str());
+    const std::basic_string<Char> buffer {
+      boost::asio::buffers_begin(buffer_.data()),
+      boost::asio::buffers_end(buffer_.data())
+    };
+
+    std::cerr << "[debug] debug_write() - buffer size: " << buffer.size() << std::endl;
+
+    // cairo_show_text(context.get(), meevax::string::replace_unprintable(string()).c_str());
+    cairo_show_text(context.get(), buffer.c_str());
     cairo_surface_flush(meevax::cairo::surface::get());
   }
 
@@ -468,16 +476,15 @@ decltype(auto) copy(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<
   static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
   std::cout << "vsream to vstream" << std::endl;
-  ostream.prepare(istream.size());
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
 
-  std::copy(
-    std::istreambuf_iterator<Char> {istream},
-    std::istreambuf_iterator<Char> {},
-    std::ostreambuf_iterator<Char> {ostream}
-  );
-  ostream.commit(istream.size());
+  const auto sent_size {boost::asio::buffer_copy(
+    ostream.prepare(istream.size()),
+    istream.data()
+  )};
+  std::cout << "        \e[32mostream copied size: " << sent_size << "\e[0m" << std::endl;
 
-  // istream.clear();
+  ostream.commit(sent_size);
 
   ostream.debug_write();
 
@@ -491,16 +498,15 @@ decltype(auto) copy(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Cha
   static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
   std::cout << "vsream to ostream" << std::endl;
-  auto buffer {meevax::string::replace_unprintable(istream.string())};
-  std::cout << "        istream data: " << buffer << std::endl;
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
 
   std::copy(
-    std::begin(buffer),
-    std::end(buffer),
+    boost::asio::buffers_begin(istream.data()),
+    boost::asio::buffers_end(istream.data()),
     std::ostreambuf_iterator<Char> {ostream}
   );
 
-  // istream.clear();
+  istream.clear();
 
   return ostream;
 }
@@ -512,22 +518,16 @@ decltype(auto) transfer(meevax::basic_vstream<Char>& ostream, meevax::basic_vstr
   static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
   std::cout << "vsream to vstream" << std::endl;
-  ostream.prepare(istream.size());
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
 
-  std::copy(
-    std::istreambuf_iterator<Char> {istream},
-    std::istreambuf_iterator<Char> {},
-    std::ostreambuf_iterator<Char> {ostream}
-  );
-  ostream.commit(istream.size());
+  const auto sent_size {boost::asio::buffer_copy(
+    ostream.prepare(istream.size()),
+    istream.data()
+  )};
+  std::cout << "        \e[32mostream copied size: " << sent_size << "\e[0m" << std::endl;
 
-  // ostream.commit(boost::asio::buffer_copy(
-  //   ostream.prepare(istream.size()),
-  //   istream.data()
-  // ));
-
-  istream.consume(istream.size());
-  istream.clear();
+  ostream.commit(sent_size);
+  istream.consume(sent_size);
 
   ostream.debug_write();
 
@@ -541,12 +541,11 @@ decltype(auto) transfer(std::basic_ostream<Char>& ostream, meevax::basic_vstream
   static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
   std::cout << "vsream to ostream" << std::endl;
-  auto buffer {meevax::string::replace_unprintable(istream.string())};
-  std::cout << "        istream data: " << buffer << std::endl;
+  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
 
   std::copy(
-    std::begin(buffer),
-    std::end(buffer),
+    boost::asio::buffers_begin(istream.data()),
+    boost::asio::buffers_end(istream.data()),
     std::ostreambuf_iterator<Char> {ostream}
   );
 
