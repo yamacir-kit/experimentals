@@ -21,8 +21,12 @@
 #include <meevax/type_traits/has_operator.hpp>
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
 
-#include <meevax/string/runtime_typename.hpp>
 #include <meevax/string/replace_unprintable.hpp>
+
+
+#ifndef NDEBUG
+#include <meevax/string/runtime_typename.hpp>
+#endif
 
 
 namespace meevax {
@@ -185,7 +189,7 @@ public:
   //   buffer_.consume(size);
   // }
 
-  auto parse() noexcept(false)
+  [[deprecated]] auto parse() noexcept(false)
   {
     std::match_results<typename std::basic_string<Char>::const_iterator> results {};
 
@@ -304,51 +308,114 @@ public:
 
 
 template <typename T, typename Functor,
-          typename = typename std::enable_if<meevax::has_function_call_operator<Functor, T&>::value>::type>
-inline decltype(auto) operator<<(T& lhs, Functor&& rhs)
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type,
+          typename = typename std::enable_if<
+                                meevax::has_function_call_operator<Functor, T>::value>::type>
+decltype(auto) operator<<(T&& lhs, Functor&& rhs)
 {
-  return rhs(lhs);
+  return rhs(std::forward<T>(lhs));
 }
 
 
-template <typename Char>
-decltype(auto) operator,(std::basic_ostream<Char>& lhs, std::basic_ostream<Char>& rhs)
+template <typename T, typename U,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<U>::type::char_type>,
+                                  typename std::remove_reference<U>::type
+                                >::value
+                              >::type
+         >
+#ifdef NDEBUG
+constexpr
+#endif
+decltype(auto) operator,(T&& lhs, U&& rhs)
 {
-  std::cout << "[debug] comma operator (ostream vs osream)" << std::endl;
-  return std::forward_as_tuple(lhs, rhs);
+#ifndef NDEBUG
+  std::cerr << "[debug] meevax::operator, - typename T = "
+            << meevax::string::runtime_typename<char>(lhs) << "\n"
+            << "                            typename U = "
+            << meevax::string::runtime_typename<char>(rhs) << std::endl;
+#endif
+  return std::forward_as_tuple(
+    std::forward<T>(lhs), std::forward<U>(rhs)
+  );
 }
 
 
-template <typename Char>
-decltype(auto) operator,(std::basic_ostream<Char>& lhs, meevax::basic_vstream<Char>& rhs)
+// template <typename Char>
+// decltype(auto) operator,(std::basic_ostream<Char>& lhs, std::basic_ostream<Char>& rhs)
+// {
+//   std::cout << "[debug] comma operator (ostream vs osream)" << std::endl;
+//   return std::forward_as_tuple(lhs, rhs);
+// }
+//
+//
+// template <typename Char>
+// decltype(auto) operator,(std::basic_ostream<Char>& lhs, meevax::basic_vstream<Char>& rhs)
+// {
+//   std::cout << "[debug] comma operator (ostream vs vsream)" << std::endl;
+//   return std::forward_as_tuple(lhs, rhs);
+// }
+//
+//
+// template <typename Char>
+// decltype(auto) operator,(meevax::basic_vstream<Char>& lhs, std::basic_ostream<Char>& rhs)
+// {
+//   std::cout << "[debug] comma operator (vstream vs osream)" << std::endl;
+//   return std::forward_as_tuple(lhs, rhs);
+// }
+
+
+template <typename... Ts, typename T,
+          typename = typename std::enable_if<
+                                std::is_base_of<
+                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+                                  typename std::remove_reference<T>::type
+                                >::value
+                              >::type
+         >
+#ifdef NDEBUG
+constexpr
+#endif
+decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 {
-  std::cout << "[debug] comma operator (ostream vs vsream)" << std::endl;
-  return std::forward_as_tuple(lhs, rhs);
+#ifndef NDEBUG
+  std::cerr << "[debug] meevax::operator, - std::tuple<Ts...> = "
+            << meevax::string::runtime_typename<char>(lhs) << "\n"
+            << "                            typename U = "
+            << meevax::string::runtime_typename<char>(rhs) << std::endl;
+#endif
+  return std::forward_as_tuple(
+    std::forward<Ts>(std::get<Ts>(lhs))..., std::forward<T>(rhs)
+  );
 }
 
 
-template <typename Char>
-decltype(auto) operator,(meevax::basic_vstream<Char>& lhs, std::basic_ostream<Char>& rhs)
-{
-  std::cout << "[debug] comma operator (vstream vs osream)" << std::endl;
-  return std::forward_as_tuple(lhs, rhs);
-}
-
-
-template <typename... Ts, typename Char>
-decltype(auto) operator,(std::tuple<Ts...>& lhs, std::basic_ostream<Char>& rhs)
-{
-  std::cout << "[debug] comma operator (tuple vs ostream)" << std::endl;
-  return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
-}
-
-
-template <typename... Ts, typename Char>
-decltype(auto) operator,(std::tuple<Ts...>& lhs, meevax::basic_vstream<Char>& rhs)
-{
-  std::cout << "[debug] comma operator (tuple vs vstream)" << std::endl;
-  return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
-}
+// template <typename... Ts, typename Char>
+// decltype(auto) operator,(std::tuple<Ts...>& lhs, std::basic_ostream<Char>& rhs)
+// {
+//   std::cout << "[debug] comma operator (tuple vs ostream)" << std::endl;
+//   return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
+// }
+//
+//
+// template <typename... Ts, typename Char>
+// decltype(auto) operator,(std::tuple<Ts...>& lhs, meevax::basic_vstream<Char>& rhs)
+// {
+//   std::cout << "[debug] comma operator (tuple vs vstream)" << std::endl;
+//   return std::forward_as_tuple(std::get<Ts>(lhs)..., rhs);
+// }
 
 
 template <typename Char>
@@ -449,7 +516,7 @@ decltype(auto) copy(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Cha
   static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
 
   std::cout << "vsream to ostream" << std::endl;
-  auto buffer {meevax::basic_vstream<Char>::replace_unprintable(istream.data())};
+  auto buffer {meevax::string::replace_unprintable(istream.string())};
   std::cout << "        istream data: " << buffer << std::endl;
 
   std::copy(std::begin(buffer), std::end(buffer), std::ostream_iterator<Char> {ostream});
