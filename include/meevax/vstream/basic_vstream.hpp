@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP
-#define INCLUDED_MEEVAX_VSTREAM_BASIC_XLIB_VSTREAM_HPP
+#ifndef INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP
+#define INCLUDED_MEEVAX_VSTREAM_BASIC_VSTREAM_HPP
 
 
 #include <algorithm>
@@ -17,12 +17,10 @@
 #include <boost/geometry/geometries/geometries.hpp>
 #include <boost/geometry/geometries/point.hpp>
 
-#include <meevax/cairo/surface.hpp>
-#include <meevax/type_traits/has_operator.hpp>
 #include <meevax/algorithm/regex_split_include_delimiter.hpp>
-
+#include <meevax/cairo/surface.hpp>
 #include <meevax/string/replace_unprintable.hpp>
-
+#include <meevax/type_traits/has_operator.hpp>
 
 #ifndef NDEBUG
 #include <meevax/string/runtime_typename.hpp>
