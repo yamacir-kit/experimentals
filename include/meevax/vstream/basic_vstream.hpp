@@ -35,21 +35,23 @@ class basic_vstream
   : public meevax::cairo::surface,
     public std::basic_iostream<Char>
 {
-  boost::asio::basic_streambuf<std::allocator<Char>> buffer_;
+public:
+  using char_type = Char;
+  using allocator_type = std::allocator<char_type>;
+
+private:
+  boost::asio::basic_streambuf<allocator_type> buffer_;
 
 public:
+  basic_vstream() = delete;
+
   template <typename... Ts>
   explicit basic_vstream(Ts&&... args)
     : meevax::cairo::surface {std::forward<Ts>(args)...},
-      std::basic_iostream<Char> {&buffer_}
+      std::basic_iostream<char_type> {&buffer_}
   {}
 
 public:
-  [[deprecated]] auto string() // XXX
-  {
-    return std::basic_string<Char> {boost::asio::buffer_cast<const Char*>(buffer_.data())};
-  }
-
   template <typename... Ts>
   decltype(auto) data(Ts&&... args)
   {
@@ -247,49 +249,47 @@ public:
       boost::asio::buffers_end(buffer_.data())
     };
 
-    std::cerr << "[debug] debug_write() - buffer size: " << buffer.size() << std::endl;
+    // std::cerr << "[debug] debug_write() - buffer size: " << buffer.size() << std::endl;
 
     // cairo_show_text(context.get(), meevax::string::replace_unprintable(string()).c_str());
     cairo_show_text(context.get(), buffer.c_str());
     cairo_surface_flush(meevax::cairo::surface::get());
   }
 
+  decltype(auto) copy_to(meevax::basic_vstream<char_type>& ostream) const
+  {
+    auto size {boost::asio::buffer_copy(
+      ostream.prepare(buffer_.size()),
+      buffer_.data()
+    )};
+
+    ostream.commit(size);
+    ostream.debug_write(); // TODO commit に描画処理を統合
+
+    return size;
+  }
+
+  decltype(auto) copy_to(std::basic_ostream<char_type>& ostream) const
+  {
+    std::copy(
+      boost::asio::buffers_begin(buffer_.data()),
+      boost::asio::buffers_end(buffer_.data()),
+      std::ostreambuf_iterator<char_type> {ostream}
+    );
+
+    return std::distance(
+      boost::asio::buffers_begin(buffer_.data()),
+      boost::asio::buffers_end(buffer_.data())
+    );
+  }
+
 private:
   template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
-  decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
-                      InputIterator begin, InputIterator end)
+  [[deprecated]] decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
+                                      InputIterator begin, InputIterator end)
   {
     return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
   }
-
-// public:
-//   void map() const noexcept
-//   {
-//     xcb_map_window(
-//       meevax::xcb::window::connection.get(),
-//       meevax::xcb::window::id
-//     );
-//   }
-//
-//   template <typename... Ts>
-//   decltype(auto) configure(Ts&&... args)
-//   {
-//     return xcb_configure_window(
-//       meevax::xcb::window::connection.get(),
-//       meevax::xcb::window::id,
-//       std::forward<Ts>(args)...
-//     );
-//   }
-//
-//   template <typename... Ts>
-//   decltype(auto) change_attributes(Ts&&... args)
-//   {
-//     return xcb_change_window_attributes(
-//       meevax::xcb::window::connection.get(),
-//       meevax::xcb::window::id,
-//       std::forward<Ts>(args)...
-//     );
-//   }
 };
 
 
@@ -330,10 +330,12 @@ constexpr
 decltype(auto) operator,(T&& lhs, U&& rhs)
 {
 #ifndef NDEBUG
+#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] meevax::operator, - typename T = "
             << meevax::string::runtime_typename<char>(lhs) << "\n"
             << "                            typename U = "
             << meevax::string::runtime_typename<char>(rhs) << std::endl;
+#endif
 #endif
   return std::forward_as_tuple(
     std::forward<T>(lhs), std::forward<U>(rhs)
@@ -355,10 +357,12 @@ constexpr
 decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 {
 #ifndef NDEBUG
+#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] meevax::operator, - std::tuple<Ts...> = "
             << meevax::string::runtime_typename<char>(lhs) << "\n"
             << "                            typename U = "
             << meevax::string::runtime_typename<char>(rhs) << std::endl;
+#endif
 #endif
   return std::forward_as_tuple(
     std::forward<Ts>(std::get<Ts>(lhs))..., std::forward<T>(rhs)
@@ -380,10 +384,12 @@ constexpr
 decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
+#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] meevax::operator<< - typename T = "
             << meevax::string::runtime_typename<char>(ostream) << "\n"
             << "        serial data transfer from "
             << meevax::string::runtime_typename<char>(istream) << std::endl;
+#endif
 #endif
   return std::tuple<T> {std::forward<T>(ostream)} << istream;
 }
@@ -393,11 +399,13 @@ template <typename T, typename U, typename... Ts, typename Char>
 decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
+#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] std::tuple<T, U, Ts...> = "
             << meevax::string::runtime_typename<char>(ostreams) << std::endl;
   std::cerr << "[debug] copying " << std::flush;
 #endif
-  copy(std::forward<T>(std::get<T>(ostreams)), istream);
+#endif
+  istream.copy_to(std::forward<T>(std::get<T>(ostreams)));
 
   return std::forward_as_tuple(
     std::forward<U>(std::get<U>(ostreams)), std::forward<Ts>(std::get<Ts>(ostreams))...
@@ -409,99 +417,17 @@ template <typename T, typename Char>
 decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
+#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] std::tuple<T> = "
             << meevax::string::runtime_typename<char>(ostream) << std::endl;
   std::cout << "[debug] transferring ";
 #endif
-  transfer(std::forward<T>(std::get<T>(ostream)), istream);
+#endif
+  istream.consume(
+    istream.copy_to(std::forward<T>(std::get<T>(ostream)))
+  );
 
   return std::get<T>(ostream);
-}
-
-
-template <typename Char>
-decltype(auto) copy(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
-{
-  static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
-
-  std::cout << "vsream to vstream" << std::endl;
-  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
-
-  const auto sent_size {boost::asio::buffer_copy(
-    ostream.prepare(istream.size()),
-    istream.data()
-  )};
-  std::cout << "        \e[32mostream copied size: " << sent_size << "\e[0m" << std::endl;
-
-  ostream.commit(sent_size);
-
-  ostream.debug_write();
-
-  return ostream;
-}
-
-
-template <typename Char>
-decltype(auto) copy(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
-{
-  static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
-
-  std::cout << "vsream to ostream" << std::endl;
-  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
-
-  std::copy(
-    boost::asio::buffers_begin(istream.data()),
-    boost::asio::buffers_end(istream.data()),
-    std::ostreambuf_iterator<Char> {ostream}
-  );
-
-  istream.clear();
-
-  return ostream;
-}
-
-
-template <typename Char>
-decltype(auto) transfer(meevax::basic_vstream<Char>& ostream, meevax::basic_vstream<Char>& istream)
-{
-  static_assert(std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
-
-  std::cout << "vsream to vstream" << std::endl;
-  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
-
-  const auto sent_size {boost::asio::buffer_copy(
-    ostream.prepare(istream.size()),
-    istream.data()
-  )};
-  std::cout << "        \e[32mostream copied size: " << sent_size << "\e[0m" << std::endl;
-
-  ostream.commit(sent_size);
-  istream.consume(sent_size);
-
-  ostream.debug_write();
-
-  return ostream;
-}
-
-
-template <typename Char>
-decltype(auto) transfer(std::basic_ostream<Char>& ostream, meevax::basic_vstream<Char>& istream)
-{
-  static_assert(!std::is_same<decltype(ostream), meevax::basic_vstream<Char>&>::value);
-
-  std::cout << "vsream to ostream" << std::endl;
-  std::cout << "        \e[32mistream buffer size: " << istream.size() << "\e[0m" << std::endl;
-
-  std::copy(
-    boost::asio::buffers_begin(istream.data()),
-    boost::asio::buffers_end(istream.data()),
-    std::ostreambuf_iterator<Char> {ostream}
-  );
-
-  istream.consume(istream.size());
-  istream.clear();
-
-  return ostream;
 }
 
 

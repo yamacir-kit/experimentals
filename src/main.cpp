@@ -105,7 +105,7 @@ int main(int argc, char** argv) try
         vstream["input"] << keyboard.code;
         vstream["output"] << vstream["input"];
 
-        (vstream["input"], std::cout) << vstream["output"] << std::endl;
+        (vstream["input"], std::cout << "\r") << vstream["output"] << std::flush;
       }
       break;
 
