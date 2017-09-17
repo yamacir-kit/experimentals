@@ -22,6 +22,12 @@
 namespace meevax::cairo {
 
 
+// TODO
+// いくらなんでも初期化コードが汚すぎる
+// いい具合に直す方法が思い浮かばないのでとりあえず動く現状で様子を見るが、
+// 流石にこれはクソなのでいつか直すこと
+
+
 class surface
   : public meevax::xcb::window,
     public std::shared_ptr<cairo_surface_t>
@@ -71,7 +77,44 @@ public:
 #endif
   }
 
-private:
+public:
+  void map() const noexcept
+  {
+    xcb_map_window(
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id
+    );
+  }
+
+  void unmap() const noexcept
+  {
+    xcb_unmap_window(
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id
+    );
+  }
+
+  template <typename... Ts>
+  decltype(auto) configure(Ts&&... args) const noexcept
+  {
+    return xcb_configure_window(
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id,
+      std::forward<Ts>(args)...
+    );
+  }
+
+  template <typename... Ts>
+  decltype(auto) change_attributes(Ts&&... args) const noexcept
+  {
+    return xcb_change_window_attributes(
+      meevax::xcb::window::connection.get(),
+      meevax::xcb::window::id,
+      std::forward<Ts>(args)...
+    );
+  }
+
+protected:
   static auto root_visualtype(const std::shared_ptr<xcb_connection_t>& connection)
     -> xcb_visualtype_t*
   {

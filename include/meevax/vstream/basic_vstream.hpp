@@ -262,34 +262,34 @@ private:
     return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
   }
 
-public:
-  void map() const noexcept
-  {
-    xcb_map_window(
-      meevax::xcb::window::connection.get(),
-      meevax::xcb::window::id
-    );
-  }
-
-  template <typename... Ts>
-  decltype(auto) configure(Ts&&... args)
-  {
-    return xcb_configure_window(
-      meevax::xcb::window::connection.get(),
-      meevax::xcb::window::id,
-      std::forward<Ts>(args)...
-    );
-  }
-
-  template <typename... Ts>
-  decltype(auto) change_attributes(Ts&&... args)
-  {
-    return xcb_change_window_attributes(
-      meevax::xcb::window::connection.get(),
-      meevax::xcb::window::id,
-      std::forward<Ts>(args)...
-    );
-  }
+// public:
+//   void map() const noexcept
+//   {
+//     xcb_map_window(
+//       meevax::xcb::window::connection.get(),
+//       meevax::xcb::window::id
+//     );
+//   }
+//
+//   template <typename... Ts>
+//   decltype(auto) configure(Ts&&... args)
+//   {
+//     return xcb_configure_window(
+//       meevax::xcb::window::connection.get(),
+//       meevax::xcb::window::id,
+//       std::forward<Ts>(args)...
+//     );
+//   }
+//
+//   template <typename... Ts>
+//   decltype(auto) change_attributes(Ts&&... args)
+//   {
+//     return xcb_change_window_attributes(
+//       meevax::xcb::window::connection.get(),
+//       meevax::xcb::window::id,
+//       std::forward<Ts>(args)...
+//     );
+//   }
 };
 
 
