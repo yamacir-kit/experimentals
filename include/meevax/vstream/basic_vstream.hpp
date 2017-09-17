@@ -169,26 +169,6 @@ public:
     }
   }
 
-  // void clear()
-  // {
-  //   const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
-  //     cairo_create(meevax::cairo::surface::get()), cairo_destroy
-  //   };
-  //
-  //   cairo_set_source_rgb(context.get(), 1.0, 1.0, 1.0);
-  //   cairo_paint(context.get());
-  //   cairo_set_source_rgb(context.get(), 0.0, 0.0, 0.0);
-  //
-  //   cairo_text_extents_t extents {};
-  //   cairo_text_extents(context.get(), "hoge", &extents);
-  //
-  //   cairo_move_to(context.get(), 0, extents.height);
-  //
-  //   auto size {buffer_.size()};
-  //
-  //   buffer_.consume(size);
-  // }
-
   [[deprecated]] auto parse() noexcept(false)
   {
     std::match_results<typename std::basic_string<Char>::const_iterator> results {};
@@ -439,35 +419,6 @@ decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& 
 
   return std::get<T>(ostream);
 }
-
-
-// template <typename Char>
-// decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, Char input)
-// {
-//   std::cout << "[debug] create string from char input" << std::endl;
-//   return ostream << std::basic_string<Char> {input};
-// }
-
-
-// template <typename Char>
-// decltype(auto) operator<<(meevax::basic_vstream<Char>& ostream, std::basic_string<Char> input)
-// {
-//   std::cout << "[debug] copying string to vstream" << std::endl;
-//   ostream.prepare(input.size());
-//
-//   std::copy(std::begin(input), std::end(input), std::ostream_iterator<Char> {ostream});
-//   ostream.commit(input.size());
-//
-//   // ostream.commit(boost::asio::buffer_copy(
-//   //   ostream.prepare(input.size()),
-//   //   boost::asio::basic_streambuf<Char> {std::begin(input), std::end(input)}
-//   // ));
-//   std::cout << "[debug] ostream data: " << ostream.string() << std::endl;
-//
-//   ostream.debug_write();
-//
-//   return ostream;
-// }
 
 
 template <typename Char>
