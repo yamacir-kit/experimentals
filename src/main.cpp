@@ -86,12 +86,12 @@ int main(int argc, char** argv) try
       {
         vstream << [&](auto& surface) -> auto&
         {
-          std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
+          std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
             cairo_create(surface.meevax::cairo::surface::get()), cairo_destroy
           };
 
-          cairo_set_source_rgba(cairo.get(), 1.0, 1.0, 1.0, 1.0);
-          cairo_paint(cairo.get());
+          cairo_set_source_rgba(context.get(), 1.0, 1.0, 1.0, 1.0);
+          cairo_paint(context.get());
 
           return surface;
         };
@@ -102,14 +102,10 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        // TODO 連続結合のために右結合な右向きのストリーム演算子を定義すること
-        //      左向きのストリーム演算子は左結合であるためそのままで大丈夫
-        //      あとブロック線図の書式に合わせるため
-
         vstream["input"] << keyboard.code;
         vstream["output"] << vstream["input"];
 
-        (vstream["input"], std::cout) << vstream["output"] << std::endl;
+        (vstream["input"], std::cout << "\r") << vstream["output"] << std::flush;
       }
       break;
 
