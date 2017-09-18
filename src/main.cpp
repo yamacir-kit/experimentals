@@ -102,7 +102,7 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        vstream["input"] << keyboard.code;
+                             vstream["input"] << keyboard.code;
         vstream["output"] << vstream["input"];
 
         (vstream["input"], std::cout << "\r") << vstream["output"] << std::flush;
