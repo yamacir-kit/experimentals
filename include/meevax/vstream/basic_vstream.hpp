@@ -49,36 +49,6 @@ public:
   {}
 
 public:
-  // template <typename... Ts>
-  // [[deprecated]] decltype(auto) data(Ts&&... args)
-  // {
-  //   return buffer_.data(std::forward<Ts>(args)...);
-  // }
-  //
-  // template <typename... Ts>
-  // [[deprecated]] decltype(auto) size(Ts&&... args)
-  // {
-  //   return buffer_.size(std::forward<Ts>(args)...);
-  // }
-  //
-  // template <typename... Ts>
-  // [[deprecated]] decltype(auto) commit(Ts&&... args)
-  // {
-  //   return buffer_.commit(std::forward<Ts>(args)...);
-  // }
-  //
-  // template <typename... Ts>
-  // [[deprecated]] decltype(auto) prepare(Ts&&... args)
-  // {
-  //   return buffer_.prepare(std::forward<Ts>(args)...);
-  // }
-  //
-  // template <typename... Ts>
-  // [[deprecated]] decltype(auto) consume(Ts&&... args)
-  // {
-  //   return buffer_.consume(std::forward<Ts>(args)...);
-  // }
-
   // [[deprecated]] auto output() // write to window surface
   // {
   //   std::vector<std::basic_string<Char>> buffer {};
@@ -270,14 +240,6 @@ public:
       boost::asio::buffers_begin(buffer.data()),
       boost::asio::buffers_end(buffer.data())
     );
-  }
-
-private:
-  template <typename InputIterator> // XXX 効率度外視の一時的な処理切り分け
-  [[deprecated]] decltype(auto) write(const std::unique_ptr<cairo_t, decltype(&cairo_destroy)>& context,
-                                      InputIterator begin, InputIterator end)
-  {
-    return cairo_show_text(context.get(), replace_unprintable(begin, end).c_str());
   }
 };
 

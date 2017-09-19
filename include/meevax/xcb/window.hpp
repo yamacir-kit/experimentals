@@ -40,6 +40,11 @@ public:
       0, nullptr
     );
   }
+
+  ~window()
+  {
+    xcb_destroy_window(connection.get(), id);
+  }
 };
 
 
