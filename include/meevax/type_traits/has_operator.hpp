@@ -14,7 +14,7 @@ class has_function_call_operator_
 public:
   template <typename Functor, typename... Ts>
   static constexpr auto check(Functor&& functor, Ts&&... args) noexcept
-    -> decltype(functor(std::forward<Ts>(args)...), std::true_type {})
+    -> decltype(functor(std::forward<Ts>(args)...), std::true_type())
   {
     return {};
   }

@@ -21,7 +21,7 @@ namespace meevax::string {
 template <typename Char>
 auto replace_unprintable(const std::basic_string<Char>& source)
 {
-  auto buffer {source};
+  std::basic_string<Char> buffer {source};
 
   static const std::vector<std::pair<std::basic_string<Char>, std::basic_string<Char>>> targets {
     {"\e", "\\e"},

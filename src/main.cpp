@@ -103,20 +103,7 @@ int main(int argc, char** argv) try
       if (keyboard.press(generic_event))
       {
         vstream["input"] << keyboard.code;
-
-        auto replace_unprintable = [](auto&& string) {
-          return meevax::string::replace_unprintable(string);
-        };
-
-        vstream["output"](replace_unprintable) << vstream["input"];
-
-        // {
-        //   std::basic_stringstream<char> sstream {};
-        //   sstream << vstream["output"];
-        //   vstream["output"] << meevax::string::replace_unprintable(sstream.str());
-        //   vstream["output"].debug_write();
-        // }
-
+        vstream["output"](meevax::string::replace_unprintable<char>) << vstream["input"];
         (vstream["input"], std::cout << "\r") << vstream["output"] << std::flush;
       }
       break;

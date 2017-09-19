@@ -5,7 +5,8 @@
 #include <algorithm>
 #include <iostream>
 #include <limits>
-#include <memory>
+// #include <memory>
+#include <regex>
 #include <sstream>
 #include <string>
 #include <type_traits>
@@ -14,10 +15,10 @@
 
 #include <boost/asio/basic_streambuf.hpp>
 #include <boost/asio/buffers_iterator.hpp>
-#include <boost/geometry/geometries/geometries.hpp>
-#include <boost/geometry/geometries/point.hpp>
+// #include <boost/geometry/geometries/geometries.hpp>
+// #include <boost/geometry/geometries/point.hpp>
 
-#include <meevax/algorithm/regex_split_include_delimiter.hpp>
+// #include <meevax/algorithm/regex_split_include_delimiter.hpp>
 #include <meevax/cairo/surface.hpp>
 #include <meevax/string/replace_unprintable.hpp>
 #include <meevax/type_traits/has_operator.hpp>
@@ -66,13 +67,13 @@ class operation
 public:
   using char_type = typename std::remove_reference<Vstream>::type::char_type;
 
-  explicit operation(const Vstream& vstream, const Functor& functor, meevax::display_format display_format)
+  explicit constexpr operation(const Vstream& vstream, const Functor& functor, meevax::display_format display_format)
     : vstream_ {vstream},
       functor_ {functor},
       display_format_ {display_format}
   {}
 
-  explicit operation(const Vstream& vstream, meevax::display_format display_format)
+  [[deprecated]] explicit operation(const Vstream& vstream, meevax::display_format display_format)
     : vstream_ {vstream},
       functor_ {nop},
       display_format_ {display_format}
@@ -83,14 +84,15 @@ public:
     return std::forward<decltype(string)>(string);
   }
 
-  decltype(auto) operator()()
+  inline void operator()()
   {
     std::basic_stringstream<char_type> sstream {};
     sstream << vstream_;
     vstream_ << functor_(sstream.str());
-    vstream_.debug_write();
 
-    return vstream_;
+    // TODO meevax::display_format に従って分岐させること
+    //      functor に引き渡す型、ないしはその返り値を元に推論させるのもアリか？
+    vstream_.debug_write();
   }
 
   Vstream ostream()
@@ -304,7 +306,7 @@ public:
     )};
 
     ostream.buffer.commit(size);
-    ostream.debug_write(); // TODO commit に描画処理を統合
+    ostream.debug_write();
 
     return size;
   }
@@ -324,9 +326,9 @@ public:
   }
 
   template <typename Vstream, typename Functor>
-  decltype(auto) copy_to(meevax::operation<Vstream, Functor> operation) const
+  decltype(auto) copy_to(meevax::operation<Vstream, Functor>&& operation) const
   {
-    auto size {copy_to(operation.ostream())};
+    const auto size {copy_to(operation.ostream())}; // XXX debug_write が重複してる
     operation();
     return size;
   }
@@ -344,7 +346,7 @@ template <typename T, typename Functor,
                                 meevax::has_function_call_operator<Functor, T>::value
                               >::type
          >
-constexpr decltype(auto) operator<<(T&& lhs, Functor&& rhs)
+inline constexpr decltype(auto) operator<<(T&& lhs, Functor&& rhs)
 {
   return rhs(std::forward<T>(lhs));
 }
@@ -367,7 +369,7 @@ template <typename T, typename U,
 #ifdef NDEBUG
 constexpr
 #endif
-decltype(auto) operator,(T&& lhs, U&& rhs)
+inline decltype(auto) operator,(T&& lhs, U&& rhs)
 {
 #ifndef NDEBUG
 #ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
@@ -394,7 +396,7 @@ template <typename... Ts, typename T,
 #ifdef NDEBUG
 constexpr
 #endif
-decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
+inline decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 {
 #ifndef NDEBUG
 #ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
@@ -410,6 +412,7 @@ decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 }
 
 
+// TODO 左辺が vstream の時、nop な meevax::operation を作ってぶち込むようにすること
 template <typename T, typename Char
           // typename = typename std::enable_if<
           //                       std::is_base_of<
@@ -421,7 +424,7 @@ template <typename T, typename Char
 #ifdef NDEBUG
 constexpr
 #endif
-decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
+inline decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
 #ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
@@ -436,7 +439,7 @@ decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
 
 
 template <typename T, typename U, typename... Ts, typename Char>
-decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstream<Char>& istream)
+inline decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
 #ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
@@ -454,7 +457,7 @@ decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstr
 
 
 template <typename T, typename Char>
-decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& istream)
+inline decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
 #ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
