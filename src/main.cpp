@@ -46,9 +46,9 @@ int main(int argc, char** argv) try
     );
     vstream.configure(
       XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
-      std::vector<std::uint32_t> {640, 360}.data()
+      std::vector<std::uint32_t> {640, 180 * 3}.data()
     );
-    cairo_xcb_surface_set_size(vstream.meevax::cairo::surface::get(), 640, 320);
+    cairo_xcb_surface_set_size(vstream.meevax::cairo::surface::get(), 640, 180 * 3);
 
     vstream["input"].map();
     vstream["input"].configure(
@@ -59,7 +59,7 @@ int main(int argc, char** argv) try
       XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
       std::vector<std::uint32_t> {0, 0}.data()
     );
-    cairo_xcb_surface_set_size(vstream["input"].meevax::cairo::surface::get(), 640, 320);
+    cairo_xcb_surface_set_size(vstream["input"].meevax::cairo::surface::get(), 640, 180);
 
     vstream["output"].map();
     vstream["output"].configure(
@@ -70,7 +70,18 @@ int main(int argc, char** argv) try
       XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
       std::vector<std::uint32_t> {0, 180}.data()
     );
-    cairo_xcb_surface_set_size(vstream["output"].meevax::cairo::surface::get(), 640, 320);
+    cairo_xcb_surface_set_size(vstream["output"].meevax::cairo::surface::get(), 640, 180);
+
+    vstream["addition"].map();
+    vstream["addition"].configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180}.data()
+    );
+    vstream["addition"].configure(
+      XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+      std::vector<std::uint32_t> {0, 180 * 2}.data()
+    );
+    cairo_xcb_surface_set_size(vstream["addition"].meevax::cairo::surface::get(), 640, 180 * 2);
   }
 
   xcb_flush(connection.get());

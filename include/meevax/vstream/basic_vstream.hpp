@@ -84,7 +84,7 @@ public:
     return std::forward<decltype(string)>(string);
   }
 
-  inline void operator()()
+  void operator()()
   {
     std::basic_stringstream<char_type> sstream {};
     sstream << vstream_;
@@ -372,12 +372,10 @@ constexpr
 inline decltype(auto) operator,(T&& lhs, U&& rhs)
 {
 #ifndef NDEBUG
-#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] meevax::operator, - typename T = "
             << meevax::string::runtime_typename<char>(lhs) << "\n"
             << "                            typename U = "
             << meevax::string::runtime_typename<char>(rhs) << std::endl;
-#endif
 #endif
   return std::forward_as_tuple(
     std::forward<T>(lhs), std::forward<U>(rhs)
@@ -399,12 +397,10 @@ constexpr
 inline decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 {
 #ifndef NDEBUG
-#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] meevax::operator, - std::tuple<Ts...> = "
             << meevax::string::runtime_typename<char>(lhs) << "\n"
             << "                            typename U = "
             << meevax::string::runtime_typename<char>(rhs) << std::endl;
-#endif
 #endif
   return std::forward_as_tuple(
     std::forward<Ts>(std::get<Ts>(lhs))..., std::forward<T>(rhs)
@@ -427,12 +423,10 @@ constexpr
 inline decltype(auto) operator<<(T&& ostream, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
-#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] meevax::operator<< - typename T = "
             << meevax::string::runtime_typename<char>(ostream) << "\n"
             << "        serial data transfer from "
             << meevax::string::runtime_typename<char>(istream) << std::endl;
-#endif
 #endif
   return std::tuple<T> {std::forward<T>(ostream)} << istream;
 }
@@ -442,11 +436,9 @@ template <typename T, typename U, typename... Ts, typename Char>
 inline decltype(auto) operator<<(std::tuple<T, U, Ts...>&& ostreams, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
-#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] std::tuple<T, U, Ts...> = "
             << meevax::string::runtime_typename<char>(ostreams) << std::endl;
   std::cerr << "[debug] copying " << std::flush;
-#endif
 #endif
   istream.copy_to(std::forward<T>(std::get<T>(ostreams)));
 
@@ -460,11 +452,9 @@ template <typename T, typename Char>
 inline decltype(auto) operator<<(std::tuple<T>&& ostream, meevax::basic_vstream<Char>& istream)
 {
 #ifndef NDEBUG
-#ifdef DEBUG_MEEVAX_BASIC_VSTREAM_OPREATORS
   std::cerr << "[debug] std::tuple<T> = "
             << meevax::string::runtime_typename<char>(ostream) << std::endl;
   std::cout << "[debug] transferring ";
-#endif
 #endif
   istream.buffer.consume(
     istream.copy_to(std::forward<T>(std::get<T>(ostream)))
