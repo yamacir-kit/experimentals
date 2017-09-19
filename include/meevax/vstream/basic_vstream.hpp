@@ -6,6 +6,7 @@
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <type_traits>
 #include <utility>
@@ -29,6 +30,76 @@
 namespace meevax {
 
 
+enum class display_format
+{
+  ansi_terminal = 1 << 0,
+};
+
+
+template <typename Char>
+class basic_vstream;
+
+
+template <typename Vstream, typename Functor,
+          typename = typename std::enable_if<
+                                std::is_same<
+                                  meevax::basic_vstream<typename std::remove_reference<Vstream>::type::char_type>,
+                                  typename std::remove_reference<Vstream>::type
+                                >::value
+                              >::type
+          // typename = typename std::enable_if<
+          //                       meevax::has_function_call_operator<
+          //                         typename std::remove_reference<Vstream>::type::operator<<,
+          //                         typename std::result_of<
+          //                           Functor(std::basic_string<typename std::remove_reference<Vstream>::type::char_type>)
+          //                         >::type
+          //                       >::value
+          //                     >::type
+         >
+class operation
+{
+  const Vstream& vstream_;
+  const Functor& functor_;
+
+  const meevax::display_format display_format_;
+
+public:
+  using char_type = typename std::remove_reference<Vstream>::type::char_type;
+
+  explicit operation(const Vstream& vstream, const Functor& functor, meevax::display_format display_format)
+    : vstream_ {vstream},
+      functor_ {functor},
+      display_format_ {display_format}
+  {}
+
+  explicit operation(const Vstream& vstream, meevax::display_format display_format)
+    : vstream_ {vstream},
+      functor_ {nop},
+      display_format_ {display_format}
+  {}
+
+  static constexpr decltype(auto) nop(std::basic_string<char_type>&& string)
+  {
+    return std::forward<decltype(string)>(string);
+  }
+
+  decltype(auto) operator()()
+  {
+    std::basic_stringstream<char_type> sstream {};
+    sstream << vstream_;
+    vstream_ << functor_(sstream.str());
+    vstream_.debug_write();
+
+    return vstream_;
+  }
+
+  Vstream ostream()
+  {
+    return vstream_;
+  }
+};
+
+
 template <typename Char>
 class basic_vstream
   : public meevax::cairo::surface,
@@ -47,6 +118,15 @@ public:
     : meevax::cairo::surface {std::forward<Ts>(args)...},
       std::basic_iostream<char_type> {&buffer}
   {}
+
+public:
+  template <typename Functor>
+  constexpr decltype(auto) operator()(Functor&& functor, meevax::display_format display_format = meevax::display_format::ansi_terminal)
+  {
+    return meevax::operation<decltype(*this), Functor> {
+      *this, std::forward<Functor>(functor), display_format
+    };
+  }
 
 public:
   // [[deprecated]] auto output() // write to window surface
@@ -186,6 +266,7 @@ public:
     }
   }
 
+public:
   void debug_write()
   {
     const std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
@@ -240,6 +321,14 @@ public:
       boost::asio::buffers_begin(buffer.data()),
       boost::asio::buffers_end(buffer.data())
     );
+  }
+
+  template <typename Vstream, typename Functor>
+  decltype(auto) copy_to(meevax::operation<Vstream, Functor> operation) const
+  {
+    auto size {copy_to(operation.ostream())};
+    operation();
+    return size;
   }
 };
 
@@ -321,13 +410,13 @@ decltype(auto) operator,(std::tuple<Ts...>&& lhs, T&& rhs)
 }
 
 
-template <typename T, typename Char,
-          typename = typename std::enable_if<
-                                std::is_base_of<
-                                  std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
-                                  typename std::remove_reference<T>::type
-                                >::value
-                              >::type
+template <typename T, typename Char
+          // typename = typename std::enable_if<
+          //                       std::is_base_of<
+          //                         std::basic_ostream<typename std::remove_reference<T>::type::char_type>,
+          //                         typename std::remove_reference<T>::type
+          //                       >::value
+          //                     >::type
          >
 #ifdef NDEBUG
 constexpr
