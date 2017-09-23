@@ -30,7 +30,7 @@ public:
 
 int main(int argc, char** argv) try
 {
-  std::cout << "[debug] boost version: " << meevax::boost_version.data() << "\n";
+  std::cout << "[debug] boost version: " << meevax::boost_version << "\n";
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
   const meevax::shared_connection connection {nullptr, nullptr};
