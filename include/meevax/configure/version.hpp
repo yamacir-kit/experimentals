@@ -5,7 +5,7 @@
 #include <boost/version.hpp>
 
 
-#if __cplusplus != 201703L
+#if __cplusplus < 201402L
 #include <string>
 #else
 #include <meevax/string/static_concat.hpp>
@@ -15,10 +15,10 @@
 namespace meevax {
 
 
-#if __cplusplus != 201703L
+#if __cplusplus < 201402L
 const std::string project_name {"meevax"};
 
-const std::string build_time {"2017 10 14 03:32:53"};
+const std::string build_time {"2017 10 14 03:52:51"};
 const std::string build_type {"Debug"};
 
 const std::string major_version {"0"};
@@ -37,8 +37,8 @@ const std::string boost_version {
 #else
 constexpr auto project_name {meevax::static_concat("meevax")};
 
-constexpr auto build_time {meevax::static_concat("2017 10 14 03:32:53")};
-constexpr auto build_time {meevax::static_concat("Debug")};
+constexpr auto build_time {meevax::static_concat("2017 10 14 03:52:51")};
+constexpr auto build_type {meevax::static_concat("Debug")};
 
 constexpr auto major_version {meevax::static_concat("0")};
 constexpr auto minor_version {meevax::static_concat("3")};
