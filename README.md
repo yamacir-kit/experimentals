@@ -1,6 +1,6 @@
-## ${PROJECT_NAME}
+## meevax
 
-version ${PROJECT_VERSION} in development
+version 0.2.4 in development
 
 
 ### dependency

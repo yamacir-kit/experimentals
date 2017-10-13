@@ -1,5 +1,5 @@
-#ifndef INCLUDED_UTILIB_STRING_RUNTIME_TYPENAME_HPP_
-#define INCLUDED_UTILIB_STRING_RUNTIME_TYPENAME_HPP_
+#ifndef INCLUDED_MEEVAX_STRING_RUNTIME_TYPENAME_HPP_
+#define INCLUDED_MEEVAX_STRING_RUNTIME_TYPENAME_HPP_
 
 
 #include <cstdlib>
@@ -10,7 +10,7 @@
 #include <cxxabi.h>
 
 
-namespace utilib {
+namespace meevax::string {
 
 
 template <typename C, typename T>
@@ -28,7 +28,7 @@ auto runtime_typename(const T& object)
 }
 
 
-} // namespace utilib
+} // namespace meevax::string
 
 
 #endif
