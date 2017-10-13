@@ -66,7 +66,7 @@ find_package(Boost 1.58.0 REQUIRED COMPONENTS)
 # ==============================================================
 #  File Configuration
 # ==============================================================
-string(TIMESTAMP ${PROJECT_NAME}_TIMESTAMP "%Y %m %d %H:%M:%S")
+string(TIMESTAMP ${PROJECT_NAME}_TIMESTAMP "%Y/%m/%d %H:%M:%S")
 
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/configure/version.hpp.cmake

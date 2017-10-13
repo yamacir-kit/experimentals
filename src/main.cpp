@@ -36,6 +36,7 @@ int main(int argc, char** argv) try
 
         std::cout << "\n";
         std::cout << "usage: " << meevax::project_name << " [options]\n";
+        std::cout << "       based on GNU command line interfaces standards\n";
         std::cout << "\n";
         std::cout << "options:\n";
         std::cout << "  -h, --help     display this help and exit\n";
