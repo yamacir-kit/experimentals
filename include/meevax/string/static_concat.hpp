@@ -3,6 +3,7 @@
 
 
 #include <array>
+#include <iostream>
 #include <type_traits>
 #include <utility>
 
@@ -90,6 +91,13 @@ constexpr decltype(auto) static_concat(T&& lhs, U&& rhs, Ts&&... args) noexcept
 
 
 } // namespace meevax::string
+
+
+template <typename Char, std::size_t N>
+decltype(auto) operator<<(std::basic_ostream<Char>& ostream, const std::array<Char, N>& array)
+{
+  return ostream << array.data();
+}
 
 
 #endif

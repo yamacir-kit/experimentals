@@ -34,11 +34,16 @@ public:
       (*this).id, parent_id,
       0, 0,
       std::max<std::uint16_t>(1, 0), std::max<std::uint16_t>(1, 0),
-      0,
+      1, // DEBUG: border line width
       XCB_WINDOW_CLASS_INPUT_OUTPUT,
       screen.begin()->root_visual,
       0, nullptr
     );
+  }
+
+  ~window()
+  {
+    xcb_destroy_window(connection.get(), id);
   }
 };
 

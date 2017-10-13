@@ -7,37 +7,82 @@
 #include <meevax/xcb/ascii_keyboard.hpp>
 
 
+namespace meevax {
+
+class shared_connection
+  : public std::shared_ptr<xcb_connection_t>
+{
+public:
+  template <typename... Ts>
+  explicit shared_connection(Ts&&... args)
+    : std::shared_ptr<xcb_connection_t> {xcb_connect(std::forward<Ts>(args)...), xcb_disconnect}
+  {
+    if (xcb_connection_has_error(std::shared_ptr<xcb_connection_t>::get()))
+    {
+      std::cerr << "[error] xcb_connect - failed to connect X server\n";
+      std::exit(EXIT_FAILURE);
+    }
+  }
+};
+
+} // namespace meevax
+
+
 int main(int argc, char** argv) try
 {
-  std::cout << "[debug] boost version: " << meevax::boost_version.data() << "\n";
+  std::cout << "[debug] boost version: " << meevax::boost_version << "\n";
   std::cout << "[debug] cairo version: " << cairo_version_string() << "\n\n";
 
-  const std::shared_ptr<xcb_connection_t> connection {
-    xcb_connect(nullptr, nullptr), xcb_disconnect
-  };
-
-  if (xcb_connection_has_error(connection.get()))
-  {
-    std::cerr << "[error] xcb_connect - failed to connect X server\n";
-    std::exit(EXIT_FAILURE);
-  }
-
-#ifndef NDEBUG
-  meevax::basic_vstream<char> debug {connection};
-  debug.map();
-  debug.resize(1280 / 2, 720 / 2);
-#endif
+  const meevax::shared_connection connection {nullptr, nullptr};
 
   meevax::graph::dynamic_tree<std::string, meevax::basic_vstream<char>> vstream {connection};
   meevax::xcb::ascii_keyboard<char> keyboard {connection};
 
-  vstream.change_attributes(
-    XCB_CW_EVENT_MASK,
-    std::vector<std::uint32_t> {XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_KEY_PRESS}.data()
-  );
+  {
+    vstream.map();
+    vstream.change_attributes(
+      XCB_CW_EVENT_MASK,
+      std::vector<std::uint32_t> {XCB_EVENT_MASK_EXPOSURE | XCB_EVENT_MASK_KEY_PRESS}.data()
+    );
+    vstream.configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180 * 3}.data()
+    );
+    cairo_xcb_surface_set_size(vstream.meevax::cairo::surface::get(), 640, 180 * 3);
 
-  vstream.map();
-  vstream.resize(1280 / 2, 720 / 2);
+    vstream["input"].map();
+    vstream["input"].configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180}.data()
+    );
+    vstream["input"].configure(
+      XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+      std::vector<std::uint32_t> {0, 0}.data()
+    );
+    cairo_xcb_surface_set_size(vstream["input"].meevax::cairo::surface::get(), 640, 180);
+
+    vstream["output"].map();
+    vstream["output"].configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180}.data()
+    );
+    vstream["output"].configure(
+      XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+      std::vector<std::uint32_t> {0, 180}.data()
+    );
+    cairo_xcb_surface_set_size(vstream["output"].meevax::cairo::surface::get(), 640, 180);
+
+    vstream["addition"].map();
+    vstream["addition"].configure(
+      XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT,
+      std::vector<std::uint32_t> {640, 180}.data()
+    );
+    vstream["addition"].configure(
+      XCB_CONFIG_WINDOW_X | XCB_CONFIG_WINDOW_Y,
+      std::vector<std::uint32_t> {0, 180 * 2}.data()
+    );
+    cairo_xcb_surface_set_size(vstream["addition"].meevax::cairo::surface::get(), 640, 180 * 2);
+  }
 
   xcb_flush(connection.get());
 
@@ -50,16 +95,14 @@ int main(int argc, char** argv) try
     case XCB_EXPOSE:
       if (!reinterpret_cast<xcb_expose_event_t*>(generic_event.get())->count)
       {
-        std::cout << "[debug] expose\n";
-
         vstream << [&](auto& surface) -> auto&
         {
-          std::unique_ptr<cairo_t, decltype(&cairo_destroy)> cairo {
+          std::unique_ptr<cairo_t, decltype(&cairo_destroy)> context {
             cairo_create(surface.meevax::cairo::surface::get()), cairo_destroy
           };
 
-          cairo_set_source_rgba(cairo.get(), 1.0, 1.0, 1.0, 1.0);
-          cairo_paint(cairo.get());
+          cairo_set_source_rgba(context.get(), 1.0, 1.0, 1.0, 1.0);
+          cairo_paint(context.get());
 
           return surface;
         };
@@ -70,21 +113,9 @@ int main(int argc, char** argv) try
     case XCB_KEY_PRESS:
       if (keyboard.press(generic_event))
       {
-        vstream << keyboard.code << std::flush;
-        vstream.output();
-
-#ifndef NDEBUG
-        debug.clear();
-        if (std::isgraph(keyboard.code))
-        {
-          debug << "keyboard input: " << keyboard.code << "\n";
-        }
-        else
-        {
-          debug << "keyboard input: 0x" << std::hex << static_cast<int>(keyboard.code) << "\n";
-        }
-        debug.output();
-#endif
+        vstream["input"] << keyboard.code;
+        vstream["output"](meevax::string::replace_unprintable<char>) << vstream["input"];
+        (vstream["input"], std::cout << "\r") << vstream["output"] << std::flush;
       }
       break;
 
