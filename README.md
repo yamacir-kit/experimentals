@@ -1,11 +1,10 @@
 ## meevax
 
-version 0.2.4 in development
+version 0.3.0 in development
 
 
 ### dependency
 
-- C++14 Standard Library
-- Boost C++ Libraries Version 1.58.0
-- XLib Version 11 Release 6
-- Cairo Vector Graphics Library Version 1.14.6
+- Boost C++ Libraries 1.58.0
+- Cairo Vector Graphics Library 1.14.6
+
