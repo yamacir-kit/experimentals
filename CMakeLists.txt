@@ -101,3 +101,8 @@ target_link_libraries(${PROJECT_NAME}
   xcb
 )
 
+install(
+  DIRECTORY ${${PROJECT_NAME}_INCLUDE_DIR}/
+  DESTINATION include
+)
+
