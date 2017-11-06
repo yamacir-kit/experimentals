@@ -47,11 +47,11 @@ implement_has_type(size_type);
 
 #ifndef DEBUG
 #include <vector>
-static_assert(meevax::has_allocator_type<std::vector<int>>::value);
-static_assert(meevax::has_iterator<std::vector<int>>::value);
-static_assert(meevax::has_const_iterator<std::vector<int>>::value);
-static_assert(meevax::has_value_type<std::vector<int>>::value);
-static_assert(meevax::has_size_type<std::vector<int>>::value);
+static_assert(meevax::has_allocator_type<std::vector<int>>::value, "");
+static_assert(meevax::has_iterator<      std::vector<int>>::value, "");
+static_assert(meevax::has_const_iterator<std::vector<int>>::value, "");
+static_assert(meevax::has_value_type<    std::vector<int>>::value, "");
+static_assert(meevax::has_size_type<     std::vector<int>>::value, "");
 #endif
 
 

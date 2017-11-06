@@ -27,8 +27,8 @@ class is_stl_compatible_container<T, typename std::enable_if<has_allocator_type<
 
 #ifndef NDEBUG
 #include <vector>
-static_assert(meevax::is_stl_compatible_container<std::vector<int>>::value == true);
-static_assert(meevax::is_stl_compatible_container<int>::value == false);
+static_assert(meevax::is_stl_compatible_container<std::vector<int>>::value == true, "");
+static_assert(meevax::is_stl_compatible_container<int>::value == false, "");
 #endif
 
 
