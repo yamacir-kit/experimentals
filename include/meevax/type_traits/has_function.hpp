@@ -48,11 +48,11 @@ implement_has_function(size);
 
 #ifndef NDEBUG
 #include <vector>
-static_assert(meevax::has_begin<std::vector<int>>::value);
-static_assert(meevax::has_end<std::vector<int>>::value);
-static_assert(meevax::has_cbegin<std::vector<int>>::value);
-static_assert(meevax::has_cend<std::vector<int>>::value);
-static_assert(meevax::has_size<std::vector<int>>::value);
+static_assert(meevax::has_begin< std::vector<int>>::value, "");
+static_assert(meevax::has_end<   std::vector<int>>::value, "");
+static_assert(meevax::has_cbegin<std::vector<int>>::value, "");
+static_assert(meevax::has_cend<  std::vector<int>>::value, "");
+static_assert(meevax::has_size<  std::vector<int>>::value, "");
 #endif
 
 
