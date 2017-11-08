@@ -13,9 +13,8 @@
 namespace meevax::string {
 
 
-template <typename C, typename T>
-auto runtime_typename(const T& object)
-  -> std::basic_string<C>
+template <typename T>
+std::string runtime_typename(const T& object)
 {
   int status {0};
 
