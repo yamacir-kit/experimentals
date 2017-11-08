@@ -29,7 +29,7 @@ namespace meevax {
 
 
 template <typename C>
-class generic_editor
+class [[deprecated]] generic_editor
 {
 public:
   using char_type = typename std::basic_string<C>::value_type;

@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_ALGORITHM_REGEX_SPLIT_INCLUDE_DELIMITER_HPP_
-#define INCLUDED_MEEVAX_ALGORITHM_REGEX_SPLIT_INCLUDE_DELIMITER_HPP_
+#ifndef INCLUDED_MEEVAX_ALGORITHM_REGEX_SPLIT_INCLUDE_DELIMITER_HPP
+#define INCLUDED_MEEVAX_ALGORITHM_REGEX_SPLIT_INCLUDE_DELIMITER_HPP
 
 
 #include <algorithm>
@@ -11,7 +11,7 @@ namespace meevax::algorithm {
 
 
 template <template <typename...> typename SequenceContainer, typename C>
-inline void regex_split_include_delimiter(
+[[deprecated]] inline void regex_split_include_delimiter(
               SequenceContainer<std::basic_string<C>>& split_results,
               const std::basic_string<C>& target,
               const SequenceContainer<std::basic_regex<C>>& regex_delimiters)

@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_ALGORITHM_CHAR_SPLIT_INCLUDE_DELIMITER_HPP_
-#define INCLUDED_MEEVAX_ALGORITHM_CHAR_SPLIT_INCLUDE_DELIMITER_HPP_
+#ifndef INCLUDED_MEEVAX_ALGORITHM_CHAR_SPLIT_INCLUDE_DELIMITER_HPP
+#define INCLUDED_MEEVAX_ALGORITHM_CHAR_SPLIT_INCLUDE_DELIMITER_HPP
 
 
 #include <algorithm>
@@ -9,7 +9,7 @@ namespace meevax::algorithm {
 
 
 template <template <typename...> class V, typename S>
-inline void char_split_include_delimiter(V<S>& result, const S& target, S&& delims)
+[[deprecated]] inline void char_split_include_delimiter(V<S>& result, const S& target, S&& delims)
 {
   for (auto iter {target.begin()}; iter != target.end(); )
   {
