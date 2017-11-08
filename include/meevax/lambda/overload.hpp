@@ -5,7 +5,12 @@
 #include <utility>
 
 
+#if __cplusplus < 201703L
+namespace meevax {
+namespace lambda {
+#else
 namespace meevax::lambda {
+#endif
 
 
 template <typename... Ts>
@@ -49,7 +54,12 @@ constexpr auto overload(Ts&&... args)
 }
 
 
+#if __cplusplus < 201703L
+} // namespace lambda
+} // namespace meevax
+#else
 } // namespace meevax::lambda
+#endif
 
 
 #endif
