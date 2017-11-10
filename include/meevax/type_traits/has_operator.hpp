@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_CONCEPTS_HAS_OPERATOR_HPP
-#define INCLUDED_MEEVAX_CONCEPTS_HAS_OPERATOR_HPP
+#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_HAS_OPERATOR_HPP
+#define INCLUDED_MEEVAX_TYPE_TRAITS_HAS_OPERATOR_HPP
 
 
 #include <type_traits>
@@ -8,9 +8,9 @@
 
 #if __cplusplus < 201703L
 namespace meevax {
-namespace concepts {
+namespace type_traits {
 #else
-namespace meevax::concepts {
+namespace meevax::type_traits {
 #endif
 
 
@@ -41,10 +41,10 @@ class has_function_call_operator
 
 
 #if __cplusplus < 201703L
-} // namespace concepts
+} // namespace type_traits
 } // namespace meevax
 #else
-} // namespace meevax::concepts
+} // namespace meevax::type_traits
 #endif
 
 

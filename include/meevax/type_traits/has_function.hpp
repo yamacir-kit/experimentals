@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_CONCEPTS_HAS_FUNCTION_HPP
-#define INCLUDED_MEEVAX_CONCEPTS_HAS_FUNCTION_HPP
+#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_HAS_FUNCTION_HPP
+#define INCLUDED_MEEVAX_TYPE_TRAITS_HAS_FUNCTION_HPP
 
 
 #include <type_traits>
@@ -8,9 +8,9 @@
 
 #if __cplusplus < 201703L
 namespace meevax {
-namespace concepts {
+namespace type_traits {
 #else
-namespace meevax::concepts {
+namespace meevax::type_traits {
 #endif
 
 
@@ -44,19 +44,26 @@ class has_##token                                                               
 
 has_function_(begin);
 has_function_(end);
+
 has_function_(cbegin);
 has_function_(cend);
+
+has_function_(swap);
+
 has_function_(size);
+has_function_(max_size);
+
+has_function_(empty);
 
 
 #undef has_function_
 
 
 #if __cplusplus < 201703L
-} // namespace concepts
+} // namespace type_traits
 } // namespace meevax
 #else
-} // namespace meevax::concepts
+} // namespace meevax::type_traits
 #endif
 
 

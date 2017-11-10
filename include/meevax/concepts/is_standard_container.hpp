@@ -4,6 +4,7 @@
 
 #include <type_traits>
 
+#include <meevax/concepts/is_equality_comparable.hpp>
 #include <meevax/type_traits/has_function.hpp>
 #include <meevax/type_traits/has_type.hpp>
 
@@ -23,8 +24,32 @@ class is_standard_container
   : public std::false_type
 {};
 
-template <typename T>
-class is_standard_container<T, typename std::enable_if<has_allocator_type<T>::value && has_iterator<T>::value && has_const_iterator<T>::value && has_size_type<T>::value && has_value_type<T>::value && has_begin<T>::value && has_end<T>::value && has_cbegin<T>::value && has_cend<T>::value && has_size<T>::value>::type>
+template <typename StandardContainer>
+class is_standard_container<StandardContainer,
+                            typename std::enable_if<
+                              std::conjunction<
+                                meevax::type_traits::has_value_type<StandardContainer>,
+                                meevax::type_traits::has_reference<StandardContainer>,
+                                meevax::type_traits::has_const_reference<StandardContainer>,
+                                meevax::type_traits::has_iterator<StandardContainer>,
+                                meevax::type_traits::has_const_iterator<StandardContainer>,
+                                meevax::type_traits::has_difference_type<StandardContainer>,
+                                meevax::type_traits::has_size_type<StandardContainer>,
+                                std::is_default_constructible<StandardContainer>,
+                                std::is_copy_constructible<StandardContainer>,
+                                std::is_assignable<StandardContainer, StandardContainer>,
+                                std::is_destructible<StandardContainer>,
+                                meevax::type_traits::has_begin<StandardContainer>,
+                                meevax::type_traits::has_end<StandardContainer>,
+                                meevax::type_traits::has_cbegin<StandardContainer>,
+                                meevax::type_traits::has_cend<StandardContainer>,
+                                meevax::concepts::is_equality_comparable<StandardContainer>,
+                                std::is_swappable<StandardContainer>,
+                                meevax::type_traits::has_size<StandardContainer>,
+                                meevax::type_traits::has_max_size<StandardContainer>,
+                                meevax::type_traits::has_empty<StandardContainer>
+                              >::value
+                            >::type>
   : public std::true_type
 {};
 

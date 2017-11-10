@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_CONCEPTS_HAS_TYPE_HPP
-#define INCLUDED_MEEVAX_CONCEPTS_HAS_TYPE_HPP
+#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_HAS_TYPE_HPP
+#define INCLUDED_MEEVAX_TYPE_TRAITS_HAS_TYPE_HPP
 
 
 #include <type_traits>
@@ -8,9 +8,9 @@
 
 #if __cplusplus < 201703L
 namespace meevax {
-namespace concepts {
+namespace type_traits {
 #else
-namespace meevax::concepts {
+namespace meevax::type_traits {
 #endif
 
 
@@ -60,10 +60,10 @@ has_type_(size_type);
 
 
 #if __cplusplus < 201703L
-} // namespace concepts
+} // namespace type_traits
 } // namespace meevax
 #else
-} // namespace meevax::concepts
+} // namespace meevax::type_traits
 #endif
 
 
