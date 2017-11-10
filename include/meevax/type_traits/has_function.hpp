@@ -1,15 +1,24 @@
-#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_HAS_FUNCTION_HPP
-#define INCLUDED_MEEVAX_TYPE_TRAITS_HAS_FUNCTION_HPP
+#ifndef INCLUDED_MEEVAX_CONCEPTS_HAS_FUNCTION_HPP
+#define INCLUDED_MEEVAX_CONCEPTS_HAS_FUNCTION_HPP
 
 
 #include <type_traits>
 #include <utility>
 
 
+#if __cplusplus < 201703L
 namespace meevax {
+namespace concepts {
+#else
+namespace meevax::concepts {
+#endif
 
 
-#define implement_has_function(token) \
+#ifdef has_function_
+static_assert(true == false, "macro \"has_function_\" has been defined outside the meevax library");
+#endif
+
+#define has_function_(token) \
 class has_##token##_                                                            \
 {                                                                               \
 public:                                                                         \
@@ -33,26 +42,21 @@ class has_##token                                                               
 {};
 
 
-implement_has_function(begin);
-implement_has_function(end);
-implement_has_function(cbegin);
-implement_has_function(cend);
-implement_has_function(size);
+has_function_(begin);
+has_function_(end);
+has_function_(cbegin);
+has_function_(cend);
+has_function_(size);
 
 
-#undef implement_has_function
+#undef has_function_
 
 
+#if __cplusplus < 201703L
+} // namespace concepts
 } // namespace meevax
-
-
-#ifndef NDEBUG
-#include <vector>
-static_assert(meevax::has_begin< std::vector<int>>::value, "");
-static_assert(meevax::has_end<   std::vector<int>>::value, "");
-static_assert(meevax::has_cbegin<std::vector<int>>::value, "");
-static_assert(meevax::has_cend<  std::vector<int>>::value, "");
-static_assert(meevax::has_size<  std::vector<int>>::value, "");
+#else
+} // namespace meevax::concepts
 #endif
 
 

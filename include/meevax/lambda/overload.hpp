@@ -22,7 +22,7 @@ class overloaded_lambdas<T>
   : public T
 {
 public:
-  constexpr overloaded_lambdas(T&& lambda)
+  overloaded_lambdas(T&& lambda)
     : T {std::forward<T>(lambda)}
   {}
 
@@ -36,7 +36,7 @@ class overloaded_lambdas<T, U, Ts...>
     public overloaded_lambdas<U, Ts...>
 {
 public:
-  constexpr overloaded_lambdas(T&& lambda, U&& arg, Ts&&... args)
+  overloaded_lambdas(T&& lambda, U&& arg, Ts&&... args)
     : T {std::forward<T>(lambda)},
       overloaded_lambdas<U, Ts...> {std::forward<U>(arg), std::forward<Ts>(args)...}
   {}
