@@ -1,11 +1,16 @@
-#ifndef INCLUDED_MEEVAX_LAMBDA_OVERLOADED_HPP
-#define INCLUDED_MEEVAX_LAMBDA_OVERLOADED_HPP
+#ifndef INCLUDED_MEEVAX_LAMBDA_OVERLOAD_HPP
+#define INCLUDED_MEEVAX_LAMBDA_OVERLOAD_HPP
 
 
 #include <utility>
 
 
+#if __cplusplus < 201703L
+namespace meevax {
+namespace lambda {
+#else
 namespace meevax::lambda {
+#endif
 
 
 template <typename... Ts>
@@ -17,7 +22,7 @@ class overloaded_lambdas<T>
   : public T
 {
 public:
-  constexpr overloaded_lambdas(T&& lambda)
+  overloaded_lambdas(T&& lambda)
     : T {std::forward<T>(lambda)}
   {}
 
@@ -31,7 +36,7 @@ class overloaded_lambdas<T, U, Ts...>
     public overloaded_lambdas<U, Ts...>
 {
 public:
-  constexpr overloaded_lambdas(T&& lambda, U&& arg, Ts&&... args)
+  overloaded_lambdas(T&& lambda, U&& arg, Ts&&... args)
     : T {std::forward<T>(lambda)},
       overloaded_lambdas<U, Ts...> {std::forward<U>(arg), std::forward<Ts>(args)...}
   {}
@@ -49,7 +54,12 @@ constexpr auto overload(Ts&&... args)
 }
 
 
+#if __cplusplus < 201703L
+} // namespace lambda
+} // namespace meevax
+#else
 } // namespace meevax::lambda
+#endif
 
 
 #endif

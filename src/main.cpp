@@ -1,20 +1,17 @@
 #include <iostream>
 #include <regex>
-#include <stdexcept>
 #include <string>
-#include <system_error>
 #include <vector>
 
 #include <boost/cstdlib.hpp>
 
 #include <meevax/configure/version.hpp>
+#include <meevax/syntax/main.hpp>
 
 
-int main(int argc, char** argv) try
+int_main(const std::vector<std::string>& args, [&]()
 {
-  const std::vector<std::string> args {argv + 1, argv + argc};
-
-  for (auto iter {std::begin(args)}; iter != std::end(args); ++iter) [&]()
+  for (auto iter {std::begin(args) + 1}; iter != std::end(args); ++iter) [&]()
   {
     for (const auto& option : decltype(args) {"^-v$", "^--version$"})
     {
@@ -53,17 +50,5 @@ int main(int argc, char** argv) try
   }();
 
   return boost::exit_success;
-}
-
-catch (const std::system_error& error)
-{
-  std::cerr << "[error] code: " << error.code().value() << " - " << error.code().message() << "\n";
-  std::exit(error.code().value());
-}
-
-catch (const std::exception& error)
-{
-  std::cerr << "[error] " << error.what() << "\n";
-  std::exit(boost::exit_exception_failure);
-}
+})
 

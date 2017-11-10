@@ -6,10 +6,19 @@
 #include <utility>
 
 
+#if __cplusplus < 201703L
 namespace meevax {
+namespace type_traits {
+#else
+namespace meevax::type_traits {
+#endif
 
 
-#define implement_has_type(token) \
+#ifdef has_type_
+static_assert(true == false, "macro \"has_type_\" has been defined outside the meevax library");
+#endif
+
+#define has_type_(token) \
 class has_##token##_                                                            \
 {                                                                               \
 public:                                                                         \
@@ -32,26 +41,29 @@ class has_##token                                                               
 {};
 
 
-implement_has_type(allocator_type);
-implement_has_type(iterator);
-implement_has_type(const_iterator);
-implement_has_type(value_type);
-implement_has_type(size_type);
+has_type_(value_type);
+
+has_type_(reference);
+has_type_(const_reference);
+
+has_type_(iterator);
+has_type_(const_iterator);
+
+has_type_(allocator_type);
+
+has_type_(difference_type);
+
+has_type_(size_type);
 
 
-#undef inplement_has_type
+#undef has_type_
 
 
+#if __cplusplus < 201703L
+} // namespace type_traits
 } // namespace meevax
-
-
-#ifndef DEBUG
-#include <vector>
-static_assert(meevax::has_allocator_type<std::vector<int>>::value, "");
-static_assert(meevax::has_iterator<      std::vector<int>>::value, "");
-static_assert(meevax::has_const_iterator<std::vector<int>>::value, "");
-static_assert(meevax::has_value_type<    std::vector<int>>::value, "");
-static_assert(meevax::has_size_type<     std::vector<int>>::value, "");
+#else
+} // namespace meevax::type_traits
 #endif
 
 

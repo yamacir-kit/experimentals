@@ -6,7 +6,12 @@
 #include <utility>
 
 
+#if __cplusplus < 201703L
 namespace meevax {
+namespace type_traits {
+#else
+namespace meevax::type_traits {
+#endif
 
 
 class has_function_call_operator_
@@ -35,7 +40,12 @@ class has_function_call_operator
 {};
 
 
+#if __cplusplus < 201703L
+} // namespace type_traits
 } // namespace meevax
+#else
+} // namespace meevax::type_traits
+#endif
 
 
 #endif
