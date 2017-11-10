@@ -51,7 +51,7 @@ has_type_(const_iterator);
 
 has_type_(allocator_type);
 
-has_type_(defference_type);
+has_type_(difference_type);
 
 has_type_(size_type);
 
