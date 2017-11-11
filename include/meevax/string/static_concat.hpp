@@ -10,7 +10,12 @@
 #include <meevax/type_traits/has_type.hpp>
 
 
+#if __cplusplus < 201703L
 namespace meevax {
+namespace string {
+#else
+namespace meevax::string {
+#endif
 
 
 // TODO make metafunction "is_char_type"
@@ -39,7 +44,7 @@ constexpr decltype(auto) static_array_size_(const std::array<T,N>&) noexcept
 
 
 template <typename T>
-using static_array_size = decltype(meevax::static_array_size_(std::declval<T>()));
+using static_array_size = decltype(meevax::string::static_array_size_(std::declval<T>()));
 
 
 template <typename T, typename U, std::size_t... Ts, std::size_t... Us,
@@ -49,7 +54,7 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
                               std::integer_sequence<std::size_t, Us...>) noexcept
   -> std::array<
        typename std::remove_reference<decltype(std::declval<T>()[0])>::type,
-       meevax::static_array_size<T>::value + meevax::static_array_size<U>::value
+       meevax::string::static_array_size<T>::value + meevax::string::static_array_size<U>::value
      >
 {
   return {{lhs[Ts]..., rhs[Us]...}};
@@ -62,7 +67,7 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
                               std::integer_sequence<std::size_t, Us...>) noexcept
   -> std::array<
        typename std::remove_reference<decltype(std::declval<T>()[0])>::type,
-       meevax::static_array_size<T>::value + meevax::static_array_size<U>::value + 1
+       meevax::string::static_array_size<T>::value + meevax::string::static_array_size<U>::value + 1
      >
 {
   return {{lhs[Ts]..., rhs[Us]..., '\0'}};
@@ -72,10 +77,10 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
 template <typename T, typename U = const typename std::remove_reference<decltype(std::declval<T>()[0])>::type(&)[1]>
 constexpr decltype(auto) static_concat(T&& lhs, U&& rhs = "") noexcept
 {
-  return meevax::static_concat_(
+  return meevax::string::static_concat_(
     std::forward<T>(lhs), std::forward<U>(rhs),
-    std::make_integer_sequence<std::size_t, meevax::static_array_size<T>::value> {},
-    std::make_integer_sequence<std::size_t, meevax::static_array_size<U>::value> {}
+    std::make_integer_sequence<std::size_t, meevax::string::static_array_size<T>::value> {},
+    std::make_integer_sequence<std::size_t, meevax::string::static_array_size<U>::value> {}
   );
 }
 
@@ -83,14 +88,19 @@ constexpr decltype(auto) static_concat(T&& lhs, U&& rhs = "") noexcept
 template <typename T, typename U, typename... Ts>
 constexpr decltype(auto) static_concat(T&& lhs, U&& rhs, Ts&&... args) noexcept
 {
-  return meevax::static_concat(
+  return meevax::string::static_concat(
     std::forward<T>(lhs),
-    meevax::static_concat(std::forward<U>(rhs), std::forward<Ts>(args)...)
+    meevax::string::static_concat(std::forward<U>(rhs), std::forward<Ts>(args)...)
   );
 }
 
 
+#if __cplusplus < 201703L
+} // namespace string
+} // namespace meevax
+#else
 } // namespace meevax::string
+#endif
 
 
 template <typename Char, std::size_t N>
