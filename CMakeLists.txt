@@ -102,8 +102,11 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
+  boost_system
+  boost_thread
   cairo
   xcb
+  stdc++fs
 )
 
 install(
