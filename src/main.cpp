@@ -11,21 +11,9 @@
 #include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
-#include <meevax/ansi_escape_sequence/graphics_mode.hpp>
+#include <meevax/ansi_escape_sequence/cursor.hpp>
+#include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-
-
-namespace meevax::ansi_escape_sequence {
-
-#ifdef _WIN32
-static constexpr auto newline {meevax::string::static_concat("\r\n")};
-#elif defined macintosh
-static constexpr auto newline {meevax::string::static_concat("\r")};
-#else
-static constexpr auto newline {meevax::string::static_concat("\n")};
-#endif
-
-} // namespace meevax::ansi_escape_sequence
 
 
 auto main(int argc, char** argv) -> int try
@@ -73,7 +61,7 @@ auto main(int argc, char** argv) -> int try
 
   while (true)
   {
-    std::cout << meevax::ansi_escape_sequence::newline
+    std::cout << meevax::ansi_escape_sequence::cursor::newline
               << meevax::ansi_escape_sequence::color::foreground::green
               << "meevax@"
               << boost::asio::ip::host_name()
@@ -83,7 +71,7 @@ auto main(int argc, char** argv) -> int try
               << meevax::ansi_escape_sequence::color::foreground::white
               << "$ "
               << meevax::ansi_escape_sequence::attributes::off
-              << meevax::ansi_escape_sequence::newline;
+              << meevax::ansi_escape_sequence::cursor::newline;
   }
 
   return boost::exit_success;
