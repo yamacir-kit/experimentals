@@ -8,7 +8,6 @@
 #include <vector>
 
 #include <sys/ioctl.h>
-#include <termios.h>
 #include <unistd.h>
 
 #include <boost/asio.hpp>
@@ -17,36 +16,7 @@
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-
-
-namespace meevax::posix {
-
-
-class termios
-  : public ::termios
-{
-  const int fd_;
-  struct ::termios default_;
-
-public:
-  explicit termios(int fd)
-    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
-      default_ {(::tcgetattr(fd_, this), *this)}
-  {}
-
-  ~termios()
-  {
-    ::tcsetattr(fd_, TCSANOW, &default_);
-  }
-
-  decltype(auto) set(int optional_actions = TCSANOW) const noexcept
-  {
-    return ::tcsetattr(fd_, optional_actions, this);
-  }
-};
-
-
-} // namespace meevax::posix
+#include <meevax/posix/termios.hpp>
 
 
 namespace meevax::ansi_escape_sequence::cursor {
