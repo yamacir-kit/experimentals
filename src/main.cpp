@@ -4,6 +4,8 @@
 #include <vector>
 #include <experimental/filesystem>
 
+#include <sys/ioctl.h>
+#include <termios.h>
 #include <unistd.h>
 
 #include <boost/asio.hpp>
@@ -11,11 +13,25 @@
 
 #include <meevax/ansi_escape_sequence/graphics_mode.hpp>
 #include <meevax/configure/version.hpp>
-#include <meevax/syntax/main.hpp>
 
 
-int_main(const std::vector<std::string> args, [&]()
+namespace meevax::ansi_escape_sequence {
+
+#ifdef _WIN32
+static constexpr auto newline {meevax::string::static_concat("\r\n")};
+#elif defined macintosh
+static constexpr auto newline {meevax::string::static_concat("\r")};
+#else
+static constexpr auto newline {meevax::string::static_concat("\n")};
+#endif
+
+} // namespace meevax::ansi_escape_sequence
+
+
+auto main(int argc, char** argv) -> int try
 {
+  const std::vector<std::string> args {argv, argv + argc};
+
   for (auto iter {std::begin(args) + 1}; iter != std::end(args); ++iter) [&]()
   {
     for (const auto& option : decltype(args) {"^-v$", "^--version$"})
@@ -54,9 +70,10 @@ int_main(const std::vector<std::string> args, [&]()
     std::exit(boost::exit_failure);
   }();
 
-  // while (true)
+
+  while (true)
   {
-    std::cout << "\n"
+    std::cout << meevax::ansi_escape_sequence::newline
               << meevax::ansi_escape_sequence::color::foreground::green
               << "meevax@"
               << boost::asio::ip::host_name()
@@ -66,9 +83,22 @@ int_main(const std::vector<std::string> args, [&]()
               << meevax::ansi_escape_sequence::color::foreground::white
               << "$ "
               << meevax::ansi_escape_sequence::attributes::off
-              << "\n";
+              << meevax::ansi_escape_sequence::newline;
   }
 
   return boost::exit_success;
-})
+}
+
+catch (const std::system_error& error)
+{
+  std::cerr << "[error] code: " << error.code().value()
+            << " - " << error.code().message() << "\n";
+  std::exit(error.code().value());
+}
+
+catch (const std::exception& error)
+{
+  std::cerr << "[error] " << error.what() << "\n";
+  std::exit(boost::exit_exception_failure);
+}
 
