@@ -1,8 +1,11 @@
+#include <algorithm>
+#include <cmath>
+#include <experimental/filesystem>
 #include <iostream>
+#include <iomanip>
 #include <regex>
 #include <string>
 #include <vector>
-#include <experimental/filesystem>
 
 #include <sys/ioctl.h>
 #include <termios.h>
@@ -44,6 +47,66 @@ public:
 
 
 } // namespace meevax::posix
+
+
+namespace meevax::ansi_escape_sequence::cursor {
+
+
+class counted_newline_
+{
+  static signed int count_;
+
+public:
+  explicit counted_newline_() = default;
+
+  auto countup() noexcept
+  {
+    return (++count_, newline);
+  }
+
+  auto restore() noexcept // XXX carriage return はコイツの仕事ではない
+  {
+    const std::string cursor_up {
+      std::string {"\e["} + std::to_string(count_) + std::string {"A"}
+    };
+
+    count_ = 0;
+    return cursor_up + "\r\e[K";
+  }
+} counted_newline;
+
+
+signed int counted_newline_::count_ {0};
+
+
+} // namespace meevax::ansi_escape_sequence::cursor
+
+
+template <typename Char>
+inline decltype(auto) operator<<(std::basic_ostream<Char>& lhs,
+                                 meevax::ansi_escape_sequence::cursor::counted_newline_& rhs)
+{
+  return lhs << rhs.countup();
+}
+
+
+class window_size
+  : public ::winsize
+{
+  const int fd_;
+
+public:
+  explicit window_size(int fd)
+    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}}
+  {
+    update();
+  }
+
+  void update() noexcept
+  {
+    ::ioctl(fd_, TIOCGWINSZ, this);
+  }
+};
 
 
 auto main(int argc, char** argv) -> int try
@@ -88,6 +151,7 @@ auto main(int argc, char** argv) -> int try
     std::exit(boost::exit_failure);
   }();
 
+
   static meevax::posix::termios termios {STDIN_FILENO};
   {
     termios.c_lflag &= ~(ICANON | ECHO);
@@ -97,7 +161,6 @@ auto main(int argc, char** argv) -> int try
     termios.set();
   }
 
-  // TODO counted newline
 
   while (true)
   {
@@ -113,7 +176,38 @@ auto main(int argc, char** argv) -> int try
               << meevax::ansi_escape_sequence::attributes::off
               << meevax::ansi_escape_sequence::cursor::newline;
 
-    std::cout << static_cast<char>(std::getchar()) << "\n";
+    for (std::vector<std::string> buffer {""}; false; )
+    {
+      std::size_t line {0}, column {0};
+
+      const auto keypress {static_cast<char>(std::getchar())};
+      switch (keypress)
+      {
+      case '\n':
+        buffer.emplace_back("");
+        break;
+
+      default:
+        buffer.back().push_back(keypress);
+        break;
+      }
+
+      for (auto iter {std::begin(buffer)}; iter != std::end(buffer); ++iter)
+      {
+        if (buffer.size())
+        {
+        }
+
+        auto digits = [](unsigned int num)
+        {
+          return num > 0 ? static_cast<int>(std::log(static_cast<double>(num))) + 1 : 1;
+        };
+
+        std::cout << std::setw(digits(buffer.size())) << std::right
+                  << std::distance(std::begin(buffer), iter)
+                  << *iter << "\n";
+      }
+    }
   }
 
   return boost::exit_success;
