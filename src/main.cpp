@@ -16,6 +16,36 @@
 #include <meevax/configure/version.hpp>
 
 
+namespace meevax::posix {
+
+
+class termios
+  : public ::termios
+{
+  const int fd_;
+  struct ::termios default_;
+
+public:
+  explicit termios(int fd)
+    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
+      default_ {(::tcgetattr(fd_, this), *this)}
+  {}
+
+  ~termios()
+  {
+    ::tcsetattr(fd_, TCSANOW, &default_);
+  }
+
+  decltype(auto) set(int optional_actions = TCSANOW) const noexcept
+  {
+    return ::tcsetattr(fd_, optional_actions, this);
+  }
+};
+
+
+} // namespace meevax::posix
+
+
 auto main(int argc, char** argv) -> int try
 {
   const std::vector<std::string> args {argv, argv + argc};
@@ -58,6 +88,16 @@ auto main(int argc, char** argv) -> int try
     std::exit(boost::exit_failure);
   }();
 
+  static meevax::posix::termios termios {STDIN_FILENO};
+  {
+    termios.c_lflag &= ~(ICANON | ECHO);
+    termios.c_cc[VMIN]  = 1;
+    termios.c_cc[VTIME] = 0;
+
+    termios.set();
+  }
+
+  // TODO counted newline
 
   while (true)
   {
@@ -72,6 +112,8 @@ auto main(int argc, char** argv) -> int try
               << "$ "
               << meevax::ansi_escape_sequence::attributes::off
               << meevax::ansi_escape_sequence::cursor::newline;
+
+    std::cout << static_cast<char>(std::getchar()) << "\n";
   }
 
   return boost::exit_success;
