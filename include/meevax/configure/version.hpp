@@ -18,8 +18,8 @@ namespace meevax {
 #if __cplusplus < 201402L
 const std::string project_name {"meevax"};
 
-const std::string build_time {"2017/11/11 23:38:57"};
-const std::string build_type {"Debug"};
+const std::string build_time {"2017/11/13 22:40:20"};
+const std::string build_type {"Release"};
 
 const std::string major_version {"0"};
 const std::string minor_version {"3"};
@@ -37,8 +37,8 @@ const std::string boost_version {
 #else
 constexpr auto project_name {meevax::string::static_concat("meevax")};
 
-constexpr auto build_time {meevax::string::static_concat("2017/11/11 23:38:57")};
-constexpr auto build_type {meevax::string::static_concat("Debug")};
+constexpr auto build_time {meevax::string::static_concat("2017/11/13 22:40:20")};
+constexpr auto build_type {meevax::string::static_concat("Release")};
 
 constexpr auto major_version {meevax::string::static_concat("0")};
 constexpr auto minor_version {meevax::string::static_concat("3")};

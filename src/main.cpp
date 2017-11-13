@@ -7,35 +7,14 @@
 #include <string>
 #include <vector>
 
-#include <sys/ioctl.h>
-#include <unistd.h>
-
 #include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
+// #include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
-
-
-class window_size
-  : public ::winsize
-{
-  const int fd_;
-
-public:
-  explicit window_size(int fd)
-    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}}
-  {
-    update();
-  }
-
-  void update() noexcept
-  {
-    ::ioctl(fd_, TIOCGWINSZ, this);
-  }
-};
 
 
 auto main(int argc, char** argv) -> int try
@@ -80,7 +59,6 @@ auto main(int argc, char** argv) -> int try
     std::exit(boost::exit_failure);
   }();
 
-
   static meevax::posix::termios termios {STDIN_FILENO};
   {
     termios.c_lflag &= ~(ICANON | ECHO);
@@ -88,55 +66,6 @@ auto main(int argc, char** argv) -> int try
     termios.c_cc[VTIME] = 0;
 
     termios.set();
-  }
-
-
-  while (true)
-  {
-    std::cout << meevax::ansi_escape_sequence::cursor::newline
-              << meevax::ansi_escape_sequence::color::foreground::green
-              << "meevax@"
-              << boost::asio::ip::host_name()
-              << ": "
-              << meevax::ansi_escape_sequence::color::foreground::yellow
-              << std::experimental::filesystem::current_path().string()
-              << meevax::ansi_escape_sequence::color::foreground::white
-              << "$ "
-              << meevax::ansi_escape_sequence::attributes::off
-              << meevax::ansi_escape_sequence::cursor::newline;
-
-    for (std::vector<std::string> buffer {""}; false; )
-    {
-      std::size_t line {0}, column {0};
-
-      const auto keypress {static_cast<char>(std::getchar())};
-      switch (keypress)
-      {
-      case '\n':
-        buffer.emplace_back("");
-        break;
-
-      default:
-        buffer.back().push_back(keypress);
-        break;
-      }
-
-      for (auto iter {std::begin(buffer)}; iter != std::end(buffer); ++iter)
-      {
-        if (buffer.size())
-        {
-        }
-
-        auto digits = [](unsigned int num)
-        {
-          return num > 0 ? static_cast<int>(std::log(static_cast<double>(num))) + 1 : 1;
-        };
-
-        std::cout << std::setw(digits(buffer.size())) << std::right
-                  << std::distance(std::begin(buffer), iter)
-                  << *iter << "\n";
-      }
-    }
   }
 
   return boost::exit_success;

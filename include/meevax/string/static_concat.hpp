@@ -110,5 +110,19 @@ inline decltype(auto) operator<<(std::basic_ostream<Char>& lhs, const std::array
 }
 
 
+template <typename Char, std::size_t N>
+inline decltype(auto) operator+(std::basic_string<Char>& lhs, const std::array<Char,N>& rhs)
+{
+  return lhs + rhs.data();
+}
+
+
+template <typename Char, std::size_t N>
+inline decltype(auto) operator+=(std::basic_string<Char>& lhs, const std::array<Char,N>& rhs)
+{
+  return lhs += rhs.data();
+}
+
+
 #endif
 
