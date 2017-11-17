@@ -1,8 +1,5 @@
-#include <algorithm>
-#include <cmath>
 #include <experimental/filesystem>
 #include <iostream>
-#include <iomanip>
 #include <regex>
 #include <string>
 #include <vector>
@@ -13,7 +10,7 @@
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-// #include <meevax/posix/inline_curses.hpp>
+#include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
 
 
@@ -66,6 +63,17 @@ auto main(int argc, char** argv) -> int try
     termios.c_cc[VTIME] = 0;
 
     termios.set();
+  }
+
+  static meevax::posix::inline_curses<char> icurses {STDIN_FILENO};
+
+  icurses.draw(std::cout);
+  icurses.back().clear();
+
+  while (true)
+  {
+    icurses.read();
+    icurses.draw(std::cout);
   }
 
   return boost::exit_success;

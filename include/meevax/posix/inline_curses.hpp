@@ -2,12 +2,20 @@
 #define INCLUDED_MEEVAX_POSIX_INLINE_CURSES_HPP
 
 
+#include <algorithm>
+#include <cassert>
+#include <cmath>
+#include <iomanip>
+#include <iostream>
 #include <list>
 #include <string>
 #include <system_error>
+#include <utility>
 
 #include <sys/ioctl.h>
 #include <unistd.h>
+
+#include <meevax/posix/read.hpp>
 
 
 #if __cplusplus < 201703L
@@ -18,38 +26,74 @@ namespace meevax::posix {
 #endif
 
 
-
+template <typename Char = char>
 class inline_curses
-  : public ::winsize
+  : public ::winsize,
+    public std::list<std::basic_string<Char>>
 {
-  int fd_;
+public:
+  using char_type = Char;
+
+private:
+  const int fd_;
+
+  std::pair<
+    typename std::list<std::basic_string<char_type>>::iterator,
+    typename std::basic_string<char_type>::iterator
+  > cursor_;
 
 public:
-  std::list<std::string> header, body, footer, control_line;
-
-  std::string restore;
-
-  explicit inline_curses(int fd)
-    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
-      restore {""}
+  explicit inline_curses(int fd) noexcept(false)
+    : std::list<std::basic_string<char_type>> {"\e[0;38;5;059mready, you have control.\e[0m"},
+      fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
+      cursor_ {std::begin(*this), std::begin(*std::begin(*this))}
   {
     update();
   }
 
-  const auto& assemble() const
+  void draw(std::ostream& ostream)
   {
-    static std::list<std::string> assembled {""};
+    ostream << "\e[?7l" << std::flush;
 
-    // auto reload = [&]()
-    // {
-    // }();
-
-    for (const auto& line : header)
+    for (std::size_t row {0}; row < (*this).size(); ++row)
     {
-      assembled.back() += line;
+      ostream << "\r\e[K" << (row + 1 != (*this).size() ? "\e[A" : "");
     }
 
-    return assembled;
+    for (auto iter {std::begin(*this)}; iter != std::end(*this); ++iter)
+    {
+      ostream << std::setw(std::to_string((*this).size()).size()) << std::right << std::distance(std::begin(*this), iter) << " ";
+      ostream << *iter << (std::distance(&(*this).back(), &*iter) != 0 ? "\n" : "");
+    }
+
+    ostream << "\e[?7h" << std::flush;
+  }
+
+  decltype(auto) read() noexcept(false)
+  {
+    std::basic_string<char_type> buffer {meevax::posix::read<char_type>(fd_)};
+
+    switch (buffer.back())
+    {
+    case 0x1B:
+      while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.)$"}))
+      {
+        buffer.push_back(meevax::posix::read<char_type>(fd_));
+      }
+      break;
+
+    case '\n':
+      (*this).emplace_back("");
+      ++(cursor_.first);
+
+      break;
+
+    default:
+      assert(std::isprint(buffer.back()));
+
+      (*this).back() += buffer;
+      ++(cursor_.second);
+    }
   }
 
 private:
@@ -68,25 +112,6 @@ private:
 #endif
 
 
-  // auto digits = [](unsigned int num)
-  // {
-  //   return num > 0 ? static_cast<int>(std::log(static_cast<double>(num))) + 1 : 1;
-  // };
-  //
-  // std::cout << std::setw(digits(buffer.size())) << std::right
-  //           << std::distance(std::begin(buffer), iter)
-  //           << *iter << "\n";
-
-
-  // while (true)
-  // {
-  //   icurses.header.clear();
-  //
-  //   if (icurses.header.empty())
-  //   {
-  //     icurses.header.emplace(std::end(icurses.header), "");
-  //   }
-  //
   //   icurses.header.back() += meevax::ansi_escape_sequence::color::foreground::green;
   //   icurses.header.back() += "meevax@";
   //   icurses.header.back() += boost::asio::ip::host_name();
@@ -96,21 +121,6 @@ private:
   //   icurses.header.back() += meevax::ansi_escape_sequence::color::foreground::white;
   //   icurses.header.back() += "$ ";
   //   icurses.header.back() += meevax::ansi_escape_sequence::attributes::off;
-  //
-  //   std::cout << icurses.restore;
-  //   // std::cout << icurses.assemble();
-  //
-  //   const auto input {static_cast<char>(std::getchar())};
-  //
-  //   if (input == '\n')
-  //   {
-  //     icurses.body.emplace(std::end(icurses.body), "");
-  //   }
-  //   else
-  //   {
-  //     icurses.body.back() += input;
-  //   }
-  // }
 
 
 #endif
