@@ -7,6 +7,7 @@
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <limits>
 #include <list>
 #include <string>
 #include <system_error>
@@ -26,7 +27,7 @@ namespace meevax::posix {
 #endif
 
 
-template <typename Char = char>
+template <typename Char>
 class inline_curses
   : public ::winsize,
     public std::list<std::basic_string<Char>>
@@ -37,33 +38,56 @@ public:
 private:
   const int fd_;
 
+  int wrote_row_;
+
   std::pair<
     typename std::list<std::basic_string<char_type>>::iterator,
     typename std::basic_string<char_type>::iterator
   > cursor_;
 
+  // class area
+  // {
+  // public:
+  //   decltype(cursor_)::
+  // } area_;
+
 public:
   explicit inline_curses(int fd) noexcept(false)
-    : std::list<std::basic_string<char_type>> {"\e[0;38;5;059mready, you have control.\e[0m"},
+    : std::list<std::basic_string<char_type>> {""},
       fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
+      wrote_row_ {0},
       cursor_ {std::begin(*this), std::begin(*std::begin(*this))}
   {
-    update();
+    ::ioctl(fd_, TIOCGWINSZ, this); // TODO SET SIGNAL HANDLER
   }
 
-  void draw(std::ostream& ostream)
+  void rewind(std::basic_ostream<char_type>& ostream)
   {
-    ostream << "\e[?7l" << std::flush;
-
-    for (std::size_t row {0}; row < (*this).size(); ++row)
+    if (wrote_row_)
     {
-      ostream << "\r\e[K" << (row + 1 != (*this).size() ? "\e[A" : "");
+      --wrote_row_;
     }
+
+    for (; 0 < wrote_row_; --wrote_row_)
+    {
+      ostream << "\e[A";
+    }
+  }
+
+  void draw(std::basic_ostream<char_type>& ostream)
+  {
+    rewind(ostream);
+
+    ostream << "\e[?7l" << std::flush;
 
     for (auto iter {std::begin(*this)}; iter != std::end(*this); ++iter)
     {
-      ostream << std::setw(std::to_string((*this).size()).size()) << std::right << std::distance(std::begin(*this), iter) << " ";
+      ostream << "\r" << std::setw(std::to_string((*this).size()).size()) << std::right
+              << std::distance(std::begin(*this), iter) << " ";
+
       ostream << *iter << (std::distance(&(*this).back(), &*iter) != 0 ? "\n" : "");
+
+      ++wrote_row_;
     }
 
     ostream << "\e[?7h" << std::flush;
@@ -94,12 +118,6 @@ public:
       (*this).back() += buffer;
       ++(cursor_.second);
     }
-  }
-
-private:
-  void update() noexcept // TODO SIGNAL HANDLER
-  {
-    ::ioctl(fd_, TIOCGWINSZ, this);
   }
 };
 

@@ -67,8 +67,7 @@ auto main(int argc, char** argv) -> int try
 
   static meevax::posix::inline_curses<char> icurses {STDIN_FILENO};
 
-  icurses.draw(std::cout);
-  icurses.back().clear();
+  std::cout << "\e[0;38;5;059mready, you have control.\e[0m\r" << std::flush;
 
   while (true)
   {
