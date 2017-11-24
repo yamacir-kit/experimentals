@@ -66,14 +66,20 @@ auto main(int argc, char** argv) -> int try
     termios.set();
   }
 
-  static meevax::posix::inline_curses<char> icurses {STDIN_FILENO};
+  // inline_curses に渡した出力ストリームに inline_curses<CharType>::write()
+  // を介せず出力を行った場合、出力の可読性は保証されない
+  //
+  // inline_curses<CharType>::size() が出力ウィンドウの行数以上である場合、
+  // inline_curses<CharType>::write() によりウィンドウ全体の出力が上書きされる
+  //
+  static meevax::posix::inline_curses<char> icurses {STDIN_FILENO, std::cout};
 
-  icurses.write(std::cout);
+  icurses.write();
 
   while (true)
   {
     icurses.read();
-    icurses.write(std::cout);
+    icurses.write();
   }
 
   return boost::exit_success;
