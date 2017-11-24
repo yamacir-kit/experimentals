@@ -2,6 +2,7 @@
 #define INCLUDED_MEEVAX_POSIX_TERMIOS_HPP
 
 
+#include <cerrno>
 #include <system_error>
 
 #include <termios.h>

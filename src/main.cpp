@@ -8,14 +8,12 @@
 #include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
-#include <sys/ioctl.h>
-#include <unistd.h>
-
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
 #include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
+#include <meevax/posix/winsize.hpp>
 
 
 auto main(int argc, char** argv) -> int try
@@ -69,10 +67,7 @@ auto main(int argc, char** argv) -> int try
     termios.set();
   }
 
-  static struct ::winsize winsize {};
-  {
-    ::ioctl(STDIN_FILENO, TIOCGWINSZ, &winsize);
-  }
+  static meevax::posix::winsize winsize {STDIN_FILENO};
 
   // inline_curses に渡した出力ストリームに inline_curses<CharType>::write()
   // を介せず出力を行った場合、出力の可読性は保証されない
