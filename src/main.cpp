@@ -66,14 +66,14 @@ auto main(int argc, char** argv) -> int try
     termios.set();
   }
 
-  static meevax::posix::inline_curses_<char> icurses {STDIN_FILENO};
+  static meevax::posix::inline_curses<char> icurses {STDIN_FILENO};
 
   std::cout << "\e[0;38;5;059mready, you have control.\e[0m\r" << std::flush;
 
   while (true)
   {
     icurses.read();
-    icurses.draw(std::cout);
+    icurses.write(std::cout);
   }
 
   return boost::exit_success;

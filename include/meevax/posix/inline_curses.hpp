@@ -6,12 +6,14 @@
 #include <cassert>
 #include <iomanip>
 #include <iostream>
+#include <iterator>
 #include <limits>
 #include <list>
 #include <regex>
 #include <string>
 #include <system_error>
 #include <utility>
+#include <vector>
 
 #include <sys/ioctl.h>
 #include <unistd.h>
@@ -27,128 +29,38 @@ namespace meevax::posix {
 #endif
 
 
-template <typename RowIterator, typename ColIterator>
-class cursor
-  : public std::pair<RowIterator, ColIterator>
-{
-public:
-  using row_iterator = RowIterator;
-  using col_iterator = ColIterator;
-
-  row_iterator& row_iter;
-  col_iterator& col_iter;
-
-public:
-  template <typename... Ts>
-  explicit cursor(Ts&&... args)
-    : std::pair<row_iterator, col_iterator> {std::forward<Ts>(args)...},
-      row_iter {(*this).first},
-      col_iter {(*this).second}
-  {}
-};
-
-
-class area
-  : public ::winsize
+template <typename CharType, template <typename...> typename SequenceContainer = std::list>
+class inline_curses
+  : public ::winsize,
+    public SequenceContainer<std::basic_string<CharType>>
 {
   const int fd_;
 
-  decltype(::winsize::ws_row) row_;
+  std::size_t window_upper_left_row_;
+  std::size_t window_upper_left_column_;
+
+  std::size_t relative_cursor_row_;
+  std::size_t relative_cursor_column_;
+
+  std::size_t previous_row_;
 
 public:
-  // [[deprecated]] const decltype(::winsize::ws_row)& max_row;
-  // [[deprecated]] const decltype(::winsize::ws_col)& max_col;
+  using char_type = CharType;
 
 public:
-  explicit area(int fd) noexcept(false)
-    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
-      row_ {1}
-      // max_row {(*this).max_row},
-      // max_col {(*this).max_col}
+  inline_curses(int fd, const std::basic_string<char_type>&& s = "") noexcept(false)
+    : SequenceContainer<std::basic_string<char_type>> {std::forward<decltype(s)>(s)},
+      fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}}
   {
-    ::ioctl(fd_, TIOCGWINSZ, this); // TODO SET SIGNAL HANDLER
-  }
+    ::ioctl(fd_, TIOCGWINSZ, this);
 
-  const auto& increment_row() noexcept
-  {
-    return row_ = std::min(static_cast<decltype(::winsize::ws_row)>(row_ + 1), ws_row);
-  }
+    window_upper_left_row_ = 0;
+    window_upper_left_column_ = 0;
 
-  const auto& assign_row(decltype(row_) row)
-  {
-    return row_ = std::min(std::max(row_, row), ws_row);
-  }
+    relative_cursor_row_ = 0;
+    relative_cursor_column_ = 0;
 
-  const auto& row() const noexcept
-  {
-    return row_;
-  }
-};
-
-
-template <typename Char>
-class inline_curses_
-  : public std::list<std::basic_string<Char>>
-{
-public:
-  using char_type = Char;
-
-private:
-  const int fd_;
-
-  meevax::posix::cursor<
-    typename std::list<std::basic_string<char_type>>::iterator,
-    typename std::basic_string<char_type>::iterator
-  > cursor_;
-
-  meevax::posix::area area_;
-
-public:
-  explicit inline_curses_(int fd) noexcept(false)
-    : std::list<std::basic_string<char_type>> {""},
-      fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
-      cursor_ {std::begin(*this), std::begin(*std::begin(*this))},
-      area_ {fd}
-  {}
-
-  void rewind(std::basic_ostream<char_type>& ostream) const
-  {
-    if (area_.row() != area_.ws_row)
-    {
-      for (auto row {1}; row < area_.row(); ++row)
-      {
-        ostream << "\e[A";
-      }
-    }
-    else
-    {
-      ostream << "\e[0;0H";
-    }
-  }
-
-  void draw(std::basic_ostream<char_type>& ostream)
-  {
-    rewind(ostream);
-
-    ostream << "\e[?7l" << std::flush;
-
-    // ostream << "\r\e[K\e[31mcursor iterator row: "
-    //         << std::distance(            std::begin(*this),  cursor_.row_iter) << ", col: "
-    //         << std::distance(std::begin(*std::begin(*this)), cursor_.col_iter) << ", size: "
-    //         << area_.row() << "/" << area_.ws_row << "\e[0m\n";
-
-    for (auto iter {std::begin(*this)}; iter != std::end(*this); ++iter)
-    {
-      ostream << "\r\e[K\e[33m" << std::setw(std::to_string((*this).size()).size())
-              << std::right << std::distance(std::begin(*this), iter) << "\e[0m ";
-
-      ostream << *iter
-              << (std::distance(&(*this).back(), &*iter) != 0 ? "\n" : "");
-    }
-
-    area_.assign_row(this->size()); // XXX +1 はデバッグ用のイテレータ位置表示のため
-
-    ostream << "\e[?7h" << std::flush;
+    previous_row_ = 0;
   }
 
   void read() noexcept(false)
@@ -166,17 +78,47 @@ public:
 
     case '\n':
       (*this).emplace_back("");
-      ++(cursor_.row_iter);
-      cursor_.col_iter = std::begin(*std::begin(*this)); // TODO インデントの考慮
-
       break;
 
     default:
       assert(std::isprint(buffer.back()));
-
       (*this).back() += buffer;
-      ++(cursor_.col_iter);
     }
+  }
+
+  void write(std::basic_ostream<char_type>& ostream)
+  {
+    ostream << "\e[?7h" << std::flush;
+
+    auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_column_);
+
+    for (auto row {std::min(previous_row_, static_cast<std::size_t>((*this).ws_row))}; 0 < row; --row)
+    {
+      ostream << "\e[A";
+    }
+    previous_row_ = 0;
+
+    for (const auto first {iter};
+         iter != std::end(*this) && std::distance(first, iter) < (*this).ws_row - 1;
+         ++iter)
+    {
+      ostream << "\r\e[K";
+
+      ostream << std::setw(std::to_string((*this).size()).size())
+              << std::right
+              << std::distance(std::begin(*this), iter)
+              << " ";
+
+      ostream << *iter << "\n";
+
+      ++previous_row_;
+    }
+
+    ostream << std::right
+            << "position: [" << window_upper_left_row_ + relative_cursor_row_ << ", "
+            << window_upper_left_column_ + relative_cursor_column_ << "]";
+
+    ostream << "\e[?7l" << std::flush;
   }
 };
 
