@@ -8,11 +8,10 @@ project(meevax VERSION 0.3.0 LANGUAGES CXX)
 # ==============================================================
 #  Compile Configuration
 # ==============================================================
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-variable -O3")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-variable -O3 -std=c++17")
 
-set(CXX_STANDARD 17)
-set(CXX_STANDARD_REQUIRED ON)
-
+# set(CXX_STANDARD 17)
+# set(CXX_STANDARD_REQUIRED ON)
 
 # if("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" OR "${CMAKE_COMPILER_IS_GNUCXX}")
 #   include(CheckCXXCompilerFlag)
@@ -102,9 +101,14 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
+  boost_system
+  boost_thread
   cairo
   xcb
+  stdc++fs
 )
+
+# set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 17)
 
 install(
   DIRECTORY ${${PROJECT_NAME}_INCLUDE_DIR}/

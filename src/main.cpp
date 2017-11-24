@@ -1,16 +1,27 @@
+#include <exception>
+#include <experimental/filesystem>
 #include <iostream>
 #include <regex>
 #include <string>
 #include <vector>
 
+#include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
+#include <sys/ioctl.h>
+#include <unistd.h>
+
+#include <meevax/ansi_escape_sequence/cursor.hpp>
+#include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-#include <meevax/syntax/main.hpp>
+#include <meevax/posix/inline_curses.hpp>
+#include <meevax/posix/termios.hpp>
 
 
-int_main(const std::vector<std::string>& args, [&]()
+auto main(int argc, char** argv) -> int try
 {
+  const std::vector<std::string> args {argv, argv + argc};
+
   for (auto iter {std::begin(args) + 1}; iter != std::end(args); ++iter) [&]()
   {
     for (const auto& option : decltype(args) {"^-v$", "^--version$"})
@@ -49,6 +60,49 @@ int_main(const std::vector<std::string>& args, [&]()
     std::exit(boost::exit_failure);
   }();
 
+  static meevax::posix::termios termios {STDIN_FILENO};
+  {
+    termios.c_lflag &= ~(ICANON | ECHO);
+    termios.c_cc[VMIN]  = 1;
+    termios.c_cc[VTIME] = 0;
+
+    termios.set();
+  }
+
+  static struct ::winsize winsize {};
+  {
+    ::ioctl(STDIN_FILENO, TIOCGWINSZ, &winsize);
+  }
+
+  // inline_curses に渡した出力ストリームに inline_curses<CharType>::write()
+  // を介せず出力を行った場合、出力の可読性は保証されない
+  //
+  // inline_curses<CharType>::size() が出力ウィンドウの行数以上である場合、
+  // inline_curses<CharType>::write() によりウィンドウ全体の出力が上書きされる
+  //
+  static meevax::posix::inline_curses<char> icurses {std::cin, std::cout};
+
+  icurses.update_window_size(winsize.ws_row, winsize.ws_col);
+
+  while (true)
+  {
+    icurses.read();
+    icurses.write();
+  }
+
   return boost::exit_success;
-})
+}
+
+catch (const std::system_error& error)
+{
+  std::cerr << "[error] code: " << error.code().value()
+            << " - " << error.code().message() << "\n";
+  std::exit(error.code().value());
+}
+
+catch (const std::exception& error)
+{
+  std::cerr << "[error] " << error.what() << "\n";
+  std::exit(boost::exit_exception_failure);
+}
 
