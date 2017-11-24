@@ -7,13 +7,15 @@
 #include <iomanip>
 #include <iostream>
 #include <iterator>
-#include <limits>
 #include <list>
+#include <numeric>
 #include <regex>
+#include <sstream>
 #include <string>
 #include <system_error>
 #include <utility>
-#include <vector>
+
+#include <boost/utility/value_init.hpp>
 
 #include <sys/ioctl.h>
 #include <unistd.h>
@@ -36,13 +38,13 @@ class inline_curses
 {
   const int fd_;
 
-  std::size_t window_upper_left_row_;
-  std::size_t window_upper_left_column_;
+  boost::value_initialized<std::size_t> window_upper_left_row_;
+  boost::value_initialized<std::size_t> window_upper_left_column_;
 
-  std::size_t relative_cursor_row_;
-  std::size_t relative_cursor_column_;
+  boost::value_initialized<std::size_t> relative_cursor_row_;
+  boost::value_initialized<std::size_t> relative_cursor_column_;
 
-  std::size_t previous_row_;
+  boost::value_initialized<decltype(::winsize::ws_row)> previous_row_;
 
 public:
   using char_type = CharType;
@@ -53,14 +55,6 @@ public:
       fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}}
   {
     ::ioctl(fd_, TIOCGWINSZ, this);
-
-    window_upper_left_row_ = 0;
-    window_upper_left_column_ = 0;
-
-    relative_cursor_row_ = 0;
-    relative_cursor_column_ = 0;
-
-    previous_row_ = 0;
   }
 
   void read() noexcept(false)
@@ -78,6 +72,17 @@ public:
 
     case '\n':
       (*this).emplace_back("");
+
+      // +1 はゼロ始まりのインデックスをサイズにするための処理
+      // -1 はウィンドウサイズから最下行のステータスライン文の行を除く処理
+      if (relative_cursor_row_ + 1 < (*this).ws_row - 1)
+      {
+        ++relative_cursor_row_;
+      }
+      else
+      {
+        ++window_upper_left_row_;
+      }
       break;
 
     default:
@@ -90,13 +95,9 @@ public:
   {
     ostream << "\e[?7h" << std::flush;
 
-    auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_column_);
+    auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
 
-    for (auto row {std::min(previous_row_, static_cast<std::size_t>((*this).ws_row))}; 0 < row; --row)
-    {
-      ostream << "\e[A";
-    }
-    previous_row_ = 0;
+    rewind(ostream);
 
     for (const auto first {iter};
          iter != std::end(*this) && std::distance(first, iter) < (*this).ws_row - 1;
@@ -104,21 +105,53 @@ public:
     {
       ostream << "\r\e[K";
 
-      ostream << std::setw(std::to_string((*this).size()).size())
-              << std::right
-              << std::distance(std::begin(*this), iter)
-              << " ";
+      // ostream << std::setw(std::to_string((*this).size()).size())
+      //         << std::right
+      //         << std::distance(std::begin(*this), iter)
+      //         << " ";
+
+      [&](auto number) -> void
+      {
+        ostream << "\e[0;38;5;059m"
+                << std::setw(std::to_string((*this).size()).size()) << std::right
+                << number << "\e[0m ";
+      }(std::distance(std::begin(*this), iter));
 
       ostream << *iter << "\n";
 
       ++previous_row_;
     }
 
-    ostream << std::right
-            << "position: [" << window_upper_left_row_ + relative_cursor_row_ << ", "
-            << window_upper_left_column_ + relative_cursor_column_ << "]";
+    std::basic_stringstream<char_type> sstream {};
+    {
+      sstream << "window size: [" << (*this).ws_row << ", " << (*this).ws_col << "], ";
+
+      sstream << "window position: [" << window_upper_left_row_ << ", "
+                                      << window_upper_left_column_ << "], ";
+
+      sstream << "cursor: ["
+              << window_upper_left_row_ + relative_cursor_row_
+              << ", "
+              << window_upper_left_column_ + relative_cursor_column_
+              << "], size: "
+              << std::accumulate(std::begin(*this), std::end(*this), std::basic_string<char_type> {}).size() + (*this).size()
+              << " ";
+    }
+
+    ostream << "\r" << std::setw((*this).ws_col) << std::right << sstream.str();
 
     ostream << "\e[?7l" << std::flush;
+  }
+
+private:
+  void rewind(std::basic_ostream<char_type>& ostream)
+  {
+    for (auto row {std::min(previous_row_.data(), (*this).ws_row)}; 0 < row; --row)
+    {
+      ostream << "\e[A";
+    }
+
+    previous_row_.data() = 0;
   }
 };
 
@@ -129,17 +162,6 @@ public:
 #else
 } // namespace meevax::posix
 #endif
-
-
-  //   icurses.header.back() += meevax::ansi_escape_sequence::color::foreground::green;
-  //   icurses.header.back() += "meevax@";
-  //   icurses.header.back() += boost::asio::ip::host_name();
-  //   icurses.header.back() += ": ";
-  //   icurses.header.back() += meevax::ansi_escape_sequence::color::foreground::yellow;
-  //   icurses.header.back() += std::experimental::filesystem::current_path().string();
-  //   icurses.header.back() += meevax::ansi_escape_sequence::color::foreground::white;
-  //   icurses.header.back() += "$ ";
-  //   icurses.header.back() += meevax::ansi_escape_sequence::attributes::off;
 
 
 #endif
