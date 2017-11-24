@@ -36,23 +36,26 @@ class inline_curses
   : public ::winsize,
     public SequenceContainer<std::basic_string<CharType>>
 {
-  const int fd_;
-
-  boost::value_initialized<std::size_t> window_upper_left_row_;
-  boost::value_initialized<std::size_t> window_upper_left_column_;
-
-  boost::value_initialized<std::size_t> relative_cursor_row_;
-  boost::value_initialized<std::size_t> relative_cursor_column_;
-
-  boost::value_initialized<decltype(::winsize::ws_row)> previous_row_;
-
 public:
   using char_type = CharType;
 
+  using typename SequenceContainer<std::basic_string<char_type>>::difference_type;
+  using typename SequenceContainer<std::basic_string<char_type>>::size_type;
+
+private:
+  const int fd_;
+
+  boost::value_initialized<size_type> window_upper_left_row_;
+  boost::value_initialized<size_type> window_upper_left_column_;
+
+  boost::value_initialized<difference_type> relative_cursor_row_; // TODO イテレータ化
+  boost::value_initialized<difference_type> relative_cursor_column_;
+
+  // boost::value_initialized<decltype(::winsize::ws_row)> previous_row_;
+
 public:
-  inline_curses(int fd, const std::basic_string<char_type>&& s = "") noexcept(false)
-    : SequenceContainer<std::basic_string<char_type>> {std::forward<decltype(s)>(s)},
-      fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}}
+  inline_curses(int fd) noexcept(false)
+    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}}
   {
     ::ioctl(fd_, TIOCGWINSZ, this);
   }
@@ -78,6 +81,7 @@ public:
       if (relative_cursor_row_ + 1 < (*this).ws_row - 1)
       {
         ++relative_cursor_row_;
+        std::cout << "\n"; // XXX UGLY CODE (FOR REWIND)
       }
       else
       {
@@ -95,39 +99,45 @@ public:
   {
     ostream << "\e[?7h" << std::flush;
 
-    auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
-
-    rewind(ostream);
-
-    for (const auto first {iter};
-         iter != std::end(*this) && std::distance(first, iter) < (*this).ws_row - 1;
-         ++iter)
+    if (!(*this).empty())
     {
-      ostream << "\r\e[K";
+      auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
 
-      // ostream << std::setw(std::to_string((*this).size()).size())
-      //         << std::right
-      //         << std::distance(std::begin(*this), iter)
-      //         << " ";
+      rewind(ostream);
 
-      [&](auto number) -> void
+      for (const auto first {iter};
+           iter != std::end(*this) && std::distance(first, iter) < (*this).ws_row - 1;
+           ++iter)
       {
-        ostream << "\e[0;38;5;059m"
-                << std::setw(std::to_string((*this).size()).size()) << std::right
-                << number << "\e[0m ";
-      }(std::distance(std::begin(*this), iter));
+        ostream << "\r\e[K";
 
-      ostream << *iter << "\n";
+        [&](auto number) -> void
+        {
+          ostream << "\e[0;38;5;059m"
+                  << std::setw(std::to_string((*this).size()).size()) << std::right
+                  << number << "\e[0m ";
+        }(std::distance(std::begin(*this), iter));
 
-      ++previous_row_;
+        ostream << *iter << "\n";
+
+        // ++previous_row_;
+      }
+    }
+    else
+    {
+      (*this).emplace_back("");
+      ostream << "\e[0;38;5;059m" << "ready, you have control." << "\e[0m\n";
     }
 
     std::basic_stringstream<char_type> sstream {};
     {
-      sstream << "window size: [" << (*this).ws_row << ", " << (*this).ws_col << "], ";
+      // sstream << "window size: [" << (*this).ws_row << ", " << (*this).ws_col << "], ";
 
       sstream << "window position: [" << window_upper_left_row_ << ", "
                                       << window_upper_left_column_ << "], ";
+
+      // sstream << "rewind: " << previous_row_
+      //         << " (" << previous_row_ - 1 << " + " << 1 << "), size: " << (*this).size() << ", ";
 
       sstream << "cursor: ["
               << window_upper_left_row_ + relative_cursor_row_
@@ -138,7 +148,7 @@ public:
               << " ";
     }
 
-    ostream << "\r" << std::setw((*this).ws_col) << std::right << sstream.str();
+    ostream << "\r" << std::setw((*this).ws_col) << std::right << sstream.str() << "\e[D";
 
     ostream << "\e[?7l" << std::flush;
   }
@@ -146,12 +156,13 @@ public:
 private:
   void rewind(std::basic_ostream<char_type>& ostream)
   {
-    for (auto row {std::min(previous_row_.data(), (*this).ws_row)}; 0 < row; --row)
+    // for (auto row {std::min(previous_row_.data(), (*this).ws_row)}; 0 < row; --row)
+    for (auto row {std::min((*this).size(), static_cast<size_type>((*this).ws_row))}; 0 < row; --row)
     {
       ostream << "\e[A";
     }
 
-    previous_row_.data() = 0;
+    // previous_row_.data() = 0;
   }
 };
 
