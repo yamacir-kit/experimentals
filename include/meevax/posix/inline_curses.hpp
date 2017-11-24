@@ -41,7 +41,6 @@ class inline_curses
 {
 public:
   using char_type = CharType;
-  using string_type = std::basic_string<CharType>;
 
   template <typename T>
   using container_type = SequenceContainer<T>;
@@ -53,7 +52,7 @@ public:
   size_type window_column;
 
 private:
-  std::basic_istream<char_type>& istream_;
+  std::basic_istream<char_type>& istream_; // TODO std::stack に詰めて出力多重化に備えること
   std::basic_ostream<char_type>& ostream_;
 
   boost::value_initialized<size_type> window_upper_left_row_;
@@ -118,7 +117,7 @@ public:
   //      セットされていない場合、出力先を端末ではない（ファイルストリームとか）とみなして出力
   void write() const
   {
-    ostream_ << "\e[?7l" << std::flush;
+    ostream_ << "\e[?7l" << "\e[?25l" << std::flush;
 
     auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
 
@@ -142,7 +141,7 @@ public:
 
     ostream_ << "\r" << std::setw(window_column) << std::right << status().str() << "\e[D";
 
-    ostream_ << "\e[?7h" << std::flush;
+    ostream_ << "\e[?7h" << "\e[?25h" << std::flush;
   }
 
 private:
