@@ -8,6 +8,9 @@
 #include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
+#include <sys/ioctl.h>
+#include <unistd.h>
+
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
@@ -66,15 +69,20 @@ auto main(int argc, char** argv) -> int try
     termios.set();
   }
 
+  static struct ::winsize winsize {};
+  {
+    ::ioctl(STDIN_FILENO, TIOCGWINSZ, &winsize);
+  }
+
   // inline_curses に渡した出力ストリームに inline_curses<CharType>::write()
   // を介せず出力を行った場合、出力の可読性は保証されない
   //
   // inline_curses<CharType>::size() が出力ウィンドウの行数以上である場合、
   // inline_curses<CharType>::write() によりウィンドウ全体の出力が上書きされる
   //
-  static meevax::posix::inline_curses<char> icurses {STDIN_FILENO, std::cout};
+  static meevax::posix::inline_curses<char> icurses {std::cin, std::cout};
 
-  icurses.write();
+  icurses.update_window_size(winsize.ws_row, winsize.ws_col);
 
   while (true)
   {

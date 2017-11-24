@@ -12,15 +12,14 @@
 #include <regex>
 #include <sstream>
 #include <string>
-#include <system_error>
+#include <type_traits>
 #include <utility>
 
 #include <boost/utility/value_init.hpp>
 
-#include <sys/ioctl.h>
 #include <unistd.h>
 
-#include <meevax/posix/read.hpp>
+#include <meevax/concepts/is_standard_container.hpp>
 
 
 #if __cplusplus < 201703L
@@ -31,20 +30,30 @@ namespace meevax::posix {
 #endif
 
 
-template <typename CharType, template <typename...> typename SequenceContainer = std::list>
+template <typename CharType, template <typename...> typename SequenceContainer = std::list,
+          typename = typename std::enable_if<
+                                meevax::concepts::is_standard_container<
+                                  SequenceContainer<std::basic_string<CharType>>
+                                >::value
+                              >::type>
 class inline_curses
-  : public ::winsize,
-    public SequenceContainer<std::basic_string<CharType>>
+  : public SequenceContainer<std::basic_string<CharType>>
 {
 public:
   using char_type = CharType;
+  using string_type = std::basic_string<CharType>;
+
+  template <typename T>
+  using container_type = SequenceContainer<T>;
 
   using typename SequenceContainer<std::basic_string<char_type>>::difference_type;
   using typename SequenceContainer<std::basic_string<char_type>>::size_type;
 
-private:
-  const int fd_;
+  size_type window_row;
+  size_type window_column;
 
+private:
+  std::basic_istream<char_type>& istream_;
   std::basic_ostream<char_type>& ostream_;
 
   boost::value_initialized<size_type> window_upper_left_row_;
@@ -54,23 +63,32 @@ private:
   boost::value_initialized<difference_type> relative_cursor_column_;
 
 public:
-  explicit inline_curses(int fd, std::basic_ostream<char_type>& ostream) noexcept(false)
-    : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
+  explicit inline_curses(std::basic_istream<char_type>& istream,
+                         std::basic_ostream<char_type>& ostream) noexcept(false)
+    : SequenceContainer<std::basic_string<CharType>> {""},
+      istream_ {istream},
       ostream_ {ostream}
   {
-    ::ioctl(fd_, TIOCGWINSZ, this);
+    ostream_ << "\e[0;38;5;059m" << "  0 ready, you have control." << "\n~\e[0m" << std::flush;
+  }
+
+  template <typename T>
+  void update_window_size(T ws_row, T ws_col) noexcept
+  {
+    window_row    = static_cast<size_type>(ws_row);
+    window_column = static_cast<size_type>(ws_col);
   }
 
   void read() noexcept(false)
   {
-    std::basic_string<char_type> buffer {meevax::posix::read<char_type>(fd_)};
+    std::basic_string<char_type> buffer {istream_.get()};
 
     switch (buffer.back()) // TODO regex 構築がゲロ重なので static const にすること
     {
     case 0x1B:
       while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.)$"}))
       {
-        buffer.push_back(meevax::posix::read<char_type>(fd_));
+        buffer.push_back(istream_.get());
       }
       break;
 
@@ -79,7 +97,7 @@ public:
 
       // +1 はゼロ始まりのインデックスをサイズにするための処理
       // -1 はウィンドウサイズから最下行のステータスライン文の行を除く処理
-      if (relative_cursor_row_ + 1 < (*this).ws_row - 1)
+      if (relative_cursor_row_ + 1 < window_row - 1)
       {
         ++relative_cursor_row_;
         ostream_ << "\n"; // XXX UGLY CODE (FOR REWIND)
@@ -96,61 +114,54 @@ public:
     }
   }
 
-  void write()
+  // TODO window_row, window_column に値がセットされているかの確認（初期化の追加含む）
+  //      セットされていない場合、出力先を端末ではない（ファイルストリームとか）とみなして出力
+  void write() const
   {
     ostream_ << "\e[?7l" << std::flush;
 
-    if (!(*this).empty())
+    auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
+
+    ostream_ << "\e[" << std::min((*this).size(), window_row) << "A";
+
+    for (const auto first {iter};
+         iter != std::end(*this) && std::distance(first, iter) < window_row - 1;
+         ++iter)
     {
-      auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
+      ostream_ << "\r\e[K";
 
-      rewind();
-
-      for (const auto first {iter};
-           iter != std::end(*this) && std::distance(first, iter) < (*this).ws_row - 1;
-           ++iter)
+      [&](auto number) -> void
       {
-        ostream_ << "\r\e[K";
+        ostream_ << "\e[0;38;5;059m"
+                 << std::setw(std::max(std::to_string((*this).size()).size(), size_type {2}))
+                 << std::right << number << "\e[0m ";
+      }(std::distance(std::begin(*this), iter));
 
-        [&](auto number) -> void
-        {
-          ostream_ << "\e[0;38;5;059m"
-                  << std::setw(std::to_string((*this).size()).size()) << std::right
-                  << number << "\e[0m ";
-        }(std::distance(std::begin(*this), iter));
-
-        ostream_ << *iter << "\n";
-      }
-    }
-    else
-    {
-      (*this).emplace_back("");
-      ostream_ << "\e[0;38;5;059m" << "ready, you have control." << "\e[0m\n";
+      ostream_ << *iter << "\n";
     }
 
-    std::basic_stringstream<char_type> sstream {};
-    {
-      sstream << "window position: [" << window_upper_left_row_ << ", "
-                                      << window_upper_left_column_ << "], ";
-
-      sstream << "cursor: ["
-              << window_upper_left_row_ + relative_cursor_row_
-              << ", "
-              << window_upper_left_column_ + relative_cursor_column_
-              << "], size: "
-              << std::accumulate(std::begin(*this), std::end(*this), std::basic_string<char_type> {}).size() + (*this).size()
-              << " ";
-    }
-
-    ostream_ << "\r" << std::setw((*this).ws_col) << std::right << sstream.str() << "\e[D";
+    ostream_ << "\r" << std::setw(window_column) << std::right << status().str() << "\e[D";
 
     ostream_ << "\e[?7h" << std::flush;
   }
 
 private:
-  void rewind()
+  auto status() const
   {
-    ostream_ << "\e[" << std::min((*this).size(), static_cast<size_type>((*this).ws_row)) << "A";
+    std::basic_stringstream<char_type> sstream {};
+
+    sstream << "window position: [" << window_upper_left_row_ << ", "
+                                    << window_upper_left_column_ << "], ";
+
+    sstream << "cursor: ["
+            << window_upper_left_row_ + relative_cursor_row_
+            << ", "
+            << window_upper_left_column_ + relative_cursor_column_
+            << "], size: "
+            << std::accumulate(std::begin(*this), std::end(*this), std::basic_string<char_type> {}).size() + (*this).size()
+            << " ";
+
+    return sstream;
   }
 };
 
