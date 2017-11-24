@@ -1,5 +1,5 @@
-#ifndef INCLUDED_MEEVAX_VISUAL_DELAYED_WRITE_HPP_
-#define INCLUDED_MEEVAX_VISUAL_DELAYED_WRITE_HPP_
+#ifndef INCLUDED_MEEVAX_STRING_DELAYED_WRITE_HPP
+#define INCLUDED_MEEVAX_STRING_DELAYED_WRITE_HPP
 
 
 #include <chrono>
@@ -13,7 +13,7 @@
 #include <unistd.h>
 
 
-namespace meevax {
+namespace meevax::string {
 
 
 template <typename C>
@@ -71,7 +71,7 @@ void delayed_incremental_write(const std::basic_stringstream<C>& sstream)
 }
 
 
-} // namespace meevax
+} // namespace meevax::string
 
 
 #endif
