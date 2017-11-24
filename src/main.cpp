@@ -59,13 +59,7 @@ auto main(int argc, char** argv) -> int try
   }();
 
   static meevax::posix::termios termios {STDIN_FILENO};
-  {
-    termios.c_lflag &= ~(ICANON | ECHO);
-    termios.c_cc[VMIN]  = 1;
-    termios.c_cc[VTIME] = 0;
-
-    termios.set();
-  }
+  termios.change_to_noncanonical_mode();
 
   static meevax::posix::winsize winsize {STDIN_FILENO};
 

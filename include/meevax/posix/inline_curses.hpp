@@ -58,8 +58,8 @@ private:
   boost::value_initialized<size_type> window_upper_left_row_;
   boost::value_initialized<size_type> window_upper_left_column_;
 
-  boost::value_initialized<difference_type> relative_cursor_row_; // TODO イテレータ化
-  boost::value_initialized<difference_type> relative_cursor_column_;
+  boost::value_initialized<size_type> relative_cursor_row_; // TODO イテレータ化？
+  boost::value_initialized<size_type> relative_cursor_column_;
 
 public:
   explicit inline_curses(std::basic_istream<char_type>& istream,
@@ -80,7 +80,7 @@ public:
 
   void read() noexcept(false)
   {
-    std::basic_string<char_type> buffer {istream_.get()};
+    std::basic_string<char_type> buffer {static_cast<char_type>(istream_.get())};
 
     switch (buffer.back()) // TODO regex 構築がゲロ重なので static const にすること
     {
@@ -124,7 +124,7 @@ public:
     ostream_ << "\e[" << std::min((*this).size(), window_row) << "A";
 
     for (const auto first {iter};
-         iter != std::end(*this) && std::distance(first, iter) < window_row - 1;
+         iter != std::end(*this) && std::distance(first, iter) < static_cast<difference_type>(window_row - 1);
          ++iter)
     {
       ostream_ << "\r\e[K";

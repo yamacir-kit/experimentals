@@ -16,7 +16,7 @@ class termios
   : public ::termios
 {
   const int fd_;
-  struct ::termios default_;
+  const struct ::termios default_;
 
 public:
   explicit termios(int fd)
@@ -32,6 +32,18 @@ public:
   decltype(auto) set(int optional_actions = TCSANOW) const noexcept
   {
     return ::tcsetattr(fd_, optional_actions, this);
+  }
+
+  void change_to_noncanonical_mode() // XXX UGLY CODE
+  {
+    (*this).c_lflag &= ~(ICANON | ECHO);
+    (*this).c_cc[VMIN]  = 1;
+    (*this).c_cc[VTIME] = 0;
+
+    if (set() < 0)
+    {
+      throw std::system_error {errno, std::system_category()};
+    }
   }
 };
 
