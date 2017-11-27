@@ -45,37 +45,34 @@ public:
   template <typename T>
   using container_type = SequenceContainer<T>;
 
-  using typename SequenceContainer<std::basic_string<char_type>>::difference_type;
-  using typename SequenceContainer<std::basic_string<char_type>>::size_type;
-
-  size_type window_row;
-  size_type window_column;
+  using typename container_type<std::basic_string<char_type>>::difference_type;
+  using typename container_type<std::basic_string<char_type>>::size_type;
 
 private:
   std::basic_istream<char_type>& istream_; // TODO std::stack に詰めて出力多重化に備えること
   std::basic_ostream<char_type>& ostream_;
 
+  const ::winsize& winsize_;
+
   boost::value_initialized<size_type> window_upper_left_row_;
   boost::value_initialized<size_type> window_upper_left_column_;
 
-  boost::value_initialized<size_type> relative_cursor_row_; // TODO イテレータ化？
-  boost::value_initialized<size_type> relative_cursor_column_;
+  typename container_type<std::basic_string<char_type>>::iterator cursor_row_;
+  typename std::basic_string<char_type>::iterator cursor_column_;
 
 public:
   explicit inline_curses(std::basic_istream<char_type>& istream,
-                         std::basic_ostream<char_type>& ostream) noexcept(false)
-    : SequenceContainer<std::basic_string<CharType>> {""},
+                         std::basic_ostream<char_type>& ostream,
+                         ::winsize& winsize)
+    : container_type<std::basic_string<char_type>> {""},
       istream_ {istream},
-      ostream_ {ostream}
+      ostream_ {ostream},
+      winsize_ {winsize},
+      cursor_row_ {std::begin(*this)},
+      cursor_column_ {std::begin(*cursor_row_)}
   {
-    ostream_ << "\e[0;38;5;059m" << "  0 ready, you have control." << "\n~\e[0m" << std::flush;
-  }
-
-  template <typename T>
-  void update_window_size(T ws_row, T ws_col) noexcept
-  {
-    window_row    = static_cast<size_type>(ws_row);
-    window_column = static_cast<size_type>(ws_col);
+    ostream_ << "\e[0;38;5;059m" << "  0 ready, you have control." << "\n\e[0m" << std::flush;
+    ostream_ << std::right << std::setw(winsize_.ws_col) << status().str() << "\e[D";
   }
 
   void read() noexcept(false)
@@ -94,12 +91,11 @@ public:
     case '\n':
       (*this).emplace_back("");
 
-      // +1 はゼロ始まりのインデックスをサイズにするための処理
-      // -1 はウィンドウサイズから最下行のステータスライン文の行を除く処理
-      if (relative_cursor_row_ + 1 < window_row - 1)
+      static constexpr auto status_row_size {1};
+
+      if (std::distance(std::begin(*this), ++cursor_row_) + status_row_size < winsize_.ws_row)
       {
-        ++relative_cursor_row_;
-        ostream_ << "\n"; // XXX UGLY CODE (FOR REWIND)
+        ostream_ << "\n"; // XXX UGLY CODE? (FOR REWIND)
       }
       else
       {
@@ -113,39 +109,40 @@ public:
     }
   }
 
-  // TODO window_row, window_column に値がセットされているかの確認（初期化の追加含む）
-  //      セットされていない場合、出力先を端末ではない（ファイルストリームとか）とみなして出力
-  void write() const
+  void write()
   {
     ostream_ << "\e[?7l" << "\e[?25l" << std::flush;
 
     auto iter {std::begin(*this)}; std::advance(iter, window_upper_left_row_);
 
-    ostream_ << "\e[" << std::min((*this).size(), window_row) << "A";
+    ostream_ << "\e["
+             << std::min(
+                    (*this).size(),
+                    static_cast<size_type>(winsize_.ws_row)
+                  )
+             << "A";
 
     for (const auto first {iter};
-         iter != std::end(*this) && std::distance(first, iter) < static_cast<difference_type>(window_row - 1);
+         iter != std::end(*this)
+           && std::distance(first, iter) + 1 < winsize_.ws_row;
          ++iter)
     {
       ostream_ << "\r\e[K";
 
-      [&](auto number) -> void
-      {
-        ostream_ << "\e[0;38;5;059m"
-                 << std::setw(std::max(std::to_string((*this).size()).size(), size_type {2}))
-                 << std::right << number << "\e[0m ";
-      }(std::distance(std::begin(*this), iter));
+      ostream_ << "\e[0;38;5;059m"
+               << std::setw(std::max(std::to_string((*this).size()).size(), size_type {2}))
+               << std::right << std::distance(std::begin(*this), iter) << "\e[0m ";
 
       ostream_ << *iter << "\n";
     }
 
-    ostream_ << "\r" << std::setw(window_column) << std::right << status().str() << "\e[D";
+    ostream_ << std::right << std::setw(winsize_.ws_col) << status().str() << "\e[D";
 
     ostream_ << "\e[?7h" << "\e[?25h" << std::flush;
   }
 
 private:
-  auto status() const
+  auto status()
   {
     std::basic_stringstream<char_type> sstream {};
 
@@ -153,12 +150,12 @@ private:
                                     << window_upper_left_column_ << "], ";
 
     sstream << "cursor: ["
-            << window_upper_left_row_ + relative_cursor_row_
+            << std::distance(std::begin(*this), cursor_row_)
             << ", "
-            << window_upper_left_column_ + relative_cursor_column_
+            << std::distance(std::begin(*cursor_row_), cursor_column_)
             << "], size: "
             << std::accumulate(std::begin(*this), std::end(*this), std::basic_string<char_type> {}).size() + (*this).size()
-            << " ";
+            << " byte ";
 
     return sstream;
   }
