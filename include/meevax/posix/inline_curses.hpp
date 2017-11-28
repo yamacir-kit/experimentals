@@ -16,6 +16,7 @@
 #include <utility>
 
 #include <boost/utility/value_init.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <unistd.h>
 
@@ -50,14 +51,13 @@ public:
   template <typename T>
   using container_type = SequenceContainer<T>;
 
-  using typename container_type<std::basic_string<char_type>>::difference_type;
   using typename container_type<std::basic_string<char_type>>::size_type;
 
 private:
   std::basic_istream<char_type>& istream_; // TODO std::stack に詰めて出力多重化に備えること
   std::basic_ostream<char_type>& ostream_;
 
-  const ::winsize& winsize_;
+  const winsize& winsize_;
 
   boost::value_initialized<size_type> scroll_row_, scroll_column_;
 
@@ -65,12 +65,12 @@ private:
   typename std::basic_string<char_type>::iterator cursor_column_;
 
 public:
-  std::basic_string<char_type> buffer;
+  std::basic_string<char_type> dealt_with, buffer;
 
 public:
   explicit inline_curses(std::basic_istream<char_type>& istream,
                          std::basic_ostream<char_type>& ostream,
-                         ::winsize& winsize)
+                         winsize& winsize)
     : container_type<std::basic_string<char_type>> {""},
       istream_ {istream},
       ostream_ {ostream},
@@ -78,9 +78,6 @@ public:
       cursor_row_ {std::begin(*this)},
       cursor_column_ {std::end(*cursor_row_)}
   {
-    // ostream_ << line_number(std::begin(*this)) << "\n\e[0m" << std::flush;
-    // ostream_ << std::right << std::setw(winsize_.ws_col) << status_line();
-    // ostream_ << "\e[D\r-- READY I/O -- ";
     write();
   }
 
@@ -96,7 +93,69 @@ public:
         while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.)$"}))
         {
           buffer.push_back(istream_.get());
+
+          // TODO この対処は逃げ
+          if (buffer[0] == 0x1B && buffer[1] == 0x1B)
+          {
+            break;
+          }
         }
+
+        if (buffer == "\e[A" && cursor_row_ != std::begin(*this))
+        {
+          const auto distance {std::distance(std::begin(*cursor_row_--), cursor_column_)};
+          if ((*cursor_row_).size() < distance)
+          {
+            cursor_column_ = std::end(*cursor_row_);
+          }
+          else
+          {
+            cursor_column_ = std::begin(*cursor_row_) + distance;
+          }
+
+          if (std::distance(std::begin(*this), cursor_row_) < scroll_row_)
+          {
+            --scroll_row_;
+          }
+
+          break;
+        }
+
+        // XXX 条件が (*this).back() にイテレータが当たってる時点で弾かないといけない
+        if (buffer == "\e[B" && std::distance(std::begin(*this), cursor_row_) < (*this).size() - 1)
+        {
+          const auto distance {std::distance(std::begin(*cursor_row_++), cursor_column_)};
+          if ((*cursor_row_).size() < distance)
+          {
+            cursor_column_ = std::end(*cursor_row_);
+          }
+          else
+          {
+            cursor_column_ = std::begin(*cursor_row_) + distance;
+          }
+
+          if (winsize_.ws_row + scroll_row_ - wc_lines(status_line())
+                <= std::distance(std::begin(*this), cursor_row_))
+          {
+            ++scroll_row_;
+          }
+
+          break;
+        }
+
+        if (buffer == "\e[C" && cursor_column_ != std::end(*cursor_row_))
+        {
+          ++cursor_column_;
+          break;
+        }
+
+        if (buffer == "\e[D" && cursor_column_ != std::begin(*cursor_row_))
+        {
+          --cursor_column_;
+          break;
+        }
+
+        dealt_with = "ignored: ";
       }
       break; // XXX 将来的に fall through させて default に飛ばすのもアリか
 
@@ -116,10 +175,32 @@ public:
       }
       break;
 
-    default:
+    case 0x7F:
       {
-        assert(std::isprint(buffer.back()));
+        if (cursor_column_ != std::begin(*cursor_row_))
+        {
+          buffer = *--cursor_column_;
+          cursor_column_ = (*cursor_row_).erase(cursor_column_);
+
+          dealt_with = "removed: ";
+        }
+        else
+        {
+          dealt_with = "unimplemented: ";
+          buffer = "0x7F";
+        }
+      }
+      break;
+
+    default:
+      if (std::isprint(buffer.back()))
+      {
         ++(cursor_column_ = (*cursor_row_).insert(cursor_column_, std::begin(buffer), std::end(buffer)));
+      }
+      else
+      {
+        dealt_with = "unimplemented: ";
+        buffer = std::to_string(static_cast<int>(buffer.back()));
       }
       break;
     }
@@ -172,7 +253,12 @@ private:
   {
     std::basic_stringstream<char_type> sstream {};
 
-    sstream << "buffer: " << meevax::string::replace_unprintable(buffer) << ", ";
+    if (!buffer.empty())
+    {
+      sstream << dealt_with << meevax::string::replace_unprintable(buffer) << ", ";
+    }
+
+    sstream << "window: [" << winsize_.ws_row << ", " << winsize_.ws_col << "], ";
 
     sstream << "scroll: [" << scroll_row_ << ", " << scroll_column_ << "], ";
 
