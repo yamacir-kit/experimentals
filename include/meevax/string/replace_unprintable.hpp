@@ -18,12 +18,17 @@ namespace meevax::string {
 
 
 // XXX UGLY CODE
-template <typename Char>
-auto replace_unprintable(const std::basic_string<Char>& source)
+template <typename CharType>
+static inline auto replace_unprintable(const std::basic_string<CharType>& source)
 {
   auto buffer {source};
 
-  static const std::vector<std::pair<std::basic_string<Char>, std::basic_string<Char>>> targets {
+  static const std::vector<
+                 std::pair<
+                   std::basic_string<CharType>,
+                   std::basic_string<CharType>
+                 >
+               > targets {
     {"\e", "\\e"},
     {"\n", "\\n"},
     {"\t", "\\t"}
@@ -31,7 +36,7 @@ auto replace_unprintable(const std::basic_string<Char>& source)
 
   for (const auto& target : targets)
   {
-    for (auto position {buffer.find(target.first)}; position != std::basic_string<Char>::npos; )
+    for (auto position {buffer.find(target.first)}; position != std::basic_string<CharType>::npos; )
     {
       buffer.replace(position, target.first.size(), target.second);
       position = buffer.find(target.first, position + target.second.size());
