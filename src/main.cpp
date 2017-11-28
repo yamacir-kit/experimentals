@@ -76,14 +76,14 @@ auto main(int argc, char** argv) -> int try
 
 catch (const std::system_error& error)
 {
-  std::cerr << "[error] code: " << error.code().value()
-            << " - " << error.code().message() << "\n";
+  const auto code {error.code()};
+  std::cerr << "\n[error] code: " << code.value() << " - " << code.message() << "\n";
   std::exit(error.code().value());
 }
 
 catch (const std::exception& error)
 {
-  std::cerr << "[error] " << error.what() << "\n";
+  std::cerr << "\n[error] " << error.what() << "\n";
   std::exit(boost::exit_exception_failure);
 }
 
