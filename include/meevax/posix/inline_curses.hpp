@@ -31,6 +31,10 @@ namespace meevax::posix {
 #endif
 
 
+// TODO
+// データを書き換えてはならない処理へ const_iterator でアクセスするように変更すること
+
+
 template <typename CharType, template <typename...> typename SequenceContainer = std::list,
           typename = typename std::enable_if<
                                 meevax::concepts::is_standard_container<
@@ -74,11 +78,10 @@ public:
       cursor_row_ {std::begin(*this)},
       cursor_column_ {std::end(*cursor_row_)}
   {
-    // TODO write 処理に統一すべき
-
-    ostream_ << line_number(std::begin(*this)) << "\n\e[0m" << std::flush;
-    ostream_ << std::right << std::setw(winsize_.ws_col) << status_line();
-    ostream_ << "\e[D\r-- READY I/O -- ";
+    // ostream_ << line_number(std::begin(*this)) << "\n\e[0m" << std::flush;
+    // ostream_ << std::right << std::setw(winsize_.ws_col) << status_line();
+    // ostream_ << "\e[D\r-- READY I/O -- ";
+    write();
   }
 
   // 内部イテレータへ入力に対して意味的に正しく一対一に対応する動作を行う
@@ -124,19 +127,22 @@ public:
 
   void write()
   {
+    auto scrolled {std::begin(*this)}; std::advance(scrolled, scroll_row_);
+    static auto cursor_row {scrolled};
+
     // UNWRAP LINE AND INVISIBLE CURSOR
     ostream_ << "\e[?7l" << "\e[?25l" << std::flush;
 
     // REWIND
-    ostream_ << "\e[" << std::min((*this).size(), static_cast<size_type>(winsize_.ws_row)) << "A";
-
-    auto first {std::begin(*this)}; std::advance(first, scroll_row_);
-    for (auto iter {first};
-         iter != std::end(*this)
-           && std::distance(first, iter) + wc_lines(status_line()) < winsize_.ws_row;
-         ++iter)
+    for (; cursor_row != scrolled; --cursor_row)
     {
-      ostream_ << "\r\e[K" << line_number(iter) << *iter << "\n";
+      ostream_ << "\e[A";
+    }
+
+    while (cursor_row != std::end(*this)
+           && std::distance(scrolled, cursor_row) + wc_lines(status_line()) < winsize_.ws_row)
+    {
+      ostream_ << "\r\e[K" << line_number(cursor_row) << *(cursor_row++) << "\n";
     }
 
     // WRITE STATUS LINE
@@ -145,6 +151,20 @@ public:
 
     // WRAP LINE AND VISIBLE CURSOR
     ostream_ << "\e[?7h" << "\e[?25h" << std::flush;
+
+    // MOVE CURSOR ROW TO MATCH "cursor_row_" VISUALLY
+    ostream_ << "\e[" << wc_lines(status_line()) << "A";
+    while (--cursor_row != cursor_row_)
+    {
+      ostream_ << "\e[A";
+    }
+
+    // MOVE CURSOR COLUMN TO MATCH "cursor_column_" VISUALLY
+    ostream_ << "\r\e["
+             << std::distance(std::begin(*cursor_row_), cursor_column_)
+                  + std::max(std::to_string((*this).size()).size(), size_type {2})
+                  + 1
+             << "C";
   }
 
 private:
