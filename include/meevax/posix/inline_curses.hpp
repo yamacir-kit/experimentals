@@ -71,7 +71,7 @@ public:
       cursor_row_ {std::begin(*this)},
       cursor_column_ {std::begin(*cursor_row_)}
   {
-    ostream_ << "\e[0;38;5;059m" << "  0 ready, you have control." << "\n\e[0m" << std::flush;
+    ostream_ << line_number(std::begin(*this)) << "\e[0;38;5;059mready, you have control." << "\n\e[0m" << std::flush;
     ostream_ << std::right << std::setw(winsize_.ws_col) << status().str() << "\e[D";
   }
 
@@ -91,11 +91,9 @@ public:
     case '\n':
       (*this).emplace_back("");
 
-      static constexpr auto status_row_size {1};
-
-      if (std::distance(std::begin(*this), ++cursor_row_) + status_row_size < winsize_.ws_row)
+      if (std::distance(std::begin(*this), ++cursor_row_) + wc_lines(status().str()) < winsize_.ws_row)
       {
-        ostream_ << "\n"; // XXX UGLY CODE? (FOR REWIND)
+        ostream_ << "\n";
       }
       else
       {
@@ -129,9 +127,10 @@ public:
     {
       ostream_ << "\r\e[K";
 
-      ostream_ << "\e[0;38;5;059m"
-               << std::setw(std::max(std::to_string((*this).size()).size(), size_type {2}))
-               << std::right << std::distance(std::begin(*this), iter) << "\e[0m ";
+      // ostream_ << "\e[0;38;5;059m"
+      //          << std::setw(std::max(std::to_string((*this).size()).size(), size_type {2}))
+      //          << std::right << std::distance(std::begin(*this), iter) << "\e[0m ";
+      ostream_ << line_number(iter);
 
       ostream_ << *iter << "\n";
     }
@@ -158,6 +157,30 @@ private:
             << " byte ";
 
     return sstream;
+  }
+
+  auto line_number(const decltype(cursor_row_)& iter)
+  {
+    std::basic_stringstream<char_type> buffer {};
+
+    const std::basic_string<char_type> highlight {
+      std::distance(std::begin(*this), iter) != std::distance(std::begin(*this), cursor_row_) ?  "\e[0;38;5;059m" : "\e[0;38;5;221m"
+    };
+
+    std::copy(
+      std::begin(highlight), std::end(highlight), std::ostreambuf_iterator<char_type> {buffer}
+    );
+
+    buffer << std::setw(std::max(std::to_string((*this).size()).size(), size_type {2}))
+           << std::right << std::distance(std::begin(*this), iter)
+           << "\e[0m ";
+
+    return buffer.str();
+  }
+
+  auto wc_lines(const std::basic_string<char_type>& string) const
+  {
+    return std::count(std::begin(string), std::end(string), '\n') + 1;
   }
 };
 
