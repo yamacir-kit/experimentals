@@ -8,14 +8,12 @@
 #include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
-#include <sys/ioctl.h>
-#include <unistd.h>
-
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
 #include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
+#include <meevax/posix/winsize.hpp>
 
 
 auto main(int argc, char** argv) -> int try
@@ -61,28 +59,11 @@ auto main(int argc, char** argv) -> int try
   }();
 
   static meevax::posix::termios termios {STDIN_FILENO};
-  {
-    termios.c_lflag &= ~(ICANON | ECHO);
-    termios.c_cc[VMIN]  = 1;
-    termios.c_cc[VTIME] = 0;
+  termios.change_to_noncanonical_mode();
 
-    termios.set();
-  }
+  static meevax::posix::winsize winsize {STDIN_FILENO};
 
-  static struct ::winsize winsize {};
-  {
-    ::ioctl(STDIN_FILENO, TIOCGWINSZ, &winsize);
-  }
-
-  // inline_curses に渡した出力ストリームに inline_curses<CharType>::write()
-  // を介せず出力を行った場合、出力の可読性は保証されない
-  //
-  // inline_curses<CharType>::size() が出力ウィンドウの行数以上である場合、
-  // inline_curses<CharType>::write() によりウィンドウ全体の出力が上書きされる
-  //
-  static meevax::posix::inline_curses<char> icurses {std::cin, std::cout};
-
-  icurses.update_window_size(winsize.ws_row, winsize.ws_col);
+  static meevax::posix::inline_curses<char> icurses {std::cin, std::cout, winsize};
 
   while (true)
   {
@@ -95,14 +76,14 @@ auto main(int argc, char** argv) -> int try
 
 catch (const std::system_error& error)
 {
-  std::cerr << "[error] code: " << error.code().value()
-            << " - " << error.code().message() << "\n";
+  const auto code {error.code()};
+  std::cerr << "\n[error] code: " << code.value() << " - " << code.message() << "\n";
   std::exit(error.code().value());
 }
 
 catch (const std::exception& error)
 {
-  std::cerr << "[error] " << error.what() << "\n";
+  std::cerr << "\n[error] " << error.what() << "\n";
   std::exit(boost::exit_exception_failure);
 }
 

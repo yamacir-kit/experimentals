@@ -8,7 +8,7 @@ project(meevax VERSION 0.3.0 LANGUAGES CXX)
 # ==============================================================
 #  Compile Configuration
 # ==============================================================
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-variable -O3 -std=c++17")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-variable -std=c++17")
 
 # set(CXX_STANDARD 17)
 # set(CXX_STANDARD_REQUIRED ON)
