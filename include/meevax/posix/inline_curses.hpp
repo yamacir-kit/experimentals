@@ -90,7 +90,7 @@ public:
     {
     case 0x1B: // TODO regex 構築がゲロ重なので static const にすること
       {
-        while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.)$"}))
+        while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.~)$"}))
         {
           buffer.push_back(istream_.get());
 
@@ -155,7 +155,8 @@ public:
           break;
         }
 
-        dealt_with = "ignored: ";
+        dealt_with = "unimplemented sequences: ";
+        throw std::runtime_error {dealt_with + meevax::string::replace_unprintable(buffer)};
       }
       break; // XXX 将来的に fall through させて default に飛ばすのもアリか
 
@@ -196,6 +197,9 @@ public:
       if (std::isprint(buffer.back()))
       {
         ++(cursor_column_ = (*cursor_row_).insert(cursor_column_, std::begin(buffer), std::end(buffer)));
+
+        dealt_with = "printable: ";
+        buffer = std::to_string(static_cast<int>(buffer.back()));
       }
       else
       {
@@ -258,9 +262,9 @@ private:
       sstream << dealt_with << meevax::string::replace_unprintable(buffer) << ", ";
     }
 
-    sstream << "window: [" << winsize_.ws_row << ", " << winsize_.ws_col << "], ";
+    // sstream << "window: [" << winsize_.ws_row << ", " << winsize_.ws_col << "], ";
 
-    sstream << "scroll: [" << scroll_row_ << ", " << scroll_column_ << "], ";
+    // sstream << "scroll: [" << scroll_row_ << ", " << scroll_column_ << "], ";
 
     sstream << "cursor: ["
             << std::distance(std::begin(*this), cursor_row_) << ", "
