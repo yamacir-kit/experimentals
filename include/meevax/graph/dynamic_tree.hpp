@@ -53,8 +53,7 @@ private:
   template <typename... Ts,
             typename = typename std::enable_if<
                                   std::is_constructible<Mapped, Ts...>::value
-                                >::type
-           >
+                                >::type>
   auto create(Ts&&... args)
   {
     return new node_type {std::forward<Ts>(args)...};

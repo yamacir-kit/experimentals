@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <cassert>
+#include <chrono> // debug
 #include <iomanip>
 #include <iostream>
 #include <iterator>
@@ -12,11 +13,12 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <thread> // debug
 #include <type_traits>
 #include <utility>
 
 #include <boost/utility/value_init.hpp>
-#include <boost/lexical_cast.hpp>
+#include <boost/range/iterator_range.hpp>
 
 #include <unistd.h>
 
@@ -30,10 +32,6 @@ namespace posix {
 #else
 namespace meevax::posix {
 #endif
-
-
-// TODO
-// データを書き換えてはならない処理へ const_iterator でアクセスするように変更すること
 
 
 template <typename CharType, template <typename...> typename SequenceContainer = std::list,
@@ -62,7 +60,7 @@ private:
   boost::value_initialized<size_type> scroll_row_, scroll_column_;
 
   typename container_type<std::basic_string<char_type>>::iterator cursor_row_;
-  typename std::basic_string<char_type>::iterator cursor_column_;
+  typename                std::basic_string<char_type >::iterator cursor_column_;
 
 public:
   std::basic_string<char_type> dealt_with, buffer;
@@ -90,7 +88,7 @@ public:
     {
     case 0x1B: // TODO regex 構築がゲロ重なので static const にすること
       {
-        while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.~)$"}))
+        while (!std::regex_match(buffer, std::regex {"^\\\e\\[(\\d*;?)+(.|~)$"}))
         {
           buffer.push_back(istream_.get());
 
@@ -155,8 +153,8 @@ public:
           break;
         }
 
-        dealt_with = "unimplemented sequences: ";
-        throw std::runtime_error {dealt_with + meevax::string::replace_unprintable(buffer)};
+        // dealt_with = "unimplemented sequences: ";
+        // throw std::runtime_error {dealt_with + meevax::string::replace_unprintable(buffer)};
       }
       break; // XXX 将来的に fall through させて default に飛ばすのもアリか
 
