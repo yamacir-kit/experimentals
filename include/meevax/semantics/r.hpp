@@ -30,11 +30,6 @@ namespace meevax::semantics {
 #endif
 
 
-// TODO
-// それぞれにコンストラクタをきちんと実装、
-// クラステンプレートのテンプレートパラメータ推論から構築できるようにすること
-
-
 template <typename SemanticScope, typename = void>
 class r_;
 
