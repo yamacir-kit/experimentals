@@ -1,4 +1,5 @@
 build
-doxygen
+configure/doxyfile
+docs
 include/meevax/configure
 
