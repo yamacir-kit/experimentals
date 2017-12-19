@@ -64,7 +64,7 @@ message(STATUS "include directory: " ${${PROJECT_NAME}_INCLUDE_DIR})
 # ==============================================================
 #  Package Dependencies
 # ==============================================================
-find_package(Boost 1.58.0 REQUIRED COMPONENTS)
+find_package(Boost 1.58.0 REQUIRED COMPONENTS system thread)
 
 
 # ==============================================================
@@ -101,8 +101,6 @@ add_executable(${PROJECT_NAME}
 
 target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
-  boost_system
-  boost_thread
   cairo
   xcb
   stdc++fs
