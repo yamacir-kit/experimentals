@@ -12,9 +12,9 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-  if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake)
+  if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.in)
     configure_file(
-      ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake
+      ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.in
       ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile
     )
     add_custom_target(doxygen
@@ -23,18 +23,18 @@ if(DOXYGEN_FOUND)
   endif()
 endif()
 
-if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp.cmake)
+if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp)
   file(MAKE_DIRECTORY ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}/configure)
   string(TIMESTAMP ${PROJECT_NAME}_TIMESTAMP "%Y/%m/%d %H:%M:%S")
   configure_file(
-    ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp.cmake
+    ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp
     ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}/configure/version.hpp
   )
 endif()
 
-if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/README.md.cmake)
+if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/README.md)
   configure_file(
-    ${${PROJECT_NAME}_CONFIGURE_DIR}/README.md.cmake
+    ${${PROJECT_NAME}_CONFIGURE_DIR}/README.md
     ${CMAKE_CURRENT_SOURCE_DIR}/README.md
   )
 endif()
