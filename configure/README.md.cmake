@@ -1,5 +1,7 @@
 ## ${PROJECT_NAME}
 
+[![Build Status](https://travis-ci.org/yamacir-kit/meevax.svg?branch=master)](https://travis-ci.org/yamacir-kit/meevax)
+
 version ${PROJECT_VERSION} in development
 
 
