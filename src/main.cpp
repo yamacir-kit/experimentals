@@ -11,9 +11,12 @@
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-#include <meevax/posix/inline_curses.hpp>
+// #include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
 #include <meevax/posix/winsize.hpp>
+
+// #include <meevax/system/io_system.hpp>
+#include <meevax/semantics/r.hpp>
 
 
 auto main(int argc, char** argv) -> int try
@@ -63,12 +66,9 @@ auto main(int argc, char** argv) -> int try
 
   static meevax::posix::winsize winsize {STDIN_FILENO};
 
-  static meevax::posix::inline_curses<char> icurses {std::cin, std::cout, winsize};
-
   while (true)
   {
-    icurses.read();
-    icurses.write();
+    std::cout << meevax::semantics::r<char>(std::cin) << std::flush;
   }
 
   return boost::exit_success;
