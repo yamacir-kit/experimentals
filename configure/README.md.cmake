@@ -1,7 +1,6 @@
-# Meevax [![Build Status](https://travis-ci.org/yamacir-kit/meevax.svg?branch=master)](https://travis-ci.org/yamacir-kit/meevax)
+# ${PROJECT_NAME}
 
-version ${PROJECT_VERSION} in development
-
+Version ${PROJECT_VERSION} in development [![Build Status](https://travis-ci.org/yamacir-kit/meevax.svg?branch=master)](https://travis-ci.org/yamacir-kit/meevax)
 
 ## Dependency
 
