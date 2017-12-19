@@ -23,6 +23,9 @@ auto main(int argc, char** argv) -> int try
 {
   const std::vector<std::string> args {argv, argv + argc};
 
+  std::ios_base::sync_with_stdio(false);
+  std::cin.tie(nullptr);
+
   for (auto iter {std::begin(args) + 1}; iter != std::end(args); ++iter) [&]()
   {
     for (const auto& option : decltype(args) {"^-v$", "^--version$"})
@@ -68,7 +71,24 @@ auto main(int argc, char** argv) -> int try
 
   while (true)
   {
-    std::cout << meevax::semantics::r<char>(std::cin) << std::flush;
+    static std::string buffer {};
+
+    switch (const auto code {meevax::semantics::r<char>(std::cin)}; code)
+    {
+    case 'w':
+      {
+        std::cout << "[debug] code: " << code << "\n";
+        std::cout << buffer << std::endl;
+      }
+      break;
+
+    default:
+      {
+        std::cout << "[debug] code: " << code << "\n" << std::flush;
+        buffer.push_back(code);
+      }
+      break;
+    }
   }
 
   return boost::exit_success;
