@@ -3,9 +3,10 @@ cmake_minimum_required(VERSION 3.5.1)
 project(meevax VERSION 0.3.1 LANGUAGES CXX)
 
 set(${PROJECT_NAME}_CONFIGURE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/configure)
+set(${PROJECT_NAME}_DOXYGEN_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/doxygen)
 set(${PROJECT_NAME}_INCLUDE_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(CMAKE_BUILD_TYPE debug)
-set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wno-unused-variable -std=c++17")
+set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wdelete-non-virtual-dtor -Winline -std=c++17")
 
 find_package(Boost REQUIRED COMPONENTS system thread)
 # find_package(Cairo REQUIRED)
@@ -15,10 +16,10 @@ if(DOXYGEN_FOUND)
   if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.in)
     configure_file(
       ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.in
-      ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile
+      ${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile
     )
     add_custom_target(doxygen
-      ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile"
+      ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile"
     )
   endif()
 endif()
