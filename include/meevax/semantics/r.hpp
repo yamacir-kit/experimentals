@@ -16,28 +16,76 @@
 #include <meevax/concepts/is_standard_container.hpp>
 
 
+/**
+* semantics for a character.
+* modules of header "meevax/semantics/..." are in.
+*/
 namespace meevax::semantics {
 
 
-template <typename SemanticScope, typename = void>
+/**
+* General template for character \b r implementation.
+* This class must not be instantiated.
+*/
+template <
+#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  typename SemanticScope, typename = void
+#else
+  typename SemanticScope
+#endif
+>
 class r_;
 
 
+/**
+* template specialization for CharType.
+*
+* @tparam CharType this type requires following concepts
+* @code
+*   meevax::concepts::is_char_type<CharType>::value == true
+* @endcode
+*/
 template <typename CharType>
-class r_<CharType,
-         typename std::enable_if<
-                    meevax::concepts::is_char_type<CharType>::value
-                  >::type>
+class r_<
+#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  CharType,
+  typename std::enable_if<
+             meevax::concepts::is_char_type<CharType>::value
+           >::type
+#else
+  CharType
+#endif
+>
 {
+public:
+  /// type definition for metafunction.
   using char_type = CharType;
 
+  /// type definition for metafunction.
+  using value_type = typename std::basic_string<CharType>::value_type;
+
+private:
+  /// internal buffer.
+  static inline value_type buffer_;
+
 public:
+  /**
+   * read a character from file descriptor.
+   *
+   * @param[in] fd
+   * @returns a character read in.
+   */
   decltype(auto) operator()(int fd = STDIN_FILENO)
   {
-    char_type buffer {};
-    return 0 < ::read(fd, &buffer, sizeof buffer) ? buffer : throw std::system_error {errno, std::system_category()};
+    return 0 < ::read(fd, &buffer_, sizeof buffer_) ? buffer_ : throw std::system_error {errno, std::system_category()};
   }
 
+  /**
+   * read a character from standard input stream.
+   *
+   * @param[in] istream
+   * @returns a character read in.
+   */
   decltype(auto) operator()(std::basic_istream<char_type>& istream)
   {
     return static_cast<char_type>(istream.get());
