@@ -2,12 +2,6 @@
 #define INCLUDED_MEEVAX_SEMANTICS_R_HPP
 
 
-static_assert(
-  201703L <= __cplusplus,
-  "\e[1;32mmodule \"meevax/semantics/r.hpp\" will be available in C++17 or later.\e[0m"
-);
-
-
 #include <algorithm>
 #include <iostream>
 #include <iterator>
@@ -22,12 +16,7 @@ static_assert(
 #include <meevax/concepts/is_standard_container.hpp>
 
 
-#if __cplusplus < 201703L
-namespace meevax {
-namespace semantics {
-#else
 namespace meevax::semantics {
-#endif
 
 
 template <typename SemanticScope, typename = void>
@@ -107,12 +96,7 @@ template <typename... Ts>
 meevax::semantics::r_<Ts...> r;
 
 
-#if __cplusplus < 201703L
-} // namespace semantics
-} // namespace meevax
-#else
 } // namespace meevax::semantics
-#endif
 
 
 #endif // #ifndef INCLUDED_MEEVAX_SEMANTICS_R_HPP
