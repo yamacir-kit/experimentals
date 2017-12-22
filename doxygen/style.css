@@ -1,3 +1,7 @@
+body, table, div, p, dl {
+  font: 400 15px/22px Roboto, sans-serif;
+}
+
 .tabs, .tabs2, .tabs3
 {
   /* background-image: none; */
@@ -9,7 +13,7 @@
 }
 
 .tabs2 {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .tabs3
