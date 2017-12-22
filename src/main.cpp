@@ -11,12 +11,11 @@
 #include <meevax/ansi_escape_sequence/cursor.hpp>
 #include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-// #include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
 #include <meevax/posix/winsize.hpp>
 
-// #include <meevax/system/io_system.hpp>
 #include <meevax/semantics/r.hpp>
+#include <meevax/semantics/w.hpp>
 
 
 auto main(int argc, char** argv) -> int try
@@ -68,6 +67,19 @@ auto main(int argc, char** argv) -> int try
   termios.change_to_noncanonical_mode();
 
   static meevax::posix::winsize winsize {STDIN_FILENO};
+
+  // std::cout << meevax::semantics::r<char>() << "\n";
+  // std::cout << meevax::semantics::r<std::string>() << "\n";
+
+  {
+    using namespace meevax::semantics;
+
+    w_ {
+      r_<char> {}
+    }();
+  }
+
+  std::exit(0);
 
   while (true)
   {

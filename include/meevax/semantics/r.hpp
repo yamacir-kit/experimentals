@@ -5,7 +5,7 @@
 /**
 * @file r.hpp
 *
-* Semantics for a character \b `r` implementation.
+* Provides classes that express semantics for a character \b `r` implementation.
 */
 
 
@@ -21,11 +21,12 @@
 
 #include <meevax/concepts/is_char_type.hpp>
 #include <meevax/concepts/is_standard_container.hpp>
+#include <meevax/semantics/objective.hpp>
 
 
 /**
-* semantics for a character.
-* modules of header "meevax/semantics/..." are in.
+* Semantics for a character.
+* Modules of header "meevax/semantics/..." are in.
 */
 namespace meevax::semantics {
 
@@ -49,7 +50,7 @@ class r_;
 /**
 * @class r_<CharType> r.hpp <meevax/semantics/r.hpp>
 *
-* template specialization for CharType.
+* Template specialization for `CharType`.
 *
 * @tparam CharType this type requires following concepts
 * @code
@@ -67,45 +68,41 @@ class r_<
   CharType
 #endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
 >
+  : public meevax::semantics::objective<
+             meevax::semantics::r_, CharType
+           >
 {
-public: // types
   /**
-  * type definition for metafunction.
+  * Type definition for simplify the description.
   */
-  using char_type = CharType;
+  using objective = meevax::semantics::objective<
+                      meevax::semantics::r_, CharType
+                    >;
 
-  /**
-  * type definition for metafunction.
-  */
-  using value_type = typename std::basic_string<CharType>::value_type;
-
-private: // attribs
-  /**
-  * static internal buffer.
-  */
-  static inline value_type buffer_;
+  using typename objective::value_type;
+  using          objective::buffer;
 
 public:
   /**
-  * read a character into internal buffer from file descriptor.
+  * Read a character into internal buffer from file descriptor.
   *
   * @param fd
-  * @returns const reference to internal buffer.
+  * @returns const reference to static internal buffer.
   */
   const decltype(auto) operator()(int fd = STDIN_FILENO)
   {
-    return 0 < ::read(fd, &buffer_, sizeof buffer_) ? buffer_ : throw std::system_error {errno, std::system_category()};
+    return 0 < ::read(fd, &buffer, sizeof buffer) ?  buffer : throw std::system_error {errno, std::system_category()};
   }
 
   /**
-  * read a character into internal buffer from standard input stream.
+  * Read a character into internal buffer from standard input stream.
   *
   * @param istream
-  * @returns const reference to internal buffer.
+  * @returns const reference to static internal buffer.
   */
-  const decltype(auto) operator()(std::basic_istream<char_type>& istream)
+  const decltype(auto) operator()(std::basic_istream<value_type>& istream)
   {
-    return static_cast<char_type>(istream.get());
+    return objective::buffer = static_cast<value_type>(istream.get());
   }
 };
 
@@ -113,7 +110,7 @@ public:
 /**
 * @class r_<StandardContainer> r.hpp <meevax/semantics/r.hpp>
 *
-* template specialization for StandardContainer.
+* Template specialization for `StandardContainer`.
 *
 * @tparam StandardContainer this type requires following concepts
 * @code
@@ -131,7 +128,9 @@ class r_<
   StandardContainer
 #endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
 >
-  : public StandardContainer
+  : public meevax::semantics::objective<
+             meevax::semantics::r_, StandardContainer
+           >
 {
 public: // types
   /**
@@ -186,8 +185,13 @@ public:
 };
 
 
+/**
+* Helper template variable for class r_.
+* This template variable is useful when you want to use the function object class r_
+* like a free function.
+*/
 template <typename... Ts>
-static meevax::semantics::r_<Ts...> r;
+meevax::semantics::r_<Ts...> r;
 
 
 } // namespace meevax::semantics
