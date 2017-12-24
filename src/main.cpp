@@ -17,6 +17,8 @@
 #include <meevax/semantics/r.hpp>
 #include <meevax/semantics/w.hpp>
 
+// #include <meevax/semantics/semiosis.hpp>
+
 
 auto main(int argc, char** argv) -> int try
 {
@@ -74,8 +76,8 @@ auto main(int argc, char** argv) -> int try
   {
     using namespace meevax::semantics;
 
-    w_ {
-      r_<char> {}
+    w {
+      r<char> {}
     }();
   }
 
@@ -85,7 +87,7 @@ auto main(int argc, char** argv) -> int try
   {
     static std::string buffer {};
 
-    switch (const auto code {meevax::semantics::r<char>(std::cin)}; code)
+    switch (const auto code {meevax::semantics::r_<char>(std::cin)}; code)
     {
     case 'w':
       {

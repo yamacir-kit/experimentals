@@ -3,9 +3,10 @@
 
 
 /**
-* @file w.hpp
+* @file
 *
-* Provides classes that express semantics for a character \b `w` implementation.
+* Provides classes that express semantics for a character @b `'w'` implementation.
+* To do more detail description.
 */
 
 
@@ -22,7 +23,7 @@
 #include <meevax/concepts/is_char_type.hpp>
 #include <meevax/concepts/is_standard_container.hpp>
 #include <meevax/semantics/objective.hpp>
-#include <meevax/string/runtime_typename.hpp>
+#include <meevax/semantics/semiosis.hpp>
 
 
 /**
@@ -33,25 +34,9 @@ namespace meevax::semantics {
 
 
 /**
-* @class w_ w.hpp <meevax/semantics/w.hpp>
+* @headerfile w.hpp <meevax/semantics/w.hpp>
 *
-* General template for a character \b `w` implementation.
-* This class must not be instantiated.
-*/
-template <
-#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  typename SemanticScope, typename = void
-#else
-  typename SemanticScope
-#endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
->
-class w_;
-
-
-/**
-* @class w_<CharType> w.hpp <meevax/semantics/w.hpp>
-*
-* Template specialization for CharType.
+* Template specialization for semiosis @b `'w'` and semantic scope @b `CharType`.
 *
 * @tparam CharType this type requires following concepts
 * @code
@@ -59,32 +44,21 @@ class w_;
 * @endcode
 */
 template <typename CharType>
-class w_<
+class semiosis<'w', CharType
 #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  CharType,
-  typename std::enable_if<
+, typename std::enable_if<
              meevax::concepts::is_char_type<CharType>::value
            >::type
-#else
-  CharType
 #endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
 >
-  : public meevax::semantics::objective<
-             meevax::semantics::w_, CharType
-           >
+  : public meevax::semantics::objective<'w', CharType>
 {
   /**
   * Type definition for simplify the description.
   */
-  using objective = meevax::semantics::objective<meevax::semantics::w_, CharType>;
+  using objective = meevax::semantics::objective<'w', CharType>;
 
 public:
-  template <template <typename...> typename SemanticSemiosis, typename SemanticScope>
-  w_(meevax::semantics::objective<SemanticSemiosis, SemanticScope>&&)
-  {
-    std::cout << "[debug] " << meevax::string::runtime_typename(*this) << "\n";
-  }
-
   decltype(auto) operator()()
   {
     return std::cout << "[debug] operator()\n";
@@ -92,15 +66,9 @@ public:
 };
 
 
-template <template <typename...> typename SemanticSemiosis, typename SemanticScope>
-w_(meevax::semantics::objective<SemanticSemiosis, SemanticScope>&&)
-  -> w_<typename meevax::semantics::objective<
-                   SemanticSemiosis, SemanticScope
-                 >::value_type>;
-
-
-template <typename... Ts>
-meevax::semantics::w_<Ts...> w;
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE(w)
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE_DEDUCTION_GUIDE(w)
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_VARIABLE_TEMPLATE(w)
 
 
 } // namespace meevax::semantics

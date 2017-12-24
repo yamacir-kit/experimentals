@@ -12,8 +12,8 @@
 #include <type_traits>
 #include <utility>
 
-#include <meevax/concepts/is_char_type.hpp>
-#include <meevax/concepts/is_standard_container.hpp>
+// #include <meevax/concepts/is_char_type.hpp>
+// #include <meevax/concepts/is_standard_container.hpp>
 
 
 /**
@@ -28,47 +28,35 @@ namespace meevax::semantics {
 *
 * Base class for semantics classes.
 *
-* @tparam Scalar this type requires following concepts
-* @code
-*   std::is_scalar<ScalarType>::value == true
-* @endcode
+* @tparam SemanticSemiosis this type requires no concepts.
+* @tparam SemanticScope    this type requires no concepts.
 */
-template <
-#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  template <typename...> typename SemanticSemiosis,
-  typename ScalarType,
-  typename = typename std::enable_if<
-                        std::is_scalar<ScalarType>::value
-                      >::type
-#else
-  template <typename...> typename SemanticSemiosis,
-  typename ScalarType
-#endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
->
+template <auto SemanticSemiosis, typename SemanticScope>
 class objective
 {
-  template <typename... Ts>
-  using semantic_semiosis = SemanticSemiosis<Ts...>;
-
-  using semantic_scope    = ScalarType;
-
 public:
+  static constexpr auto semantic_semiosis {SemanticSemiosis};
+
+  using semantic_scope = SemanticScope;
+
   /**
   * Type definition for metafunction.
   */
   using value_type = semantic_scope;
 
-public:
-  operator const value_type&()
-  {
-    return buffer;
-  }
+  using char_type [[deprecated]] = decltype(SemanticSemiosis);
 
 protected:
   /**
   * Static internal buffer.
   */
   static inline value_type buffer {};
+
+public:
+  operator const value_type&()
+  {
+    return buffer;
+  }
 };
 
 

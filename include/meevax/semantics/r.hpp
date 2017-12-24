@@ -3,9 +3,10 @@
 
 
 /**
-* @file r.hpp
+* @file
 *
-* Provides classes that express semantics for a character \b `r` implementation.
+* Provides classes that express semantics for a character @b `'r'` implementation.
+* To do more detail description.
 */
 
 
@@ -22,6 +23,7 @@
 #include <meevax/concepts/is_char_type.hpp>
 #include <meevax/concepts/is_standard_container.hpp>
 #include <meevax/semantics/objective.hpp>
+#include <meevax/semantics/semiosis.hpp>
 
 
 /**
@@ -32,25 +34,9 @@ namespace meevax::semantics {
 
 
 /**
-* @class r_ r.hpp <meevax/semantics/r.hpp>
+* @headerfile r.hpp <meevax/semantics/r.hpp>
 *
-* General template for a character \b `r` implementation.
-* This class must not be instantiated.
-*/
-template <
-#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  typename SemanticScope, typename = void
-#else
-  typename SemanticScope
-#endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
->
-class r_;
-
-
-/**
-* @class r_<CharType> r.hpp <meevax/semantics/r.hpp>
-*
-* Template specialization for `CharType`.
+* Template specialization for semiosis @b `'r'` and semantic scope @b `CharType`.
 *
 * @tparam CharType this type requires following concepts
 * @code
@@ -58,31 +44,24 @@ class r_;
 * @endcode
 */
 template <typename CharType>
-class r_<
+class semiosis<'r', CharType
 #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  CharType,
-  typename std::enable_if<
+, typename std::enable_if<
              meevax::concepts::is_char_type<CharType>::value
            >::type
-#else
-  CharType
 #endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
 >
-  : public meevax::semantics::objective<
-             meevax::semantics::r_, CharType
-           >
+  : public meevax::semantics::objective<'r', CharType>
 {
   /**
   * Type definition for simplify the description.
   */
-  using objective = meevax::semantics::objective<
-                      meevax::semantics::r_, CharType
-                    >;
+  using objective = meevax::semantics::objective<'r', CharType>;
 
+public:
   using typename objective::value_type;
   using          objective::buffer;
 
-public:
   /**
   * Read a character into internal buffer from file descriptor.
   *
@@ -108,9 +87,9 @@ public:
 
 
 /**
-* @class r_<StandardContainer> r.hpp <meevax/semantics/r.hpp>
+* @headerfile r.hpp <meevax/semantics/r.hpp>
 *
-* Template specialization for `StandardContainer`.
+* Template specialization for semiosis @b `'r'` and semantic scope @b `StandardContainer`.
 *
 * @tparam StandardContainer this type requires following concepts
 * @code
@@ -118,19 +97,14 @@ public:
 * @endcode
 */
 template <typename StandardContainer>
-class r_<
+class semiosis<'r', StandardContainer
 #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  StandardContainer,
-  typename std::enable_if<
+, typename std::enable_if<
              meevax::concepts::is_standard_container<StandardContainer>::value
            >::type
-#else
-  StandardContainer
 #endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
 >
-  : public meevax::semantics::objective<
-             meevax::semantics::r_, StandardContainer
-           >
+  : public meevax::semantics::objective<'r', StandardContainer>
 {
 public: // types
   /**
@@ -185,13 +159,10 @@ public:
 };
 
 
-/**
-* Helper template variable for class r_.
-* This template variable is useful when you want to use the function object class r_
-* like a free function.
-*/
-template <typename... Ts>
-meevax::semantics::r_<Ts...> r;
+
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE(r)
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE_DEDUCTION_GUIDE(r)
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_VARIABLE_TEMPLATE(r)
 
 
 } // namespace meevax::semantics
