@@ -9,7 +9,7 @@
 #include <meevax/type_traits/has_type.hpp>
 
 
-#if __cplusplus < 201703L
+#ifndef __cpp_nested_namespace_definitions
 namespace meevax {
 namespace concepts {
 #else
@@ -54,7 +54,7 @@ class is_standard_container<StandardContainer,
 {};
 
 
-#if __cplusplus < 201703L
+#ifndef __cpp_nested_namespace_definitions
 } // namespace concepts
 } // namespace meevax
 #else
