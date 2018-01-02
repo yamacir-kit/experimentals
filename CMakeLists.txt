@@ -60,6 +60,7 @@ target_link_libraries(${PROJECT_NAME}
   ${Boost_LIBRARIES}
   # ${Cairo_LIBRARIES}
   # cairo
+  dl
   xcb
   stdc++fs
 )

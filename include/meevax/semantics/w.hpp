@@ -63,6 +63,11 @@ public:
   {
     return std::cout << "[debug] operator()\n";
   }
+
+  decltype(auto) operator()(CharType&& objective)
+  {
+    return std::cout << objective << std::flush;
+  }
 };
 
 

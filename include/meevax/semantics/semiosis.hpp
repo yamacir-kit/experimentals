@@ -10,7 +10,9 @@
 */
 
 
+#include <iostream>
 #include <type_traits>
+#include <utility>
 
 #include <meevax/string/runtime_typename.hpp>
 
@@ -22,13 +24,33 @@
 namespace meevax::semantics {
 
 
+class semiosis_base
+{
+public:
+  virtual void operator()() = 0;
+  virtual std::string description() = 0;
+};
+
+
 /**
 * @headerfile semiosis.hpp <meevax/semantics/semiosis.hpp>
 *
 * general template class for semantics represents any character and semantic scope.
 */
-template <auto SemanticSemiosis, typename SemanticScope, typename = void>
-class semiosis;
+template <auto SemanticSemiosis, typename SemanticScope
+#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+, typename = void
+#endif
+>
+class semiosis
+  : public semiosis_base
+{
+public:
+  void operator()()
+  {
+    std::cout << "[debug] unimplemented semiosis: " << meevax::string::runtime_typename(*this) << "\n" << std::flush;
+  }
+};
 
 
 /**
@@ -44,10 +66,7 @@ public: \
 \
   template <typename SemanticObjective> \
   explicit SEMIOSIS(SemanticObjective&&) \
-  { \
-    std::cout << "[debug] instantiated from helper: " \
-              << meevax::string::runtime_typename(*this) << "\n"; \
-  } \
+  {} \
 };
 
 
@@ -65,7 +84,7 @@ SEMIOSIS(SemanticObjective&&) \
 */
 #define MEEVAX_SEMANTICS_SEMIOSIS_HELPER_VARIABLE_TEMPLATE(SEMIOSIS) \
 template <typename... Ts> \
-[[deprecated]] meevax::semantics::SEMIOSIS<Ts...> SEMIOSIS##_; \
+meevax::semantics::SEMIOSIS<Ts...> SEMIOSIS##_; \
 
 
 } // namespace meevax::semantics

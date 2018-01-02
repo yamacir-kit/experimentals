@@ -47,6 +47,7 @@ template <typename T>
 using static_array_size = decltype(meevax::string::static_array_size_(std::declval<T>()));
 
 
+// if is not char_type array (ヌル終端要らず)
 template <typename T, typename U, std::size_t... Ts, std::size_t... Us,
           typename = typename std::enable_if<!std::is_same<typename std::remove_reference<decltype(std::declval<T>()[0])>::type, char>::value>::type>
 constexpr auto static_concat_(const T& lhs, const U& rhs,
@@ -61,6 +62,7 @@ constexpr auto static_concat_(const T& lhs, const U& rhs,
 }
 
 
+// if is char_type
 template <typename T, typename U, std::size_t... Ts, std::size_t... Us>
 constexpr auto static_concat_(const T& lhs, const U& rhs,
                               std::integer_sequence<std::size_t, Ts...>,
