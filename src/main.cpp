@@ -1,22 +1,71 @@
 #include <exception>
 #include <experimental/filesystem>
+#include <fstream>
 #include <iostream>
 #include <regex>
+#include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
+
+#include <dlfcn.h>
+#include <sys/wait.h>
+#include <unistd.h>
 
 #include <boost/asio.hpp>
 #include <boost/cstdlib.hpp>
 
-#include <meevax/ansi_escape_sequence/cursor.hpp>
-#include <meevax/ansi_escape_sequence/graphics.hpp>
 #include <meevax/configure/version.hpp>
-// #include <meevax/posix/inline_curses.hpp>
 #include <meevax/posix/termios.hpp>
 #include <meevax/posix/winsize.hpp>
+#include <meevax/string/static_concat.hpp>
 
-// #include <meevax/system/io_system.hpp>
 #include <meevax/semantics/r.hpp>
+#include <meevax/semantics/w.hpp>
+
+
+auto* dynamic_compile(const std::string& source_path, const std::string& so_path, const std::string& code)
+{
+  std::fstream source_code {source_path, std::ios_base::out | std::ios_base::trunc};
+  source_code << code << "\n";
+  source_code.close();
+
+  using meevax::string::static_concat;
+
+  switch (const auto pid {::fork()})
+  {
+  case 0:
+    execvp(
+      ::getenv("CXX"),
+      std::vector<char*>
+      {
+        ::getenv("CXX"),
+        static_concat("-std=c++17").data(),
+        static_concat("-shared").data(),
+        static_concat("-fpic").data(),
+        static_concat("-O3").data(),
+        static_concat("-o").data(),
+        const_cast<char*>(    so_path.c_str()),
+        const_cast<char*>(source_path.c_str()),
+        nullptr
+      }.data()
+    );
+    [[fallthrough]];
+
+  case -1:
+    throw std::system_error {errno, std::system_category()};
+
+  default:
+    for (auto status {0}; waitpid(pid, &status, WUNTRACED), !WIFEXITED(status) && !WIFSIGNALED(status); );
+    break;
+  }
+
+  auto* handle {::dlopen(so_path.c_str(), RTLD_LAZY)};
+
+  assert(handle != nullptr);
+
+  return handle;
+}
 
 
 auto main(int argc, char** argv) -> int try
@@ -67,27 +116,34 @@ auto main(int argc, char** argv) -> int try
   static meevax::posix::termios termios {STDIN_FILENO};
   termios.change_to_noncanonical_mode();
 
-  static meevax::posix::winsize winsize {STDIN_FILENO};
+  // static meevax::posix::winsize winsize {STDIN_FILENO};
 
-  while (true)
+  for (std::string buffer {""}; buffer.push_back(meevax::semantics::r_<char>()), true; )
   {
-    static std::string buffer {};
-
-    switch (const auto code {meevax::semantics::r<char>(std::cin)}; code)
+    for (const auto& each : buffer)
     {
-    case 'w':
+      if (std::isgraph(each))
       {
-        std::cout << "[debug] code: " << code << "\n";
-        std::cout << buffer << std::endl;
-      }
-      break;
+        std::stringstream sstream {};
 
-    default:
-      {
-        std::cout << "[debug] code: " << code << "\n" << std::flush;
-        buffer.push_back(code);
+        sstream << "#include <meevax/semantics/semiosis.hpp>\n"
+                << "\n"
+                << "extern \"C\" {\n"
+                << "  meevax::semantics::semiosis<\'" << each << "\', char> " << each << " {};\n"
+                << "}\n";
+
+        auto* handle {dynamic_compile(
+          std::string {"/tmp/mvx."} + std::string {each} + std::string {".char.cpp"},
+          std::string {"/tmp/mvx."} + std::string {each} + std::string {".char.so"},
+          sstream.str()
+        )};
+
+        auto* operation {
+          ::dlsym(handle, std::string {each}.c_str())
+        };
+
+        reinterpret_cast<meevax::semantics::semiosis_base*>(operation)->operator()();
       }
-      break;
     }
   }
 

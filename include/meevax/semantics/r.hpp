@@ -2,10 +2,12 @@
 #define INCLUDED_MEEVAX_SEMANTICS_R_HPP
 
 
-static_assert(
-  201703L <= __cplusplus,
-  "\e[1;32mmodule \"meevax/semantics/r.hpp\" will be available in C++17 or later.\e[0m"
-);
+/**
+* @file
+*
+* Provides classes that express semantics for a character @b `'r'` implementation.
+* To do more detail description.
+*/
 
 
 #include <algorithm>
@@ -20,99 +22,150 @@ static_assert(
 
 #include <meevax/concepts/is_char_type.hpp>
 #include <meevax/concepts/is_standard_container.hpp>
+#include <meevax/semantics/objective.hpp>
+#include <meevax/semantics/semiosis.hpp>
 
 
-#if __cplusplus < 201703L
-namespace meevax {
-namespace semantics {
-#else
+/**
+* Semantics for a character.
+* Modules of header "meevax/semantics/..." are in.
+*/
 namespace meevax::semantics {
-#endif
 
 
-template <typename SemanticScope, typename = void>
-class r_;
-
-
+/**
+* @headerfile r.hpp <meevax/semantics/r.hpp>
+*
+* Template specialization for semiosis @b `'r'` and semantic scope @b `CharType`.
+*
+* @tparam CharType this type requires following concepts
+* @code
+*   meevax::concepts::is_char_type<CharType>::value == true
+* @endcode
+*/
 template <typename CharType>
-class r_<CharType,
-         typename std::enable_if<
-                    meevax::concepts::is_char_type<CharType>::value
-                  >::type>
+class semiosis<'r', CharType
+#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+, typename std::enable_if<
+             meevax::concepts::is_char_type<CharType>::value
+           >::type
+#endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+>
+  : public meevax::semantics::objective<'r', CharType>
 {
-  using char_type = CharType;
+  /**
+  * Type definition for simplify the description.
+  */
+  using objective = meevax::semantics::objective<'r', CharType>;
 
 public:
-  decltype(auto) operator()(int fd = STDIN_FILENO)
+  using typename objective::value_type;
+  using          objective::buffer;
+
+  /**
+  * Read a character into internal buffer from file descriptor.
+  *
+  * @param fd
+  * @returns const reference to static internal buffer.
+  */
+  const decltype(auto) operator()(int fd = STDIN_FILENO)
   {
-    char_type buffer {};
-    return 0 < ::read(fd, &buffer, sizeof buffer) ? buffer : throw std::system_error {errno, std::system_category()};
+    return 0 < ::read(fd, &buffer, sizeof buffer) ?  buffer : throw std::system_error {errno, std::system_category()};
   }
 
-  decltype(auto) operator()(std::basic_istream<char_type>& istream)
+  /**
+  * Read a character into internal buffer from standard input stream.
+  *
+  * @param istream
+  * @returns const reference to static internal buffer.
+  */
+  const decltype(auto) operator()(std::basic_istream<value_type>& istream)
   {
-    return static_cast<char_type>(istream.get());
+    return objective::buffer = static_cast<value_type>(istream.get());
   }
 };
 
 
-template <typename CharType>
-class r_<std::basic_string<CharType>,
-         typename std::enable_if<
-                    meevax::concepts::is_char_type<CharType>::value
-                  >::type>
+/**
+* @headerfile r.hpp <meevax/semantics/r.hpp>
+*
+* Template specialization for semiosis @b `'r'` and semantic scope @b `StandardContainer`.
+*
+* @tparam StandardContainer this type requires following concepts
+* @code
+*   meevax::concepts::is_standard_container<StandardContainer>::value == true
+* @endcode
+*/
+template <typename StandardContainer>
+class semiosis<'r', StandardContainer
+#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+, typename std::enable_if<
+             meevax::concepts::is_standard_container<StandardContainer>::value
+           >::type
+#endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+>
+  : public meevax::semantics::objective<'r', StandardContainer>
 {
-  using char_type = CharType;
+public: // types
+  /**
+  * type definition for metafunction.
+  */
+  using value_type = StandardContainer;
+
+private: // attribs
+  /**
+  * static internal buffer.
+  */
+  static inline value_type buffer_;
 
 public:
-  decltype(auto) operator()(std::basic_istream<char_type>& istream = std::cin, char_type delimiter = '\n')
-  {
-    std::basic_string<char_type> buffer {};
-    std::getline(istream, buffer, delimiter);
-
-    return std::move(buffer);
-  }
-};
-
-
-// template <typename StandardContainer>
-// class r_<StandardContainer,
-//          typename std::enable_if<
-//                     meevax::concepts::is_standard_container<StandardContainer>::value
-//                   >::type>
-// {
-// public:
-//   template <typename CharType,
-//             typename = typename std::enable_if<
-//                                   meevax::concepts::is_char_type<CharType>::value
-//                                 >::type>
-//   decltype(auto) operator()(std::basic_istream<CharType>& istream = std::cin)
-//   {
-//     StandardContainer buffer {};
-//
-//     for ()
-//     {
-//       buffer.emplace(
-//         std::end(buffer),
-//         meevax::semantics::r<typename StandardContainer::value_type>(
-//           std::forward<decltype(istream)>(istream)
-//         )
-//       );
-//     }
-//   }
-// };
-
-
-template <typename... Ts>
-meevax::semantics::r_<Ts...> r;
-
-
-#if __cplusplus < 201703L
-} // namespace semantics
-} // namespace meevax
+  /**
+  * read a line into internal buffer from standard input stream.
+  * this function enable if the template parameter StandardContainer is equivalent
+  * to std::basic_string<CharType>.
+  *
+  * @tparam CharType this type requires following concepts
+  * @code
+  *   meevax::concepts::is_char_type<CharType>::value == true
+  * @endcode
+  * @code
+  *   std::is_same<std::basic_string<CharType>, StandardContainer>::value == true
+  * @endcode
+  *
+  * @param istream
+  * @returns const reference to internal buffer.
+  */
+  template <
+#ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    typename CharType = typename StandardContainer::value_type,
+    typename = typename std::enable_if<
+                          meevax::concepts::is_char_type<CharType>::value
+                        >::type,
+    typename = typename std::enable_if<
+                          std::is_same<
+                            std::basic_string<CharType>,
+                            StandardContainer
+                          >::value
+                        >::type
 #else
+    typename CharType = typename StandardContainer::value_type
+#endif // #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  >
+  const decltype(auto) operator()(std::basic_istream<CharType>& istream = std::cin)
+  {
+    std::getline(istream, buffer_);
+    return buffer_;
+  }
+};
+
+
+
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE(r)
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE_DEDUCTION_GUIDE(r)
+MEEVAX_SEMANTICS_SEMIOSIS_HELPER_VARIABLE_TEMPLATE(r)
+
+
 } // namespace meevax::semantics
-#endif
 
 
 #endif // #ifndef INCLUDED_MEEVAX_SEMANTICS_R_HPP
