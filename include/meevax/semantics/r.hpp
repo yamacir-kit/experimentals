@@ -5,7 +5,7 @@
 /**
 * @file
 *
-* Provides classes that express semantics for a character @b `'r'` implementation.
+* Provides classes that express semantics for a character @b @c 'r' implementation.
 * To do more detail description.
 */
 
@@ -36,7 +36,7 @@ namespace meevax::semantics {
 /**
 * @headerfile r.hpp <meevax/semantics/r.hpp>
 *
-* Template specialization for semiosis @b `'r'` and semantic scope @b `CharType`.
+* Template specialization for semiosis @b @c 'r' and semantic scope @b @c CharType.
 *
 * @tparam CharType this type requires following concepts
 * @code

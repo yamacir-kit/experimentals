@@ -4,9 +4,7 @@
 
 /**
 * @file semiosis.hpp
-*
-* Provides base class that express semantics for any character.
-* To do more detail description.
+* @brief Provides base class that express semantics for any character.
 */
 
 
@@ -34,8 +32,7 @@ public:
 
 /**
 * @headerfile semiosis.hpp <meevax/semantics/semiosis.hpp>
-*
-* general template class for semantics represents any character and semantic scope.
+* @brief General template class for semantics represents any character and semantic scope.
 */
 template <auto SemanticSemiosis, typename SemanticScope
 #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
@@ -54,7 +51,7 @@ public:
 
 
 /**
-* Object format macro to assist class definition.
+* @brief Object format macro to assist class definition.
 */
 #define MEEVAX_SEMANTICS_SEMIOSIS_HELPER_CLASS_TEMPLATE(SEMIOSIS) \
 template <typename SemanticScope> \
