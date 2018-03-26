@@ -17,9 +17,6 @@
 #include <type_traits>
 
 
-/**
-* 標準ライブラリ `type_traits` の拡張メタ関数群を含む名前空間。
-*/
 namespace meevax::type_traits
 {
   /**
@@ -49,6 +46,11 @@ namespace // {anonnymous}
   * @code
   *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
   * @endcode
+  *
+  * @param lhs 左辺値。
+  * @param rhs 右辺値。
+  *
+  * @return ビット和の演算結果。型は `ScopedBitmasks`。
   */
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
@@ -74,6 +76,11 @@ namespace // {anonnymous}
   * @code
   *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
   * @endcode
+  *
+  * @param lhs 左辺値。
+  * @param rhs 右辺値。
+  *
+  * @return 左辺値への参照。
   */
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
@@ -96,6 +103,11 @@ namespace // {anonnymous}
   * @code
   *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
   * @endcode
+  *
+  * @param lhs 左辺値。
+  * @param rhs 右辺値。
+  *
+  * @return ビット積の演算結果。型は `ScopedBitmasks`。
   */
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
@@ -121,6 +133,11 @@ namespace // {anonnymous}
   * @code
   *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
   * @endcode
+  *
+  * @param lhs 左辺値。
+  * @param rhs 右辺値。
+  *
+  * @return 左辺値への参照。
   */
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
@@ -143,6 +160,10 @@ namespace // {anonnymous}
   * @code
   *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
   * @endcode
+  *
+  * @param arg 演算対象の列挙型の値。
+  *
+  * @return ビット否定の演算結果。型は `ScopedBitmasks`。
   */
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
