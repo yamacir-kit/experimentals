@@ -18,46 +18,19 @@
 #include <termios.h>
 #include <unistd.h>
 
+#include <meevax/posix/fd.hpp>
 #include <meevax/type_traits/is_scoped_bitmasks.hpp>
 
 
-/**
-* POSIX 標準ライブラリの C++ フレンドリなラッパを含む名前空間。
-* 名前を unix にするか結構迷ったが、一先ずこちらにした。
-*/
 namespace meevax::posix
 {
-  class fd
-  {
-  public:
-    using value_type = int;
-
-  public:
-    value_type value;
-
-    static constexpr value_type stdin  { STDIN_FILENO};
-    static constexpr value_type stdout {STDOUT_FILENO};
-    static constexpr value_type stderr {STDERR_FILENO};
-
-  public:
-    fd(value_type value)
-      : value {value}
-    {}
-
-    operator value_type()
-    {
-      return value;
-    }
-  };
-
-
   /**
-  * POSIX 標準ライブラリの構造体 `termios` の拡張。
+  * POSIX 標準ライブラリの構造体 termios の拡張クラス。
   *
-  * 構造体 `{annonymous}::termios` から派生しているため、`termios.h` 内の各関数の引数として指定可能。<br>
+  * 構造体 termios から派生しているため、`termios.h` 内の各関数の引数として指定可能。<br>
   * 現状は間に合わせの実装なのでカノニカルモードの設定くらいしかサポートしていない。
   *
-  * メモ：`termios` の拡張であることを第一義とするため、使いやすくする以上のことはしない。
+  * 拡張であることを第一義とするため、使いやすくする以上のことはしない。
   */
   class termios
     : public ::termios
@@ -92,15 +65,20 @@ namespace meevax::posix
     };
 
   private:
-    const int fd_;
+    /// TODO DOCUMENTATION
+    const meevax::posix::fd fd_;
+
+    /// TODO DOCUMENTATION
     const struct ::termios initial_attrib_;
 
   public:
-    explicit termios(decltype(fd_) fd)
+    /// TODO DOCUMENTATION
+    explicit termios(decltype(fd_)::value_type fd)
       : fd_ {::isatty(fd) ? fd : throw std::system_error {errno, std::system_category()}},
         initial_attrib_ {get_attrib(fd_)}
     {}
 
+    /// TODO DOCUMENTATION
     ~termios()
     {
       ::tcsetattr(fd_, static_cast<std::underlying_type<effects>::type>(effects::from_now), &initial_attrib_);
@@ -109,7 +87,8 @@ namespace meevax::posix
     /**
     * 元々 `tcsetattr` だったもの。名前を変えたことに特に深い意味はないがパッと見が呪文だったので変えた。
     *
-    * 元の意味は terminal i/o control set attributes だろうか。
+    * @param when
+    *   変更がいつから効力を発揮するかの指定。デフォルトは即座に発揮。
     */
     void set_attrib(effects when = effects::from_now) const
     {
@@ -119,6 +98,7 @@ namespace meevax::posix
       }
     }
 
+    /// TODO DOCUMENTATION
     static struct ::termios get_attrib(int fd)
     {
       struct ::termios buffer {};
@@ -132,6 +112,7 @@ namespace meevax::posix
       }
     }
 
+    /// TODO DOCUMENTATION
     void change_to(input_mode mode)
     {
       switch (mode)
