@@ -57,7 +57,6 @@ namespace meevax::posix
     * 詳細情報は The Linux Programming Interface pp.1358-1359 参照。<br>
     */
     enum class effects
-      : int
     {
          from_now = TCSANOW,   ///< 変更はその場ですぐに効果を発揮する。
       after_drain = TCSADRAIN, ///< 変更は現在キューイングされている出力をすべて端末に転送後に効果を発揮する。
@@ -118,17 +117,17 @@ namespace meevax::posix
       switch (mode)
       {
       case meevax::posix::termios::input_mode::canonical:
+        throw std::runtime_error {
+          "[error] meevax::posix::termios::change_to() - unimplemented mode: canonical"
+        };
+
+      case meevax::posix::termios::input_mode::noncanonical:
         (*this).c_lflag &= ~(ICANON | ECHO);
         (*this).c_cc[VMIN]  = 1;
         (*this).c_cc[VTIME] = 0;
 
         set_attrib(effects::from_now);
         break;
-
-      case meevax::posix::termios::input_mode::noncanonical:
-        throw std::runtime_error {
-          "[error] meevax::posix::termios::change_to() - unimplemented mode: noncanonical"
-        };
       }
     }
   };

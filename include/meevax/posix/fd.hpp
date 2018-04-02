@@ -158,6 +158,23 @@ namespace meevax::posix
     {
       return fd(new_value).swap(*this);
     }
+
+    /**
+    * ファイルディスクリプタが端末を参照しているかの真偽値を返す。
+    * エラー内容を握りつぶしてしまっているのが気に食わないのだが、まあいいか。
+    */
+    static auto is_tty(value_type fd)
+    {
+      return ::isatty(fd) ? true : false;
+    }
+
+    /**
+    * 上の自身を対象としたやつ。
+    */
+    bool is_tty()
+    {
+      return is_tty(*this);
+    }
   };
 
   /// クラス `fd` を `file_descriptor` と記述したい時のためのエイリアス。
