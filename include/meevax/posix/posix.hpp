@@ -10,8 +10,6 @@
 */
 
 
-#include <unistd.h>
-
 #include <meevax/posix/fd.hpp>
 #include <meevax/posix/termios.hpp>
 

@@ -6,11 +6,10 @@
 * @file type_traits.hpp
 *
 * 名前空間 `meevax::type_traits` を定義するヘッダ群の一括インクルードを提供するヘッダ。
-* また、直接の依存はないが、標準ライブラリおよび Boost ライブラリの `type_traits` ヘッダもインクルードする。
+* また、標準ライブラリおよび Boost ライブラリの `type_traits` ヘッダもインクルードする。
 */
 
 
-#include <type_traits>
 #include <boost/type_traits.hpp>
 
 #include <meevax/type_traits/is_char_type.hpp>

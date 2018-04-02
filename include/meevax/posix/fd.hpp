@@ -11,9 +11,8 @@
 
 #include <system_error>
 #include <unistd.h>
-#include <utility>
 
-#include <meevax/utility/noncopyable.hpp>
+#include <meevax/utility/utility.hpp>
 
 
 namespace meevax::posix

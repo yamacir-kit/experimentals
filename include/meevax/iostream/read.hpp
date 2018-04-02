@@ -12,16 +12,12 @@
 #include <exception>
 #include <iostream>
 #include <regex>
-#include <utility>
-
-#include <boost/cstdlib.hpp>
+#include <string>
 
 #include <meevax/type_traits/type_traits.hpp>
+#include <meevax/utility/utility.hpp>
 
 
-/**
-* 入出力に関係するクラス・関数を含む名前空間。標準ライブラリ `iostream` に対して最低限の互換性を保証したい。
-*/
 namespace meevax::iostream
 {
   /**

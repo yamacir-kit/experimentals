@@ -6,11 +6,10 @@
 * @file utility.hpp
 *
 * 名前空間 `meevax::utility` を定義するヘッダ群の一括インクルードを提供するヘッダ。
-* また、直接の依存はないが、標準ライブラリおよび Boost ライブラリの `utility` ヘッダもインクルードする。
+* また、標準ライブラリおよび Boost ライブラリの `utility` ヘッダもインクルードする。
 */
 
 
-#include <utility>
 #include <boost/utility.hpp>
 
 #include <meevax/utility/noncopyable.hpp>

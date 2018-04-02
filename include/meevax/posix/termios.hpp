@@ -10,16 +10,15 @@
 */
 
 
-#include <cerrno>
 #include <stdexcept>
 #include <system_error>
-#include <utility>
 
 #include <termios.h>
 #include <unistd.h>
 
 #include <meevax/posix/fd.hpp>
-#include <meevax/type_traits/is_scoped_bitmasks.hpp>
+#include <meevax/type_traits/type_traits.hpp>
+#include <meevax/utility/utility.hpp>
 
 
 namespace meevax::posix

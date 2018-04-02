@@ -4,11 +4,8 @@
 
 #include <boost/cstdlib.hpp>
 
-#include <meevax/iostream/read.hpp>
-
+#include <meevax/iostream/iostream.hpp>
 #include <meevax/posix/posix.hpp>
-#include <meevax/type_traits/type_traits.hpp>
-#include <meevax/utility/utility.hpp>
 
 
 /**
