@@ -13,7 +13,7 @@
 #include <boost/type_traits.hpp>
 
 #include <meevax/type_traits/is_char_type.hpp>
-#include <meevax/type_traits/is_scoped_bitmasks.hpp>
+#include <meevax/type_traits/is_supports_bitwise_operators.hpp>
 
 
 /**

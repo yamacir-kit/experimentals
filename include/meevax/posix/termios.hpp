@@ -136,12 +136,12 @@ namespace meevax::posix
 namespace meevax::type_traits
 {
   /**
-  * クラステンプレート `is_scoped_bitmasks` の特殊化定義。`std::true_type` から派生する。
+  * クラステンプレート `is_supports_bitwise_operators` の特殊化定義。`std::true_type` から派生する。
   *
   * こいつにビット幅演算が必要かどうかは実のところよく分からない。多分要らない。
   */
   template <>
-  class is_scoped_bitmasks<enum meevax::posix::termios::input_mode>
+  class is_supports_bitwise_operators<enum meevax::posix::termios::input_mode>
     : public std::true_type
   {};
 } // namespace meevax::type_traits

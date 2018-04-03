@@ -99,13 +99,13 @@ namespace meevax::iostream
     * Concept-Controlled Polymorphism の起点となるプライベートインナークラスの宣言。
     * このクラスは特殊化が定義されていないパラメータについて実体化されてはならない。
     */
-    template <hierarchical_semantics HierarchicalSemantics, typename = void>
+    template <auto HierarchicalSemantics, typename = void>
     class read_;
 
     /**
     * 文字読み取り。`std::getchar` とほぼ同様の動作。
     */
-    template <hierarchical_semantics HierarchicalSemantics>
+    template <auto HierarchicalSemantics>
     class read_<HierarchicalSemantics, typename std::enable_if<HierarchicalSemantics == hierarchical_semantics::getchar>::type>
     {
     public:
@@ -133,7 +133,7 @@ namespace meevax::iostream
     * これを継承して解析用の情報を一緒に持った `class escape_sequence`
     * や `class unicode` を返すようにしたほうが便利だろうか。
     */
-    template <hierarchical_semantics HierarchicalSemantics>
+    template <auto HierarchicalSemantics>
     class read_<HierarchicalSemantics, typename std::enable_if<HierarchicalSemantics == hierarchical_semantics::sequence>::type>
     {
     public:

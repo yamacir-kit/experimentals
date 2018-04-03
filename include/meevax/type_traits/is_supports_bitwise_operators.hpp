@@ -1,9 +1,9 @@
-#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_IS_SCOPED_BITMASKS_HPP
-#define INCLUDED_MEEVAX_TYPE_TRAITS_IS_SCOPED_BITMASKS_HPP
+#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_BITWISE_OPERATORS_HPP
+#define INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_BITWISE_OPERATORS_HPP
 
 
 /**
-* @file is_scoped_bitmasks.hpp
+* @file is_supports_bitwise_operators.hpp
 *
 * スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。
 * 型安全なビットマスクが欲しかった。
@@ -30,7 +30,7 @@ namespace meevax::type_traits
   * 各メンバの値が `2^n` の要件を満たしているか否かはチェックされない。
   */
   template <typename T>
-  class is_scoped_bitmasks
+  class is_supports_bitwise_operators
     : public std::false_type
   {};
 } // namespace meevax::type_traits
@@ -44,7 +44,7 @@ namespace // {anonnymous}
   * @tparam ScopedBitmasks
   *   このテンプレートパラメータは下記のコンセプトを満たすことを要求する。
   * @code
-  *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
+  *   meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value == true
   * @endcode
   *
   * @param lhs 左辺値。
@@ -55,7 +55,7 @@ namespace // {anonnymous}
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value
+                          meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value
                         >::type
   #endif
   >
@@ -74,7 +74,7 @@ namespace // {anonnymous}
   * @tparam ScopedBitmasks
   *   このテンプレートパラメータは下記のコンセプトを満たすことを要求する。
   * @code
-  *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
+  *   meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value == true
   * @endcode
   *
   * @param lhs 左辺値。
@@ -85,7 +85,7 @@ namespace // {anonnymous}
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value
+                          meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value
                         >::type
   #endif
   >
@@ -101,7 +101,7 @@ namespace // {anonnymous}
   * @tparam ScopedBitmasks
   *   このテンプレートパラメータは下記のコンセプトを満たすことを要求する。
   * @code
-  *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
+  *   meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value == true
   * @endcode
   *
   * @param lhs 左辺値。
@@ -112,7 +112,7 @@ namespace // {anonnymous}
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value
+                          meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value
                         >::type
   #endif
   >
@@ -131,7 +131,7 @@ namespace // {anonnymous}
   * @tparam ScopedBitmasks
   *   このテンプレートパラメータは下記のコンセプトを満たすことを要求する。
   * @code
-  *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
+  *   meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value == true
   * @endcode
   *
   * @param lhs 左辺値。
@@ -142,7 +142,7 @@ namespace // {anonnymous}
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value
+                          meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value
                         >::type
   #endif
   >
@@ -158,7 +158,7 @@ namespace // {anonnymous}
   * @tparam ScopedBitmasks
   *   このテンプレートパラメータは下記のコンセプトを満たすことを要求する。
   * @code
-  *   meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value == true
+  *   meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value == true
   * @endcode
   *
   * @param arg 演算対象の列挙型の値。
@@ -168,7 +168,7 @@ namespace // {anonnymous}
   template <typename ScopedBitmasks
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_scoped_bitmasks<ScopedBitmasks>::value
+                          meevax::type_traits::is_supports_bitwise_operators<ScopedBitmasks>::value
                         >::type
   #endif
   >
@@ -181,5 +181,5 @@ namespace // {anonnymous}
 } // namespace {annonymous}
 
 
-#endif // INCLUDED_MEEVAX_TYPE_TRAITS_IS_SCOPED_BITMASKS_HPP
+#endif // INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_BITWISE_OPERATORS_HPP
 
