@@ -86,12 +86,37 @@ namespace meevax::iostream
     *   現状では型が `auto...` となっているが、これは将来の拡張に備えた手抜きであって、
     *   基本的には `meevax::iostream::read::hierarchical_semantics` 以外が与えられることはないはず。
     *
+    * @param args
+    *
     * @return decltype(auto)
     */
     template <auto... HierarchicalSemantics, typename... Ts>
     decltype(auto) operator()(Ts&&... args)
     {
       return read_<HierarchicalSemantics...> {}(*this, std::forward<Ts>(args)...);
+    }
+
+    /**
+    * 流石に `object.template operator()<parameters>(args...)` って書かないと
+    * 関数呼び出し演算子が呼べないのはクソの香りがするなと思って作った。
+    * 妥協の産物。
+    *
+    * 使いやすいのは確かだろうけど、
+    * セマンティクスと引数がごちゃまぜになっているので思想を反映したものではない。
+    * そういう意味での非推奨属性。
+    *
+    * @tparam HierarchicalSemantics...
+    * @tparam Ts...
+    *
+    * @param semantics
+    * @param args
+    *
+    * @return decltype(auto)
+    */
+    template <typename... HierarchicalSemantics, typename... Ts>
+    [[deprecated]] constexpr decltype(auto) operator()(HierarchicalSemantics&&... semantics, Ts&&... args)
+    {
+      return (*this).template operator()<semantics...>(std::forward<Ts>(args)...);
     }
 
   protected:
@@ -106,7 +131,13 @@ namespace meevax::iostream
     * 文字読み取り。`std::getchar` とほぼ同様の動作。
     */
     template <auto HierarchicalSemantics>
-    class read_<HierarchicalSemantics, typename std::enable_if<HierarchicalSemantics == hierarchical_semantics::getchar>::type>
+    class read_<HierarchicalSemantics
+    #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    , typename std::enable_if<
+                 HierarchicalSemantics == hierarchical_semantics::getchar
+               >::type
+    #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    >
     {
     public:
       /**
@@ -134,7 +165,13 @@ namespace meevax::iostream
     * や `class unicode` を返すようにしたほうが便利だろうか。
     */
     template <auto HierarchicalSemantics>
-    class read_<HierarchicalSemantics, typename std::enable_if<HierarchicalSemantics == hierarchical_semantics::sequence>::type>
+    class read_<HierarchicalSemantics
+    #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    , typename std::enable_if<
+                 HierarchicalSemantics == hierarchical_semantics::sequence
+               >::type
+    #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    >
     {
     public:
       /**

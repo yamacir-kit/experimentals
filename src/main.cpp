@@ -17,8 +17,6 @@ auto main(int argc, char** argv) -> int
 {
   const std::vector<std::string> args {argv, argv + argc};
 
-  // std::ios_base::sync_with_stdio(false);
-
   meevax::posix::termios termios {meevax::posix::fd::stdin};
   termios.change_to(meevax::posix::termios::input_mode::noncanonical);
 
