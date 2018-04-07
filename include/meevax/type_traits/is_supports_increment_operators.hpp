@@ -11,7 +11,7 @@
 
 #include <type_traits>
 
-#include <meevax/type_traits/type_traits.hpp>
+#include <meevax/debug/debug.hpp>
 
 
 namespace meevax::type_traits
@@ -96,7 +96,7 @@ namespace meevax::type_traits
   * 忘れてしまった後で絶対に謎の存在になって未来の自分を困惑させるのでドキュメント化。
   */
   template <>
-  class is_supports_prefix_increment_operators<meevax::type_traits::dummy_enum_class>
+  class is_supports_prefix_increment_operators<meevax::debug::dummy_enum>
     : public std::true_type
   {};
 
@@ -107,13 +107,15 @@ namespace meevax::type_traits
   * 忘れてしまった後で絶対に謎の存在になって未来の自分を困惑させるのでドキュメント化。
   */
   template <>
-  class is_supports_postfix_increment_operators<meevax::type_traits::dummy_enum_class>
+  class is_supports_postfix_increment_operators<meevax::debug::dummy_enum>
     : public std::true_type
   {};
 
-  static_assert(meevax::type_traits::is_supports_increment_operators<
-                  meevax::type_traits::dummy_enum_class
-                >::value == true);
+  static_assert(
+    meevax::type_traits::is_supports_increment_operators<
+      meevax::debug::dummy_enum
+    >::value == true
+  );
 #endif // NDEBUG
 } // namespace meevax::type_traits
 
@@ -176,17 +178,15 @@ namespace // {annonymous}
 } // {annonymous}
 
 
-#ifndef NDEBUG
 static_assert(
-  ++(meevax::type_traits::dummy_enum_class {meevax::type_traits::dummy_enum_class::hoge})
-  == meevax::type_traits::dummy_enum_class::fuga
+  ++(meevax::debug::dummy_enum {meevax::debug::dummy_enum::hoge})
+  == meevax::debug::dummy_enum::fuga
 );
 
 static_assert(
-  (meevax::type_traits::dummy_enum_class {meevax::type_traits::dummy_enum_class::hoge})++
-  == meevax::type_traits::dummy_enum_class::hoge
+    (meevax::debug::dummy_enum {meevax::debug::dummy_enum::hoge})++
+  == meevax::debug::dummy_enum::hoge
 );
-#endif // NDEBUG
 
 
 #endif
