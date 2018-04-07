@@ -1,0 +1,5 @@
+<map id="meevax/posix/fd.hpp" name="meevax/posix/fd.hpp">
+<area shape="rect" id="node4" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブラリ�..." alt="" coords="221,80,384,107"/>
+<area shape="rect" id="node6" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="200,155,405,181"/>
+<area shape="rect" id="node8" href="$unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="429,155,624,181"/>
+</map>
