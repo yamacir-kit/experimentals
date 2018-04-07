@@ -1,11 +1,11 @@
-#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_INCREMENT_OPERATORS_HPP
-#define INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_INCREMENT_OPERATORS_HPP
+#ifndef INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_DECREMENT_OPERATORS_HPP
+#define INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_DECREMENT_OPERATORS_HPP
 
 
 /**
-* @file is_supports_increment_operators.hpp
+* @file is_supports_decrement_operators.hpp
 *
-* 任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。
+* 任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。
 */
 
 
@@ -17,7 +17,7 @@
 namespace meevax::type_traits
 {
   /**
-  * 前置インクリメント可能かを検査するメタ関数。
+  * 前置デクリメント可能かを検査するメタ関数。
   *
   * 現時点では、このヘッダは `std::false_type` から派生するものしか提供しない。
   * 本当はスカラ型や一般クラスについてもメタ関数で検査して、`std::true_type` から
@@ -25,34 +25,34 @@ namespace meevax::type_traits
   *
   * 列挙型（スコープ付き列挙型含む）について、`std::true_type` から派生する特殊化を
   * 名前空間 `meevax::type_traits` 中に明示的に定義しておくことで、
-  * ヘッダファイル `meevax/type_traits/is_supports_increment_operators.hpp`
-  * 中で定義される 列挙型用の型安全グローバルインクリメント演算子オーバーロードを有効化出来る。
+  * ヘッダファイル `meevax/type_traits/is_supports_decrement_operators.hpp`
+  * 中で定義される 列挙型用の型安全グローバルデクリメント演算子オーバーロードを有効化出来る。
   */
   template <typename T>
-  class is_supports_prefix_increment_operators
+  class is_supports_prefix_decrement_operators
     : public std::false_type
   {};
 
   /**
-  * 後置インクリメント可能かを検査するメタ関数。
+  * 後置デクリメント可能かを検査するメタ関数。
   *
   * 現時点では、このヘッダは `std::false_type` から派生するものしか提供しない。
   * 本当はスカラ型や一般クラスについてもメタ関数で検査して、`std::true_type` から
   * 派生出来るようにしておかなければならないのだが、今は必要な状況にないので後回し。
   *
   * 列挙型（スコープ付き列挙型含む）について、`std::true_type` から派生する特殊化を
-  * 明示的に定義しておくことで、ヘッダファイル `meevax/type_traits/is_supports_increment_operators.hpp`
-  * 中で定義される 列挙型用の型安全グローバルインクリメント演算子オーバーロードを有効化出来る。
+  * 明示的に定義しておくことで、ヘッダファイル `meevax/type_traits/is_supports_decrement_operators.hpp`
+  * 中で定義される 列挙型用の型安全グローバルデクリメント演算子オーバーロードを有効化出来る。
   */
   template <typename T>
-  class is_supports_postfix_increment_operators
+  class is_supports_postfix_decrement_operators
     : public std::false_type
   {};
 
   /**
   * 推論補助用のクラス。なんだかんだでユーザ側からアクセス可能なのが気に食わない。
   */
-  class is_supports_increment_operators_
+  class is_supports_decrement_operators_
   {
   public:
     /**
@@ -62,10 +62,10 @@ namespace meevax::type_traits
     template <typename U
     #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
     , typename = typename std::enable_if<
-                            meevax::type_traits::is_supports_prefix_increment_operators<U>::value
+                            meevax::type_traits::is_supports_prefix_decrement_operators<U>::value
                           >::type
     , typename = typename std::enable_if<
-                            meevax::type_traits::is_supports_postfix_increment_operators<U>::value
+                            meevax::type_traits::is_supports_postfix_decrement_operators<U>::value
                           >::type
     #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
     >
@@ -80,38 +80,38 @@ namespace meevax::type_traits
   };
 
   /**
-  * 前置・後置インクリメント可能かを検査するメタ関数。一応こちらが本体。
+  * 前置・後置デクリメント可能かを検査するメタ関数。一応こちらが本体。
   * 推論補助クラスを利用して `std::true_type` または `std::false_type` から派生する。
   */
   template <typename T>
-  class is_supports_increment_operators
-    : public decltype(is_supports_increment_operators_::check(std::declval<T>()))
+  class is_supports_decrement_operators
+    : public decltype(is_supports_decrement_operators_::check(std::declval<T>()))
   {};
 
 #ifndef NDEBUG
   /**
-  * 静的テスト用のダミークラスに対する特殊化定義。前置インクリメント。
+  * 静的テスト用のダミークラスに対する特殊化定義。前置デクリメント。
   *
   * ドキュメント化するべきものではないが、
   * 忘れてしまった後で絶対に謎の存在になって未来の自分を困惑させるのでドキュメント化。
   */
   template <>
-  class is_supports_prefix_increment_operators<meevax::type_traits::dummy_enum_class>
+  class is_supports_prefix_decrement_operators<meevax::type_traits::dummy_enum_class>
     : public std::true_type
   {};
 
   /**
-  * 静的テスト用のダミークラスに対する特殊化定義。後置インクリメント。
+  * 静的テスト用のダミークラスに対する特殊化定義。後置デクリメント。
   *
   * ドキュメント化するべきものではないが、
   * 忘れてしまった後で絶対に謎の存在になって未来の自分を困惑させるのでドキュメント化。
   */
   template <>
-  class is_supports_postfix_increment_operators<meevax::type_traits::dummy_enum_class>
+  class is_supports_postfix_decrement_operators<meevax::type_traits::dummy_enum_class>
     : public std::true_type
   {};
 
-  static_assert(meevax::type_traits::is_supports_increment_operators<
+  static_assert(meevax::type_traits::is_supports_decrement_operators<
                   meevax::type_traits::dummy_enum_class
                 >::value == true);
 #endif // NDEBUG
@@ -121,56 +121,56 @@ namespace meevax::type_traits
 namespace // {annonymous}
 {
   /**
-  * 前置インクリメント可能のコンセプトを満たす列挙型に対する前置インクリメント演算子オーバーロード。
+  * 前置デクリメント可能のコンセプトを満たす列挙型に対する前置デクリメント演算子オーバーロード。
   *
-  * あくまで単純に型安全なインクリメントを提供するだけであって、オーバーフローに対する検査は行われない。
+  * あくまで単純に型安全なデクリメントを提供するだけであって、オーバーフローに対する検査は行われない。
   * というか、範囲外の値からのキャストが成功するかもわからない。
   * つまり、より上位のコンセプティブな操作の道具として使われることを想定した演算。
   *
   * @param enum_class
   *
-  * @return 前置インクリメントされたオブジェクトへの参照。
+  * @return 前置デクリメントされたオブジェクトへの参照。
   */
   template <typename EnumClass
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_supports_prefix_increment_operators<EnumClass>::value
+                          meevax::type_traits::is_supports_prefix_decrement_operators<EnumClass>::value
                         >::type
   , typename = typename std::enable_if<
                           std::is_enum<EnumClass>::value
                         >::type
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   >
-  constexpr decltype(auto) operator++(EnumClass&& enum_class)
+  constexpr decltype(auto) operator--(EnumClass&& enum_class)
   {
-    return enum_class = static_cast<EnumClass>(static_cast<typename std::underlying_type<EnumClass>::type>(enum_class) + 1);
+    return enum_class = static_cast<EnumClass>(static_cast<typename std::underlying_type<EnumClass>::type>(enum_class) - 1);
   }
 
   /**
-  * 後置インクリメント可能のコンセプトを満たす列挙型に対する後置インクリメント演算子オーバーロード。
+  * 後置デクリメント可能のコンセプトを満たす列挙型に対する後置デクリメント演算子オーバーロード。
   *
-  * あくまで単純に型安全なインクリメントを提供するだけであって、オーバーフローに対する検査は行われない。
+  * あくまで単純に型安全なデクリメントを提供するだけであって、オーバーフローに対する検査は行われない。
   * というか、範囲外の値からのキャストが成功するかもわからない。
   * つまり、より上位のコンセプティブな操作の道具として使われることを想定した演算。
   *
   * @param enum_class
   *
-  * @return 前置インクリメントされたオブジェクトへの参照。
+  * @return 前置デクリメントされたオブジェクトへの参照。
   */
   template <typename EnumClass
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
-                          meevax::type_traits::is_supports_postfix_increment_operators<EnumClass>::value
+                          meevax::type_traits::is_supports_postfix_decrement_operators<EnumClass>::value
                         >::type
   , typename = typename std::enable_if<
                           std::is_enum<EnumClass>::value
                         >::type
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   >
-  constexpr auto operator++(EnumClass&& enum_class, int)
+  constexpr auto operator--(EnumClass&& enum_class, int)
   {
     const auto buffer {enum_class};
-    enum_class = static_cast<EnumClass>(static_cast<typename std::underlying_type<EnumClass>::type>(enum_class) + 1);
+    enum_class = static_cast<EnumClass>(static_cast<typename std::underlying_type<EnumClass>::type>(enum_class) - 1);
     return buffer;
   }
 } // {annonymous}
@@ -178,16 +178,16 @@ namespace // {annonymous}
 
 #ifndef NDEBUG
 static_assert(
-  ++(meevax::type_traits::dummy_enum_class {meevax::type_traits::dummy_enum_class::hoge})
-  == meevax::type_traits::dummy_enum_class::fuga
+  --(meevax::type_traits::dummy_enum_class {meevax::type_traits::dummy_enum_class::fuga})
+  == meevax::type_traits::dummy_enum_class::hoge
 );
 
 static_assert(
-  (meevax::type_traits::dummy_enum_class {meevax::type_traits::dummy_enum_class::hoge})++
-  == meevax::type_traits::dummy_enum_class::hoge
+  (meevax::type_traits::dummy_enum_class {meevax::type_traits::dummy_enum_class::fuga})--
+  == meevax::type_traits::dummy_enum_class::fuga
 );
 #endif // NDEBUG
 
 
-#endif
+#endif // INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_DECREMENT_OPERATORS_HPP
 
