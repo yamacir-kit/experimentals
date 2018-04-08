@@ -6,19 +6,18 @@
 * @file utility.hpp
 *
 * 名前空間 `meevax::utility` を定義するヘッダ群の一括インクルードを提供するヘッダ。
-* また、標準ライブラリおよび Boost ライブラリの `utility` ヘッダもインクルードする。
 */
 
 
-#include <boost/utility.hpp>
-
+#include <meevax/utility/curry.hpp>
+#include <meevax/utility/evaluate.hpp>
 #include <meevax/utility/noncopyable.hpp>
+#include <meevax/utility/overload.hpp>
 #include <meevax/utility/unmovable.hpp>
 
 
 /**
-* あまりに基本的すぎて置き場所に困ったものが置かれる名前空間。
-* C++ 文法にはないセマンティクスを実現する単純クラス群の置き場と考えて概ね間違いない。
+* C++ 文法にはないセマンティクスを実現する単純クラス群が置かれる名前空間。
 */
 namespace meevax::utility {}
 

@@ -59,9 +59,6 @@ namespace meevax::utility
   *
   * @return
   *   テンプレートパラメータ `ReturnTypes` に渡した `meevax::utility::overloaded<types...>` の `types...` のいずれか。
-  *
-  * @todo
-  *   説明がクソ。
   */
   template <typename ReturnTypes, typename Function>
   constexpr auto evaluate(Function&& function)
