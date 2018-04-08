@@ -10,7 +10,6 @@
 
 
 #include <meevax/utility/curry.hpp>
-#include <meevax/utility/evaluate.hpp>
 #include <meevax/utility/noncopyable.hpp>
 #include <meevax/utility/overload.hpp>
 #include <meevax/utility/unmovable.hpp>
