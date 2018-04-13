@@ -29,13 +29,23 @@ var hierarchy =
     [ "meevax::type_traits::is_supports_prefix_increment_operators< T >", "classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html", null ],
     [ "meevax::type_traits::is_supports_prefix_increment_operators< meevax::debug::dummy_enum >", "classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html", null ],
     [ "meevax::utility::noncopyable< T >", "classmeevax_1_1utility_1_1noncopyable.html", null ],
-    [ "meevax::utility::overloaded< Ts >", "classmeevax_1_1utility_1_1overloaded.html", null ],
-    [ "meevax::utility::overloaded< T >", "classmeevax_1_1utility_1_1overloaded_3_01T_01_4.html", null ],
+    [ "meevax::utility::overloaded_nontrivial_objectives<... >", "classmeevax_1_1utility_1_1overloaded__nontrivial__objectives.html", null ],
+    [ "meevax::utility::overloaded_nontrivial_objectives< T >", "classmeevax_1_1utility_1_1overloaded__nontrivial__objectives_3_01T_01_4.html", null ],
+    [ "meevax::utility::overloaded_operations<... >", "classmeevax_1_1utility_1_1overloaded__operations.html", null ],
+    [ "meevax::utility::overloaded_operations< T >", "classmeevax_1_1utility_1_1overloaded__operations_3_01T_01_4.html", null ],
+    [ "meevax::utility::overloaded_trivial_objectives<... >", "classmeevax_1_1utility_1_1overloaded__trivial__objectives.html", null ],
+    [ "meevax::utility::overloaded_trivial_objectives< T >", "classmeevax_1_1utility_1_1overloaded__trivial__objectives_3_01T_01_4.html", null ],
     [ "meevax::utility::unmovable< T >", "classmeevax_1_1utility_1_1unmovable.html", null ],
     [ "meevax::utility::noncopyable< fd >", "classmeevax_1_1utility_1_1noncopyable.html", [
       [ "meevax::posix::fd", "classmeevax_1_1posix_1_1fd.html", null ]
     ] ],
-    [ "meevax::utility::overloaded< U, Ts... >", "classmeevax_1_1utility_1_1overloaded.html", [
-      [ "meevax::utility::overloaded< T, U, Ts... >", "classmeevax_1_1utility_1_1overloaded_3_01T_00_01U_00_01Ts_8_8_8_01_4.html", null ]
+    [ "meevax::utility::overloaded_nontrivial_objectives< U, Ts... >", "classmeevax_1_1utility_1_1overloaded__nontrivial__objectives.html", [
+      [ "meevax::utility::overloaded_nontrivial_objectives< T, U, Ts... >", "classmeevax_1_1utility_1_1overloaded__nontrivial__objectives_3_01T_00_01U_00_01Ts_8_8_8_01_4.html", null ]
+    ] ],
+    [ "meevax::utility::overloaded_operations< U, Ts... >", "classmeevax_1_1utility_1_1overloaded__operations.html", [
+      [ "meevax::utility::overloaded_operations< T, U, Ts... >", "classmeevax_1_1utility_1_1overloaded__operations_3_01T_00_01U_00_01Ts_8_8_8_01_4.html", null ]
+    ] ],
+    [ "meevax::utility::overloaded_trivial_objectives< U, Ts... >", "classmeevax_1_1utility_1_1overloaded__trivial__objectives.html", [
+      [ "meevax::utility::overloaded_trivial_objectives< T, U, Ts... >", "classmeevax_1_1utility_1_1overloaded__trivial__objectives_3_01T_00_01U_00_01Ts_8_8_8_01_4.html", null ]
     ] ]
 ];
