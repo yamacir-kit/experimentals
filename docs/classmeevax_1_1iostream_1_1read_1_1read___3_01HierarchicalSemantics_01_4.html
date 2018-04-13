@@ -60,18 +60,13 @@ $(document).ready(function(){initNavTree('classmeevax_1_1iostream_1_1read_1_1rea
 </div><!--header-->
 <div class="contents">
 
-<p>文字読み取り。<code>std::getchar</code> とほぼ同様の動作。  
+<p>シーケンス読み取り。  
  <a href="classmeevax_1_1iostream_1_1read_1_1read___3_01HierarchicalSemantics_01_4.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="read_8hpp_source.html">read.hpp</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad4db7226fd2b8f6a24edf5016aa55742"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad4db7226fd2b8f6a24edf5016aa55742"></a>
-template&lt;typename ReadType &gt; </td></tr>
-<tr class="memitem:ad4db7226fd2b8f6a24edf5016aa55742"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmeevax_1_1iostream_1_1read_1_1read___3_01HierarchicalSemantics_01_4.html#ad4db7226fd2b8f6a24edf5016aa55742">operator()</a> (ReadType &amp;&amp;<a class="el" href="classmeevax_1_1iostream_1_1read.html">read</a>)</td></tr>
-<tr class="memdesc:ad4db7226fd2b8f6a24edf5016aa55742"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字読み取り。 <code>std::getchar</code> とほぼ同様の動作だが、返り値が <code>int</code> ではなく <code>char_type</code> である点に注意。 <br /></td></tr>
-<tr class="separator:ad4db7226fd2b8f6a24edf5016aa55742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4db7226fd2b8f6a24edf5016aa55742"><td class="memTemplParams" colspan="2"><a class="anchor" id="ad4db7226fd2b8f6a24edf5016aa55742"></a>
 template&lt;typename ReadType &gt; </td></tr>
 <tr class="memitem:ad4db7226fd2b8f6a24edf5016aa55742"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmeevax_1_1iostream_1_1read_1_1read___3_01HierarchicalSemantics_01_4.html#ad4db7226fd2b8f6a24edf5016aa55742">operator()</a> (ReadType &amp;&amp;<a class="el" href="classmeevax_1_1iostream_1_1read.html">read</a>)</td></tr>
@@ -83,12 +78,11 @@ template&lt;typename ReadType &gt; </td></tr>
 template&lt;auto HierarchicalSemantics&gt;<br />
 class meevax::iostream::read&lt; CharType &gt;::read_&lt; HierarchicalSemantics &gt;</h3>
 
-<p>文字読み取り。<code>std::getchar</code> とほぼ同様の動作。 </p>
-<p>シーケンス読み取り。</p>
+<p>シーケンス読み取り。 </p>
 <p>意味としては一文字の範疇だが、データとしてはバイトシーケンスとなっているもの。 ASCII 文字入力においてはエスケープシーケンスが該当。 将来的にはユニコードに対応させたい。 入力ストリームからシーケンスを切り分けるという意味で、<code>std::getline</code> の別種に相当するか。</p>
 <p>返り値型は現在はただの <code>std::basic_string&lt;char_type&gt;</code> だが、 これを継承して解析用の情報を一緒に持った <code>class escape_sequence</code> や <code>class unicode</code> を返すようにしたほうが便利だろうか。 </p>
 
-<p>Definition at line <a class="el" href="read_8hpp_source.html#l00134">134</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
+<p>Definition at line <a class="el" href="read_8hpp_source.html#l00176">176</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>meevax/iostream/<a class="el" href="read_8hpp_source.html">read.hpp (7d4ccf9 Add new header file &quot;meevax/type_traits/is_supports_increment_operators.hpp&quot;)</a></li>
 </ul>

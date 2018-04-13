@@ -1,5 +1,17 @@
 <map id="meevax/posix/fd.hpp" name="meevax/posix/fd.hpp">
-<area shape="rect" id="node4" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブラリ�..." alt="" coords="221,80,384,107"/>
-<area shape="rect" id="node6" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="200,155,405,181"/>
-<area shape="rect" id="node8" href="$unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="429,155,624,181"/>
+<area shape="rect" id="node4" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 " alt="" coords="667,80,830,107"/>
+<area shape="rect" id="node5" href="$curry_8hpp.html" title="関数のカリー化関数を提供するヘッダ。 " alt="" coords="236,155,397,181"/>
+<area shape="rect" id="node7" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="422,155,627,181"/>
+<area shape="rect" id="node8" href="$overload_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload および、 その返り値型 overloaded を提供するヘ..." alt="" coords="870,155,1051,181"/>
+<area shape="rect" id="node23" href="$unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="651,155,846,181"/>
+<area shape="rect" id="node10" href="$type__traits_8hpp.html" title="名前空間 meevax::type_traits を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブ�..." alt="" coords="677,229,810,271"/>
+<area shape="rect" id="node11" href="$introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="1118,326,1251,367"/>
+<area shape="rect" id="node15" href="$is__char__type_8hpp.html" title="何故か標準ライブラリにないメタ関数 is_char_type を提供するヘッダファイル。 それ以上のことはない。 ..." alt="" coords="614,423,747,464"/>
+<area shape="rect" id="node16" href="$is__equality__comparable_8hpp.html" title="与えられた型について透過性の比較が可能かどうかを調べるメタ関数を提供するヘッダ。 " alt="" coords="403,423,590,464"/>
+<area shape="rect" id="node17" href="$is__standard__container_8hpp.html" title="標準コンテナであるか否かをチェックするメタ関数を提供するヘッダ。 " alt="" coords="277,326,455,367"/>
+<area shape="rect" id="node20" href="$is__supports__bitwise__operators_8hpp.html" title="スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマ..." alt="" coords="585,319,726,375"/>
+<area shape="rect" id="node21" href="$is__supports__decrement__operators_8hpp.html" title="任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="751,319,912,375"/>
+<area shape="rect" id="node22" href="$is__supports__increment__operators_8hpp.html" title="任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="937,319,1094,375"/>
+<area shape="rect" id="node13" href="$debug_8hpp.html" title="デバッグ用の道具を一括インクルードするためのヘッダ。 静的（かつ雑）なアサーションとかデバッグ用の出力..." alt="" coords="930,430,1101,457"/>
+<area shape="rect" id="node14" href="$dummy__type_8hpp.html" title="デバッグ用のダミークラスの提供。 基本的に static_assert 内でのテストに掛けるためのクラス。 基本的に研..." alt="" coords="938,512,1093,553"/>
 </map>
