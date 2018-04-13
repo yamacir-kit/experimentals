@@ -11,9 +11,10 @@
 
 #include <exception>
 #include <iostream>
-#include <regex>
-#include <string>
+#include <sstream>
 
+#include <meevax/regex/regex.hpp>
+#include <meevax/string/string.hpp>
 #include <meevax/type_traits/type_traits.hpp>
 #include <meevax/utility/utility.hpp>
 
@@ -28,8 +29,10 @@ namespace meevax::iostream
   */
   template <typename CharType
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  , typename = typename std::enable_if<meevax::type_traits::is_char_type<CharType>::value>::type
-  #endif
+  , typename = typename std::enable_if<
+                          meevax::type_traits::is_char_type<CharType>::value
+                        >::type
+  #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   >
   class read
   {
@@ -124,18 +127,25 @@ namespace meevax::iostream
     * Concept-Controlled Polymorphism の起点となるプライベートインナークラスの宣言。
     * このクラスは特殊化が定義されていないパラメータについて実体化されてはならない。
     */
-    template <auto HierarchicalSemantics, typename = void>
+    template <auto HierarchicalSemantics
+    #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    , typename = void
+    #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    >
     class read_;
 
     /**
     * 文字読み取り。`std::getchar` とほぼ同様の動作。
     */
     template <auto HierarchicalSemantics>
-    class read_<HierarchicalSemantics
+    class read_<
     #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    HierarchicalSemantics
     , typename std::enable_if<
                  HierarchicalSemantics == hierarchical_semantics::getchar
                >::type
+    #else
+    hierarchical_semantics::getchar
     #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
     >
     {
@@ -153,7 +163,7 @@ namespace meevax::iostream
     };
 
     /**
-    * シーケンス読み取り。
+    * シーケンス読み取り。賢い `std::getchar`。
     *
     * 意味としては一文字の範疇だが、データとしてはバイトシーケンスとなっているもの。
     * ASCII 文字入力においてはエスケープシーケンスが該当。
@@ -165,11 +175,14 @@ namespace meevax::iostream
     * や `class unicode` を返すようにしたほうが便利だろうか。
     */
     template <auto HierarchicalSemantics>
-    class read_<HierarchicalSemantics
+    class read_<
     #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+    HierarchicalSemantics
     , typename std::enable_if<
                  HierarchicalSemantics == hierarchical_semantics::sequence
                >::type
+    #else
+    hierarchical_semantics::sequence
     #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
     >
     {
@@ -183,7 +196,7 @@ namespace meevax::iostream
         using read_type = typename std::remove_reference<ReadType>::type;
         using char_type = typename read_type::char_type;
 
-        static const std::basic_regex<char_type> escape_sequence {"\e(\\[[^a-zA-Z]*[a-zA-Z])"};
+        static const std::basic_regex<char_type> escape_sequence {"\e(\\[[^:alpha:]*[a-zA-Z])"};
         std::match_results<typename std::basic_string<char_type>::const_iterator> results {};
 
         if (const auto head {read.template operator()<read_type::hierarchical_semantics::getchar>()}; is_control_code(head))

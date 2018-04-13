@@ -55,11 +55,11 @@ namespace meevax::regex
   auto extract(std::basic_string<CharType>& from, const std::basic_regex<CharType>& regex, const std::basic_string<CharType>& replaced = "")
   {
     StandardContainer<std::basic_string<CharType>> extracted {};
-    using regex_iterator = std::regex_iterator<typename std::basic_regex<CharType>::const_iterator>;
+    using regex_iterator = std::regex_iterator<typename std::basic_string<CharType>::const_iterator>;
 
-    for (regex_iterator iter {std::cbegin(from), std::cend(from), regex}; iter != regex_iterator {}; iter)
+    for (regex_iterator iter {std::cbegin(from), std::cend(from), regex}; iter != regex_iterator {}; ++iter)
     {
-      extracted.emplace((*iter)[0]);
+      extracted.push_back((*iter)[0]);
     }
     from = std::regex_replace(from, regex, replaced);
 
