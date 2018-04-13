@@ -1,16 +1,20 @@
 <map id="meevax/type_traits/type_traits.hpp" name="meevax/type_traits/type_traits.hpp">
-<area shape="rect" id="node2" href="$introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="1125,102,1259,143"/>
-<area shape="rect" id="node13" href="$is__char__type_8hpp.html" title="何故か標準ライブラリにないメタ関数 is_char_type を提供するヘッダファイル。 それ以上のことはない。 ..." alt="" coords="5,199,139,240"/>
-<area shape="rect" id="node14" href="$is__equality__comparable_8hpp.html" title="与えられた型について透過性の比較が可能かどうかを調べるメタ関数を提供するヘッダ。 " alt="" coords="561,199,748,240"/>
-<area shape="rect" id="node15" href="$is__standard__container_8hpp.html" title="標準コンテナであるか否かをチェックするメタ関数を提供するヘッダ。 " alt="" coords="339,102,517,143"/>
-<area shape="rect" id="node18" href="$is__supports__bitwise__operators_8hpp.html" title="スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマ..." alt="" coords="592,95,733,151"/>
-<area shape="rect" id="node19" href="$is__supports__decrement__operators_8hpp.html" title="任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="939,95,1101,151"/>
-<area shape="rect" id="node20" href="$is__supports__increment__operators_8hpp.html" title="任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="757,95,915,151"/>
-<area shape="rect" id="node4" href="$debug_8hpp.html" title="デバッグ用の道具を一括インクルードするためのヘッダ。 静的（かつ雑）なアサーションとかデバッグ用の出力..." alt="" coords="932,206,1103,233"/>
-<area shape="rect" id="node6" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 " alt="" coords="1221,206,1384,233"/>
-<area shape="rect" id="node5" href="$dummy__type_8hpp.html" title="デバッグ用のダミークラスの提供。 基本的に static_assert 内でのテストに掛けるためのクラス。 基本的に研..." alt="" coords="835,288,989,329"/>
-<area shape="rect" id="node7" href="$curry_8hpp.html" title="関数のカリー化関数を提供するヘッダ。 " alt="" coords="1014,295,1175,322"/>
-<area shape="rect" id="node9" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="1200,295,1405,322"/>
-<area shape="rect" id="node10" href="$overload_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload および、 その返り値型 overloaded を提供するヘ..." alt="" coords="1648,295,1829,322"/>
-<area shape="rect" id="node12" href="$unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="1429,295,1624,322"/>
+<area shape="rect" id="node2" href="$introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="1195,102,1328,143"/>
+<area shape="rect" id="node14" href="$is__char__type_8hpp.html" title="何故か標準ライブラリにないメタ関数 is_char_type を提供するヘッダファイル。 それ以上のことはない。 ..." alt="" coords="5,206,139,247"/>
+<area shape="rect" id="node15" href="$is__equality__comparable_8hpp.html" title="与えられた型について透過性の比較が可能かどうかを調べるメタ関数を提供するヘッダ。 " alt="" coords="563,206,749,247"/>
+<area shape="rect" id="node16" href="$is__explicit__invocable_8hpp_source.html" title="meevax/type_traits\l/is_explicit_invocable.hpp" alt="" coords="1352,102,1523,143"/>
+<area shape="rect" id="node17" href="$is__implicit__invocable_8hpp_source.html" title="meevax/type_traits\l/is_implicit_invocable.hpp" alt="" coords="1547,102,1717,143"/>
+<area shape="rect" id="node18" href="$is__standard__container_8hpp.html" title="標準コンテナであるか否かをチェックするメタ関数を提供するヘッダ。 " alt="" coords="375,102,553,143"/>
+<area shape="rect" id="node21" href="$is__supports__bitwise__operators_8hpp.html" title="スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマ..." alt="" coords="773,199,915,255"/>
+<area shape="rect" id="node22" href="$is__supports__decrement__operators_8hpp.html" title="任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="827,95,989,151"/>
+<area shape="rect" id="node23" href="$is__supports__increment__operators_8hpp.html" title="任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="1013,95,1171,151"/>
+<area shape="rect" id="node4" href="$debug_8hpp.html" title="デバッグ用の道具を一括インクルードするためのヘッダ。 静的（かつ雑）なアサーションとかデバッグ用の出力..." alt="" coords="1040,213,1211,240"/>
+<area shape="rect" id="node6" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 " alt="" coords="1516,213,1679,240"/>
+<area shape="rect" id="node5" href="$dummy__type_8hpp.html" title="デバッグ用のダミークラスの提供。 基本的に static_assert 内でのテストに掛けるためのクラス。 基本的に研..." alt="" coords="905,303,1060,344"/>
+<area shape="rect" id="node7" href="$curry_8hpp.html" title="関数のカリー化関数を提供するヘッダ。 " alt="" coords="1085,310,1246,337"/>
+<area shape="rect" id="node9" href="$explicit__function_8hpp_source.html" title="meevax/utility/explicit\l_function.hpp" alt="" coords="1719,303,1867,344"/>
+<area shape="rect" id="node10" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="1271,310,1476,337"/>
+<area shape="rect" id="node11" href="$overload__objectives_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload_objectives および、 その返り値型 overloaded_t..." alt="" coords="1891,303,2047,344"/>
+<area shape="rect" id="node12" href="$overload__operations_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload_operations および、 その返り値型 overloaded_o..." alt="" coords="2071,303,2227,344"/>
+<area shape="rect" id="node13" href="$unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="1500,310,1695,337"/>
 </map>

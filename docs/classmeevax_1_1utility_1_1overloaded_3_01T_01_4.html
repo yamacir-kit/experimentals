@@ -53,6 +53,7 @@ $(document).ready(function(){initNavTree('classmeevax_1_1utility_1_1overloaded_3
 <div id="doc-content">
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classmeevax_1_1utility_1_1overloaded_3_01T_01_4-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">meevax::utility::overloaded&lt; T &gt; Class Template Reference</div>  </div>
@@ -65,14 +66,56 @@ $(document).ready(function(){initNavTree('classmeevax_1_1utility_1_1overloaded_3
 <p><code>#include &lt;<a class="el" href="overload_8hpp_source.html">overload.hpp</a>&gt;</code></p>
 
 <p>Inherits T.</p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ad5734e959ec1c5adc08d2b7326080d44"><td class="memTemplParams" colspan="2">template&lt;typename... Ts_&gt; </td></tr>
+<tr class="memitem:ad5734e959ec1c5adc08d2b7326080d44"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmeevax_1_1utility_1_1overloaded_3_01T_01_4.html#ad5734e959ec1c5adc08d2b7326080d44">operator()</a> (Ts_ &amp;&amp;...args)</td></tr>
+<tr class="memdesc:ad5734e959ec1c5adc08d2b7326080d44"><td class="mdescLeft">&#160;</td><td class="mdescRight">基底クラスの関数呼び出し演算子のラッパ。 暗黙型変換を伴わずに関数呼び出し可能な場合に限って有効になる。  <a href="#ad5734e959ec1c5adc08d2b7326080d44">More...</a><br /></td></tr>
+<tr class="separator:ad5734e959ec1c5adc08d2b7326080d44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
 class meevax::utility::overloaded&lt; T &gt;</h3>
 
 <p>引数ひとつの場合についての特殊化。 </p>
 
-<p>Definition at line <a class="el" href="overload_8hpp_source.html#l00031">31</a> of file <a class="el" href="overload_8hpp_source.html">overload.hpp</a>.</p>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+<p>Definition at line <a class="el" href="overload_8hpp_source.html#l00034">34</a> of file <a class="el" href="overload_8hpp_source.html">overload.hpp</a>.</p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="ad5734e959ec1c5adc08d2b7326080d44"></a>
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<div class="memtemplate">
+template&lt;typename... Ts_&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) <a class="el" href="classmeevax_1_1utility_1_1overloaded.html">meevax::utility::overloaded</a>&lt; T &gt;::operator() </td>
+          <td>(</td>
+          <td class="paramtype">Ts_ &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>基底クラスの関数呼び出し演算子のラッパ。 暗黙型変換を伴わずに関数呼び出し可能な場合に限って有効になる。 </p>
+<p>関数オーバーロードの推論ルールを完全に再現していないため、 純粋な関数オーバーロードとして働かないことに注意。 </p>
+
+<p>Definition at line <a class="el" href="overload_8hpp_source.html#l00063">63</a> of file <a class="el" href="overload_8hpp_source.html">overload.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    {</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;      <span class="keywordflow">return</span> car::operator()(std::forward&lt;Ts_&gt;(args)...);</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    }</div></div><!-- fragment -->
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li>meevax/utility/<a class="el" href="overload_8hpp_source.html">overload.hpp (5177736 Add new header &quot;utility/overload.hpp&quot;)</a></li>
 </ul>
 </div><!-- contents -->

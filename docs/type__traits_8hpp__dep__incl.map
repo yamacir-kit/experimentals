@@ -1,16 +1,20 @@
 <map id="meevax/type_traits/type_traits.hpp" name="meevax/type_traits/type_traits.hpp">
-<area shape="rect" id="node2" href="$read_8hpp.html" title="種々のフォーマットからのデータ読み取り処理を汎用的に行うための関数オブジェクト型 read とその補助クラ�..." alt="" coords="292,251,468,278"/>
-<area shape="rect" id="node5" href="$lexer_8hpp.html" title="meevax 文法解析のためのレキサなどを提供するヘッダ。 基本的に機能分離がうまくいってない。 ..." alt="" coords="143,408,311,435"/>
-<area shape="rect" id="node7" href="$termios_8hpp.html" title="POSIX 標準ライブラリ termios.h を使うたびに参考書をめくるのが面倒になったから作った。 結局のところ使�..." alt="" coords="487,333,662,360"/>
-<area shape="rect" id="node9" href="$extract_8hpp.html" title="テンプレート関数 extract を提供するヘッダ。 " alt="" coords="263,95,436,121"/>
-<area shape="rect" id="node11" href="$predefined_8hpp.html" title="事前に定義しておいたほうが便利な正規表現セットを提供するヘッダ。 " alt="" coords="45,95,238,121"/>
-<area shape="rect" id="node12" href="$overload_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload および、 その返り値型 overloaded を提供するヘ..." alt="" coords="561,95,743,121"/>
-<area shape="rect" id="node3" href="$iostream_8hpp.html" title="名前空間 meevax::iostream を定義するヘッダ軍の一括インクルードを提供するヘッダ。 標準ライブラリの ios..." alt="" coords="262,333,463,360"/>
-<area shape="rect" id="node4" href="$main_8cpp.html" title="main.cpp" alt="" coords="325,557,400,584"/>
-<area shape="rect" id="node6" href="$syntax_8hpp.html" title="構文解析用のライブラリ群の一括インクルードを提供するヘッダ。 " alt="" coords="141,483,320,509"/>
-<area shape="rect" id="node8" href="$posix_8hpp.html" title="名前空間 meevax::posix を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、POSIX システム標�..." alt="" coords="493,408,656,435"/>
-<area shape="rect" id="node10" href="$regex_8hpp.html" title="正規表現関係のパーツを収めたヘッダを一括インクルードするヘッダ。 " alt="" coords="204,169,369,196"/>
-<area shape="rect" id="node13" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 " alt="" coords="571,169,733,196"/>
-<area shape="rect" id="node14" href="$fd_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="613,251,755,278"/>
-<area shape="rect" id="node15" href="$introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="780,244,913,285"/>
+<area shape="rect" id="node2" href="$read_8hpp.html" title="種々のフォーマットからのデータ読み取り処理を汎用的に行うための関数オブジェクト型 read とその補助クラ�..." alt="" coords="302,266,478,293"/>
+<area shape="rect" id="node5" href="$lexer_8hpp.html" title="meevax 文法解析のためのレキサなどを提供するヘッダ。 基本的に機能分離がうまくいってない。 ..." alt="" coords="161,423,329,449"/>
+<area shape="rect" id="node7" href="$termios_8hpp.html" title="POSIX 標準ライブラリ termios.h を使うたびに参考書をめくるのが面倒になったから作った。 結局のところ使�..." alt="" coords="506,348,680,375"/>
+<area shape="rect" id="node9" href="$extract_8hpp.html" title="テンプレート関数 extract を提供するヘッダ。 " alt="" coords="264,102,437,129"/>
+<area shape="rect" id="node11" href="$predefined_8hpp.html" title="事前に定義しておいたほうが便利な正規表現セットを提供するヘッダ。 " alt="" coords="46,102,239,129"/>
+<area shape="rect" id="node12" href="$explicit__function_8hpp_source.html" title="meevax/utility/explicit\l_function.hpp" alt="" coords="563,95,711,136"/>
+<area shape="rect" id="node18" href="$overload__objectives_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload_objectives および、 その返り値型 overloaded_t..." alt="" coords="735,95,891,136"/>
+<area shape="rect" id="node19" href="$overload__operations_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload_operations および、 その返り値型 overloaded_o..." alt="" coords="915,95,1071,136"/>
+<area shape="rect" id="node3" href="$iostream_8hpp.html" title="名前空間 meevax::iostream を定義するヘッダ軍の一括インクルードを提供するヘッダ。 標準ライブラリの ios..." alt="" coords="280,348,482,375"/>
+<area shape="rect" id="node4" href="$main_8cpp.html" title="main.cpp" alt="" coords="344,572,418,599"/>
+<area shape="rect" id="node6" href="$syntax_8hpp.html" title="構文解析用のライブラリ群の一括インクルードを提供するヘッダ。 " alt="" coords="160,497,338,524"/>
+<area shape="rect" id="node8" href="$posix_8hpp.html" title="名前空間 meevax::posix を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、POSIX システム標�..." alt="" coords="512,423,674,449"/>
+<area shape="rect" id="node10" href="$regex_8hpp.html" title="正規表現関係のパーツを収めたヘッダを一括インクルードするヘッダ。 " alt="" coords="222,184,388,211"/>
+<area shape="rect" id="node13" href="$utility_8hpp.html" title="名前空間 meevax::utility を定義するヘッダ群の一括インクルードを提供するヘッダ。 " alt="" coords="732,184,894,211"/>
+<area shape="rect" id="node14" href="$fd_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="631,266,774,293"/>
+<area shape="rect" id="node15" href="$introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="798,259,932,300"/>
+<area shape="rect" id="node16" href="$is__explicit__invocable_8hpp_source.html" title="meevax/type_traits\l/is_explicit_invocable.hpp" alt="" coords="956,259,1126,300"/>
+<area shape="rect" id="node17" href="$is__implicit__invocable_8hpp_source.html" title="meevax/type_traits\l/is_implicit_invocable.hpp" alt="" coords="1150,259,1321,300"/>
 </map>

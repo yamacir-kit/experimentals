@@ -33,11 +33,11 @@ namespace meevax::type_traits
 * 返り値は `std::true_type` ないし `std::false_type` 型オブジェクト。
 */
 #define has_type(name, ...) \
-(false ? meevax::utility::overload( \
+(false ? meevax::utility::overload_operations( \
            [](auto arg) constexpr -> decltype(std::declval<typename decltype(arg)::type::name>(), std::true_type {}) { return {}; }, \
            [](...) constexpr -> std::false_type { return {}; }  \
          )(meevax::type_traits::identity<__VA_ARGS__> {}) \
-       : meevax::utility::overloaded<std::true_type, std::false_type> {})
+       : meevax::utility::overloaded_trivial_objectives<std::true_type, std::false_type> {})
 
 static_assert(has_type(value_type, meevax::debug::dummy_type).value);
 
