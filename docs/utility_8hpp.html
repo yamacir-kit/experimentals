@@ -58,19 +58,32 @@ $(document).ready(function(){initNavTree('utility_8hpp.html','');});
 <div class="title">utility.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(b15151b Organize header include dependencies)</h3>
-<p>名前空間 <code><a class="el" href="namespacemeevax_1_1utility.html" title="あまりに基本的すぎて置き場所に困ったものが置かれる名前空間。 C++ 文法にはないセマンティクスを実現する...">meevax::utility</a></code> を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブラリおよび Boost ライブラリの <code>utility</code> ヘッダもインクルードする。  
+<h3 class="version">(cdc56eb Remove macro DEFINE_HAS_TYPE and DEFINE_HAS_FUNCTION)</h3>
+<p>名前空間 <code><a class="el" href="namespacemeevax_1_1utility.html" title="C++ 文法にはないセマンティクスを実現する単純クラス群が置かれる名前空間。 ">meevax::utility</a></code> を定義するヘッダ群の一括インクルードを提供するヘッダ。  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;boost/utility.hpp&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="curry_8hpp_source.html">meevax/utility/curry.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="noncopyable_8hpp_source.html">meevax/utility/noncopyable.hpp</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="overload_8hpp_source.html">meevax/utility/overload.hpp</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="unmovable_8hpp_source.html">meevax/utility/unmovable.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utility.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="utility_8hpp__incl.png" border="0" usemap="#meevax_2utility_2utility_8hpp" alt=""/></div>
 <map name="meevax_2utility_2utility_8hpp" id="meevax_2utility_2utility_8hpp">
-<area shape="rect" id="node3" href="noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="144,80,349,107"/>
-<area shape="rect" id="node5" href="unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="373,80,568,107"/>
+<area shape="rect" id="node2" href="curry_8hpp.html" title="関数のカリー化関数を提供するヘッダ。 " alt="" coords="236,80,397,107"/>
+<area shape="rect" id="node4" href="noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="422,80,627,107"/>
+<area shape="rect" id="node5" href="overload_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload および、 その返り値型 overloaded を提供するヘ..." alt="" coords="870,80,1051,107"/>
+<area shape="rect" id="node20" href="unmovable_8hpp.html" title="CRTP 版 unmovable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="651,80,846,107"/>
+<area shape="rect" id="node7" href="type__traits_8hpp.html" title="名前空間 meevax::type_traits を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブ�..." alt="" coords="677,155,810,196"/>
+<area shape="rect" id="node8" href="introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="1118,251,1251,293"/>
+<area shape="rect" id="node12" href="is__char__type_8hpp.html" title="何故か標準ライブラリにないメタ関数 is_char_type を提供するヘッダファイル。 それ以上のことはない。 ..." alt="" coords="614,348,747,389"/>
+<area shape="rect" id="node13" href="is__equality__comparable_8hpp.html" title="与えられた型について透過性の比較が可能かどうかを調べるメタ関数を提供するヘッダ。 " alt="" coords="403,348,590,389"/>
+<area shape="rect" id="node14" href="is__standard__container_8hpp.html" title="標準コンテナであるか否かをチェックするメタ関数を提供するヘッダ。 " alt="" coords="277,251,455,293"/>
+<area shape="rect" id="node17" href="is__supports__bitwise__operators_8hpp.html" title="スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマ..." alt="" coords="585,244,726,300"/>
+<area shape="rect" id="node18" href="is__supports__decrement__operators_8hpp.html" title="任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="751,244,912,300"/>
+<area shape="rect" id="node19" href="is__supports__increment__operators_8hpp.html" title="任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ..." alt="" coords="937,244,1094,300"/>
+<area shape="rect" id="node10" href="debug_8hpp.html" title="デバッグ用の道具を一括インクルードするためのヘッダ。 静的（かつ雑）なアサーションとかデバッグ用の出力..." alt="" coords="930,355,1101,382"/>
+<area shape="rect" id="node11" href="dummy__type_8hpp.html" title="デバッグ用のダミークラスの提供。 基本的に static_assert 内でのテストに掛けるためのクラス。 基本的に研..." alt="" coords="938,437,1093,479"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -78,12 +91,20 @@ This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="utility_8hpp__dep__incl.png" border="0" usemap="#meevax_2utility_2utility_8hppdep" alt=""/></div>
 <map name="meevax_2utility_2utility_8hppdep" id="meevax_2utility_2utility_8hppdep">
-<area shape="rect" id="node2" href="read_8hpp.html" title="種々のフォーマットからのデータ読み取り処理を汎用的に行うための関数オブジェクト型 read とその補助クラ�..." alt="" coords="18,80,194,107"/>
-<area shape="rect" id="node5" href="fd_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="219,80,361,107"/>
-<area shape="rect" id="node7" href="termios_8hpp.html" title="POSIX 標準ライブラリ termios.h を使うたびに参考書をめくるのが面倒になったから作った。 結局のところ使�..." alt="" coords="312,155,487,181"/>
-<area shape="rect" id="node3" href="iostream_8hpp.html" title="名前空間 meevax::iostream を定義するヘッダ軍の一括インクルードを提供するヘッダ。 標準ライブラリの ios..." alt="" coords="5,229,207,256"/>
-<area shape="rect" id="node4" href="main_8cpp.html" title="main.cpp" alt="" coords="171,304,246,331"/>
-<area shape="rect" id="node6" href="posix_8hpp.html" title="名前空間 meevax::posix を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、POSIX システム標�..." alt="" coords="231,229,394,256"/>
+<area shape="rect" id="node2" href="read_8hpp.html" title="種々のフォーマットからのデータ読み取り処理を汎用的に行うための関数オブジェクト型 read とその補助クラ�..." alt="" coords="198,408,374,435"/>
+<area shape="rect" id="node7" href="fd_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="5,177,148,203"/>
+<area shape="rect" id="node9" href="termios_8hpp.html" title="POSIX 標準ライブラリ termios.h を使うたびに参考書をめくるのが面倒になったから作った。 結局のところ使�..." alt="" coords="24,259,199,285"/>
+<area shape="rect" id="node10" href="introspection_8hpp.html" title="使用状況が限定的だが、いわゆる汎用 has_type マクロメタ関数を提供するヘッダ。 " alt="" coords="314,80,447,121"/>
+<area shape="rect" id="node3" href="iostream_8hpp.html" title="名前空間 meevax::iostream を定義するヘッダ軍の一括インクルードを提供するヘッダ。 標準ライブラリの ios..." alt="" coords="185,483,387,509"/>
+<area shape="rect" id="node4" href="main_8cpp.html" title="main.cpp" alt="" coords="249,707,323,733"/>
+<area shape="rect" id="node5" href="lexer_8hpp.html" title="meevax 文法解析のためのレキサなどを提供するヘッダ。 基本的に機能分離がうまくいってない。 ..." alt="" coords="337,557,505,584"/>
+<area shape="rect" id="node6" href="syntax_8hpp.html" title="構文解析用のライブラリ群の一括インクルードを提供するヘッダ。 " alt="" coords="326,632,505,659"/>
+<area shape="rect" id="node8" href="posix_8hpp.html" title="名前空間 meevax::posix を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、POSIX システム標�..." alt="" coords="30,333,193,360"/>
+<area shape="rect" id="node11" href="type__traits_8hpp.html" title="名前空間 meevax::type_traits を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブ�..." alt="" coords="355,169,489,211"/>
+<area shape="rect" id="node12" href="extract_8hpp.html" title="テンプレート関数 extract を提供するヘッダ。 " alt="" coords="543,259,717,285"/>
+<area shape="rect" id="node14" href="predefined_8hpp.html" title="事前に定義しておいたほうが便利な正規表現セットを提供するヘッダ。 " alt="" coords="325,259,519,285"/>
+<area shape="rect" id="node15" href="overload_8hpp.html" title="簡潔に多重継承されたクラスを作成するための関数 overload および、 その返り値型 overloaded を提供するヘ..." alt="" coords="791,259,973,285"/>
+<area shape="rect" id="node13" href="regex_8hpp.html" title="正規表現関係のパーツを収めたヘッダを一括インクルードするヘッダ。 " alt="" coords="341,333,506,360"/>
 </map>
 </div>
 </div>
@@ -92,11 +113,11 @@ This graph shows which files directly or indirectly include this file:</div>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacemeevax_1_1utility"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1utility.html">meevax::utility</a></td></tr>
-<tr class="memdesc:namespacemeevax_1_1utility"><td class="mdescLeft">&#160;</td><td class="mdescRight">あまりに基本的すぎて置き場所に困ったものが置かれる名前空間。 C++ 文法にはないセマンティクスを実現する単純クラス群の置き場と考えて概ね間違いない。 <br /></td></tr>
+<tr class="memdesc:namespacemeevax_1_1utility"><td class="mdescLeft">&#160;</td><td class="mdescRight">C++ 文法にはないセマンティクスを実現する単純クラス群が置かれる名前空間。 <br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>名前空間 <code><a class="el" href="namespacemeevax_1_1utility.html" title="あまりに基本的すぎて置き場所に困ったものが置かれる名前空間。 C++ 文法にはないセマンティクスを実現する...">meevax::utility</a></code> を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、標準ライブラリおよび Boost ライブラリの <code>utility</code> ヘッダもインクルードする。 </p>
+<div class="textblock"><p>名前空間 <code><a class="el" href="namespacemeevax_1_1utility.html" title="C++ 文法にはないセマンティクスを実現する単純クラス群が置かれる名前空間。 ">meevax::utility</a></code> を定義するヘッダ群の一括インクルードを提供するヘッダ。 </p>
 
 <p>Definition in file <a class="el" href="utility_8hpp_source.html">utility.hpp</a>.</p>
 </div></div><!-- contents -->

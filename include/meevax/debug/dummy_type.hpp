@@ -19,7 +19,18 @@ namespace meevax::debug
   * オーバーヘッドが無いため、マクロ `NDEBUG` に依存していない。
   */
   class dummy_type
-  {};
+  {
+  public:
+    using value_type = int;
+
+  private:
+    value_type data_;
+
+    const auto& data() const noexcept
+    {
+      return data_;
+    }
+  };
 
   /**
   * ダミーのスコープ付き列挙型。特別なことは何もない。

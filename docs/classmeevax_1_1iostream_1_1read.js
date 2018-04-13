@@ -1,7 +1,8 @@
 var classmeevax_1_1iostream_1_1read =
 [
     [ "read_", "classmeevax_1_1iostream_1_1read_1_1read__.html", null ],
-    [ "read_< HierarchicalSemantics >", "classmeevax_1_1iostream_1_1read_1_1read___3_01HierarchicalSemantics_01_4.html", "classmeevax_1_1iostream_1_1read_1_1read___3_01HierarchicalSemantics_01_4" ],
+    [ "read_< hierarchical_semantics::getchar >", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1getchar_01_4.html", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1getchar_01_4" ],
+    [ "read_< hierarchical_semantics::sequence >", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1sequence_01_4.html", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1sequence_01_4" ],
     [ "char_type", "classmeevax_1_1iostream_1_1read.html#a367a6e3623444e81dcc30a2df2a1de20", null ],
     [ "hierarchical_semantics", "classmeevax_1_1iostream_1_1read.html#aa41fa13e34cee1d18c6ca80ae28f09ed", [
       [ "getchar", "classmeevax_1_1iostream_1_1read.html#aa41fa13e34cee1d18c6ca80ae28f09edadb632139b7e8aef450fc5028654e3e99", null ],

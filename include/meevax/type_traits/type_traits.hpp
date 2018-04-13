@@ -10,9 +10,10 @@
 */
 
 
-#include <boost/type_traits.hpp>
-
+#include <meevax/type_traits/introspection.hpp>
 #include <meevax/type_traits/is_char_type.hpp>
+#include <meevax/type_traits/is_equality_comparable.hpp>
+#include <meevax/type_traits/is_standard_container.hpp>
 #include <meevax/type_traits/is_supports_bitwise_operators.hpp>
 #include <meevax/type_traits/is_supports_decrement_operators.hpp>
 #include <meevax/type_traits/is_supports_increment_operators.hpp>
