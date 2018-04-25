@@ -11,19 +11,11 @@
 
 #include <type_traits>
 
+#include <boost/mpl/identity.hpp>
+
 #include <meevax/debug/debug.hpp>
 #include <meevax/utility/utility.hpp>
 
-
-namespace meevax::type_traits
-{
-  template <typename T>
-  class identity
-  {
-  public:
-    using type = T;
-  };
-};
 
 /**
 * 第二引数に指定された型が第一引数に渡した名前のメンバ型を持っているかをチェックするメタ関数。
@@ -36,7 +28,7 @@ namespace meevax::type_traits
 (false ? meevax::utility::overload_operations( \
            [](auto arg) constexpr -> decltype(std::declval<typename decltype(arg)::type::name>(), std::true_type {}) { return {}; }, \
            [](...) constexpr -> std::false_type { return {}; }  \
-         )(meevax::type_traits::identity<__VA_ARGS__> {}) \
+         )(boost::mpl::identity<__VA_ARGS__> {}) \
        : meevax::utility::overloaded_trivial_objectives<std::true_type, std::false_type> {})
 
 static_assert(has_type(value_type, meevax::debug::dummy_type).value);

@@ -14,10 +14,19 @@
 #include <boost/tti/has_member_function.hpp>
 #include <boost/tti/has_type.hpp>
 
+#ifndef __cpp_lib_logical_traits
+#include <boost/mpl/and.hpp>
+#include <boost/mpl/or.hpp>
+#endif
+
 #include <meevax/type_traits/is_equality_comparable.hpp>
 
 
+#ifndef __cpp_nested_namespace_definitions
+namespace meevax { namespace type_traits
+#else
 namespace meevax::type_traits
+#endif
 {
   BOOST_TTI_HAS_TYPE(      reference);
   BOOST_TTI_HAS_TYPE(const_reference);
@@ -46,28 +55,64 @@ namespace meevax::type_traits
   */
   template <typename T>
   class is_standard_container
+    #ifndef __cpp_lib_logical_traits
+    : public boost::mpl::and_<
+    #else
     : public std::conjunction<
-               meevax::type_traits::has_type_value_type<T>,
-               meevax::type_traits::has_type_reference<T>,
-               meevax::type_traits::has_type_const_reference<T>,
-               meevax::type_traits::has_type_iterator<T>,
-               meevax::type_traits::has_type_const_iterator<T>,
-               meevax::type_traits::has_type_difference_type<T>,
-               meevax::type_traits::has_type_size_type<T>,
-               std::is_default_constructible<T>,
-               std::is_copy_constructible<T>,
-               std::is_assignable<T, T>,
-               std::is_destructible<T>,
-               meevax::type_traits::has_member_function_begin<T>,
-               meevax::type_traits::has_member_function_cbegin<T>,
-               meevax::type_traits::has_member_function_end<T>,
-               meevax::type_traits::has_member_function_cend<T>,
-               meevax::type_traits::is_equality_comparable<T>,
-               std::is_swappable<T>,
-               meevax::type_traits::has_member_function_size<T>,
-               meevax::type_traits::has_member_function_max_size<T>,
-               meevax::type_traits::has_member_function_empty<T>
-             >
+    #endif
+        meevax::type_traits::has_type_value_type<T>,
+        meevax::type_traits::has_type_reference<T>,
+        meevax::type_traits::has_type_const_reference<T>,
+        meevax::type_traits::has_type_iterator<T>,
+        meevax::type_traits::has_type_const_iterator<T>,
+        meevax::type_traits::has_type_difference_type<T>,
+        meevax::type_traits::has_type_size_type<T>,
+        std::is_default_constructible<T>,
+        std::is_copy_constructible<T>,
+        std::is_assignable<T, T>,
+        std::is_destructible<T>,
+        #ifndef __cpp_lib_logical_traits
+        boost::mpl::or_<
+        #else
+        std::disjunction<
+        #endif
+          meevax::type_traits::has_member_function_begin<
+            typename T::iterator (T::*)(void)
+          >,
+          meevax::type_traits::has_member_function_begin<
+            typename T::const_iterator (T::*)(void) const
+          >
+        >,
+        meevax::type_traits::has_member_function_cbegin<
+          typename T::const_iterator (T::*)(void) const
+        >,
+        #ifndef __cpp_lib_logical_traits
+        boost::mpl::or_<
+        #else
+        std::disjunction<
+        #endif
+          meevax::type_traits::has_member_function_end<
+            typename T::iterator (T::*)(void)
+          >,
+          meevax::type_traits::has_member_function_end<
+            typename T::const_iterator (T::*)(void) const
+          >
+        >,
+        meevax::type_traits::has_member_function_cend<
+          typename T::const_iterator (T::*)(void) const
+        >,
+        meevax::type_traits::is_equality_comparable<T>,
+        std::is_swappable<T>,
+        meevax::type_traits::has_member_function_size<
+          typename T::size_type (T::*)(void) const
+        >,
+        meevax::type_traits::has_member_function_max_size<
+          typename T::size_type (T::*)(void) const
+        >,
+        meevax::type_traits::has_member_function_empty<
+          bool (T::*)(void) const
+        >
+      >
   {};
 }; // namespace meevax::type_traits
 
