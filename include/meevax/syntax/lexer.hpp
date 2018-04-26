@@ -41,6 +41,7 @@ namespace meevax::syntax
   private:
     static inline const std::basic_regex<char_type> double_quoted_string {"\"[^\"]*\""};
     static inline const std::basic_regex<char_type> comma_separated_list {"([^\\s,.]+,\\s*)+([^\\s,.]*)?"};
+    static inline const std::basic_regex<char_type> sentence             {"([^\\.]+)\\."};
 
     std::unordered_map<char_type, std::vector<std::string>> extracted;
 
@@ -54,10 +55,10 @@ namespace meevax::syntax
     auto translate(std::basic_string<char_type> code)
     {
       extracted['"'] = meevax::regex::extract<std::vector>(
-                         code, double_quoted_string, std::basic_string<char_type> {"\""}
+                         code, double_quoted_string, std::basic_string<char_type> {'"'}
                        );
       extracted[','] = meevax::regex::extract<std::vector>(
-                         code, comma_separated_list, std::basic_string<char_type> {","}
+                         code, comma_separated_list, std::basic_string<char_type> {','}
                        );
 
       #ifndef NDEBUG
@@ -71,12 +72,10 @@ namespace meevax::syntax
       }
       #endif
 
-      std::basic_string<char_type> buffer {
-        translate_to_s_expression(std::basic_istringstream<char_type> {code})
-      };
+      std::basic_string<char_type> buffer {to_s_expression(code, ' ')};
 
       // 構造を整理するのは後回し
-      if (!extracted[','].empty())
+      if (!extracted.at(',').empty())
       {
         typename decltype(extracted)::mapped_type::size_type index {0};
         for (typename std::basic_string<char_type>::size_type position {0};
@@ -84,11 +83,25 @@ namespace meevax::syntax
              ++index)
         {
           buffer.replace(position, 1,
-            translate_to_s_expression(
-              replace_comma_to_space(extracted[','][index])
+            to_s_expression(
+              replace_comma_to_space(extracted.at(',')[index]), ' '
             )
           );
-          position += extracted[','][index].length();
+          position += extracted.at(',')[index].length();
+        }
+      }
+
+      // 文字列リテラルの中には他の構文に引っかかる文字が入っている可能性がありすぎるので、
+      // コイツを詰め戻すのは最後の工程に回すべき
+      if (!extracted['"'].empty())
+      {
+        typename decltype(extracted)::mapped_type::size_type index {0};
+        for (typename std::basic_string<char_type>::size_type position {0};
+             std::basic_string<char_type>::npos != (position = buffer.find('"', position)) && index < extracted['"'].size();
+             ++index)
+        {
+          buffer.replace(position, 1, {extracted['"'][index]});
+          position += extracted['"'][index].length();
         }
       }
 
@@ -109,11 +122,11 @@ namespace meevax::syntax
     /**
     * スペース区切り文字列を S 式へ変換する
     */
-    auto translate_to_s_expression(std::basic_istringstream<char_type> source)
+    auto to_s_expression(std::basic_istringstream<char_type> source, char_type delimiter)
       -> std::basic_string<char_type>
     {
       std::basic_ostringstream<char_type> result {};
-      for (std::basic_string<char_type> buffer {}; std::getline(source, buffer, ' '); )
+      for (std::basic_string<char_type> buffer {}; std::getline(source, buffer, delimiter); )
       {
         result << "(" << buffer << ")";
       }
@@ -121,9 +134,9 @@ namespace meevax::syntax
       return {result.str()};
     }
 
-    decltype(auto) translate_to_s_expression(std::basic_string<char_type> source)
+    decltype(auto) to_s_expression(std::basic_string<char_type> source, char_type delimiter)
     {
-      return translate_to_s_expression(std::basic_istringstream<char_type> {source});
+      return to_s_expression(std::basic_istringstream<char_type> {source}, delimiter);
     }
   };
 } // namespace meevax::syntax
