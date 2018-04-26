@@ -11,6 +11,8 @@
 
 #include <utility>
 
+#include <boost/noncopyable.hpp>
+
 
 namespace meevax::utility
 {
