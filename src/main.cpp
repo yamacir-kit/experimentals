@@ -34,7 +34,7 @@ auto main(int argc, char** argv)
     {
       buffer += sequence;
 
-      meevax::syntax::lexer<char> lexer {};
+      meevax::syntax::lexer_<char> lexer {};
 
       std::cout << "source code: " << buffer << "\r\n";
       const auto translated {lexer.translate(buffer)};

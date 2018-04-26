@@ -36,7 +36,7 @@ namespace meevax::syntax
                         >::type
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   >
-  class lexer
+  class [[deprecated]] lexer_
   {
   public:
     using char_type = CharType;
@@ -142,6 +142,26 @@ namespace meevax::syntax
       return to_s_expression(std::basic_istringstream<char_type> {source}, delimiter);
     }
   };
+
+  /**
+  * 構文解析クラス。
+  * 仕事は meevax コードを S 式へ変換し、その際に収集した情報を保持しておくこと。
+  *
+  * 設計方針として、徹底して冗長化を施しておきメンテしやすくしておくことを重視する。
+  * つまり、実行速度は現時点で一切気にしない。
+  *
+  * 構文解析を行うが、直接 AST を構築することはしない。
+  * それは、別途 S 式から AST の構築を行うクラス（lisp に関連付ける方針）に任せる。
+  */
+  template <typename CharType
+  #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  , typename = typename std::enable_if<
+                          meevax::type_traits::is_char_type<CharType>::value
+                        >::type
+  #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  >
+  class lexer
+  {};
 } // namespace meevax::syntax
 #ifndef __cpp_nested_namespace_definitions
 }
