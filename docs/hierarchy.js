@@ -13,7 +13,6 @@ var hierarchy =
     [ "meevax::type_traits::is_char_type< wchar_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01wchar__t_01_4.html", null ],
     [ "meevax::type_traits::is_equality_comparable< NotEqualityComparable >", "classmeevax_1_1type__traits_1_1is__equality__comparable.html", null ],
     [ "meevax::type_traits::is_equality_comparable< EqualityComparable >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01EqualityComparable_01_4.html", null ],
-    [ "meevax::type_traits::is_standard_container< T >", "classmeevax_1_1type__traits_1_1is__standard__container.html", null ],
     [ "meevax::type_traits::is_supports_bitwise_operators< T >", "classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html", null ],
     [ "meevax::type_traits::is_supports_bitwise_operators< enum meevax::posix::termios::input_mode >", "classmeevax_1_1type__traits_1_1is__supports__bitwise__operators_3_01enum_01meevax_1_1posix_1_1termios_1_1input__mode_01_4.html", null ],
     [ "meevax::type_traits::is_supports_decrement_operators< T >", "classmeevax_1_1type__traits_1_1is__supports__decrement__operators.html", null ],

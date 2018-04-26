@@ -1,8 +1,0 @@
-<map id="meevax/regex/predefined_variables.hpp" name="meevax/regex/predefined_variables.hpp">
-<area shape="rect" id="node2" href="$regex_8hpp.html" title="正規表現関係のパーツを収めたヘッダを一括インクルードするヘッダ。 " alt="" coords="130,95,295,121"/>
-<area shape="rect" id="node3" href="$read_8hpp.html" title="種々のフォーマットからのデータ読み取り処理を汎用的に行うための関数オブジェクト型 read とその補助クラ�..." alt="" coords="125,169,301,196"/>
-<area shape="rect" id="node4" href="$iostream_8hpp.html" title="名前空間 meevax::iostream を定義するヘッダ軍の一括インクルードを提供するヘッダ。 標準ライブラリの ios..." alt="" coords="5,319,207,345"/>
-<area shape="rect" id="node6" href="$lexer_8hpp_source.html" title="meevax/syntax/lexer.hpp" alt="" coords="213,244,381,271"/>
-<area shape="rect" id="node5" href="$main_8cpp.html" title="main.cpp" alt="" coords="175,393,250,420"/>
-<area shape="rect" id="node7" href="$syntax_8hpp.html" title="構文解析用のライブラリ群の一括インクルードを提供するヘッダ。 " alt="" coords="231,319,410,345"/>
-</map>
