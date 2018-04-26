@@ -11,10 +11,15 @@
 
 #include <iterator>
 #include <regex>
-#include <vector>
+#include <string>
+#include <type_traits>
 
-#include <meevax/string/string.hpp>
-#include <meevax/type_traits/type_traits.hpp>
+#ifndef __cpp_lib_logical_traits
+#include <boost/mpl/not.hpp>
+#endif
+
+#include <meevax/type_traits/is_char_type.hpp>
+#include <meevax/type_traits/is_standard_container.hpp>
 
 
 namespace meevax::regex
@@ -39,22 +44,33 @@ namespace meevax::regex
   *   抽出された文字列を標準コンテナに詰めたもの。
   *   まあ基本的に `std::vector<std::string>` と思っておいて問題ない。
   */
-  template <template <typename...> typename StandardContainer, typename CharType
+  template <template <typename...> typename Container, typename CharType
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  , typename = typename std::enable_if<
+                          meevax::type_traits::is_standard_container<
+                            Container<CharType>
+                          >::value
+                        >::type
   , typename = typename std::enable_if<
                           meevax::type_traits::is_char_type<CharType>::value
                         >::type
   , typename = typename std::enable_if<
-                          !std::is_same<
-                            StandardContainer<CharType>,
-                            std::basic_string<CharType>
+                          #ifndef __cpp_lib_logical_traits
+                          boost::mpl::not_<
+                          #else
+                          std::negation<
+                          #endif
+                            std::is_same<
+                              Container<CharType>,
+                              std::basic_string<CharType>
+                            >
                           >::value
                         >::type
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCLEALER
   >
   auto extract(std::basic_string<CharType>& from, const std::basic_regex<CharType>& regex, const std::basic_string<CharType>& replaced = "")
   {
-    StandardContainer<std::basic_string<CharType>> extracted {};
+    Container<std::basic_string<CharType>> extracted {};
     using regex_iterator = std::regex_iterator<typename std::basic_string<CharType>::const_iterator>;
 
     for (regex_iterator iter {std::cbegin(from), std::cend(from), regex}; iter != regex_iterator {}; ++iter)

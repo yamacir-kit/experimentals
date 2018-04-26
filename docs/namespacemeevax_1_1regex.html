@@ -65,7 +65,7 @@ $(document).ready(function(){initNavTree('namespacemeevax_1_1regex.html','');});
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab55ff5b79cd412b50f9b9c64f7e6fa85"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename StandardContainer, typename CharType &gt; </td></tr>
+<tr class="memitem:ab55ff5b79cd412b50f9b9c64f7e6fa85"><td class="memTemplParams" colspan="2">template&lt;template&lt; typename... &gt; typename Container, typename CharType &gt; </td></tr>
 <tr class="memitem:ab55ff5b79cd412b50f9b9c64f7e6fa85"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1regex.html#ab55ff5b79cd412b50f9b9c64f7e6fa85">extract</a> (std::basic_string&lt; CharType &gt; &amp;from, const std::basic_regex&lt; CharType &gt; &amp;regex, const std::basic_string&lt; CharType &gt; &amp;replaced=&quot;&quot;)</td></tr>
 <tr class="memdesc:ab55ff5b79cd412b50f9b9c64f7e6fa85"><td class="mdescLeft">&#160;</td><td class="mdescRight">指定された文字列から、正規表現に合致する部分文字列を抽出する。 極めて限定的な目的に使うため作ったからあまり気に入ってない。  <a href="#ab55ff5b79cd412b50f9b9c64f7e6fa85">More...</a><br /></td></tr>
 <tr class="separator:ab55ff5b79cd412b50f9b9c64f7e6fa85"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -84,7 +84,7 @@ Variables</h2></td></tr>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;template&lt; typename... &gt; typename StandardContainer, typename CharType &gt; </div>
+template&lt;template&lt; typename... &gt; typename Container, typename CharType &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">auto meevax::regex::extract </td>
@@ -124,8 +124,8 @@ template&lt;template&lt; typename... &gt; typename StandardContainer, typename C
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>抽出された文字列を標準コンテナに詰めたもの。 まあ基本的に <code>std::vector&lt;std::string&gt;</code> と思っておいて問題ない。 </dd></dl>
 
-<p>Definition at line <a class="el" href="extract_8hpp_source.html#l00055">55</a> of file <a class="el" href="extract_8hpp_source.html">extract.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;  {</div><div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    StandardContainer&lt;std::basic_string&lt;CharType&gt;&gt; extracted {};</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">using</span> regex_iterator = std::regex_iterator&lt;typename std::basic_string&lt;CharType&gt;::const_iterator&gt;;</div><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keywordflow">for</span> (regex_iterator iter {std::cbegin(from), std::cend(from), regex}; iter != regex_iterator {}; ++iter)</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    {</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;      extracted.push_back((*iter)[0]);</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    }</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    from = std::regex_replace(from, regex, replaced);</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordflow">return</span> std::move(extracted);</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;  }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="extract_8hpp_source.html#l00071">71</a> of file <a class="el" href="extract_8hpp_source.html">extract.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;  {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    Container&lt;std::basic_string&lt;CharType&gt;&gt; extracted {};</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keyword">using</span> regex_iterator = std::regex_iterator&lt;typename std::basic_string&lt;CharType&gt;::const_iterator&gt;;</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordflow">for</span> (regex_iterator iter {std::cbegin(from), std::cend(from), regex}; iter != regex_iterator {}; ++iter)</div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    {</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      extracted.push_back((*iter)[0]);</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    }</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    from = std::regex_replace(from, regex, replaced);</div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keywordflow">return</span> std::move(extracted);</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;  }</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
@@ -152,7 +152,7 @@ template&lt;typename CharType &gt; </div>
 <p>ANSI エスケープシーケンス。 どうやらエスケープシーケンスであるらしい文を捉えることが目的。 </p>
 <p>存在しないはずのエスケープシーケンスを書いても基本形式が合っていればマッチしてしまう。 より賢いエスケープシーケンスの解析は TODO。 </p>
 
-<p>Definition at line <a class="el" href="predefined_8hpp_source.html#l00033">33</a> of file <a class="el" href="predefined_8hpp_source.html">predefined.hpp</a>.</p>
+<p>Definition at line <a class="el" href="predefined_8hpp_source.html#l00034">34</a> of file <a class="el" href="predefined_8hpp_source.html">predefined.hpp</a>.</p>
 
 </div>
 </div>

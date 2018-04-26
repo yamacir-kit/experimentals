@@ -10,9 +10,8 @@
 */
 
 
+#include <type_traits>
 #include <utility>
-
-#include <meevax/type_traits/type_traits.hpp>
 
 
 #ifndef __cpp_nested_namespace_definitions

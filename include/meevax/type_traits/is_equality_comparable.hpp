@@ -17,7 +17,7 @@ namespace meevax::type_traits
   /**
   * 与えられた型について等価性の比較が可能かどうかを調べるメタ関数。
   */
-  template <typename NotEqualityComparable
+  template <typename T
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = void
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
@@ -29,12 +29,10 @@ namespace meevax::type_traits
   /**
   * 与えられた型が等価性の比較が可能かどうかを調べるメタ関数。
   */
-  template <typename EqualityComparable>
-  class is_equality_comparable<EqualityComparable
+  template <typename T>
+  class is_equality_comparable<T
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
-  , std::void_t<
-      decltype(std::declval<EqualityComparable&>() == std::declval<EqualityComparable&>()
-    )>
+  , std::void_t<decltype(std::declval<T&>() == std::declval<T&>())>
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   >
     : public std::true_type

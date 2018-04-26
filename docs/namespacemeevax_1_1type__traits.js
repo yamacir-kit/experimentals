@@ -6,7 +6,7 @@ var namespacemeevax_1_1type__traits =
     [ "is_char_type< char32_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01char32__t_01_4.html", null ],
     [ "is_char_type< wchar_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01wchar__t_01_4.html", null ],
     [ "is_equality_comparable", "classmeevax_1_1type__traits_1_1is__equality__comparable.html", null ],
-    [ "is_equality_comparable< EqualityComparable >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01EqualityComparable_01_4.html", null ],
+    [ "is_equality_comparable< T >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01T_01_4.html", null ],
     [ "is_supports_bitwise_operators", "classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html", null ],
     [ "is_supports_bitwise_operators< enum meevax::posix::termios::input_mode >", "classmeevax_1_1type__traits_1_1is__supports__bitwise__operators_3_01enum_01meevax_1_1posix_1_1termios_1_1input__mode_01_4.html", null ],
     [ "is_supports_decrement_operators", "classmeevax_1_1type__traits_1_1is__supports__decrement__operators.html", null ],

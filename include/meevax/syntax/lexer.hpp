@@ -10,14 +10,17 @@
 */
 
 
+#include <iostream>
+#include <regex>
 #include <sstream>
+#include <string>
+#include <type_traits>
 #include <unordered_map>
-#include <queue>
+#include <utility>
+#include <vector>
 
-#include <meevax/iostream/iostream.hpp>
-#include <meevax/regex/regex.hpp>
-#include <meevax/string/string.hpp>
-#include <meevax/type_traits/type_traits.hpp>
+#include <meevax/regex/extract.hpp>
+#include <meevax/type_traits/is_char_type.hpp>
 
 
 #ifndef __cpp_nested_namespace_definitions

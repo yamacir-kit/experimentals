@@ -10,8 +10,9 @@
 
 
 #include <regex>
+#include <type_traits>
 
-#include <meevax/type_traits/type_traits.hpp>
+#include <meevax/type_traits/is_char_type.hpp>
 
 
 namespace meevax::regex

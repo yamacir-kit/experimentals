@@ -1,9 +1,9 @@
-#ifndef INCLUDED_MEEVAX_POSIX_FD_HPP
-#define INCLUDED_MEEVAX_POSIX_FD_HPP
+#ifndef INCLUDED_MEEVAX_POSIX_FILE_DESCRIPTOR_HPP
+#define INCLUDED_MEEVAX_POSIX_FILE_DESCRIPTOR_HPP
 
 
 /**
-* @file fd.hpp
+* @file file_descriptor.hpp
 *
 * POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。
 */
@@ -11,8 +11,9 @@
 
 #include <system_error>
 #include <unistd.h>
+#include <utility>
 
-#include <meevax/utility/utility.hpp>
+#include <meevax/utility/noncopyable.hpp>
 
 
 namespace meevax::posix
@@ -27,8 +28,8 @@ namespace meevax::posix
   *
   * 最低限の機能のみを実装しているが、インタフェースは `std::unique_ptr` に倣った。
   */
-  class fd
-    : public meevax::utility::noncopyable<fd>
+  class file_descriptor
+    : public meevax::utility::noncopyable<file_descriptor>
   {
   public:
     /// メタ関数のための型定義。POSIX システムの定める型、つまり `signed int`。
@@ -56,7 +57,7 @@ namespace meevax::posix
     *
     * @param fd 管理対象のファイルディスクリプタ値。
     */
-    constexpr fd(value_type fd = invalid_value) noexcept
+    constexpr file_descriptor(value_type fd = invalid_value) noexcept
       : value {fd}
     {}
 
@@ -64,15 +65,15 @@ namespace meevax::posix
     * ムーブコンストラクタ。
     *
     * @param moved
-    *   ムーブされてくる `meevax::posix::fd` 型オブジェクト。
+    *   ムーブされてくる `meevax::posix::file_descriptor` 型オブジェクト。
     *   被ムーブオブジェクトが管理していた値はこちらに移管される。
     */
-    explicit fd(fd&& moved) noexcept
+    explicit file_descriptor(file_descriptor&& moved) noexcept
       : value {moved.release()}
     {}
 
     /// デストラクタ。管理していたファイルディスクリプタの後始末。
-    ~fd() noexcept
+    ~file_descriptor() noexcept
     {
       close();
     }
@@ -91,7 +92,7 @@ namespace meevax::posix
 
     /**
     * このクラスオブジェクトが管理していたファイルディスクリプタを開放する。
-    * クローズは行わずあくまで管理下から手放すだけであるため、クローズには `fd::close` を用いること。
+    * クローズは行わずあくまで管理下から手放すだけであるため、クローズには `file_descriptor::close` を用いること。
     *
     * @return
     *   元々保持していたファイルディスクリプタ値。
@@ -123,11 +124,11 @@ namespace meevax::posix
     /**
     * ファイルディスクリプタの交換。
     *
-    * @param fd 交換対象の `meevax::posix::fd` 型オブジェクト。
+    * @param fd 交換対象の `meevax::posix::file_descriptor` 型オブジェクト。
     *
     * @return decltype(auto)
     */
-    decltype(auto) swap(fd& fd) noexcept
+    decltype(auto) swap(file_descriptor& fd) noexcept
     {
       return std::swap(value, fd.value);
     }
@@ -140,7 +141,7 @@ namespace meevax::posix
     *
     * @return decltype(auto)
     */
-    friend decltype(auto) swap(fd& lhs, fd& rhs) noexcept
+    friend decltype(auto) swap(file_descriptor& lhs, file_descriptor& rhs) noexcept
     {
       return lhs.swap(rhs);
     }
@@ -155,7 +156,7 @@ namespace meevax::posix
     */
     decltype(auto) reset(value_type new_value) noexcept
     {
-      return fd(new_value).swap(*this);
+      return file_descriptor(new_value).swap(*this);
     }
 
     /**
@@ -176,9 +177,9 @@ namespace meevax::posix
     }
   };
 
-  /// クラス `fd` を `file_descriptor` と記述したい時のためのエイリアス。
-  using file_descriptor = fd;
+  /// クラス `file_descriptor` を `fd` と記述したい時のためのエイリアス。
+  using fd = file_descriptor;
 } // namespace meevax::posix
 
-#endif // INCLUDED_MEEVAX_POSIX_FD_HPP
+#endif // INCLUDED_MEEVAX_POSIX_FILE_DESCRIPTOR_HPP
 

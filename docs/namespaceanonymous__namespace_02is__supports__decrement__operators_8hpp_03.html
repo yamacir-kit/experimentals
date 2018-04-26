@@ -97,8 +97,8 @@ template&lt;typename EnumClass &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>前置デクリメントされたオブジェクトへの参照。 </dd></dl>
 
-<p>Definition at line <a class="el" href="is__supports__decrement__operators_8hpp_source.html#l00146">146</a> of file <a class="el" href="is__supports__decrement__operators_8hpp_source.html">is_supports_decrement_operators.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;  {</div><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keywordflow">return</span> enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) - 1);</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;  }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="is__supports__decrement__operators_8hpp_source.html#l00147">147</a> of file <a class="el" href="is__supports__decrement__operators_8hpp_source.html">is_supports_decrement_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  {</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) - 1);</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a94445010f57eb16c1731e6c64cfa3038"></a>
@@ -137,10 +137,10 @@ template&lt;typename EnumClass &gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>前置デクリメントされたオブジェクトへの参照。 </dd></dl>
 
-<p>Definition at line <a class="el" href="is__supports__decrement__operators_8hpp_source.html#l00172">172</a> of file <a class="el" href="is__supports__decrement__operators_8hpp_source.html">is_supports_decrement_operators.hpp</a>.</p>
+<p>Definition at line <a class="el" href="is__supports__decrement__operators_8hpp_source.html#l00173">173</a> of file <a class="el" href="is__supports__decrement__operators_8hpp_source.html">is_supports_decrement_operators.hpp</a>.</p>
 
 <p>References <a class="el" href="namespacemeevax_1_1debug.html#a59b38e66d74d36af336c3466606a3fcbac32ec965db3295bad074d2afa907b1c3">meevax::debug::fuga</a>, and <a class="el" href="namespacemeevax_1_1debug.html#a59b38e66d74d36af336c3466606a3fcbaea703e7aa1efda0064eaa507d9e8ab7e">meevax::debug::hoge</a>.</p>
-<div class="fragment"><div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;  {</div><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> buffer {enum_class};</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) - 1);</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keywordflow">return</span> buffer;</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;  }</div></div><!-- fragment -->
+<div class="fragment"><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  {</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> buffer {enum_class};</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) - 1);</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">return</span> buffer;</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  }</div></div><!-- fragment -->
 </div>
 </div>
 </div><!-- contents -->

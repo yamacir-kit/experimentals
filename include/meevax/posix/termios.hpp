@@ -12,13 +12,13 @@
 
 #include <stdexcept>
 #include <system_error>
+#include <utility>
 
 #include <termios.h>
 #include <unistd.h>
 
-#include <meevax/posix/fd.hpp>
-#include <meevax/type_traits/type_traits.hpp>
-#include <meevax/utility/utility.hpp>
+#include <meevax/posix/file_descriptor.hpp>
+#include <meevax/type_traits/is_supports_bitwise_operators.hpp>
 
 
 namespace meevax::posix

@@ -12,10 +12,11 @@
 #include <array>
 #include <iterator>
 #include <numeric>
-#include <vector>
+#include <type_traits>
+#include <utility>
 
-#include <meevax/type_traits/type_traits.hpp>
-#include <meevax/utility/utility.hpp>
+#include <meevax/type_traits/is_standard_container.hpp>
+
 
 
 #ifndef __cpp_nested_namespace_definitions
@@ -40,7 +41,7 @@ namespace meevax::numeric
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
                           meevax::type_traits::is_standard_container<
-                            StandardContainer<typename std::decay<T>::type>
+                            StandardContainer<T>
                           >::value
                         >::type
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER

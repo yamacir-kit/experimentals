@@ -1,5 +1,3 @@
 <map id="meevax/iostream/iostream.hpp" name="meevax/iostream/iostream.hpp">
-<area shape="rect" id="node2" href="$main_8cpp.html" title="main.cpp" alt="" coords="76,233,156,261"/>
-<area shape="rect" id="node3" href="$lexer_8hpp.html" title="meevax 文法解析のためのレキサなどを提供するヘッダ。 基本的に機能分離がうまくいってない。 ..." alt="" coords="90,81,270,109"/>
-<area shape="rect" id="node4" href="$syntax_8hpp.html" title="構文解析用のライブラリ群の一括インクルードを提供するヘッダ。 " alt="" coords="87,157,278,185"/>
+<area shape="rect" id="node2" href="$main_8cpp.html" title="main.cpp" alt="" coords="75,81,155,109"/>
 </map>

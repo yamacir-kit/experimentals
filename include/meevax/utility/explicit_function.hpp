@@ -2,9 +2,8 @@
 #define INCLUDED_MEEVAX_UTILITY_EXPLICIT_FUNCTION_HPP
 
 
+#include <type_traits>
 #include <utility>
-
-#include <meevax/type_traits/type_traits.hpp>
 
 
 #ifndef __cpp_nested_namespace_definitions
@@ -13,7 +12,13 @@ namespace meevax { namespace utility
 namespace meevax::utility
 #endif
 {
-  template <typename T, typename = typename std::enable_if<std::is_class<T>::value>::type>
+  template <typename T
+  #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+  , typename = typename std::enable_if<
+                          std::is_class<T>::value
+                        >::type
+  #endif
+  >
   class explicit_function
     : public T
   {

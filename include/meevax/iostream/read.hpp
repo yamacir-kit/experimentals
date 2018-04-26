@@ -9,14 +9,13 @@
 */
 
 
-#include <exception>
 #include <iostream>
-#include <sstream>
+#include <regex>
+#include <string>
+#include <type_traits>
+#include <utility>
 
-#include <meevax/regex/regex.hpp>
-#include <meevax/string/string.hpp>
-#include <meevax/type_traits/type_traits.hpp>
-#include <meevax/utility/utility.hpp>
+#include <meevax/type_traits/is_char_type.hpp>
 
 
 namespace meevax::iostream

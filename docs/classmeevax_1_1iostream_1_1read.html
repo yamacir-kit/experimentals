@@ -117,7 +117,7 @@ class meevax::iostream::read&lt; CharType &gt;</h3>
 <p>技術的には「読み取り」の意味論の下、標準入力ストリーム及びファイルストリームライブラリを ファイルシステムライブラリ等を駆使して統合することが目標。<br />
  </p>
 
-<p>Definition at line <a class="el" href="read_8hpp_source.html#l00037">37</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
+<p>Definition at line <a class="el" href="read_8hpp_source.html#l00036">36</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
 </div><h2 class="groupheader">Member Enumeration Documentation</h2>
 <a class="anchor" id="aa41fa13e34cee1d18c6ca80ae28f09ed"></a>
 <div class="memitem">
@@ -153,8 +153,8 @@ template&lt;typename CharType &gt; </div>
 </td></tr>
 </table>
 
-<p>Definition at line <a class="el" href="read_8hpp_source.html#l00048">48</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;    {</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      getchar,  </div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      sequence, </div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      getline,  </div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;      <a class="code" href="namespacemeevax_1_1debug.html#a6ce898ff2be2f235f289cf2740825e89af7bd60b75b29d79b660a2859395c1a24">size</a></div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    };</div><div class="ttc" id="namespacemeevax_1_1debug_html_a6ce898ff2be2f235f289cf2740825e89af7bd60b75b29d79b660a2859395c1a24"><div class="ttname"><a href="namespacemeevax_1_1debug.html#a6ce898ff2be2f235f289cf2740825e89af7bd60b75b29d79b660a2859395c1a24">meevax::debug::dummy_meta_iterator::size</a></div><div class="ttdoc">メタイテレータ用のメンバ。この位置になければ機能しない。 </div></div>
+<p>Definition at line <a class="el" href="read_8hpp_source.html#l00047">47</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    {</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;      getchar,  </div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;      sequence, </div><div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;      getline,  </div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;      <a class="code" href="namespacemeevax_1_1debug.html#a6ce898ff2be2f235f289cf2740825e89af7bd60b75b29d79b660a2859395c1a24">size</a></div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    };</div><div class="ttc" id="namespacemeevax_1_1debug_html_a6ce898ff2be2f235f289cf2740825e89af7bd60b75b29d79b660a2859395c1a24"><div class="ttname"><a href="namespacemeevax_1_1debug.html#a6ce898ff2be2f235f289cf2740825e89af7bd60b75b29d79b660a2859395c1a24">meevax::debug::dummy_meta_iterator::size</a></div><div class="ttdoc">メタイテレータ用のメンバ。この位置になければ機能しない。 </div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -204,8 +204,8 @@ template&lt;auto... HierarchicalSemantics, typename... Ts&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>decltype(auto) </dd></dl>
 
-<p>Definition at line <a class="el" href="read_8hpp_source.html#l00097">97</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;    {</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">return</span> read_&lt;HierarchicalSemantics...&gt; {}(*<span class="keyword">this</span>, std::forward&lt;Ts&gt;(args)...);</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="read_8hpp_source.html#l00096">96</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;    {</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="keywordflow">return</span> read_&lt;HierarchicalSemantics...&gt; {}(*<span class="keyword">this</span>, std::forward&lt;Ts&gt;(args)...);</div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    }</div></div><!-- fragment -->
 </div>
 </div>
 <a class="anchor" id="a9b4fc0f46a055b487d7c0f7b22cce717"></a>
@@ -262,8 +262,8 @@ template&lt;typename... HierarchicalSemantics, typename... Ts&gt; </div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>decltype(auto) </dd></dl>
 
-<p>Definition at line <a class="el" href="read_8hpp_source.html#l00120">120</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
-<div class="fragment"><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    {</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="keywordflow">return</span> (*this).template <span class="keyword">operator</span>()&lt;semantics...&gt;(std::forward&lt;Ts&gt;(args)...);</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div></div><!-- fragment -->
+<p>Definition at line <a class="el" href="read_8hpp_source.html#l00119">119</a> of file <a class="el" href="read_8hpp_source.html">read.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;    {</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      <span class="keywordflow">return</span> (*this).template <span class="keyword">operator</span>()&lt;semantics...&gt;(std::forward&lt;Ts&gt;(args)...);</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    }</div></div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>

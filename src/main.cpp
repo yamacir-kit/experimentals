@@ -2,9 +2,9 @@
 
 #include <boost/cstdlib.hpp>
 
-#include <meevax/iostream/iostream.hpp>
-#include <meevax/posix/posix.hpp>
-#include <meevax/syntax/syntax.hpp>
+#include <meevax/iostream/read.hpp>
+#include <meevax/posix/termios.hpp>
+#include <meevax/syntax/lexer.hpp>
 
 
 /**

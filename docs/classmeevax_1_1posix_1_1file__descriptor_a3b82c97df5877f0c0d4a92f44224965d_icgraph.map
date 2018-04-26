@@ -1,0 +1,4 @@
+<map id="meevax::posix::file_descriptor::release" name="meevax::posix::file_descriptor::release">
+<area shape="rect" id="node2" href="$classmeevax_1_1posix_1_1file__descriptor.html#ac9fa2cfcfb06d09fc995481795f9ac65" title="ファイルディスクリプタを閉じる。 呼ばれる前にセットされていたファイルディスクリプタに対して close が�..." alt="" coords="201,5,340,49"/>
+<area shape="rect" id="node3" href="$classmeevax_1_1posix_1_1file__descriptor.html#a9927981bad31ec286890d1110716b77e" title="デストラクタ。管理していたファイルディスクリプタの後始末。 " alt="" coords="388,5,587,49"/>
+</map>
