@@ -39,7 +39,7 @@ namespace meevax::regex
   *   抽出された文字列を標準コンテナに詰めたもの。
   *   まあ基本的に `std::vector<std::string>` と思っておいて問題ない。
   */
-  template <typename CharType, template <typename...> typename StandardContainer = std::vector
+  template <template <typename...> typename StandardContainer, typename CharType
   #ifndef DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   , typename = typename std::enable_if<
                           meevax::type_traits::is_char_type<CharType>::value

@@ -12,7 +12,8 @@
 */
 
 
-auto main(int argc, char** argv) -> int
+auto main(int argc, char** argv)
+  -> int try
 {
   const std::vector<std::string> args {argv, argv + argc};
 
@@ -20,6 +21,7 @@ auto main(int argc, char** argv) -> int
   termios.change_to(meevax::posix::termios::input_mode::noncanonical);
 
   meevax::iostream::read read {std::cin};
+
   for (std::string buffer {""}; std::cin.good(); std::cout << std::string(64, '-') << "\r\n")
   {
     using semantics = decltype(read)::hierarchical_semantics;
@@ -34,20 +36,17 @@ auto main(int argc, char** argv) -> int
 
       meevax::syntax::lexer<char> lexer {};
 
-      std::cout << "[debug]  raw code: " << buffer << "\r\n";
-      std::cout << "[debug] tokenized: " << lexer.tokenize(buffer) << "\r\n";
-
-      for (const auto& each_map : lexer.extracted)
-      {
-        std::size_t index {0};
-        for (const auto& parts : each_map.second)
-        {
-          std::cout << std::string(8, ' ') << "(" << each_map.first << ")[" << index++ << "] " << parts << "\r\n";
-        }
-      }
+      std::cout << "source code: " << buffer << "\r\n";
+      const auto translated {lexer.translate(buffer)};
+      std::cout << "symbol expr: " << translated << "\r\n";
     }
   }
 
   return boost::exit_success;
+}
+catch (const std::exception& exception)
+{
+  std::cerr << "[error] exception occurred: " << exception.what() << std::endl;
+  return boost::exit_exception_failure;
 }
 
