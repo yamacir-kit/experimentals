@@ -1,6 +1,0 @@
-<map id="meevax/utility/utility.hpp" name="meevax/utility/utility.hpp">
-<area shape="rect" id="node2" href="$file__descriptor_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="5,81,236,109"/>
-<area shape="rect" id="node3" href="$posix_8hpp.html" title="名前空間 meevax::posix を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、POSIX システム標�..." alt="" coords="33,233,208,261"/>
-<area shape="rect" id="node5" href="$termios_8hpp.html" title="POSIX 標準ライブラリ termios.h を使うたびに参考書をめくるのが面倒になったから作った。 結局のところ使�..." alt="" coords="93,157,281,185"/>
-<area shape="rect" id="node4" href="$main_8cpp.html" title="main.cpp" alt="" coords="81,309,161,337"/>
-</map>

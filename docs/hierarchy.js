@@ -6,6 +6,7 @@ var hierarchy =
     [ "meevax::iostream::read< CharType >::read_< hierarchical_semantics::getchar >", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1getchar_01_4.html", null ],
     [ "meevax::iostream::read< CharType >::read_< hierarchical_semantics::sequence >", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1sequence_01_4.html", null ],
     [ "meevax::posix::termios", "classmeevax_1_1posix_1_1termios.html", null ],
+    [ "meevax::syntax::lexer< CharType >", "classmeevax_1_1syntax_1_1lexer.html", null ],
     [ "meevax::type_traits::is_char_type< NonCharType >", "classmeevax_1_1type__traits_1_1is__char__type.html", null ],
     [ "meevax::type_traits::is_char_type< char >", "classmeevax_1_1type__traits_1_1is__char__type_3_01char_01_4.html", null ],
     [ "meevax::type_traits::is_char_type< char16_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01char16__t_01_4.html", null ],

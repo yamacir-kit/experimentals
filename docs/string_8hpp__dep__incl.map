@@ -1,7 +1,0 @@
-<map id="meevax/string/string.hpp" name="meevax/string/string.hpp">
-<area shape="rect" id="node2" href="$extract_8hpp.html" title="テンプレート関数 extract を提供するヘッダ。 " alt="" coords="5,81,192,109"/>
-<area shape="rect" id="node4" href="$lexer_8hpp.html" title="meevax 文法解析のためのレキサなどを提供するヘッダ。 基本的に機能分離がうまくいってない。 ..." alt="" coords="74,233,254,261"/>
-<area shape="rect" id="node3" href="$regex_8hpp.html" title="正規表現関係のパーツを収めたヘッダを一括インクルードするヘッダ。 " alt="" coords="10,157,190,185"/>
-<area shape="rect" id="node5" href="$syntax_8hpp.html" title="構文解析用のライブラリ群の一括インクルードを提供するヘッダ。 " alt="" coords="69,309,259,337"/>
-<area shape="rect" id="node6" href="$main_8cpp.html" title="main.cpp" alt="" coords="124,385,204,413"/>
-</map>
