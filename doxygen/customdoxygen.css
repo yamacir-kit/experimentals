@@ -3,6 +3,11 @@ h1, .h1, h2, .h2, h3, .h3
   font-weight: 300 !important;
 }
 
+body, table, div, p, dl
+{
+  font: 300 15px/22px Helvetica;
+}
+
 .sm-dox a span.sub-arrow
 {
   position: absolute;
@@ -17,9 +22,9 @@ h1, .h1, h2, .h2, h3, .h3
   text-align: center;
   text-shadow: none;
   background: rgba(255, 255, 255, 0.5);
+  border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
-  border-radius: 5px
 }
 
 /* Handing of arrow-carets in the smart menus */
@@ -47,49 +52,53 @@ h1, .h1, h2, .h2, h3, .h3
 
 .sm-dox a:hover span.sub-arrow
 {
-  border-color: red transparent transparent transparent
+  border-color: red transparent transparent transparent;
 }
 
 
 .sm-dox.sm-rtl a.has-submenu
 {
   padding-right: 12px;
-  padding-left: 24px
+  padding-left: 24px;
 }
 
 .sm-dox.sm-rtl a span.sub-arrow
 {
   right: auto;
-  left: 12px
+  left: 12px;
 }
 
-.sm-dox.sm-rtl.sm-vertical a.has-submenu {
-  padding: 10px 20px
+.sm-dox.sm-rtl.sm-vertical a.has-submenu
+{
+  padding: 10px 20px;
 }
 
-.sm-dox.sm-rtl.sm-vertical a span.sub-arrow {
+.sm-dox.sm-rtl.sm-vertical a span.sub-arrow
+{
   right: auto;
   left: 8px;
   border-style: dashed solid dashed dashed;
   border-color: transparent #555 transparent transparent
 }
 
-.sm-dox.sm-rtl ul a.has-submenu {
+.sm-dox.sm-rtl ul a.has-submenu
+{
   padding: 10px 20px !important
 }
 
-.sm-dox.sm-rtl ul a span.sub-arrow {
+.sm-dox.sm-rtl ul a span.sub-arrow
+{
   right: auto;
   left: 8px;
   border-style: dashed solid dashed dashed;
-  border-color: transparent #555 transparent transparent
+  border-color: transparent #555 transparent transparent;
 }
 
 .sm-dox.sm-vertical a.disabled
-{
-}
+{}
 
-.sm-dox.sm-vertical a span.sub-arrow {
+.sm-dox.sm-vertical a span.sub-arrow
+{
   right: 8px;
   top: 50%;
   margin-top: -5px;
@@ -108,35 +117,38 @@ h1, .h1, h2, .h2, h3, .h3
   border-style: dashed dashed dashed solid
 }
 
-#navrow1, #navrow2, #navrow3, #navrow4, #navrow5{
+#navrow1, #navrow2, #navrow3, #navrow4, #navrow5
+{
   border-bottom: 1px solid #EEEEEE;
 }
 
-.adjust-right {
+.adjust-right
+{
   margin-left: 30px !important;
   font-size: 1.15em !important;
 }
-.navbar{
+
+.navbar
+{
   border: 0px solid #222 !important;
 }
-table{
+
+table
+{
   white-space:pre-wrap !important;
 }
-/*
-===========================
- */
-
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html,
-body {
+html, body
+{
   height: 100%;
   /* The html and body elements cannot have any padding or margin. */
 }
 
 /* Wrapper for page content to push down footer */
-#wrap {
+#wrap
+{
   min-height: 100%;
   height: auto;
   /* Negative indent footer by its height */
@@ -146,95 +158,110 @@ body {
 }
 
 /* Set the fixed height of the footer here */
-#footer {
+#footer
+{
   font-size: 0.9em;
   padding: 8px 0px;
   background-color: #f5f5f5;
 }
 
-.footer-row {
+.footer-row
+{
   line-height: 44px;
 }
 
-#footer > .container {
+#footer > .container
+{
   padding-left: 15px;
   padding-right: 15px;
 }
 
-.footer-follow-icon {
+.footer-follow-icon
+{
   margin-left: 3px;
   text-decoration: none !important;
 }
 
-.footer-follow-icon img {
+.footer-follow-icon img
+{
   width: 20px;
 }
 
-.footer-link {
+.footer-link
+{
   padding-top: 5px;
   display: inline-block;
   color: #999999;
   text-decoration: none;
 }
 
-.footer-copyright {
+.footer-copyright
+{
   text-align: center;
 }
 
 
-@media (min-width: 992px) {
-  .footer-row {
+@media (min-width: 992px)
+{
+  .footer-row
+  {
     text-align: left;
   }
 
-  .footer-icons {
+  .footer-icons
+  {
     text-align: right;
   }
 }
-@media (max-width: 991px) {
-  .footer-row {
+
+@media (max-width: 991px)
+{
+  .footer-row
+  {
     text-align: center;
   }
 
-  .footer-icons {
+  .footer-icons
+  {
     text-align: center;
   }
 }
 
-/* DOXYGEN Code Styles
------------------------------------ */
-
-
-a.qindex {
+a.qindex
+{
   font-weight: bold;
 }
 
-a.qindexHL {
+a.qindexHL
+{
   font-weight: bold;
   background-color: #9CAFD4;
   color: #ffffff;
   border: 1px double #869DCA;
 }
 
-.contents a.qindexHL:visited {
+.contents a.qindexHL:visited
+{
   color: #ffffff;
 }
 
-a.code, a.code:visited, a.line, a.line:visited {
+a.code, a.code:visited, a.line, a.line:visited
+{
   color: #4665A2;
 }
 
-a.codeRef, a.codeRef:visited, a.lineRef, a.lineRef:visited {
+a.codeRef, a.codeRef:visited, a.lineRef, a.lineRef:visited
+{
   color: #4665A2;
 }
 
-/* @end */
-
-dl.el {
+dl.el
+{
   margin-left: -1cm;
 }
 
-pre.fragment {
+pre.fragment
+{
   border: 1px solid #C4CFE5;
   background-color: #FBFCFD;
   padding: 4px 6px;
@@ -247,13 +274,15 @@ pre.fragment {
   font-size: 105%;
 }
 
-div.fragment {
+div.fragment
+{
   padding: 4px 6px;
   margin: 4px 8px 4px 2px;
   border: 1px solid #C4CFE5;
 }
 
-div.line {
+div.line
+{
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
   font-size: 12px;
   min-height: 13px;
@@ -279,17 +308,21 @@ div.line {
   transition-property: background-color, box-shadow;
   transition-duration: 0.5s;
 }
-div.line:hover{
+
+div.line:hove
+{
   background-color: #FBFF00;
 }
 
-div.line.glow {
+div.line.glow
+{
   background-color: cyan;
   box-shadow: 0 0 10px cyan;
 }
 
 
-span.lineno {
+span.lineno
+{
   padding-right: 4px;
   text-align: right;
   color:rgba(0,0,0,0.3);
@@ -299,184 +332,175 @@ span.lineno {
   white-space: pre;
   font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace ;
 }
-span.lineno a {
+
+span.lineno a
+{
   background-color: #FAFAFA;
   cursor:pointer;
 }
 
-span.lineno a:hover {
+span.lineno a:hover
+{
   background-color: #EFE200;
   color: #1e1e1e;
 }
 
-div.groupHeader {
+div.groupHeader
+{
   margin-left: 16px;
   margin-top: 12px;
   font-weight: bold;
 }
 
-div.groupText {
+div.groupText
+{
   margin-left: 16px;
   font-style: italic;
 }
 
 /* @group Code Colorization */
 
-span.keyword {
+span.keyword
+{
   color: #008000
 }
 
-span.keywordtype {
+span.keywordtype
+{
   color: #604020
 }
 
-span.keywordflow {
+span.keywordflow
+{
   color: #e08000
 }
 
-span.comment {
+span.comment
+{
   color: #800000
 }
 
-span.preprocessor {
+span.preprocessor
+{
   color: #806020
 }
 
-span.stringliteral {
+span.stringliteral
+{
   color: #002080
 }
 
-span.charliteral {
+span.charliteral
+{
   color: #008080
 }
 
-span.vhdldigit {
+span.vhdldigit
+{
   color: #ff00ff
 }
 
-span.vhdlchar {
+span.vhdlchar
+{
   color: #000000
 }
 
-span.vhdlkeyword {
+span.vhdlkeyword
+{
   color: #700070
 }
 
-span.vhdllogic {
+span.vhdllogic
+{
   color: #ff0000
 }
 
-blockquote {
+blockquote
+{
   background-color: #F7F8FB;
   border-left: 2px solid #9CAFD4;
   margin: 0 24px 0 4px;
   padding: 0 12px 0 16px;
 }
 
-/*---------------- Search Box */
-
-#search-box
-{
-  margin: 10px 0px;
-}
-
-#search-box .close
-{
-  display: none;
-  position: absolute;
-  right: 0px;
-  padding: 6px 12px;
-  z-index: 5;
-}
-
-/*---------------- Search results window */
-
-#search-results-window
-{
-  display: none;
-}
-
-iframe#MSearchResults
-{
-  width: 100%;
-  height: 15em;
-}
-
-.SRChildren {
-  padding-left: 3ex; padding-bottom: .5em
-}
-.SRPage .SRChildren {
-  display: none;
-}
-a.SRScope {
-  display: block;
-}
-a.SRSymbol:focus, a.SRSymbol:active,
-a.SRScope:focus, a.SRScope:active {
-  text-decoration: underline;
-}
-span.SRScope {
-  padding-left: 4px;
-}
-.SRResult {
-  display: none;
-}
-
 /* class and file list */
 .directory .icona,
-.directory .arrow {
+.directory .arrow
+{
   height: auto;
 }
-.directory .icona .icon {
+
+.directory .icona .icon
+{
   height: 16px;
 }
-.directory .icondoc {
+
+.directory .icondoc
+{
   background-position: 0px 0px;
   height: 20px;
 }
-.directory .iconfopen {
+
+.directory .iconfopen
+{
   background-position: 0px 0px;
 }
-.directory td.entry {
+
+.directory td.entry
+{
   padding: 7px 8px 6px 8px;
 }
 
-.table > tbody > tr > td.memSeparator {
+.table > tbody > tr > td.memSeparator
+{
   line-height: 0;
   .table-hover;
 
 }
 
-.memItemLeft, .memTemplItemLeft {
+.memItemLeft, .memTemplItemLeft
+{
   white-space: normal;
 }
 
 /* enumerations */
-.panel-body thead > tr {
+.panel-body thead > tr
+{
   background-color: #e0e0e0;
 }
 
 /* todo lists */
 .todoname,
-.todoname a {
+.todoname a
+{
   font-weight: bold;
 }
 
 /* Class title */
-.summary {
-  margin-top: 25px;
+.summary
+{
+  margin-top: 0px;
+  width: 100% !important;
 }
-.page-header {
+
+.page-header
+{
   margin: 20px 0px !important;
 }
-.page-header .title {
+
+.page-header .title
+{
   display: inline-block;
 }
-.page-header .pull-right {
+
+.page-header .pull-right
+{
   margin-top: 0.3em;
   margin-left: 0.5em;
 }
-.page-header .label {
+
+.page-header .label
+{
   font-size: 50%;
 }
 
@@ -502,9 +526,21 @@ span.SRScope {
     overflow:visible;
   }
 
-  h1, h2, h3, h4, h5, h6 { page-break-after: avoid; }
-  .summary { display: none; }
-  .memitem { page-break-inside: avoid; }
+  h1, h2, h3, h4, h5, h6
+  {
+    page-break-after: avoid;
+  }
+
+  .summary
+  {
+    display: none;
+  }
+
+  .memitem
+  {
+    page-break-inside: avoid;
+  }
+
   #doc-content
   {
     margin-left:0 !important;
