@@ -118,7 +118,7 @@ REPEAT_BRIEF           = YES
 # the entity):The $name class, The $name widget, The $name file, is, provides,
 # specifies, contains, represents, a, an and the.
 
-ABBREVIATE_BRIEF       =
+ABBREVIATE_BRIEF       = "The $name class" "The $name widget" "The $name file" "is" "provides" "specifies" "contains" "represents" "a" "an" "the"
 
 # If the ALWAYS_DETAILED_SEC and REPEAT_BRIEF tags are both set to YES then
 # doxygen will generate a detailed section even if there is only a brief
@@ -133,7 +133,7 @@ ALWAYS_DETAILED_SEC    = NO
 # operators of the base classes will not be shown.
 # The default value is: NO.
 
-INLINE_INHERITED_MEMB  = NO
+INLINE_INHERITED_MEMB  = YES
 
 # If the FULL_PATH_NAMES tag is set to YES, doxygen will prepend the full path
 # before files name in the file list and in the header files. If set to NO the
@@ -467,7 +467,7 @@ EXTRACT_ANON_NSPACES   = YES
 # section is generated. This option has no effect if EXTRACT_ALL is enabled.
 # The default value is: NO.
 
-HIDE_UNDOC_MEMBERS     = YES
+HIDE_UNDOC_MEMBERS     = NO
 
 # If the HIDE_UNDOC_CLASSES tag is set to YES, doxygen will hide all
 # undocumented classes that are normally visible in the class hierarchy. If set
@@ -475,7 +475,7 @@ HIDE_UNDOC_MEMBERS     = YES
 # has no effect if EXTRACT_ALL is enabled.
 # The default value is: NO.
 
-HIDE_UNDOC_CLASSES     = YES
+HIDE_UNDOC_CLASSES     = NO
 
 # If the HIDE_FRIEND_COMPOUNDS tag is set to YES, doxygen will hide all friend
 # (class|struct|union) declarations. If set to NO, these declarations will be
@@ -852,7 +852,7 @@ EXAMPLE_PATH           =
 # *.h) to filter out the source-files in the directories. If left blank all
 # files are included.
 
-EXAMPLE_PATTERNS       =
+EXAMPLE_PATTERNS       = *
 
 # If the EXAMPLE_RECURSIVE tag is set to YES then subdirectories will be
 # searched for input files to be used with the \include or \dontinclude commands
@@ -934,13 +934,13 @@ USE_MDFILE_AS_MAINPAGE =
 # also VERBATIM_HEADERS is set to NO.
 # The default value is: NO.
 
-SOURCE_BROWSER         = YES
+SOURCE_BROWSER         = NO
 
 # Setting the INLINE_SOURCES tag to YES will include the body of functions,
 # classes and enums directly into the documentation.
 # The default value is: NO.
 
-INLINE_SOURCES         = YES
+INLINE_SOURCES         = NO
 
 # Setting the STRIP_CODE_COMMENTS tag to YES will instruct doxygen to hide any
 # special comment blocks from generated source code fragments. Normal C, C++ and
@@ -1044,7 +1044,7 @@ ALPHABETICAL_INDEX     = YES
 # Minimum value: 1, maximum value: 20, default value: 5.
 # This tag requires that the tag ALPHABETICAL_INDEX is set to YES.
 
-COLS_IN_ALPHA_INDEX    = 1
+COLS_IN_ALPHA_INDEX    = 2
 
 # In case all classes in a project start with a common prefix, all classes will
 # be put under the same header in the alphabetical index. The IGNORE_PREFIX tag
@@ -1096,7 +1096,8 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/header.html"
+# HTML_HEADER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/header.html"
+HTML_HEADER            = "header.html"
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1106,7 +1107,8 @@ HTML_HEADER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-si
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/footer.html"
+# HTML_FOOTER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/footer.html"
+HTML_FOOTER            = "footer.html"
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1131,8 +1133,8 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/style.css"
-HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/customdoxygen.css"
+# HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/customdoxygen.css"
+HTML_EXTRA_STYLESHEET  = "customdoxygen.css"
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1142,10 +1144,15 @@ HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/customdoxy
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/doxy-boot.js" \
-                         "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/jquery.smartmenus.js" \
-                         "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.js" \
-                         "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.css"
+# HTML_EXTRA_FILES       = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/doxy-boot.js" \
+#                          "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/jquery.smartmenus.js" \
+#                          "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.js" \
+#                          "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.css"
+
+HTML_EXTRA_FILES       = "doxy-boot.js" \
+                         "jquery.smartmenus.js" \
+                         "jquery.smartmenus.bootstrap.js" \
+                         "jquery.smartmenus.bootstrap.css"
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1175,7 +1182,7 @@ HTML_COLORSTYLE_SAT    = 100
 # Minimum value: 40, maximum value: 240, default value: 80.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_COLORSTYLE_GAMMA  = 100
+HTML_COLORSTYLE_GAMMA  = 80
 
 # If the HTML_TIMESTAMP tag is set to YES then the footer of each generated HTML
 # page will contain the date and time when the page was generated. Setting this
@@ -1184,7 +1191,7 @@ HTML_COLORSTYLE_GAMMA  = 100
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_TIMESTAMP         = NO
+HTML_TIMESTAMP         = YES
 
 # If the HTML_DYNAMIC_SECTIONS tag is set to YES then the generated HTML
 # documentation will contain sections that can be hidden and shown after the
@@ -1539,7 +1546,7 @@ MATHJAX_CODEFILE       =
 # The default value is: YES.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-SEARCHENGINE           = NO
+SEARCHENGINE           = YES
 
 # When the SERVER_BASED_SEARCH tag is enabled the search engine will be
 # implemented using a web server instead of a web client using Javascript. There
@@ -2188,7 +2195,7 @@ DOT_FONTNAME           = Helvetica
 # Minimum value: 4, maximum value: 24, default value: 10.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_FONTSIZE           = 11
+DOT_FONTSIZE           = 10
 
 # By default doxygen will tell dot to use the default font as specified with
 # DOT_FONTNAME. If you specify a different font using DOT_FONTNAME you can set
