@@ -1,4 +1,4 @@
 <map id="meevax::posix::file_descriptor" name="meevax::posix::file_descriptor">
-<area shape="rect" id="node2" href="$classmeevax_1_1utility_1_1noncopyable.html" title="meevax::utility::noncopyable\l\&lt; file_descriptor \&gt;" alt="" coords="23,97,224,141"/>
-<area shape="rect" id="node3" href="$classmeevax_1_1utility_1_1noncopyable.html" title="Boost にはない CRTP 版 noncopyable が欲しくて作った。単純なので説明することがない。 ..." alt="" coords="5,5,241,33"/>
+<area shape="rect" id="node2" href="$classmeevax_1_1utility_1_1noncopyable.html" title="meevax::utility::noncopyable\l\&lt; file_descriptor \&gt;" alt="" coords="21,95,209,136"/>
+<area shape="rect" id="node3" href="$classmeevax_1_1utility_1_1noncopyable.html" title="Boost にはない CRTP 版 noncopyable が欲しくて作った。単純なので説明することがない。 ..." alt="" coords="5,5,225,32"/>
 </map>

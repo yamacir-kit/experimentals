@@ -1,5 +1,5 @@
 <map id="meevax/posix/termios.hpp" name="meevax/posix/termios.hpp">
-<area shape="rect" id="node7" href="$file__descriptor_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="247,97,478,125"/>
-<area shape="rect" id="node10" href="$is__supports__bitwise__operators_8hpp.html" title="スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマ..." alt="" coords="659,81,810,141"/>
-<area shape="rect" id="node8" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="344,189,565,217"/>
+<area shape="rect" id="node7" href="$file__descriptor_8hpp.html" title="POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。 ..." alt="" coords="241,95,454,121"/>
+<area shape="rect" id="node10" href="$is__supports__bitwise__operators_8hpp.html" title="スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマ..." alt="" coords="630,80,771,136"/>
+<area shape="rect" id="node8" href="$noncopyable_8hpp.html" title="CRTP 版 noncopyable を提供するヘッダ。Boost に無かったので作った。 " alt="" coords="333,184,538,211"/>
 </map>
