@@ -1,5 +1,5 @@
 var namespacemeevax_1_1posix =
 [
-    [ "fd", "classmeevax_1_1posix_1_1fd.html", "classmeevax_1_1posix_1_1fd" ],
+    [ "file_descriptor", "classmeevax_1_1posix_1_1file__descriptor.html", "classmeevax_1_1posix_1_1file__descriptor" ],
     [ "termios", "classmeevax_1_1posix_1_1termios.html", "classmeevax_1_1posix_1_1termios" ]
 ];

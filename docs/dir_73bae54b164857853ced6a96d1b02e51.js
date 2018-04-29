@@ -10,7 +10,7 @@ var dir_73bae54b164857853ced6a96d1b02e51 =
     ] ],
     [ "is_equality_comparable.hpp", "is__equality__comparable_8hpp.html", [
       [ "is_equality_comparable", "classmeevax_1_1type__traits_1_1is__equality__comparable.html", null ],
-      [ "is_equality_comparable< EqualityComparable >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01EqualityComparable_01_4.html", null ]
+      [ "is_equality_comparable< T >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01T_01_4.html", null ]
     ] ],
     [ "is_explicit_invocable.hpp", "is__explicit__invocable_8hpp_source.html", null ],
     [ "is_implicit_invocable.hpp", "is__implicit__invocable_8hpp_source.html", null ],

@@ -1,5 +1,0 @@
-<map id="meevax/posix/fd.hpp" name="meevax/posix/fd.hpp">
-<area shape="rect" id="node2" href="$posix_8hpp.html" title="名前空間 meevax::posix を定義するヘッダ群の一括インクルードを提供するヘッダ。 また、POSIX システム標�..." alt="" coords="5,157,180,185"/>
-<area shape="rect" id="node4" href="$termios_8hpp.html" title="POSIX 標準ライブラリ termios.h を使うたびに参考書をめくるのが面倒になったから作った。 結局のところ使�..." alt="" coords="65,81,253,109"/>
-<area shape="rect" id="node3" href="$main_8cpp.html" title="main.cpp" alt="" coords="53,233,133,261"/>
-</map>

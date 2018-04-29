@@ -1,4 +1,4 @@
 <map id="meevax::utility::noncopyable&lt; T &gt;" name="meevax::utility::noncopyable&lt; T &gt;">
-<area shape="rect" id="node2" href="$classmeevax_1_1utility_1_1noncopyable.html" title="meevax::utility::noncopyable\l\&lt; fd \&gt;" alt="" coords="23,97,224,141"/>
-<area shape="rect" id="node3" href="$classmeevax_1_1posix_1_1fd.html" title="ファイルディスクリプタの安全な管理とアクセスを提供するクラス。 ただの int fd では我慢できなくなったか..." alt="" coords="57,191,190,219"/>
+<area shape="rect" id="node2" href="$classmeevax_1_1utility_1_1noncopyable.html" title="meevax::utility::noncopyable\l\&lt; file_descriptor \&gt;" alt="" coords="23,97,224,141"/>
+<area shape="rect" id="node3" href="$classmeevax_1_1posix_1_1file__descriptor.html" title="ファイルディスクリプタの安全な管理とアクセスを提供するクラス。 ただの int fd では我慢できなくなったか..." alt="" coords="54,191,193,235"/>
 </map>

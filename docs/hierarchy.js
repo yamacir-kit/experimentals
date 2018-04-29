@@ -6,13 +6,14 @@ var hierarchy =
     [ "meevax::iostream::read< CharType >::read_< hierarchical_semantics::getchar >", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1getchar_01_4.html", null ],
     [ "meevax::iostream::read< CharType >::read_< hierarchical_semantics::sequence >", "classmeevax_1_1iostream_1_1read_1_1read___3_01hierarchical__semantics_1_1sequence_01_4.html", null ],
     [ "meevax::posix::termios", "classmeevax_1_1posix_1_1termios.html", null ],
+    [ "meevax::syntax::lexer< CharType >", "classmeevax_1_1syntax_1_1lexer.html", null ],
     [ "meevax::type_traits::is_char_type< NonCharType >", "classmeevax_1_1type__traits_1_1is__char__type.html", null ],
     [ "meevax::type_traits::is_char_type< char >", "classmeevax_1_1type__traits_1_1is__char__type_3_01char_01_4.html", null ],
     [ "meevax::type_traits::is_char_type< char16_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01char16__t_01_4.html", null ],
     [ "meevax::type_traits::is_char_type< char32_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01char32__t_01_4.html", null ],
     [ "meevax::type_traits::is_char_type< wchar_t >", "classmeevax_1_1type__traits_1_1is__char__type_3_01wchar__t_01_4.html", null ],
-    [ "meevax::type_traits::is_equality_comparable< NotEqualityComparable >", "classmeevax_1_1type__traits_1_1is__equality__comparable.html", null ],
-    [ "meevax::type_traits::is_equality_comparable< EqualityComparable >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01EqualityComparable_01_4.html", null ],
+    [ "meevax::type_traits::is_equality_comparable< T >", "classmeevax_1_1type__traits_1_1is__equality__comparable.html", null ],
+    [ "meevax::type_traits::is_equality_comparable< T >", "classmeevax_1_1type__traits_1_1is__equality__comparable_3_01T_01_4.html", null ],
     [ "meevax::type_traits::is_supports_bitwise_operators< T >", "classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html", null ],
     [ "meevax::type_traits::is_supports_bitwise_operators< enum meevax::posix::termios::input_mode >", "classmeevax_1_1type__traits_1_1is__supports__bitwise__operators_3_01enum_01meevax_1_1posix_1_1termios_1_1input__mode_01_4.html", null ],
     [ "meevax::type_traits::is_supports_decrement_operators< T >", "classmeevax_1_1type__traits_1_1is__supports__decrement__operators.html", null ],
@@ -35,8 +36,8 @@ var hierarchy =
     [ "meevax::utility::overloaded_trivial_objectives<... >", "classmeevax_1_1utility_1_1overloaded__trivial__objectives.html", null ],
     [ "meevax::utility::overloaded_trivial_objectives< T >", "classmeevax_1_1utility_1_1overloaded__trivial__objectives_3_01T_01_4.html", null ],
     [ "meevax::utility::unmovable< T >", "classmeevax_1_1utility_1_1unmovable.html", null ],
-    [ "meevax::utility::noncopyable< fd >", "classmeevax_1_1utility_1_1noncopyable.html", [
-      [ "meevax::posix::fd", "classmeevax_1_1posix_1_1fd.html", null ]
+    [ "meevax::utility::noncopyable< file_descriptor >", "classmeevax_1_1utility_1_1noncopyable.html", [
+      [ "meevax::posix::file_descriptor", "classmeevax_1_1posix_1_1file__descriptor.html", null ]
     ] ],
     [ "meevax::utility::overloaded_nontrivial_objectives< U, Ts... >", "classmeevax_1_1utility_1_1overloaded__nontrivial__objectives.html", [
       [ "meevax::utility::overloaded_nontrivial_objectives< T, U, Ts... >", "classmeevax_1_1utility_1_1overloaded__nontrivial__objectives_3_01T_00_01U_00_01Ts_8_8_8_01_4.html", null ]

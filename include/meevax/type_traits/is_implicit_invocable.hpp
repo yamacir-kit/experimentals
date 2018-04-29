@@ -3,8 +3,7 @@
 
 
 #include <type_traits>
-
-#include <meevax/utility/utility.hpp>
+#include <utility>
 
 
 #ifndef __cpp_nested_namespace_definitions
@@ -16,8 +15,8 @@ namespace meevax::type_traits
   class is_implicit_invocable_
   {
   public:
-    template <typename Function, typename... Ts>
-    static constexpr auto check(Function&& function, Ts&&... args)
+    template <typename T, typename... Ts>
+    static constexpr auto check(T&& function, Ts&&... args)
       -> decltype(function(std::forward<Ts>(args)...), std::true_type {});
 
     template <typename...>

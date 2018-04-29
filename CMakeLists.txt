@@ -13,14 +13,9 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-  if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.in)
-    configure_file(
-      ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.in
-      ${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile
-    )
-    add_custom_target(doxygen
-      ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile"
-    )
+  if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake)
+    configure_file(${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake ${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile)
+    add_custom_target(doxygen ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile")
   endif()
 endif()
 
@@ -28,8 +23,8 @@ if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp)
   file(MAKE_DIRECTORY ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}/configure)
   string(TIMESTAMP ${PROJECT_NAME}_TIMESTAMP "%Y/%m/%d %H:%M:%S")
   configure_file(
-    ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp
-    ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}/configure/version.hpp
+    ${${PROJECT_NAME}_CONFIGURE_DIR}/configure.hpp
+    ${${PROJECT_NAME}_INCLUDE_DIR}/${PROJECT_NAME}/configure/configure.hpp
   )
 endif()
 

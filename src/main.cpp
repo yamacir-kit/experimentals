@@ -2,13 +2,16 @@
 
 #include <boost/cstdlib.hpp>
 
-#include <meevax/iostream/iostream.hpp>
-#include <meevax/posix/posix.hpp>
-#include <meevax/syntax/syntax.hpp>
+#include <meevax/iostream/read.hpp>
+#include <meevax/posix/termios.hpp>
+#include <meevax/syntax/lexer.hpp>
 
 
 /**
 * @file main.cpp
+*
+* @mainpage
+* @section Overview
 */
 
 
@@ -34,7 +37,7 @@ auto main(int argc, char** argv)
     {
       buffer += sequence;
 
-      meevax::syntax::lexer<char> lexer {};
+      meevax::syntax::lexer_<char> lexer {};
 
       std::cout << "source code: " << buffer << "\r\n";
       const auto translated {lexer.translate(buffer)};
