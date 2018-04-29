@@ -1096,7 +1096,7 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_HEADER            =
+HTML_HEADER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/header.html"
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
 # generated HTML page. If the tag is left blank doxygen will generate a standard
@@ -1106,7 +1106,7 @@ HTML_HEADER            =
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_FOOTER            =
+HTML_FOOTER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/footer.html"
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
 # sheet that is used by each HTML page. It can be used to fine-tune the look of
@@ -1131,7 +1131,8 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/style.css"
+# HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/style.css"
+HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/customdoxygen.css"
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1141,7 +1142,10 @@ HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/style.css"
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       =
+HTML_EXTRA_FILES       = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/doxy-boot.js" \
+                         "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/jquery.smartmenus.js" \
+                         "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.js" \
+                         "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.css"
 
 # The HTML_COLORSTYLE_HUE tag controls the color of the HTML output. Doxygen
 # will adjust the colors in the style sheet and background images according to
@@ -1402,7 +1406,8 @@ ECLIPSE_DOC_ID         = org.doxygen.Project
 #
 # ヘッダ部分に表示されるタブのこと
 
-DISABLE_INDEX          = YES
+# DISABLE_INDEX          = YES
+DISABLE_INDEX          = NO
 
 # The GENERATE_TREEVIEW tag is used to specify whether a tree-like index
 # structure should be generated to display hierarchical information. If the tag
@@ -1419,7 +1424,8 @@ DISABLE_INDEX          = YES
 # The default value is: NO.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-GENERATE_TREEVIEW      = YES
+# GENERATE_TREEVIEW      = YES
+GENERATE_TREEVIEW      = NO
 
 # The ENUM_VALUES_PER_LINE tag can be used to set the number of enum values that
 # doxygen will group on one line in the generated HTML documentation.
