@@ -15,8 +15,8 @@
 #include <boost/mpl/identity.hpp>
 
 #include <meevax/debug/dummy_type.hpp>
-#include <meevax/utility/overload_objectives.hpp>
-#include <meevax/utility/overload_operations.hpp>
+#include <meevax/utility/overloaded_objectives.hpp>
+#include <meevax/utility/overloaded_operations.hpp>
 
 
 /**

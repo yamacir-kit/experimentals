@@ -1,9 +1,9 @@
-#ifndef INCLUDED_MEEVAX_UTILITY_OVERLOAD_OBJECTIVES_HPP
-#define INCLUDED_MEEVAX_UTILITY_OVERLOAD_OBJECTIVES_HPP
+#ifndef INCLUDED_MEEVAX_UTILITY_OVERLOADED_OBJECTIVES_HPP
+#define INCLUDED_MEEVAX_UTILITY_OVERLOADED_OBJECTIVES_HPP
 
 
 /**
-* @file overload_objectives.hpp
+* @file overloaded_objectives.hpp
 *
 * 簡潔に多重継承されたクラスを作成するための関数 `overload_objectives` および、
 * その返り値型 `overloaded_trivial_objectives` を提供するヘッダ。
@@ -137,5 +137,5 @@ namespace meevax::utility
 #endif
 
 
-#endif // INCLUDED_MEEVAX_UTILITY_OVERLOAD_OBJECTIVES_HPP
+#endif // INCLUDED_MEEVAX_UTILITY_OVERLOADED_OBJECTIVES_HPP
 

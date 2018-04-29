@@ -1,9 +1,9 @@
-#ifndef INCLUDED_MEEVAX_UTILITY_OVERLOAD_OPERATIONS_HPP
-#define INCLUDED_MEEVAX_UTILITY_OVERLOAD_OPERATIONS_HPP
+#ifndef INCLUDED_MEEVAX_UTILITY_OVERLOADED_OPERATIONS_HPP
+#define INCLUDED_MEEVAX_UTILITY_OVERLOADED_OPERATIONS_HPP
 
 
 /**
-* @file overload_operations.hpp
+* @file overloaded_operations.hpp
 *
 * 簡潔に多重継承されたクラスを作成するための関数 `overload_operations` および、
 * その返り値型 `overloaded_operations` を提供するヘッダ。
@@ -88,5 +88,5 @@ namespace meevax::utility
 #endif
 
 
-#endif // INCLUDED_MEEVAX_UTILITY_OVERLOAD_OPERATIONS_HPP
+#endif // INCLUDED_MEEVAX_UTILITY_OVERLOADED_OPERATIONS_HPP
 
