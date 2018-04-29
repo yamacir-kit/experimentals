@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classmeevax_1_1type__traits_1_1is__char__type_3_01char32__t_01_4.html" title="テンプレート特殊化。std::true_type から派生する。 " alt="" coords="5,5,199,49"/>
+<area shape="rect" id="node2" href="$classmeevax_1_1type__traits_1_1is__char__type.html" title="与えられたテンプレートパラメータが規格が言うところの文字型であるかを判定するメタ関数。 ..." alt="" coords="136,5,345,47"/>
+<area shape="rect" id="node3" href="$classmeevax_1_1type__traits_1_1is__equality__comparable.html" title="与えられた型について等価性の比較が可能かどうかを調べるメタ関数。 " alt="" coords="141,71,340,112"/>
+<area shape="rect" id="node4" href="$classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html" title="テンプレートパラメータの型がビット幅演算をサポートしているか否かを返すメタ関数。 " alt="" coords="168,135,313,191"/>
+<area shape="rect" id="node5" href="$classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators.html" title="後置デクリメント可能かを検査するメタ関数。 " alt="" coords="149,215,332,271"/>
+<area shape="rect" id="node6" href="$classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators.html" title="後置インクリメント可能かを検査するメタ関数。 " alt="" coords="151,295,330,351"/>
+<area shape="rect" id="node7" href="$classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators.html" title="前置デクリメント可能かを検査するメタ関数。 " alt="" coords="149,375,332,431"/>
+<area shape="rect" id="node8" href="$classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html" title="前置インクリメント可能かを検査するメタ関数。 " alt="" coords="151,455,330,511"/>
 </map>

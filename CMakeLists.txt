@@ -15,7 +15,10 @@ find_package(Doxygen)
 if(DOXYGEN_FOUND)
   if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake)
     configure_file(${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake ${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile)
-    add_custom_target(doxygen ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile")
+    add_custom_target(doxygen
+      COMMAND ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile"
+      WORKING_DIRECTORY "${${PROJECT_NAME}_DOXYGEN_DIR}"
+    )
   endif()
 endif()
 
