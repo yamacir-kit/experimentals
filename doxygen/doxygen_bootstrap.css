@@ -8,6 +8,16 @@ body, table, div, p, dl
   font: 300 15px/22px Helvetica;
 }
 
+.directory td.entry
+{
+  vertical-align: middle;
+}
+
+.directory td.desc
+{
+  padding-top: 8px;
+}
+
 .sm-dox a span.sub-arrow
 {
   position: absolute;
@@ -138,8 +148,6 @@ table
   white-space:pre-wrap !important;
 }
 
-/* Sticky footer styles
--------------------------------------------------- */
 html, body
 {
   height: 100%;

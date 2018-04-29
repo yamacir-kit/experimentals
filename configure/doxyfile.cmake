@@ -1096,7 +1096,6 @@ HTML_FILE_EXTENSION    = .html
 # of the possible markers and block names see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# HTML_HEADER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/header.html"
 HTML_HEADER            = "header.html"
 
 # The HTML_FOOTER tag can be used to specify a user-defined HTML footer for each
@@ -1107,7 +1106,6 @@ HTML_HEADER            = "header.html"
 # that doxygen normally uses.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# HTML_FOOTER            = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/example-site/footer.html"
 HTML_FOOTER            = "footer.html"
 
 # The HTML_STYLESHEET tag can be used to specify a user-defined cascading style
@@ -1133,8 +1131,7 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# HTML_EXTRA_STYLESHEET  = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/customdoxygen.css"
-HTML_EXTRA_STYLESHEET  = "customdoxygen.css"
+HTML_EXTRA_STYLESHEET  = "doxygen_bootstrap.css"
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1144,12 +1141,7 @@ HTML_EXTRA_STYLESHEET  = "customdoxygen.css"
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-# HTML_EXTRA_FILES       = "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/doxy-boot.js" \
-#                          "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/jquery.smartmenus.js" \
-#                          "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.js" \
-#                          "${${PROJECT_NAME}_DOXYGEN_DIR}/bootstrapped/addons/bootstrap/jquery.smartmenus.bootstrap.css"
-
-HTML_EXTRA_FILES       = "doxy-boot.js" \
+HTML_EXTRA_FILES       = "doxygen_bootstrap.js" \
                          "jquery.smartmenus.js" \
                          "jquery.smartmenus.bootstrap.js" \
                          "jquery.smartmenus.bootstrap.css"
