@@ -14,6 +14,11 @@ To do description.
 - Boost C++ Libraries 1.58.0
 - Cairo Vector Graphics Library 1.14.6
 
+## Contribution
+
+This software includes the work that is distributed in the Apache License 2.0.
+- Velron/doxygen-bootstrapped (some CSS and JavaScript files in directory `doxygen` are based on).
+
 ## API References
 
 [https://yamacir-kit.github.io/meevax/files.html](https://yamacir-kit.github.io/meevax/files.html)
