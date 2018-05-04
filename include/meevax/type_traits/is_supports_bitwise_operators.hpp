@@ -17,7 +17,11 @@
 #include <type_traits>
 
 
+#ifndef __cpp_nested_namespace_definitions
+namespace meevax { namespace type_traits
+#else
 namespace meevax::type_traits
+#endif
 {
   /**
   * テンプレートパラメータの型がビット幅演算をサポートしているか否かを返すメタ関数。
@@ -30,11 +34,7 @@ namespace meevax::type_traits
   class is_supports_bitwise_operators
     : public std::false_type
   {};
-} // namespace meevax::type_traits
 
-
-namespace // {anonnymous}
-{
   /**
   * ビット和演算子のオーバーロード。
   *
@@ -70,7 +70,6 @@ namespace // {anonnymous}
     );
   }
 
-
   /**
   * ビット和代入演算子のオーバーロード。
   *
@@ -102,7 +101,6 @@ namespace // {anonnymous}
   {
     return lhs = lhs | rhs;
   }
-
 
   /**
   * ビット積演算子のオーバーロード。
@@ -139,7 +137,6 @@ namespace // {anonnymous}
     );
   }
 
-
   /**
   * ビット積代入演算子のオーバーロード。
   *
@@ -171,7 +168,6 @@ namespace // {anonnymous}
   {
     return lhs = lhs & rhs;
   }
-
 
   /**
   * ビット否定演算子のオーバーロード。
@@ -205,7 +201,10 @@ namespace // {anonnymous}
       ~static_cast<typename std::underlying_type<EnumClass>::type>(arg)
     );
   }
-} // namespace {annonymous}
+}
+#ifndef __cpp_nested_namespace_definitions
+} // namespace meevax::type_traits
+#endif
 
 
 #endif // INCLUDED_MEEVAX_TYPE_TRAITS_IS_SUPPORTS_BITWISE_OPERATORS_HPP

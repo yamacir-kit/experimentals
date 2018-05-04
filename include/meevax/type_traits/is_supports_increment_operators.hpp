@@ -15,7 +15,11 @@
 #include <meevax/debug/dummy_type.hpp>
 
 
+#ifndef __cpp_nested_namespace_definitions
+namespace meevax { namespace type_traits
+#else
 namespace meevax::type_traits
+#endif
 {
   /**
   * 前置インクリメント可能かを検査するメタ関数。
@@ -118,11 +122,7 @@ namespace meevax::type_traits
     >::value == true
   );
 #endif // NDEBUG
-} // namespace meevax::type_traits
 
-
-namespace // {annonymous}
-{
   /**
   * 前置インクリメント可能のコンセプトを満たす列挙型に対する前置インクリメント演算子オーバーロード。
   *
@@ -176,7 +176,10 @@ namespace // {annonymous}
     enum_class = static_cast<EnumClass>(static_cast<typename std::underlying_type<EnumClass>::type>(enum_class) + 1);
     return buffer;
   }
-} // {annonymous}
+}
+#ifndef __cpp_nested_namespace_definitions
+} // namespace meevax::type_traits
+#endif
 
 
 static_assert(

@@ -107,7 +107,7 @@ BRIEF_MEMBER_DESC      = YES
 # brief descriptions will be completely suppressed.
 # The default value is: YES.
 
-REPEAT_BRIEF           = YES
+REPEAT_BRIEF           = NO
 
 # This tag implements a quasi-intelligent brief description abbreviator that is
 # used to form the text in various listings. Each string in this list, if found
@@ -152,7 +152,8 @@ FULL_PATH_NAMES        = YES
 # will be relative from the directory where doxygen is started.
 # This tag requires that the tag FULL_PATH_NAMES is set to YES.
 
-STRIP_FROM_PATH        = "${CMAKE_CURRENT_SOURCE_DIR}/src" "${${PROJECT_NAME}_INCLUDE_DIR}"
+STRIP_FROM_PATH        = "${CMAKE_CURRENT_SOURCE_DIR}/src"
+STRIP_FROM_PATH       += "${${PROJECT_NAME}_INCLUDE_DIR}"
 
 # The STRIP_FROM_INC_PATH tag can be used to strip a user-defined part of the
 # path mentioned in the documentation of a class, which tells the reader which
@@ -416,7 +417,7 @@ LOOKUP_CACHE_SIZE      = 0
 # normally produced when WARNINGS is set to YES.
 # The default value is: NO.
 
-EXTRACT_ALL            = NO
+EXTRACT_ALL            = YES
 
 # If the EXTRACT_PRIVATE tag is set to YES, all private members of a class will
 # be included in the documentation.
@@ -512,7 +513,7 @@ CASE_SENSE_NAMES       = YES
 # scope will be hidden.
 # The default value is: NO.
 
-HIDE_SCOPE_NAMES       = NO
+HIDE_SCOPE_NAMES       = YES
 
 # If the HIDE_COMPOUND_REFERENCE tag is set to NO (default) then doxygen will
 # append additional text to a page's title, such as Class Reference. If set to
@@ -771,8 +772,8 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp" "${${PROJECT_NAME}_INCLUDE_DIR}"
-# INPUT                  = "${${PROJECT_NAME}_INCLUDE_DIR}"
+INPUT                  = "${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp"
+INPUT                 += "${${PROJECT_NAME}_INCLUDE_DIR}"
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -934,13 +935,13 @@ USE_MDFILE_AS_MAINPAGE =
 # also VERBATIM_HEADERS is set to NO.
 # The default value is: NO.
 
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 
 # Setting the INLINE_SOURCES tag to YES will include the body of functions,
 # classes and enums directly into the documentation.
 # The default value is: NO.
 
-INLINE_SOURCES         = NO
+INLINE_SOURCES         = YES
 
 # Setting the STRIP_CODE_COMMENTS tag to YES will instruct doxygen to hide any
 # special comment blocks from generated source code fragments. Normal C, C++ and
@@ -2045,7 +2046,11 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             = DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+PREDEFINED             = NDEBUG
+PREDEFINED            += DOXYGEN_TEMPLATE_SFINAE_CONCEALER
+PREDEFINED            += __cpp_lib_logical_traits
+PREDEFINED            += __cpp_nested_namespace_definitions
+
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
@@ -2064,7 +2069,7 @@ EXPAND_AS_DEFINED      =
 # The default value is: YES.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-SKIP_FUNCTION_MACROS   = NO
+SKIP_FUNCTION_MACROS   = YES
 
 #---------------------------------------------------------------------------
 # Configuration options related to external references

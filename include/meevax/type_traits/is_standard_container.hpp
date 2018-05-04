@@ -28,26 +28,26 @@ namespace meevax { namespace type_traits
 namespace meevax::type_traits
 #endif
 {
-  BOOST_TTI_HAS_TYPE(      reference);
-  BOOST_TTI_HAS_TYPE(const_reference);
+  BOOST_TTI_HAS_TYPE(      reference)
+  BOOST_TTI_HAS_TYPE(const_reference)
 
-  BOOST_TTI_HAS_TYPE(      iterator);
-  BOOST_TTI_HAS_TYPE(const_iterator);
+  BOOST_TTI_HAS_TYPE(      iterator)
+  BOOST_TTI_HAS_TYPE(const_iterator)
 
-  BOOST_TTI_HAS_TYPE(     value_type);
-  BOOST_TTI_HAS_TYPE(difference_type);
-  BOOST_TTI_HAS_TYPE(      size_type);
+  BOOST_TTI_HAS_TYPE(     value_type)
+  BOOST_TTI_HAS_TYPE(difference_type)
+  BOOST_TTI_HAS_TYPE(      size_type)
 
-  BOOST_TTI_HAS_MEMBER_FUNCTION( begin);
-  BOOST_TTI_HAS_MEMBER_FUNCTION(cbegin);
+  BOOST_TTI_HAS_MEMBER_FUNCTION( begin)
+  BOOST_TTI_HAS_MEMBER_FUNCTION(cbegin)
 
-  BOOST_TTI_HAS_MEMBER_FUNCTION( end);
-  BOOST_TTI_HAS_MEMBER_FUNCTION(cend);
+  BOOST_TTI_HAS_MEMBER_FUNCTION( end)
+  BOOST_TTI_HAS_MEMBER_FUNCTION(cend)
 
-  BOOST_TTI_HAS_MEMBER_FUNCTION(    size);
-  BOOST_TTI_HAS_MEMBER_FUNCTION(max_size);
+  BOOST_TTI_HAS_MEMBER_FUNCTION(    size)
+  BOOST_TTI_HAS_MEMBER_FUNCTION(max_size)
 
-  BOOST_TTI_HAS_MEMBER_FUNCTION(empty);
+  BOOST_TTI_HAS_MEMBER_FUNCTION(empty)
 
   /**
   * 標準コンテナであるか否かをチェックするメタ関数。こちらは `std::true_type` を返す方。
@@ -114,7 +114,10 @@ namespace meevax::type_traits
         >
       >
   {};
-}; // namespace meevax::type_traits
+}
+#ifndef __cpp_nested_namespace_definitions
+} // namespace meevax::type_traits
+#endif
 
 
 #endif // INCLUDED_MEEVAX_TYPE_TRAITS_IS_STANDARD_CONTAINER_HPP
