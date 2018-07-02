@@ -148,6 +148,7 @@ namespace meevax::syntax
   * 仕事は meevax コードを S 式へ変換し、その際に収集した情報を保持しておくこと。
   *
   * 設計方針として、徹底して冗長化を施しておきメンテしやすくしておくことを重視する。
+  * 加えて、解析の各段階でデバッグを行うための文字列出力を丁寧にサポートしておく。
   * つまり、実行速度は現時点で一切気にしない。
   *
   * 構文解析を行うが、直接 AST を構築することはしない。
@@ -161,7 +162,8 @@ namespace meevax::syntax
   #endif // DOXYGEN_TEMPLATE_SFINAE_CONCEALER
   >
   class lexer
-  {};
+  {
+  };
 } // namespace meevax::syntax
 #ifndef __cpp_nested_namespace_definitions
 }

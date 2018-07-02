@@ -8,13 +8,13 @@ set(${PROJECT_NAME}_INCLUDE_DIR   ${CMAKE_CURRENT_SOURCE_DIR}/include)
 set(CMAKE_BUILD_TYPE debug)
 set(CMAKE_CXX_FLAGS "-Wall -Wextra -Wdelete-non-virtual-dtor -Winline -std=c++17")
 
-find_package(Boost REQUIRED COMPONENTS system thread)
+find_package(Boost REQUIRED)
 # find_package(Cairo REQUIRED)
 
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
-  if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake)
-    configure_file(${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile.cmake ${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile)
+  if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile)
+    configure_file(${${PROJECT_NAME}_CONFIGURE_DIR}/doxyfile ${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile)
     add_custom_target(doxygen
       COMMAND ${DOXYGEN_EXECUTABLE} "${${PROJECT_NAME}_DOXYGEN_DIR}/doxyfile"
       WORKING_DIRECTORY "${${PROJECT_NAME}_DOXYGEN_DIR}"
@@ -32,10 +32,7 @@ if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/version.hpp)
 endif()
 
 if(EXISTS ${${PROJECT_NAME}_CONFIGURE_DIR}/README.md)
-  configure_file(
-    ${${PROJECT_NAME}_CONFIGURE_DIR}/README.md
-    ${CMAKE_CURRENT_SOURCE_DIR}/README.md
-  )
+  configure_file(${${PROJECT_NAME}_CONFIGURE_DIR}/README.md ${CMAKE_CURRENT_SOURCE_DIR}/README.md)
 endif()
 
 include_directories(
