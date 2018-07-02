@@ -65,7 +65,7 @@
 <div class="title">is_supports_decrement_operators.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(a4b5a7a Clanup header dependency tree)</h3>
+<h3 class="version">(2ff41a5 Move operator overload for enum classess to own namespace)</h3>
 <p>任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
@@ -92,23 +92,17 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators.html">meevax::type_traits::is_supports_prefix_decrement_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators.html">is_supports_prefix_decrement_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置デクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators.html">meevax::type_traits::is_supports_postfix_decrement_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators.html">is_supports_postfix_decrement_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置デクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__decrement__operators__.html">meevax::type_traits::is_supports_decrement_operators_</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__decrement__operators__.html">is_supports_decrement_operators_</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">推論補助用のクラス。なんだかんだでユーザ側からアクセス可能なのが気に食わない。  <a href="classmeevax_1_1type__traits_1_1is__supports__decrement__operators__.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__decrement__operators.html">meevax::type_traits::is_supports_decrement_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__decrement__operators.html">is_supports_decrement_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置・後置デクリメント可能かを検査するメタ関数。一応こちらが本体。 推論補助クラスを利用して <code>std::true_type</code> または <code>std::false_type</code> から派生する。  <a href="classmeevax_1_1type__traits_1_1is__supports__decrement__operators.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">meevax::type_traits::is_supports_prefix_decrement_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。前置デクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">meevax::type_traits::is_supports_postfix_decrement_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。後置デクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -119,18 +113,16 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:adc48fc0e34df179c7616ac24440c4b55"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:adc48fc0e34df179c7616ac24440c4b55"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto) constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__decrement__operators_8hpp_03.html#adc48fc0e34df179c7616ac24440c4b55">anonymous_namespace{is_supports_decrement_operators.hpp}::operator--</a> (EnumClass &amp;&amp;enum_class)</td></tr>
-<tr class="memdesc:adc48fc0e34df179c7616ac24440c4b55"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置デクリメント可能のコンセプトを満たす列挙型に対する前置デクリメント演算子オーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__decrement__operators_8hpp_03.html#adc48fc0e34df179c7616ac24440c4b55">More...</a><br /></td></tr>
-<tr class="separator:adc48fc0e34df179c7616ac24440c4b55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94445010f57eb16c1731e6c64cfa3038"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:a94445010f57eb16c1731e6c64cfa3038"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__decrement__operators_8hpp_03.html#a94445010f57eb16c1731e6c64cfa3038">anonymous_namespace{is_supports_decrement_operators.hpp}::operator--</a> (EnumClass &amp;&amp;enum_class, int)</td></tr>
-<tr class="memdesc:a94445010f57eb16c1731e6c64cfa3038"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置デクリメント可能のコンセプトを満たす列挙型に対する後置デクリメント演算子オーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__decrement__operators_8hpp_03.html#a94445010f57eb16c1731e6c64cfa3038">More...</a><br /></td></tr>
-<tr class="separator:a94445010f57eb16c1731e6c64cfa3038"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2945d8accc8e4ffe637f759790427a8f"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a2945d8accc8e4ffe637f759790427a8f"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto) constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a2945d8accc8e4ffe637f759790427a8f">operator--</a> (EnumClass &amp;&amp;enum_class)</td></tr>
+<tr class="memdesc:a2945d8accc8e4ffe637f759790427a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置デクリメント可能のコンセプトを満たす列挙型に対する前置デクリメント演算子オーバーロード。  <a href="namespacemeevax_1_1type__traits.html#a2945d8accc8e4ffe637f759790427a8f">More...</a><br /></td></tr>
+<tr class="separator:a2945d8accc8e4ffe637f759790427a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3204749e10b932f6dd2038bdc92fc7b"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:ab3204749e10b932f6dd2038bdc92fc7b"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#ab3204749e10b932f6dd2038bdc92fc7b">operator--</a> (EnumClass &amp;&amp;enum_class, int)</td></tr>
+<tr class="memdesc:ab3204749e10b932f6dd2038bdc92fc7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置デクリメント可能のコンセプトを満たす列挙型に対する後置デクリメント演算子オーバーロード。  <a href="namespacemeevax_1_1type__traits.html#ab3204749e10b932f6dd2038bdc92fc7b">More...</a><br /></td></tr>
+<tr class="separator:ab3204749e10b932f6dd2038bdc92fc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>任意の型が前置・後置デクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 </p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
             </div>

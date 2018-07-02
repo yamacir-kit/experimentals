@@ -53,19 +53,20 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>meevax</b></li><li class="navelem"><a class="el" href="namespacemeevax_1_1type__traits.html">type_traits</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacemeevax.html">meevax</a></li><li class="navelem"><a class="el" href="namespacemeevax_1_1type__traits.html">type_traits</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">meevax::type_traits Namespace Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
 <p>標準ライブラリ <code><a class="el" href="namespacemeevax_1_1type__traits.html" title="標準ライブラリ type_traits の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用い�...">type_traits</a></code> の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用いる小道具が置かれる。  
-<a href="#details">More...</a></p>
+</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
@@ -98,6 +99,9 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__implicit__invocable__.html">is_implicit_invocable_</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__standard__container.html">is_standard_container</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">標準コンテナであるか否かをチェックするメタ関数。こちらは <code>std::true_type</code> を返す方。 本気で厳密には作ってないので微妙に役に立たない奴。  <a href="classmeevax_1_1type__traits_1_1is__standard__container.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">is_supports_bitwise_operators</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">テンプレートパラメータの型がビット幅演算をサポートしているか否かを返すメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,31 +123,424 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators.html">is_supports_postfix_decrement_operators</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置デクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">is_supports_postfix_decrement_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。後置デクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators.html">is_supports_postfix_increment_operators</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置インクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">is_supports_postfix_increment_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。後置インクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators.html">is_supports_prefix_decrement_operators</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置デクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">is_supports_prefix_decrement_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。前置デクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__decrement__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html">is_supports_prefix_increment_operators</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置インクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">is_supports_prefix_increment_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。前置インクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a5376e9c376aa4a0722dee227a0b3384d"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a5376e9c376aa4a0722dee227a0b3384d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a5376e9c376aa4a0722dee227a0b3384d">operator|</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a5376e9c376aa4a0722dee227a0b3384d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット和演算子のオーバーロード。  <a href="#a5376e9c376aa4a0722dee227a0b3384d">More...</a><br /></td></tr>
+<tr class="separator:a5376e9c376aa4a0722dee227a0b3384d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af376250f9c7edbd981268224cc04d44c"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:af376250f9c7edbd981268224cc04d44c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#af376250f9c7edbd981268224cc04d44c">operator|=</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:af376250f9c7edbd981268224cc04d44c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット和代入演算子のオーバーロード。  <a href="#af376250f9c7edbd981268224cc04d44c">More...</a><br /></td></tr>
+<tr class="separator:af376250f9c7edbd981268224cc04d44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#ac4f1c28dc21a9b84800f45ef91729a2f">operator&amp;</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット積演算子のオーバーロード。  <a href="#ac4f1c28dc21a9b84800f45ef91729a2f">More...</a><br /></td></tr>
+<tr class="separator:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22675a6411632bf07898a5ed12ea4c0d"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a22675a6411632bf07898a5ed12ea4c0d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a22675a6411632bf07898a5ed12ea4c0d">operator&amp;=</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a22675a6411632bf07898a5ed12ea4c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット積代入演算子のオーバーロード。  <a href="#a22675a6411632bf07898a5ed12ea4c0d">More...</a><br /></td></tr>
+<tr class="separator:a22675a6411632bf07898a5ed12ea4c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb4dea6342971a35487261388f2b5d2"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:aacb4dea6342971a35487261388f2b5d2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#aacb4dea6342971a35487261388f2b5d2">operator~</a> (const EnumClass &amp;arg) noexcept</td></tr>
+<tr class="memdesc:aacb4dea6342971a35487261388f2b5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット否定演算子のオーバーロード。  <a href="#aacb4dea6342971a35487261388f2b5d2">More...</a><br /></td></tr>
+<tr class="separator:aacb4dea6342971a35487261388f2b5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2945d8accc8e4ffe637f759790427a8f"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a2945d8accc8e4ffe637f759790427a8f"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto) constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a2945d8accc8e4ffe637f759790427a8f">operator--</a> (EnumClass &amp;&amp;enum_class)</td></tr>
+<tr class="memdesc:a2945d8accc8e4ffe637f759790427a8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置デクリメント可能のコンセプトを満たす列挙型に対する前置デクリメント演算子オーバーロード。  <a href="#a2945d8accc8e4ffe637f759790427a8f">More...</a><br /></td></tr>
+<tr class="separator:a2945d8accc8e4ffe637f759790427a8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3204749e10b932f6dd2038bdc92fc7b"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:ab3204749e10b932f6dd2038bdc92fc7b"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#ab3204749e10b932f6dd2038bdc92fc7b">operator--</a> (EnumClass &amp;&amp;enum_class, int)</td></tr>
+<tr class="memdesc:ab3204749e10b932f6dd2038bdc92fc7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置デクリメント可能のコンセプトを満たす列挙型に対する後置デクリメント演算子オーバーロード。  <a href="#ab3204749e10b932f6dd2038bdc92fc7b">More...</a><br /></td></tr>
+<tr class="separator:ab3204749e10b932f6dd2038bdc92fc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto) constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a2ebdd98a6b4a9417bc41b6f4232d5afe">operator++</a> (EnumClass &amp;&amp;enum_class)</td></tr>
+<tr class="memdesc:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置インクリメント可能のコンセプトを満たす列挙型に対する前置インクリメント演算子オーバーロード。  <a href="#a2ebdd98a6b4a9417bc41b6f4232d5afe">More...</a><br /></td></tr>
+<tr class="separator:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2c4d759219ceaeba6904444b794099"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:acb2c4d759219ceaeba6904444b794099"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#acb2c4d759219ceaeba6904444b794099">operator++</a> (EnumClass &amp;&amp;enum_class, int)</td></tr>
+<tr class="memdesc:acb2c4d759219ceaeba6904444b794099"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置インクリメント可能のコンセプトを満たす列挙型に対する後置インクリメント演算子オーバーロード。  <a href="#acb2c4d759219ceaeba6904444b794099">More...</a><br /></td></tr>
+<tr class="separator:acb2c4d759219ceaeba6904444b794099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>標準ライブラリ <code><a class="el" href="namespacemeevax_1_1type__traits.html" title="標準ライブラリ type_traits の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用い�...">type_traits</a></code> の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用いる小道具が置かれる。 </p>
-</div></div><!-- contents -->
+<h2 class="groupheader">Function Documentation</h2>
+<a class="anchor" id="ac4f1c28dc21a9b84800f45ef91729a2f"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto meevax::type_traits::operator&amp; </td>
+          <td>(</td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EnumClass</td><td>このテンプレートパラメータは下記のコンセプトを満たすことを要求する。 <div class="fragment"><div class="line"><a class="code" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">meevax::type_traits::is_supports_bitwise_operators&lt;EnumClass&gt;::value</a> == <span class="keyword">true</span></div></div><!-- fragment --> <div class="fragment"><div class="line">std::is_enum&lt;EnumClass&gt;::value == <span class="keyword">true</span></div></div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>左辺値。 </td></tr>
+    <tr><td class="paramname">rhs</td><td>右辺値。</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ビット積の演算結果。型は <code>EnumClass</code>。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__bitwise__operators_8hpp_source.html#l00132">132</a> of file <a class="el" href="is__supports__bitwise__operators_8hpp_source.html">is_supports_bitwise_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;  {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      <span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(lhs) &amp;</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;      <span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(rhs)</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;    );</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a22675a6411632bf07898a5ed12ea4c0d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto&amp; meevax::type_traits::operator&amp;= </td>
+          <td>(</td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EnumClass</td><td>このテンプレートパラメータは下記のコンセプトを満たすことを要求する。 <div class="fragment"><div class="line"><a class="code" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">meevax::type_traits::is_supports_bitwise_operators&lt;EnumClass&gt;::value</a> == <span class="keyword">true</span></div></div><!-- fragment --> <div class="fragment"><div class="line">std::is_enum&lt;EnumClass&gt;::value == <span class="keyword">true</span></div></div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>左辺値。 </td></tr>
+    <tr><td class="paramname">rhs</td><td>右辺値。</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>左辺値への参照。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__bitwise__operators_8hpp_source.html#l00167">167</a> of file <a class="el" href="is__supports__bitwise__operators_8hpp_source.html">is_supports_bitwise_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;  {</div><div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keywordflow">return</span> lhs = lhs &amp; rhs;</div><div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2ebdd98a6b4a9417bc41b6f4232d5afe"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) constexpr meevax::type_traits::operator++ </td>
+          <td>(</td>
+          <td class="paramtype">EnumClass &amp;&amp;&#160;</td>
+          <td class="paramname"><em>enum_class</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>あくまで単純に型安全なインクリメントを提供するだけであって、オーバーフローに対する検査は行われない。 というか、範囲外の値からのキャストが成功するかもわからない。 つまり、より上位のコンセプティブな操作の道具として使われることを想定した演算。</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enum_class</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>前置インクリメントされたオブジェクトへの参照。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__increment__operators_8hpp_source.html#l00147">147</a> of file <a class="el" href="is__supports__increment__operators_8hpp_source.html">is_supports_increment_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  {</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) + 1);</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="acb2c4d759219ceaeba6904444b794099"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto meevax::type_traits::operator++ </td>
+          <td>(</td>
+          <td class="paramtype">EnumClass &amp;&amp;&#160;</td>
+          <td class="paramname"><em>enum_class</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>あくまで単純に型安全なインクリメントを提供するだけであって、オーバーフローに対する検査は行われない。 というか、範囲外の値からのキャストが成功するかもわからない。 つまり、より上位のコンセプティブな操作の道具として使われることを想定した演算。</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enum_class</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>前置インクリメントされたオブジェクトへの参照。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__increment__operators_8hpp_source.html#l00173">173</a> of file <a class="el" href="is__supports__increment__operators_8hpp_source.html">is_supports_increment_operators.hpp</a>.</p>
+
+<p>References <a class="el" href="namespacemeevax_1_1debug.html#aeea178184547d5ba3cfa39d94e0754fbac32ec965db3295bad074d2afa907b1c3">meevax::debug::fuga</a>, and <a class="el" href="namespacemeevax_1_1debug.html#aeea178184547d5ba3cfa39d94e0754fbaea703e7aa1efda0064eaa507d9e8ab7e">meevax::debug::hoge</a>.</p>
+<div class="fragment"><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  {</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> buffer {enum_class};</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) + 1);</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">return</span> buffer;</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a2945d8accc8e4ffe637f759790427a8f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) constexpr meevax::type_traits::operator-- </td>
+          <td>(</td>
+          <td class="paramtype">EnumClass &amp;&amp;&#160;</td>
+          <td class="paramname"><em>enum_class</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>あくまで単純に型安全なデクリメントを提供するだけであって、オーバーフローに対する検査は行われない。 というか、範囲外の値からのキャストが成功するかもわからない。 つまり、より上位のコンセプティブな操作の道具として使われることを想定した演算。</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enum_class</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>前置デクリメントされたオブジェクトへの参照。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__decrement__operators_8hpp_source.html#l00147">147</a> of file <a class="el" href="is__supports__decrement__operators_8hpp_source.html">is_supports_decrement_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;  {</div><div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;    <span class="keywordflow">return</span> enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) - 1);</div><div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="ab3204749e10b932f6dd2038bdc92fc7b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto meevax::type_traits::operator-- </td>
+          <td>(</td>
+          <td class="paramtype">EnumClass &amp;&amp;&#160;</td>
+          <td class="paramname"><em>enum_class</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>あくまで単純に型安全なデクリメントを提供するだけであって、オーバーフローに対する検査は行われない。 というか、範囲外の値からのキャストが成功するかもわからない。 つまり、より上位のコンセプティブな操作の道具として使われることを想定した演算。</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">enum_class</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>前置デクリメントされたオブジェクトへの参照。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__decrement__operators_8hpp_source.html#l00173">173</a> of file <a class="el" href="is__supports__decrement__operators_8hpp_source.html">is_supports_decrement_operators.hpp</a>.</p>
+
+<p>References <a class="el" href="namespacemeevax_1_1debug.html#aeea178184547d5ba3cfa39d94e0754fbac32ec965db3295bad074d2afa907b1c3">meevax::debug::fuga</a>, and <a class="el" href="namespacemeevax_1_1debug.html#aeea178184547d5ba3cfa39d94e0754fbaea703e7aa1efda0064eaa507d9e8ab7e">meevax::debug::hoge</a>.</p>
+<div class="fragment"><div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160;  {</div><div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">const</span> <span class="keyword">auto</span> buffer {enum_class};</div><div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    enum_class = <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(enum_class) - 1);</div><div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;    <span class="keywordflow">return</span> buffer;</div><div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a5376e9c376aa4a0722dee227a0b3384d"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto meevax::type_traits::operator| </td>
+          <td>(</td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EnumClass</td><td>このテンプレートパラメータは下記のコンセプトを満たすことを要求する。 <div class="fragment"><div class="line"><a class="code" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">meevax::type_traits::is_supports_bitwise_operators&lt;EnumClass&gt;::value</a> == <span class="keyword">true</span></div></div><!-- fragment --> <div class="fragment"><div class="line">std::is_enum&lt;EnumClass&gt;::value == <span class="keyword">true</span></div></div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>左辺値。 </td></tr>
+    <tr><td class="paramname">rhs</td><td>右辺値。</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ビット和の演算結果。型は <code>EnumClass</code>。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__bitwise__operators_8hpp_source.html#l00065">65</a> of file <a class="el" href="is__supports__bitwise__operators_8hpp_source.html">is_supports_bitwise_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;  {</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(lhs) |</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      <span class="keyword">static_cast&lt;</span>typename std::underlying_type&lt;EnumClass&gt;::type<span class="keyword">&gt;</span>(rhs)</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    );</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="af376250f9c7edbd981268224cc04d44c"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto&amp; meevax::type_traits::operator|= </td>
+          <td>(</td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>lhs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EnumClass</td><td>このテンプレートパラメータは下記のコンセプトを満たすことを要求する。 <div class="fragment"><div class="line"><a class="code" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">meevax::type_traits::is_supports_bitwise_operators&lt;EnumClass&gt;::value</a> == <span class="keyword">true</span></div></div><!-- fragment --> <div class="fragment"><div class="line">std::is_enum&lt;EnumClass&gt;::value == <span class="keyword">true</span></div></div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">lhs</td><td>左辺値。 </td></tr>
+    <tr><td class="paramname">rhs</td><td>右辺値。</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>左辺値への参照。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__bitwise__operators_8hpp_source.html#l00100">100</a> of file <a class="el" href="is__supports__bitwise__operators_8hpp_source.html">is_supports_bitwise_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;  {</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keywordflow">return</span> lhs = lhs | rhs;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="aacb4dea6342971a35487261388f2b5d2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">constexpr auto meevax::type_traits::operator~ </td>
+          <td>(</td>
+          <td class="paramtype">const EnumClass &amp;&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">EnumClass</td><td>このテンプレートパラメータは下記のコンセプトを満たすことを要求する。 <div class="fragment"><div class="line"><a class="code" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">meevax::type_traits::is_supports_bitwise_operators&lt;EnumClass&gt;::value</a> == <span class="keyword">true</span></div></div><!-- fragment --> <div class="fragment"><div class="line">std::is_enum&lt;EnumClass&gt;::value == <span class="keyword">true</span></div></div><!-- fragment --></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td>演算対象の列挙型の値。</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>ビット否定の演算結果。型は <code>EnumClass</code>。 </dd></dl>
+
+<p>Definition at line <a class="el" href="is__supports__bitwise__operators_8hpp_source.html#l00198">198</a> of file <a class="el" href="is__supports__bitwise__operators_8hpp_source.html">is_supports_bitwise_operators.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;  {</div><div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordflow">return</span> <span class="keyword">static_cast&lt;</span>EnumClass<span class="keyword">&gt;</span>(</div><div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;      ~static_cast&lt;<span class="keyword">typename</span> std::underlying_type&lt;EnumClass&gt;::type&gt;(arg)</div><div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    );</div><div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;  }</div></div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
             </div>

@@ -57,25 +57,26 @@
 </div>
 </div><!-- top -->
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle">
 <div class="title">is_standard_container.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(8984a32 Fix implementation miss of &quot;type_traits/introspection.hpp&quot;)</h3>
+<h3 class="version">(2ff41a5 Move operator overload for enum classess to own namespace)</h3>
 <p>標準コンテナであるか否かをチェックするメタ関数を提供するヘッダ。  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
 <code>#include &lt;boost/tti/has_member_function.hpp&gt;</code><br />
 <code>#include &lt;boost/tti/has_type.hpp&gt;</code><br />
-<code>#include &lt;boost/mpl/and.hpp&gt;</code><br />
-<code>#include &lt;boost/mpl/or.hpp&gt;</code><br />
 <code>#include &lt;<a class="el" href="is__equality__comparable_8hpp_source.html">meevax/type_traits/is_equality_comparable.hpp</a>&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for is_standard_container.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="is__standard__container_8hpp__incl.png" border="0" usemap="#meevax_2type__traits_2is__standard__container_8hpp" alt=""/></div>
 <map name="meevax_2type__traits_2is__standard__container_8hpp" id="meevax_2type__traits_2is__standard__container_8hpp">
-<area shape="rect" id="node7" href="is__equality__comparable_8hpp.html" title="与えられた型について透過性の比較が可能かどうかを調べるメタ関数を提供するヘッダ。 " alt="" coords="677,95,864,136"/>
+<area shape="rect" id="node5" href="is__equality__comparable_8hpp.html" title="与えられた型について透過性の比較が可能かどうかを調べるメタ関数を提供するヘッダ。 " alt="" coords="374,95,561,136"/>
 </map>
 </div>
 </div><div class="textblock"><div class="dynheader">
@@ -94,9 +95,20 @@ This graph shows which files directly or indirectly include this file:</div>
 </div>
 </div>
 <p><a href="is__standard__container_8hpp_source.html">Go to the source code of this file.</a></p>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>標準コンテナであるか否かをチェックするメタ関数を提供するヘッダ。 </p>
-</div></div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__standard__container.html">is_standard_container&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">標準コンテナであるか否かをチェックするメタ関数。こちらは <code>std::true_type</code> を返す方。 本気で厳密には作ってないので微妙に役に立たない奴。  <a href="classmeevax_1_1type__traits_1_1is__standard__container.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacemeevax_1_1type__traits"><td class="memItemLeft" align="right" valign="top"> &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html">meevax::type_traits</a></td></tr>
+<tr class="memdesc:namespacemeevax_1_1type__traits"><td class="mdescLeft">&#160;</td><td class="mdescRight">標準ライブラリ <code><a class="el" href="namespacemeevax_1_1type__traits.html" title="標準ライブラリ type_traits の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用い�...">type_traits</a></code> の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用いる小道具が置かれる。 <br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
             </div>

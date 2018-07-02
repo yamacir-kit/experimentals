@@ -1,0 +1,4 @@
+<map id="~file_descriptor" name="~file_descriptor">
+<area shape="rect" id="node2" href="$classmeevax_1_1posix_1_1file__descriptor.html#a7caf12847573cdb23beac9594fddca2f" title="ファイルディスクリプタを閉じる。 呼ばれる前にセットされていたファイルディスクリプタに対して close が�..." alt="" coords="164,5,217,32"/>
+<area shape="rect" id="node3" href="$classmeevax_1_1posix_1_1file__descriptor.html#a7d633770fec35b5032b55a53cbd2b656" title="このクラスオブジェクトが管理していたファイルディスクリプタを開放する。 クローズは行わずあくまで管理下..." alt="" coords="265,5,329,32"/>
+</map>

@@ -65,7 +65,7 @@
 <div class="title">is_supports_bitwise_operators.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(7d4ccf9 Add new header file &quot;meevax/type_traits/is_supports_increment_operators.hpp&quot;)</h3>
+<h3 class="version">(2ff41a5 Move operator overload for enum classess to own namespace)</h3>
 <p>スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマスクが欲しかった。  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
@@ -73,6 +73,8 @@
 Include dependency graph for is_supports_bitwise_operators.hpp:</div>
 <div class="dyncontent">
 <div class="center"><img src="is__supports__bitwise__operators_8hpp__incl.png" border="0" usemap="#meevax_2type__traits_2is__supports__bitwise__operators_8hpp" alt=""/></div>
+<map name="meevax_2type__traits_2is__supports__bitwise__operators_8hpp" id="meevax_2type__traits_2is__supports__bitwise__operators_8hpp">
+</map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -90,7 +92,7 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">meevax::type_traits::is_supports_bitwise_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html">is_supports_bitwise_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">テンプレートパラメータの型がビット幅演算をサポートしているか否かを返すメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__bitwise__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -102,30 +104,31 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a983c055e34ab44548f6a16a44db63192"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:a983c055e34ab44548f6a16a44db63192"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#a983c055e34ab44548f6a16a44db63192">anonymous_namespace{is_supports_bitwise_operators.hpp}::operator|</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:a983c055e34ab44548f6a16a44db63192"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット和演算子のオーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#a983c055e34ab44548f6a16a44db63192">More...</a><br /></td></tr>
-<tr class="separator:a983c055e34ab44548f6a16a44db63192"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfb4fb1e6f7988f6f5d48c1e2c4241c9"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:acfb4fb1e6f7988f6f5d48c1e2c4241c9"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#acfb4fb1e6f7988f6f5d48c1e2c4241c9">anonymous_namespace{is_supports_bitwise_operators.hpp}::operator|=</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:acfb4fb1e6f7988f6f5d48c1e2c4241c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット和代入演算子のオーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#acfb4fb1e6f7988f6f5d48c1e2c4241c9">More...</a><br /></td></tr>
-<tr class="separator:acfb4fb1e6f7988f6f5d48c1e2c4241c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa203804681b004d6e048d36faec8a8ce"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:aa203804681b004d6e048d36faec8a8ce"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#aa203804681b004d6e048d36faec8a8ce">anonymous_namespace{is_supports_bitwise_operators.hpp}::operator&amp;</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:aa203804681b004d6e048d36faec8a8ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット積演算子のオーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#aa203804681b004d6e048d36faec8a8ce">More...</a><br /></td></tr>
-<tr class="separator:aa203804681b004d6e048d36faec8a8ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad920b2e5788925088fcb95a3680cba3e"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:ad920b2e5788925088fcb95a3680cba3e"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#ad920b2e5788925088fcb95a3680cba3e">anonymous_namespace{is_supports_bitwise_operators.hpp}::operator&amp;=</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
-<tr class="memdesc:ad920b2e5788925088fcb95a3680cba3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット積代入演算子のオーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#ad920b2e5788925088fcb95a3680cba3e">More...</a><br /></td></tr>
-<tr class="separator:ad920b2e5788925088fcb95a3680cba3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed973545fc92f53ced63b5dfe843bf68"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:aed973545fc92f53ced63b5dfe843bf68"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#aed973545fc92f53ced63b5dfe843bf68">anonymous_namespace{is_supports_bitwise_operators.hpp}::operator~</a> (const EnumClass &amp;arg) noexcept</td></tr>
-<tr class="memdesc:aed973545fc92f53ced63b5dfe843bf68"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット否定演算子のオーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__bitwise__operators_8hpp_03.html#aed973545fc92f53ced63b5dfe843bf68">More...</a><br /></td></tr>
-<tr class="separator:aed973545fc92f53ced63b5dfe843bf68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5376e9c376aa4a0722dee227a0b3384d"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a5376e9c376aa4a0722dee227a0b3384d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a5376e9c376aa4a0722dee227a0b3384d">operator|</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a5376e9c376aa4a0722dee227a0b3384d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット和演算子のオーバーロード。  <a href="namespacemeevax_1_1type__traits.html#a5376e9c376aa4a0722dee227a0b3384d">More...</a><br /></td></tr>
+<tr class="separator:a5376e9c376aa4a0722dee227a0b3384d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af376250f9c7edbd981268224cc04d44c"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:af376250f9c7edbd981268224cc04d44c"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#af376250f9c7edbd981268224cc04d44c">operator|=</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:af376250f9c7edbd981268224cc04d44c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット和代入演算子のオーバーロード。  <a href="namespacemeevax_1_1type__traits.html#af376250f9c7edbd981268224cc04d44c">More...</a><br /></td></tr>
+<tr class="separator:af376250f9c7edbd981268224cc04d44c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#ac4f1c28dc21a9b84800f45ef91729a2f">operator&amp;</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット積演算子のオーバーロード。  <a href="namespacemeevax_1_1type__traits.html#ac4f1c28dc21a9b84800f45ef91729a2f">More...</a><br /></td></tr>
+<tr class="separator:ac4f1c28dc21a9b84800f45ef91729a2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a22675a6411632bf07898a5ed12ea4c0d"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a22675a6411632bf07898a5ed12ea4c0d"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a22675a6411632bf07898a5ed12ea4c0d">operator&amp;=</a> (const EnumClass &amp;lhs, const EnumClass &amp;rhs) noexcept</td></tr>
+<tr class="memdesc:a22675a6411632bf07898a5ed12ea4c0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット積代入演算子のオーバーロード。  <a href="namespacemeevax_1_1type__traits.html#a22675a6411632bf07898a5ed12ea4c0d">More...</a><br /></td></tr>
+<tr class="separator:a22675a6411632bf07898a5ed12ea4c0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacb4dea6342971a35487261388f2b5d2"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:aacb4dea6342971a35487261388f2b5d2"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#aacb4dea6342971a35487261388f2b5d2">operator~</a> (const EnumClass &amp;arg) noexcept</td></tr>
+<tr class="memdesc:aacb4dea6342971a35487261388f2b5d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">ビット否定演算子のオーバーロード。  <a href="namespacemeevax_1_1type__traits.html#aacb4dea6342971a35487261388f2b5d2">More...</a><br /></td></tr>
+<tr class="separator:aacb4dea6342971a35487261388f2b5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>スコープを持つ列挙型（enum class）へのビット演算を提供するするためのヘルパクラス群。 型安全なビットマスクが欲しかった。 </p>
-<p>本体はメタ関数 <code>is_scoped_bitmask</code>。 それ以外はこのメタ関数が <code>true</code> を返すことをコンセプトとする 無名名前空間内で定義されたビット演算子オーバーロードである。 </p>
+<div class="textblock"><p>本体はメタ関数 <code>is_scoped_bitmask</code>。 それ以外はこのメタ関数が <code>true</code> を返すことをコンセプトとする 無名名前空間内で定義されたビット演算子オーバーロードである。 </p>
+
+<p>Definition in file <a class="el" href="is__supports__bitwise__operators_8hpp_source.html">is_supports_bitwise_operators.hpp</a>.</p>
 </div></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->

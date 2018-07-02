@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
     <meta name="generator" content="Doxygen 1.8.11"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <title>meevax: meevax::syntax::lexer_&lt; CharType &gt; Class Template Reference</title>
+    <title>meevax: lexer_&lt; CharType &gt; Class Template Reference</title>
     <script type="text/javascript" src="dynsections.js"></script>
     <link href="doxygen.css" rel="stylesheet" type="text/css" />
     <link href="doxygen_bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -55,7 +55,7 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>meevax</b></li><li class="navelem"><a class="el" href="namespacemeevax_1_1syntax.html">syntax</a></li><li class="navelem"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html">lexer_</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacemeevax.html">meevax</a></li><li class="navelem"><a class="el" href="namespacemeevax_1_1syntax.html">syntax</a></li><li class="navelem"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html">lexer_</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -67,69 +67,343 @@
 <a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="classmeevax_1_1syntax_1_1lexer__-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">meevax::syntax::lexer_&lt; CharType &gt; Class Template Reference</div>  </div>
+<div class="title">lexer_&lt; CharType &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><code>#include &lt;<a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Collaboration diagram for meevax::syntax::lexer_&lt; CharType &gt;:</div>
+Collaboration diagram for lexer_&lt; CharType &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classmeevax_1_1syntax_1_1lexer____coll__graph.png" border="0" usemap="#meevax_1_1syntax_1_1lexer___3_01CharType_01_4_coll__map" alt="Collaboration graph"/></div>
-<map name="meevax_1_1syntax_1_1lexer___3_01CharType_01_4_coll__map" id="meevax_1_1syntax_1_1lexer___3_01CharType_01_4_coll__map">
-<area shape="rect" id="node4" title="STL class. " alt="" coords="29,117,109,143"/>
-<area shape="rect" id="node5" title="STL class. " alt="" coords="5,5,132,47"/>
-<area shape="rect" id="node6" title="STL class. " alt="" coords="133,117,249,143"/>
-<area shape="rect" id="node8" title="STL class. " alt="" coords="273,109,411,151"/>
+<div class="center"><img src="classmeevax_1_1syntax_1_1lexer____coll__graph.png" border="0" usemap="#lexer___3_01CharType_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="lexer___3_01CharType_01_4_coll__map" id="lexer___3_01CharType_01_4_coll__map">
+<area shape="rect" id="node4" title="STL class. " alt="" coords="49,95,103,121"/>
+<area shape="rect" id="node5" title="STL class. " alt="" coords="5,5,147,32"/>
+<area shape="rect" id="node6" title="STL class. " alt="" coords="128,95,219,121"/>
+<area shape="rect" id="node8" title="STL class. " alt="" coords="243,95,403,121"/>
 </map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:aad6bf4b4e4d18835dcc002b3792b4baa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aad6bf4b4e4d18835dcc002b3792b4baa"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>char_type</b> = CharType</td></tr>
-<tr class="separator:aad6bf4b4e4d18835dcc002b3792b4baa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21d1e5d99ee25b7c2e68ae4a7d572e11"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> = CharType</td></tr>
+<tr class="separator:a21d1e5d99ee25b7c2e68ae4a7d572e11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a43ca0f8e4f6833a9e9f292735c18f2c3"><td class="memTemplParams" colspan="2"><a class="anchor" id="a43ca0f8e4f6833a9e9f292735c18f2c3"></a>
-template&lt;typename... Ts&gt; </td></tr>
-<tr class="memitem:a43ca0f8e4f6833a9e9f292735c18f2c3"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><b>operator()</b> (Ts &amp;&amp;...args)</td></tr>
-<tr class="separator:a43ca0f8e4f6833a9e9f292735c18f2c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa16ec87d1889e14617b067bbe799dca1"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aa16ec87d1889e14617b067bbe799dca1"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><b>translate</b> (std::basic_string&lt; char_type &gt; code)</td></tr>
-<tr class="separator:aa16ec87d1889e14617b067bbe799dca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49ac227e332dab704ad14c804c86a4fb"><td class="memTemplParams" colspan="2">template&lt;typename... Ts&gt; </td></tr>
+<tr class="memitem:a49ac227e332dab704ad14c804c86a4fb"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a49ac227e332dab704ad14c804c86a4fb">operator()</a> (Ts &amp;&amp;...args)</td></tr>
+<tr class="separator:a49ac227e332dab704ad14c804c86a4fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1900b6077a9941c22bd4a47857400b01"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a1900b6077a9941c22bd4a47857400b01">translate</a> (std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt; code)</td></tr>
+<tr class="separator:a1900b6077a9941c22bd4a47857400b01"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a55c8843d3ece5f0a53b94fa6ab6cea7c"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a55c8843d3ece5f0a53b94fa6ab6cea7c"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a55c8843d3ece5f0a53b94fa6ab6cea7c">replace_comma_to_space</a> (std::basic_string&lt; char_type &gt; source)</td></tr>
-<tr class="memdesc:a55c8843d3ece5f0a53b94fa6ab6cea7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSL をスペース区切り文字列に変換する。余分なスペースは削除される。 <br /></td></tr>
-<tr class="separator:a55c8843d3ece5f0a53b94fa6ab6cea7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4099c9ee7e93e2f5202fa8e7f433a123"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4099c9ee7e93e2f5202fa8e7f433a123"></a>
-auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a4099c9ee7e93e2f5202fa8e7f433a123">to_s_expression</a> (std::basic_istringstream&lt; char_type &gt; source, char_type delimiter) -&gt; std::basic_string&lt; char_type &gt;</td></tr>
-<tr class="memdesc:a4099c9ee7e93e2f5202fa8e7f433a123"><td class="mdescLeft">&#160;</td><td class="mdescRight">スペース区切り文字列を S 式へ変換する <br /></td></tr>
-<tr class="separator:a4099c9ee7e93e2f5202fa8e7f433a123"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54177c91f7da9cb295ab8a5621493139"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a54177c91f7da9cb295ab8a5621493139"></a>
-decltype(auto)&#160;</td><td class="memItemRight" valign="bottom"><b>to_s_expression</b> (std::basic_string&lt; char_type &gt; source, char_type delimiter)</td></tr>
-<tr class="separator:a54177c91f7da9cb295ab8a5621493139"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14354d44ba979f906d20de08b2d774dc"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a14354d44ba979f906d20de08b2d774dc">replace_comma_to_space</a> (std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt; source)</td></tr>
+<tr class="memdesc:a14354d44ba979f906d20de08b2d774dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">CSL をスペース区切り文字列に変換する。余分なスペースは削除される。  <a href="#a14354d44ba979f906d20de08b2d774dc">More...</a><br /></td></tr>
+<tr class="separator:a14354d44ba979f906d20de08b2d774dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a911c9149108aacbb42f34f77750ad160"><td class="memItemLeft" align="right" valign="top">auto&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a911c9149108aacbb42f34f77750ad160">to_s_expression</a> (std::basic_istringstream&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt; source, <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> delimiter) -&gt; std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;</td></tr>
+<tr class="memdesc:a911c9149108aacbb42f34f77750ad160"><td class="mdescLeft">&#160;</td><td class="mdescRight">スペース区切り文字列を S 式へ変換する  <a href="#a911c9149108aacbb42f34f77750ad160">More...</a><br /></td></tr>
+<tr class="separator:a911c9149108aacbb42f34f77750ad160"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a412abcfd7aa513a41bd998abfbfc45db"><td class="memItemLeft" align="right" valign="top">decltype(auto)&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a412abcfd7aa513a41bd998abfbfc45db">to_s_expression</a> (std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt; source, <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> delimiter)</td></tr>
+<tr class="separator:a412abcfd7aa513a41bd998abfbfc45db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a466314509d3a4f3a8c87411f9ec747f2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a466314509d3a4f3a8c87411f9ec747f2"></a>
-std::unordered_map&lt; char_type, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>extracted</b></td></tr>
-<tr class="separator:a466314509d3a4f3a8c87411f9ec747f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a154fafc1a3acfe0adac58112a80383c2"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>, std::vector&lt; std::string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a154fafc1a3acfe0adac58112a80383c2">extracted</a></td></tr>
+<tr class="separator:a154fafc1a3acfe0adac58112a80383c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
-<tr class="memitem:a6b9eedd2f94d898a89c33470410b7afa"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6b9eedd2f94d898a89c33470410b7afa"></a>
-static const std::basic_regex&lt; char_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>double_quoted_string</b> {&quot;\&quot;[^\&quot;]*\&quot;&quot;}</td></tr>
-<tr class="separator:a6b9eedd2f94d898a89c33470410b7afa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8eeeb79db3e6ca65e3380bbc2cf07508"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8eeeb79db3e6ca65e3380bbc2cf07508"></a>
-static const std::basic_regex&lt; char_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>comma_separated_list</b> {&quot;([^\\s,.]+,\\s*)+([^\\s,.]*)?&quot;}</td></tr>
-<tr class="separator:a8eeeb79db3e6ca65e3380bbc2cf07508"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a613ef5b2d715bb27c4b9eb6ccd96c93a"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a613ef5b2d715bb27c4b9eb6ccd96c93a"></a>
-static const std::basic_regex&lt; char_type &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>sentence</b> {&quot;([^\\.]+)\\.&quot;}</td></tr>
-<tr class="separator:a613ef5b2d715bb27c4b9eb6ccd96c93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ba027c291c950434b63aa861a20494"><td class="memItemLeft" align="right" valign="top">static const std::basic_regex&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#ac6ba027c291c950434b63aa861a20494">double_quoted_string</a> {&quot;\&quot;[^\&quot;]*\&quot;&quot;}</td></tr>
+<tr class="separator:ac6ba027c291c950434b63aa861a20494"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4625ad9a3c66877fadb1d17bca596d1"><td class="memItemLeft" align="right" valign="top">static const std::basic_regex&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#ab4625ad9a3c66877fadb1d17bca596d1">comma_separated_list</a> {&quot;([^\\s,.]+,\\s*)+([^\\s,.]*)?&quot;}</td></tr>
+<tr class="separator:ab4625ad9a3c66877fadb1d17bca596d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a652f397b25344736a5d094828116bbd1"><td class="memItemLeft" align="right" valign="top">static const std::basic_regex&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a652f397b25344736a5d094828116bbd1">sentence</a> {&quot;([^\\.]+)\\.&quot;}</td></tr>
+<tr class="separator:a652f397b25344736a5d094828116bbd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><h3>template&lt;typename CharType&gt;<br />
+class meevax::syntax::lexer_&lt; CharType &gt;</h3>
+
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00039">39</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+</div><h2 class="groupheader">Member Typedef Documentation</h2>
+<a class="anchor" id="a21d1e5d99ee25b7c2e68ae4a7d572e11"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> =  CharType</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00042">42</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a class="anchor" id="a49ac227e332dab704ad14c804c86a4fb"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) operator() </td>
+          <td>(</td>
+          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00053">53</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    {</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a1900b6077a9941c22bd4a47857400b01">translate</a>(std::forward&lt;Ts&gt;(args)...);</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    }</div><div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_a1900b6077a9941c22bd4a47857400b01"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#a1900b6077a9941c22bd4a47857400b01">meevax::syntax::lexer_::translate</a></div><div class="ttdeci">auto translate(std::basic_string&lt; char_type &gt; code)</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00058">lexer.hpp:58</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a14354d44ba979f906d20de08b2d774dc"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto replace_comma_to_space </td>
+          <td>(</td>
+          <td class="paramtype">std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00118">118</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00119"></a><span class="lineno">  119</span>&#160;    {</div><div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;      source.erase(std::remove(std::begin(source), std::end(source), <span class="charliteral">&#39; &#39;</span>), std::end(source));</div><div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;      std::replace(std::begin(source), std::end(source), <span class="charliteral">&#39;,&#39;</span>, <span class="charliteral">&#39; &#39;</span>);</div><div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;      <span class="keywordflow">return</span> std::move(source);</div><div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a911c9149108aacbb42f34f77750ad160"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto to_s_expression </td>
+          <td>(</td>
+          <td class="paramtype">std::basic_istringstream&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>&#160;</td>
+          <td class="paramname"><em>delimiter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::basic_string&lt;<a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>&gt;
+    </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00128">128</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;    {</div><div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;      std::basic_ostringstream&lt;char_type&gt; result {};</div><div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;      <span class="keywordflow">for</span> (std::basic_string&lt;char_type&gt; buffer {}; std::getline(source, buffer, delimiter); )</div><div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;      {</div><div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;        result &lt;&lt; <span class="stringliteral">&quot;(&quot;</span> &lt;&lt; buffer &lt;&lt; <span class="stringliteral">&quot;)&quot;</span>;</div><div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;      }</div><div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;</div><div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;      <span class="keywordflow">return</span> {result.str()};</div><div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    }</div></div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a412abcfd7aa513a41bd998abfbfc45db"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">decltype(auto) to_s_expression </td>
+          <td>(</td>
+          <td class="paramtype">std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>&#160;</td>
+          <td class="paramname"><em>delimiter</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00140">140</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+<div class="fragment"><div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160;    {</div><div class="line"><a name="l00142"></a><span class="lineno">  142</span>&#160;      <span class="keywordflow">return</span> <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a911c9149108aacbb42f34f77750ad160">to_s_expression</a>(std::basic_istringstream&lt;char_type&gt; {source}, delimiter);</div><div class="line"><a name="l00143"></a><span class="lineno">  143</span>&#160;    }</div><div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_a911c9149108aacbb42f34f77750ad160"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#a911c9149108aacbb42f34f77750ad160">meevax::syntax::lexer_::to_s_expression</a></div><div class="ttdeci">auto to_s_expression(std::basic_istringstream&lt; char_type &gt; source, char_type delimiter) -&gt; std::basic_string&lt; char_type &gt;</div><div class="ttdoc">スペース区切り文字列を S 式へ変換する </div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00128">lexer.hpp:128</a></div></div>
+</div><!-- fragment -->
+</div>
+</div>
+<a class="anchor" id="a1900b6077a9941c22bd4a47857400b01"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">auto translate </td>
+          <td>(</td>
+          <td class="paramtype">std::basic_string&lt; <a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a> &gt;&#160;</td>
+          <td class="paramname"><em>code</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00058">58</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+
+<p>Referenced by <a class="el" href="main_8cpp_source.html#l00018">main()</a>.</p>
+<div class="fragment"><div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    {</div><div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;      <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a154fafc1a3acfe0adac58112a80383c2">extracted</a>[<span class="charliteral">&#39;&quot;&#39;</span>] = meevax::regex::extract&lt;std::vector&gt;(</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                         code, <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#ac6ba027c291c950434b63aa861a20494">double_quoted_string</a>, std::basic_string&lt;char_type&gt; {<span class="charliteral">&#39;&quot;&#39;</span>}</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                       );</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;      <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a154fafc1a3acfe0adac58112a80383c2">extracted</a>[<span class="charliteral">&#39;,&#39;</span>] = meevax::regex::extract&lt;std::vector&gt;(</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                         code, <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#ab4625ad9a3c66877fadb1d17bca596d1">comma_separated_list</a>, std::basic_string&lt;char_type&gt; {<span class="charliteral">&#39;,&#39;</span>}</div><div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                       );</div><div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="preprocessor">      #ifndef NDEBUG</span></div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;      <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; each_map : extracted)</div><div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;      {</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        std::size_t index {0};</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; parts : each_map.second)</div><div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        {</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;          std::cout &lt;&lt; <span class="stringliteral">&quot;  (&quot;</span> &lt;&lt; each_map.first &lt;&lt; <span class="stringliteral">&quot;)[&quot;</span> &lt;&lt; index++ &lt;&lt; <span class="stringliteral">&quot;] &quot;</span> &lt;&lt; parts &lt;&lt; <span class="stringliteral">&quot;$\r\n&quot;</span>;</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        }</div><div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;      }</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">      #endif</span></div><div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;      std::basic_string&lt;char_type&gt; buffer {<a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a911c9149108aacbb42f34f77750ad160">to_s_expression</a>(code, <span class="charliteral">&#39; &#39;</span>)};</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;      <span class="comment">// 構造を整理するのは後回し</span></div><div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;      <span class="keywordflow">if</span> (!extracted.at(<span class="charliteral">&#39;,&#39;</span>).empty())</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;      {</div><div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keyword">typename</span> decltype(extracted)::mapped_type::size_type index {0};</div><div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::basic_string&lt;char_type&gt;::size_type position {0};</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;             std::basic_string&lt;char_type&gt;::npos != (position = buffer.find(<span class="charliteral">&#39;,&#39;</span>, position));</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;             ++index)</div><div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        {</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;          buffer.replace(position, 1,</div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;            <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a911c9149108aacbb42f34f77750ad160">to_s_expression</a>(</div><div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;              <a class="code" href="classmeevax_1_1syntax_1_1lexer__.html#a14354d44ba979f906d20de08b2d774dc">replace_comma_to_space</a>(extracted.at(<span class="charliteral">&#39;,&#39;</span>)[index]), <span class="charliteral">&#39; &#39;</span></div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;            )</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;          );</div><div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;          position += extracted.at(<span class="charliteral">&#39;,&#39;</span>)[index].length();</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        }</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;      }</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;      <span class="comment">// 文字列リテラルの中には他の構文に引っかかる文字が入っている可能性がありすぎるので、</span></div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;      <span class="comment">// コイツを詰め戻すのは最後の工程に回すべき</span></div><div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;      <span class="keywordflow">if</span> (!extracted[<span class="charliteral">&#39;&quot;&#39;</span>].empty())</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;      {</div><div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        <span class="keyword">typename</span> decltype(extracted)::mapped_type::size_type index {0};</div><div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        <span class="keywordflow">for</span> (<span class="keyword">typename</span> std::basic_string&lt;char_type&gt;::size_type position {0};</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;             std::basic_string&lt;char_type&gt;::npos != (position = buffer.find(<span class="charliteral">&#39;&quot;&#39;</span>, position)) &amp;&amp; index &lt; extracted[<span class="charliteral">&#39;&quot;&#39;</span>].<a class="code" href="namespacemeevax_1_1debug.html#ae879570178c09d419eb838d1f023f2daaf7bd60b75b29d79b660a2859395c1a24">size</a>();</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;             ++index)</div><div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;        {</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;          buffer.replace(position, 1, {extracted[<span class="charliteral">&#39;&quot;&#39;</span>][index]});</div><div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;          position += extracted[<span class="charliteral">&#39;&quot;&#39;</span>][index].length();</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        }</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;      }</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div><div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;      <span class="keywordflow">return</span> std::move(buffer);</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;    }</div><div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_a14354d44ba979f906d20de08b2d774dc"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#a14354d44ba979f906d20de08b2d774dc">meevax::syntax::lexer_::replace_comma_to_space</a></div><div class="ttdeci">auto replace_comma_to_space(std::basic_string&lt; char_type &gt; source)</div><div class="ttdoc">CSL をスペース区切り文字列に変換する。余分なスペースは削除される。 </div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00118">lexer.hpp:118</a></div></div>
+<div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_ac6ba027c291c950434b63aa861a20494"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#ac6ba027c291c950434b63aa861a20494">meevax::syntax::lexer_::double_quoted_string</a></div><div class="ttdeci">static const std::basic_regex&lt; char_type &gt; double_quoted_string</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00045">lexer.hpp:45</a></div></div>
+<div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_a154fafc1a3acfe0adac58112a80383c2"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#a154fafc1a3acfe0adac58112a80383c2">meevax::syntax::lexer_::extracted</a></div><div class="ttdeci">std::unordered_map&lt; char_type, std::vector&lt; std::string &gt; &gt; extracted</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00049">lexer.hpp:49</a></div></div>
+<div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_ab4625ad9a3c66877fadb1d17bca596d1"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#ab4625ad9a3c66877fadb1d17bca596d1">meevax::syntax::lexer_::comma_separated_list</a></div><div class="ttdeci">static const std::basic_regex&lt; char_type &gt; comma_separated_list</div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00046">lexer.hpp:46</a></div></div>
+<div class="ttc" id="classmeevax_1_1syntax_1_1lexer___html_a911c9149108aacbb42f34f77750ad160"><div class="ttname"><a href="classmeevax_1_1syntax_1_1lexer__.html#a911c9149108aacbb42f34f77750ad160">meevax::syntax::lexer_::to_s_expression</a></div><div class="ttdeci">auto to_s_expression(std::basic_istringstream&lt; char_type &gt; source, char_type delimiter) -&gt; std::basic_string&lt; char_type &gt;</div><div class="ttdoc">スペース区切り文字列を S 式へ変換する </div><div class="ttdef"><b>Definition:</b> <a href="lexer_8hpp_source.html#l00128">lexer.hpp:128</a></div></div>
+<div class="ttc" id="namespacemeevax_1_1debug_html_ae879570178c09d419eb838d1f023f2daaf7bd60b75b29d79b660a2859395c1a24"><div class="ttname"><a href="namespacemeevax_1_1debug.html#ae879570178c09d419eb838d1f023f2daaf7bd60b75b29d79b660a2859395c1a24">meevax::debug::dummy_meta_iterator::size</a></div><div class="ttdoc">メタイテレータ用のメンバ。この位置になければ機能しない。 </div></div>
+</div><!-- fragment -->
+<p><div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><img src="classmeevax_1_1syntax_1_1lexer___a1900b6077a9941c22bd4a47857400b01_icgraph.png" border="0" usemap="#classmeevax_1_1syntax_1_1lexer___a1900b6077a9941c22bd4a47857400b01_icgraph" alt=""/></div>
+<map name="classmeevax_1_1syntax_1_1lexer___a1900b6077a9941c22bd4a47857400b01_icgraph" id="classmeevax_1_1syntax_1_1lexer___a1900b6077a9941c22bd4a47857400b01_icgraph">
+<area shape="rect" id="node2" href="main_8cpp.html#a94db1275e958fd76db8d181148b7892a" title="main" alt="" coords="125,5,176,32"/>
+</map>
+</div>
+</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a class="anchor" id="ab4625ad9a3c66877fadb1d17bca596d1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::basic_regex&lt;<a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>&gt; comma_separated_list {&quot;([^\\s,.]+,\\s*)+([^\\s,.]*)?&quot;}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00046">46</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="ac6ba027c291c950434b63aa861a20494"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::basic_regex&lt;<a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>&gt; double_quoted_string {&quot;\&quot;[^\&quot;]*\&quot;&quot;}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00045">45</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a154fafc1a3acfe0adac58112a80383c2"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unordered_map&lt;<a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>, std::vector&lt;std::string&gt; &gt; extracted</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00049">49</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a652f397b25344736a5d094828116bbd1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::basic_regex&lt;<a class="el" href="classmeevax_1_1syntax_1_1lexer__.html#a21d1e5d99ee25b7c2e68ae4a7d572e11">char_type</a>&gt; sentence {&quot;([^\\.]+)\\.&quot;}</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Definition at line <a class="el" href="lexer_8hpp_source.html#l00047">47</a> of file <a class="el" href="lexer_8hpp_source.html">lexer.hpp</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>meevax/syntax/<a class="el" href="lexer_8hpp_source.html">lexer.hpp (2ec2301 Lipsticks)</a></li>
 </ul>

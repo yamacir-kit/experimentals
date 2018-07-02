@@ -8,7 +8,7 @@
     <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
     <meta name="generator" content="Doxygen 1.8.11"/>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <title>meevax: meevax::type_traits::is_supports_prefix_increment_operators&lt; T &gt; Class Template Reference</title>
+    <title>meevax: is_supports_prefix_increment_operators&lt; T &gt; Class Template Reference</title>
     <script type="text/javascript" src="dynsections.js"></script>
     <link href="doxygen.css" rel="stylesheet" type="text/css" />
     <link href="doxygen_bootstrap.css" rel="stylesheet" type="text/css"/>
@@ -55,12 +55,12 @@
   </div>
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><b>meevax</b></li><li class="navelem"><a class="el" href="namespacemeevax_1_1type__traits.html">type_traits</a></li><li class="navelem"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html">is_supports_prefix_increment_operators</a></li>  </ul>
+<li class="navelem"><a class="el" href="namespacemeevax.html">meevax</a></li><li class="navelem"><a class="el" href="namespacemeevax_1_1type__traits.html">type_traits</a></li><li class="navelem"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html">is_supports_prefix_increment_operators</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">meevax::type_traits::is_supports_prefix_increment_operators&lt; T &gt; Class Template Reference</div>  </div>
+<div class="title">is_supports_prefix_increment_operators&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -69,24 +69,29 @@
 
 <p><code>#include &lt;<a class="el" href="is__supports__increment__operators_8hpp_source.html">is_supports_increment_operators.hpp</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for meevax::type_traits::is_supports_prefix_increment_operators&lt; T &gt;:</div>
+Inheritance diagram for is_supports_prefix_increment_operators&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators__inherit__graph.png" border="0" usemap="#meevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<div class="center"><img src="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators__inherit__graph.png" border="0" usemap="#is__supports__prefix__increment__operators_3_01T_01_4_inherit__map" alt="Inheritance graph"/></div>
+<map name="is__supports__prefix__increment__operators_3_01T_01_4_inherit__map" id="is__supports__prefix__increment__operators_3_01T_01_4_inherit__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
-Collaboration diagram for meevax::type_traits::is_supports_prefix_increment_operators&lt; T &gt;:</div>
+Collaboration diagram for is_supports_prefix_increment_operators&lt; T &gt;:</div>
 <div class="dyncontent">
-<div class="center"><img src="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators__coll__graph.png" border="0" usemap="#meevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
+<div class="center"><img src="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators__coll__graph.png" border="0" usemap="#is__supports__prefix__increment__operators_3_01T_01_4_coll__map" alt="Collaboration graph"/></div>
+<map name="is__supports__prefix__increment__operators_3_01T_01_4_coll__map" id="is__supports__prefix__increment__operators_3_01T_01_4_coll__map">
+</map>
 <center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
 class meevax::type_traits::is_supports_prefix_increment_operators&lt; T &gt;</h3>
 
-<p>前置インクリメント可能かを検査するメタ関数。 </p>
 <p>現時点では、このヘッダは <code>std::false_type</code> から派生するものしか提供しない。 本当はスカラ型や一般クラスについてもメタ関数で検査して、<code>std::true_type</code> から 派生出来るようにしておかなければならないのだが、今は必要な状況にないので後回し。</p>
 <p>列挙型（スコープ付き列挙型含む）について、<code>std::true_type</code> から派生する特殊化を 名前空間 <code><a class="el" href="namespacemeevax_1_1type__traits.html" title="標準ライブラリ type_traits の拡張メタ関数群を含む名前空間。 主にテンプレートメタプログラミングに用い�...">meevax::type_traits</a></code> 中に明示的に定義しておくことで、 ヘッダファイル <code><a class="el" href="is__supports__increment__operators_8hpp.html" title="任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 ...">meevax/type_traits/is_supports_increment_operators.hpp</a></code> 中で定義される 列挙型用の型安全グローバルインクリメント演算子オーバーロードを有効化出来る。 </p>
+
+<p>Definition at line <a class="el" href="is__supports__increment__operators_8hpp_source.html#l00037">37</a> of file <a class="el" href="is__supports__increment__operators_8hpp_source.html">is_supports_increment_operators.hpp</a>.</p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>meevax/type_traits/<a class="el" href="is__supports__increment__operators_8hpp_source.html">is_supports_increment_operators.hpp (a4b5a7a Clanup header dependency tree)</a></li>
+<li>meevax/type_traits/<a class="el" href="is__supports__increment__operators_8hpp_source.html">is_supports_increment_operators.hpp (2ff41a5 Move operator overload for enum classess to own namespace)</a></li>
 </ul>
 </div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->

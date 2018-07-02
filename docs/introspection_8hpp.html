@@ -99,9 +99,7 @@ Macros</h2></td></tr>
 <tr class="memdesc:a2eb054379d9e87cf2a9e45ff9d5d5d64"><td class="mdescLeft">&#160;</td><td class="mdescRight">第二引数に指定された型が第一引数に渡した名前のメンバ型を持っているかをチェックするメタ関数。 汎用だが SFINAE の文脈で使用することは出来ない。  <a href="#a2eb054379d9e87cf2a9e45ff9d5d5d64">More...</a><br /></td></tr>
 <tr class="separator:a2eb054379d9e87cf2a9e45ff9d5d5d64"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>使用状況が限定的だが、いわゆる汎用 <code>has_type</code> マクロメタ関数を提供するヘッダ。 </p>
-</div><h2 class="groupheader">Macro Definition Documentation</h2>
+<h2 class="groupheader">Macro Definition Documentation</h2>
 <a class="anchor" id="a2eb054379d9e87cf2a9e45ff9d5d5d64"></a>
 <div class="memitem">
 <div class="memproto">
@@ -125,11 +123,11 @@ Macros</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">(<span class="keyword">false</span> ? <a class="code" href="namespacemeevax_1_1utility.html#a27f473284fd5b959a3514de48b1d4804">meevax::utility::overload_operations</a>( \</div><div class="line">           [](<span class="keyword">auto</span> arg) constexpr -&gt; decltype(std::declval&lt;<span class="keyword">typename</span> decltype(arg)::type::name&gt;(), std::true_type {}) { <span class="keywordflow">return</span> {}; }, \</div><div class="line">           [](...) constexpr -&gt; std::false_type { <span class="keywordflow">return</span> {}; }  \</div><div class="line">         )(boost::mpl::identity&lt;__VA_ARGS__&gt; {}) \</div><div class="line">       : <a class="code" href="classmeevax_1_1utility_1_1overloaded__trivial__objectives.html">meevax::utility::overloaded_trivial_objectives&lt;std::true_type, std::false_type&gt;</a> {})</div><div class="ttc" id="namespacemeevax_1_1utility_html_a27f473284fd5b959a3514de48b1d4804"><div class="ttname"><a href="namespacemeevax_1_1utility.html#a27f473284fd5b959a3514de48b1d4804">meevax::utility::overload_operations</a></div><div class="ttdeci">constexpr auto overload_operations(Ts &amp;&amp;...args) -&gt; overloaded_operations&lt; typename std::decay&lt; Ts &gt;::type... &gt;</div><div class="ttdoc">ヘルパ関数。 </div><div class="ttdef"><b>Definition:</b> overloaded_operations.hpp:80</div></div>
-<div class="ttc" id="classmeevax_1_1utility_1_1overloaded__trivial__objectives_html"><div class="ttname"><a href="classmeevax_1_1utility_1_1overloaded__trivial__objectives.html">meevax::utility::overloaded_trivial_objectives</a></div><div class="ttdoc">前方宣言。 </div><div class="ttdef"><b>Definition:</b> overloaded_objectives.hpp:27</div></div>
-</div><!-- fragment -->
-<p>第二引数に指定された型が第一引数に渡した名前のメンバ型を持っているかをチェックするメタ関数。 汎用だが SFINAE の文脈で使用することは出来ない。 </p>
-<p>トークンそのものについてのメタ関数であるため、表面をオブジェクト形式マクロで包んでいる。 返り値は <code>std::true_type</code> ないし <code>std::false_type</code> 型オブジェクト。 </p>
+<b>Value:</b><div class="fragment"><div class="line">(<span class="keyword">false</span> ? <a class="code" href="namespacemeevax_1_1utility.html#a27f473284fd5b959a3514de48b1d4804">meevax::utility::overload_operations</a>( \</div><div class="line">           [](<span class="keyword">auto</span> arg) constexpr -&gt; decltype(std::declval&lt;<span class="keyword">typename</span> decltype(arg)::type::name&gt;(), std::true_type {}) { <span class="keywordflow">return</span> {}; }, \</div><div class="line">           [](...) constexpr -&gt; std::false_type { <span class="keywordflow">return</span> {}; }  \</div><div class="line">         )(boost::mpl::identity&lt;__VA_ARGS__&gt; {}) \</div><div class="line">       : <a class="code" href="classmeevax_1_1utility_1_1overloaded__trivial__objectives.html">meevax::utility::overloaded_trivial_objectives&lt;std::true_type, std::false_type&gt;</a> {})</div><div class="ttc" id="namespacemeevax_1_1utility_html_a27f473284fd5b959a3514de48b1d4804"><div class="ttname"><a href="namespacemeevax_1_1utility.html#a27f473284fd5b959a3514de48b1d4804">meevax::utility::overload_operations</a></div><div class="ttdeci">constexpr auto overload_operations(Ts &amp;&amp;...args) -&gt; overloaded_operations&lt; typename std::decay&lt; Ts &gt;::type... &gt;</div><div class="ttdoc">ヘルパ関数。 </div><div class="ttdef"><b>Definition:</b> <a href="overloaded__operations_8hpp_source.html#l00080">overloaded_operations.hpp:80</a></div></div>
+<div class="ttc" id="classmeevax_1_1utility_1_1overloaded__trivial__objectives_html"><div class="ttname"><a href="classmeevax_1_1utility_1_1overloaded__trivial__objectives.html">meevax::utility::overloaded_trivial_objectives</a></div><div class="ttdoc">前方宣言。 </div><div class="ttdef"><b>Definition:</b> <a href="overloaded__objectives_8hpp_source.html#l00027">overloaded_objectives.hpp:27</a></div></div>
+</div><!-- fragment --><p>トークンそのものについてのメタ関数であるため、表面をオブジェクト形式マクロで包んでいる。 返り値は <code>std::true_type</code> ないし <code>std::false_type</code> 型オブジェクト。 </p>
+
+<p>Definition at line <a class="el" href="introspection_8hpp_source.html#l00029">29</a> of file <a class="el" href="introspection_8hpp_source.html">introspection.hpp</a>.</p>
 
 </div>
 </div>

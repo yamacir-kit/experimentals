@@ -65,7 +65,7 @@
 <div class="title">is_supports_increment_operators.hpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<h3 class="version">(a4b5a7a Clanup header dependency tree)</h3>
+<h3 class="version">(2ff41a5 Move operator overload for enum classess to own namespace)</h3>
 <p>任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。  
 <a href="#details">More...</a></p>
 <div class="textblock"><code>#include &lt;type_traits&gt;</code><br />
@@ -92,23 +92,17 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html">meevax::type_traits::is_supports_prefix_increment_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html">is_supports_prefix_increment_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置インクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators.html">meevax::type_traits::is_supports_postfix_increment_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators.html">is_supports_postfix_increment_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置インクリメント可能かを検査するメタ関数。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__increment__operators__.html">meevax::type_traits::is_supports_increment_operators_</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__increment__operators__.html">is_supports_increment_operators_</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">推論補助用のクラス。なんだかんだでユーザ側からアクセス可能なのが気に食わない。  <a href="classmeevax_1_1type__traits_1_1is__supports__increment__operators__.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__increment__operators.html">meevax::type_traits::is_supports_increment_operators&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__increment__operators.html">is_supports_increment_operators&lt; T &gt;</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置・後置インクリメント可能かを検査するメタ関数。一応こちらが本体。 推論補助クラスを利用して <code>std::true_type</code> または <code>std::false_type</code> から派生する。  <a href="classmeevax_1_1type__traits_1_1is__supports__increment__operators.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">meevax::type_traits::is_supports_prefix_increment_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。前置インクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__prefix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html">meevax::type_traits::is_supports_postfix_increment_operators&lt; meevax::debug::dummy_enum &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">静的テスト用のダミークラスに対する特殊化定義。後置インクリメント。  <a href="classmeevax_1_1type__traits_1_1is__supports__postfix__increment__operators_3_01meevax_1_1debug_1_1dummy__enum_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="namespaces"></a>
@@ -119,18 +113,16 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a69d163aa44fc9874984a0278ff0f7510"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:a69d163aa44fc9874984a0278ff0f7510"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto) constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__increment__operators_8hpp_03.html#a69d163aa44fc9874984a0278ff0f7510">anonymous_namespace{is_supports_increment_operators.hpp}::operator++</a> (EnumClass &amp;&amp;enum_class)</td></tr>
-<tr class="memdesc:a69d163aa44fc9874984a0278ff0f7510"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置インクリメント可能のコンセプトを満たす列挙型に対する前置インクリメント演算子オーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__increment__operators_8hpp_03.html#a69d163aa44fc9874984a0278ff0f7510">More...</a><br /></td></tr>
-<tr class="separator:a69d163aa44fc9874984a0278ff0f7510"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a419b711eaa2ac329b9278bb46fdef9d4"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
-<tr class="memitem:a419b711eaa2ac329b9278bb46fdef9d4"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceanonymous__namespace_02is__supports__increment__operators_8hpp_03.html#a419b711eaa2ac329b9278bb46fdef9d4">anonymous_namespace{is_supports_increment_operators.hpp}::operator++</a> (EnumClass &amp;&amp;enum_class, int)</td></tr>
-<tr class="memdesc:a419b711eaa2ac329b9278bb46fdef9d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置インクリメント可能のコンセプトを満たす列挙型に対する後置インクリメント演算子オーバーロード。  <a href="namespaceanonymous__namespace_02is__supports__increment__operators_8hpp_03.html#a419b711eaa2ac329b9278bb46fdef9d4">More...</a><br /></td></tr>
-<tr class="separator:a419b711eaa2ac329b9278bb46fdef9d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="memTemplItemLeft" align="right" valign="top">decltype(auto) constexpr&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#a2ebdd98a6b4a9417bc41b6f4232d5afe">operator++</a> (EnumClass &amp;&amp;enum_class)</td></tr>
+<tr class="memdesc:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="mdescLeft">&#160;</td><td class="mdescRight">前置インクリメント可能のコンセプトを満たす列挙型に対する前置インクリメント演算子オーバーロード。  <a href="namespacemeevax_1_1type__traits.html#a2ebdd98a6b4a9417bc41b6f4232d5afe">More...</a><br /></td></tr>
+<tr class="separator:a2ebdd98a6b4a9417bc41b6f4232d5afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb2c4d759219ceaeba6904444b794099"><td class="memTemplParams" colspan="2">template&lt;typename EnumClass &gt; </td></tr>
+<tr class="memitem:acb2c4d759219ceaeba6904444b794099"><td class="memTemplItemLeft" align="right" valign="top">constexpr auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemeevax_1_1type__traits.html#acb2c4d759219ceaeba6904444b794099">operator++</a> (EnumClass &amp;&amp;enum_class, int)</td></tr>
+<tr class="memdesc:acb2c4d759219ceaeba6904444b794099"><td class="mdescLeft">&#160;</td><td class="mdescRight">後置インクリメント可能のコンセプトを満たす列挙型に対する後置インクリメント演算子オーバーロード。  <a href="namespacemeevax_1_1type__traits.html#acb2c4d759219ceaeba6904444b794099">More...</a><br /></td></tr>
+<tr class="separator:acb2c4d759219ceaeba6904444b794099"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>任意の型が前置・後置インクリメント演算子をサポートしているかを調べるメタ関数を提供するヘッダ。 </p>
-</div></div><!-- contents -->
+</div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->
             </div>
