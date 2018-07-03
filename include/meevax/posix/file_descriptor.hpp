@@ -5,7 +5,7 @@
 /**
 * @file file_descriptor.hpp
 *
-* POSIX システムにおけるファイルディスクリプタを安全に扱うためのクラスを提供するヘッダ。
+* The header file which provides class for safe POSIX file descriptor control.
 */
 
 
@@ -22,11 +22,11 @@ namespace meevax::posix
   * ファイルディスクリプタの安全な管理とアクセスを提供するクラス。
   * ただの `int fd` では我慢できなくなったから作った。
   *
-  * 放っておいても勝手に上手いこと閉じてくれるファイルディスクリプタがこれの目指すところ。<br>
-  * このクラスが管理するファイルディスクリプタがどのように使われるかはこのクラスが関知するところではない。<br>
-  * 具体的には、このクラスはメンバ関数 `close` を持っているが `open` を持ってない。
+  * 放っておいても勝手に上手いこと閉じてくれるファイルディスクリプタがこれの目指すところ。
+  * このクラスが管理するファイルディスクリプタがどのように使われるかはこのクラスが関知するところではない。
+  * 具体的には、このクラスはメンバ関数`close`を持っているが`open`を持ってない。
   *
-  * 最低限の機能のみを実装しているが、インタフェースは `std::unique_ptr` に倣った。
+  * 最低限の機能のみを実装しているが、インタフェースは`std::unique_ptr`に倣った。
   */
   class file_descriptor
     : public meevax::utility::noncopyable<file_descriptor>
@@ -62,10 +62,10 @@ namespace meevax::posix
     {}
 
     /**
-    * ムーブコンストラクタ。
+    * Move constructor.
     *
     * @param moved
-    *   ムーブされてくる `meevax::posix::file_descriptor` 型オブジェクト。
+    *   ムーブされてくる`meevax::posix::file_descriptor`型オブジェクト。
     *   被ムーブオブジェクトが管理していた値はこちらに移管される。
     */
     explicit file_descriptor(file_descriptor&& moved) noexcept
@@ -92,7 +92,7 @@ namespace meevax::posix
 
     /**
     * このクラスオブジェクトが管理していたファイルディスクリプタを開放する。
-    * クローズは行わずあくまで管理下から手放すだけであるため、クローズには `file_descriptor::close` を用いること。
+    * クローズは行わずあくまで管理下から手放すだけであるため、クローズには`file_descriptor::close`を用いること。
     *
     * @return
     *   元々保持していたファイルディスクリプタ値。
@@ -104,15 +104,15 @@ namespace meevax::posix
     }
 
     /**
-    * ファイルディスクリプタを閉じる。
-    * 呼ばれる前にセットされていたファイルディスクリプタに対して `close` が実行され、新たに無効値がセットされる。
+    * Close the file descriptor.
+    * Execute system call `::close()` to the file descriptor under management, then set invalid value.
     *
     * @exception
     *   ファイルディスクリプタに対するクローズが失敗した時。
     */
     void close() noexcept(false)
     {
-      if (invalid_value < value)
+      if (stderr < value)
       {
         if (const auto status {::close(release())}; status < 0)
         {
@@ -124,7 +124,7 @@ namespace meevax::posix
     /**
     * ファイルディスクリプタの交換。
     *
-    * @param fd 交換対象の `meevax::posix::file_descriptor` 型オブジェクト。
+    * @param fd 交換対象の`meevax::posix::file_descriptor`型オブジェクト。
     *
     * @return decltype(auto)
     */
@@ -134,7 +134,7 @@ namespace meevax::posix
     }
 
     /**
-    * ファイルディスクリプタの交換。こちらは標準 `swap` との互換のために存在する。
+    * ファイルディスクリプタの交換。こちらは標準`swap`との互換のために存在する。
     *
     * @param lhs 左辺値。
     * @param rhs 右辺値。
