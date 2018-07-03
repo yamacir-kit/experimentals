@@ -1,15 +1,3 @@
-#include <iostream>
-#include <vector>
-
-#include <boost/cstdlib.hpp>
-
-// #include <meevax/iostream/read.hpp>
-// #include <meevax/posix/termios.hpp>
-// #include <meevax/syntax/lexer.hpp>
-
-#include <corelisp/lisp/evaluator.hpp>
-
-
 /**
 * @file main.cpp
 *
@@ -18,38 +6,46 @@
 */
 
 
+#include <iostream>
+#include <vector>
+
+#include <boost/cstdlib.hpp>
+
+#include <corelisp/lisp/evaluator.hpp>
+#include <corelisp/lisp/tokenizer.hpp>
+#include <corelisp/lisp/vectored_cons_cells.hpp>
+
+#include <meevax/operation/reader.hpp>
+
+
 auto main(int argc, char** argv) -> int
 {
   const std::vector<std::string> args {argv, argv + argc};
 
-  // meevax::posix::termios termios {meevax::posix::fd::stdin};
-  // termios.change_to(meevax::posix::termios::input_mode::noncanonical);
-  //
-  // meevax::iostream::read read {std::cin};
-  //
-  // for (std::string buffer {""}; std::cin.good(); std::cout << std::string(64, '-') << "\r\n")
-  // {
-  //   using semantics = decltype(read)::hierarchical_semantics;
-  //   if (const auto sequence {read.operator()<semantics::sequence>()}; sequence == "^C")
-  //   {
-  //     std::cout << "[debug] read sequence: ^C\n" << std::flush;
-  //     return boost::exit_success;
-  //   }
-  //   else
-  //   {
-  //     buffer += sequence;
-  //
-  //     meevax::syntax::lexer_<char> lexer {};
-  //
-  //     std::cout << "source code: " << buffer << "\r\n";
-  //     const auto translated {lexer.translate(buffer)};
-  //     std::cout << "symbol expr: " << translated << "\r\n";
-  //   }
-  // }
+  std::cin.tie(0);
+  std::ios::sync_with_stdio(false);
 
-  for (std::string buffer {}; std::cout << ">> ", std::getline(std::cin, buffer);)
+  for (std::string buffer {}; std::cout << "\r\n\n>> "; )
   {
-    std::cout << lisp::evaluate(buffer) << "\n\n";
+    if (auto key {meevax::operation::read()}; std::isgraph(key))
+    {
+      buffer.push_back(key);
+    }
+
+    switch (buffer.back())
+    {
+    case 'q':
+      std::exit(boost::exit_success);
+
+    case 'e':
+      std::cout << lisp::evaluate(buffer) << std::flush;
+      buffer.clear();
+      break;
+
+    default:
+      std::cout << buffer << std::flush;
+      break;
+    }
   }
 
   return boost::exit_success;

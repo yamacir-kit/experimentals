@@ -51,9 +51,9 @@ namespace meevax::posix
     /**
     * 端末属性の変更を行う際の、変更がいつから効果を発揮するかを指定するためのフラグ値。
     *
-    * 元々、`termios.h` 内で `optional_actions` と呼ばれていたものだが、分かりにくいので変更した。<br>
-    * こちらではなく、`when` という名称も良いかなとは思ったが、文章になる方を選んだ。<br>
-    * 詳細情報は The Linux Programming Interface pp.1358-1359 参照。<br>
+    * 元々、`termios.h`内で`optional_actions`と呼ばれていたものだが、分かりにくいので変更した。
+    * こちらではなく、`when`という名称も良いかなとは思ったが、文章になる方を選んだ。
+    * 詳細情報は The Linux Programming Interface pp.1358-1359 参照。
     */
     enum class effects
     {
