@@ -17,9 +17,10 @@ namespace meevax::type_traits
 {
   /**
   * 与えられたテンプレートパラメータが規格が言うところの文字型であるかを判定するメタ関数。
+  * 何故標準ライブラリに無いのかが分からない。
   *
-  * このメタ関数が `true` を返すということは `std::basic_string` の特殊化が存在しているということを意味する。<br>
-  * もちろん、`char` 以外が現実的に使われないことは知っている上で作った。
+  * このメタ関数が`true`を返すということは`std::basic_string`の特殊化が存在しているということを意味する。
+  * もちろん、`char`以外が現実的に使われないことは知っている上で作った。
   */
   template <typename NonCharType>
   class is_char_type
