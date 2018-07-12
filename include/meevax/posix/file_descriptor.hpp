@@ -79,13 +79,13 @@ namespace meevax::posix
     }
 
     /// キャスト演算子。通常と同じくファイルディスクリプタ値に用がある際はこちらをどうぞ。
-    operator value_type() const noexcept
+    constexpr operator value_type() const noexcept
     {
       return value;
     }
 
     /// 真偽値へのキャスト演算子。ファイルディスクリプタとしての有効性を示す。
-    operator bool() const noexcept
+    constexpr operator bool() const noexcept
     {
       return invalid_value < value;
     }

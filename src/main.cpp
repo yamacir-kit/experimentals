@@ -22,28 +22,22 @@ auto main(int argc, char** argv) -> int
 {
   const std::vector<std::string> args {argv, argv + argc};
 
-  std::cin.tie(0);
-  std::ios::sync_with_stdio(false);
-
-  for (std::string buffer {}; std::cout << "\r\n\n>> "; )
+  for (std::string buffer {""}; std::cout << "\r\e[K>> " << buffer << std::flush; )
   {
-    if (auto key {meevax::operation::read()}; std::isgraph(key))
+    switch (auto key {meevax::operation::read()}; key)
     {
-      buffer.push_back(key);
-    }
-
-    switch (buffer.back())
-    {
-    case 'q':
+    case '\e':
+      std::cout << "\r\e[K>> " << lisp::vectored_cons_cells {buffer} << " -> (quit)\r\n" << std::flush;
       std::exit(boost::exit_success);
 
-    case 'e':
-      std::cout << lisp::evaluate(buffer) << std::flush;
+    case ';':
+      std::cout << "\r\e[K>> " << lisp::vectored_cons_cells {buffer} << " -> (execution)\r\n" << std::flush;
+      std::cout << lisp::evaluate(buffer) << "\r\n\n" << std::flush;
       buffer.clear();
       break;
 
     default:
-      std::cout << buffer << std::flush;
+      buffer.push_back(key);
       break;
     }
   }

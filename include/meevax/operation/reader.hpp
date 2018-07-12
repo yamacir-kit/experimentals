@@ -40,15 +40,17 @@ namespace meevax::operation
     meevax::posix::termios termios_;
 
   public:
-    reader(meevax::posix::file_descriptor&& fd, bool noncanonical = false)
+    constexpr reader(meevax::posix::file_descriptor&& fd)
       : fd_ {std::move(fd)},
         termios_ {fd_}
     {
-      using namespace meevax::posix;
-
-      if (noncanonical and fd_.is_tty())
+      if (fd_ == meevax::posix::fd::stdin)
       {
+        using namespace meevax::posix;
         termios_.change_to(termios::input_mode::noncanonical);
+
+        std::cin.tie(0);
+        std::ios::sync_with_stdio(false);
       }
     }
 
@@ -65,7 +67,7 @@ namespace meevax::operation
     }
   };
 
-  static reader<char> read {meevax::posix::fd::stdin, true};
+  static reader<char> read {meevax::posix::fd::stdin};
 } // namespace meevax::operation
 
 
